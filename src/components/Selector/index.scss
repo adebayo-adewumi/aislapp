@@ -1,0 +1,44 @@
+.selector-wrapper-value {
+  display: flex;
+  align-items: center;
+  .selector-wrapper {
+    width: 40px;
+    height: 24px;
+    left: 0px;
+    top: 0px;
+    position: relative;
+
+    background: #C4CEDB;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-right: 23px;
+    .selector-ball {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      left: 4px;
+      top: 4px;
+      transform: translateX(0px);
+      background: #ffffff;
+      border-radius: 76.9231px;
+      transition: 0.5s;
+    }
+
+    .selector-ball-active {
+      transform: translateX(16px);
+    }
+  }
+
+  .selector-wrapper-active {
+    background: #389f55;
+  }
+
+  span {
+    font-family: Averta;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    color: #5f738c;
+  }
+}

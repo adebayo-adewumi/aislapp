@@ -1,0 +1,11 @@
+
+
+.form-row-wrapper > div {
+    flex: 1;
+    
+}
+
+.form-row-wrapper > div:nth-child(2n+1) {
+    margin-right: 5px;
+    
+}

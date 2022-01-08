@@ -1,0 +1,94 @@
+.knob{
+    background: #FFFFFF;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.16), 0px 0px 1px rgba(0, 0, 0, 0.4);
+    transform: matrix(-1, 0, 0, 1, 0, 0);
+}
+.knob-rectangle{
+    position: absolute;
+    right: 0;
+    background: #EBEBEB;
+    border-radius: 100px;
+    transform: matrix(-1, 0, 0, 1, 0, 0);
+}
+
+.knob-container{
+    background: #EBEBEB;
+}
+
+
+
+.card-stock{
+    padding: 20px;
+    background: #FFFFFF;
+    border: 1px solid #D6DDE0;
+    box-sizing: border-box;
+    border-radius: 8px;
+    height: 100%;
+}
+
+.card-unpadded{
+    background: #FFFFFF;
+    border: 1px solid #D6DDE0;
+    box-sizing: border-box;
+    border-radius: 8px;
+    width: 50%;
+}
+
+
+
+.w-stock{
+    width: 22rem;
+}
+
+.add-to-watchlist-modal{
+    padding: 34px;
+    position: fixed;
+    left: 35%;
+    top: 10%;
+    width: 500px;
+    background: #FFFFFF;
+    box-shadow: 0px 8px 24px -6px rgba(0, 0, 0, 0.16), 0px 0px 1px rgba(0, 0, 0, 0.4);
+    z-index: 1100;
+}
+
+.set-price-alert-modal{
+    padding: 34px;
+    position: fixed;
+    left: 35%;
+    top: 10%;
+    width: 500px;
+    background: #FFFFFF;
+    box-shadow: 0px 8px 24px -6px rgba(0, 0, 0, 0.16), 0px 0px 1px rgba(0, 0, 0, 0.4);
+    z-index: 1100;
+}
+.buy-stocks-modal{
+    padding: 34px;
+    position: fixed;
+    left: 35%;
+    top: 5%;
+    width: 500px;
+    background: #FFFFFF;
+    box-shadow: 0px 8px 24px -6px rgba(0, 0, 0, 0.16), 0px 0px 1px rgba(0, 0, 0, 0.4);
+    z-index: 1100;
+}
+
+.stock-balance-card{
+    padding: 12px 12px 15px 26px;
+    width: 100%;
+    background: #21202E;border: 2px solid #144A22;
+    box-sizing: border-box;
+    border-radius: 8px;
+}
+
+.stock-success-modal{
+    padding: 30px;
+    position: fixed;
+    top: 14%;
+    right: 65%;
+    left: 35%;
+    background: #FFFFFF;
+    box-shadow: 0px 8px 24px -6px rgba(0, 0, 0, 0.16), 0px 0px 1px rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    z-index: 1100;
+    margin: 1.75rem auto;
+  }

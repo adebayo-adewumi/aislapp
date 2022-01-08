@@ -1,0 +1,110 @@
+.create-portfolio-modal{
+    padding: 30px;
+    position: fixed;
+    width: 450px;
+    top: 25%;
+    right: 65%;
+    left: 35%;
+    background: #FFFFFF;
+    box-shadow: 0px 8px 24px -6px rgba(0, 0, 0, 0.16), 0px 0px 1px rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    z-index: 1100;
+    margin: 1.75rem auto;
+}
+
+.add-stock-modal{
+    padding: 30px;
+    position: fixed;
+    width: 550px;
+    top: 10%;
+    right: 65%;
+    left: 35%;
+    background: #FFFFFF;
+    box-shadow: 0px 8px 24px -6px rgba(0, 0, 0, 0.16), 0px 0px 1px rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    z-index: 1100;
+    margin: 1.75rem auto;
+}
+
+.portfoliolist-modal{
+    padding: 30px;
+    position: fixed;
+    width: 750px;
+    top: 5%;
+    right: 65%;
+    left: 25%;
+    background: #FFFFFF;
+    box-shadow: 0px 8px 24px -6px rgba(0, 0, 0, 0.16), 0px 0px 1px rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    z-index: 1100;
+    margin: 1.75rem auto 0;
+}
+
+
+
+.card-black{
+    padding: 20px 30px;
+    background: #000000;
+    border: 1px solid #000000;
+    box-sizing: border-box;
+    border-radius: 8px;
+    height: 100%;
+}
+
+.selectbox-border{
+    border: 1px solid #E5E5E5;
+}
+
+.portfoliolist-accordion{
+    border-radius: 0.5rem !important;
+}
+
+.portfoliolist-accordion-header button{
+    box-shadow: none !important;
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+    font-family: 'Gotham Book' !important;
+    cursor: pointer !important;
+    border-radius: 1rem !important;
+}
+
+.portfoliolist-card{
+    padding: 15px 20px !important;
+}
+
+.portfoliolist-checkbox .form-check-input {
+    width: 1.3em;
+    height: 1.3em;
+    margin-top: 0.25em;
+    vertical-align: top;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+}
+
+.portfolio-success-modal{
+    padding: 30px;
+    position: fixed;
+    width: 500px;
+    top: 14%;
+    right: 65%;
+    left: 35%;
+    background: #FFFFFF;
+    box-shadow: 0px 8px 24px -6px rgba(0, 0, 0, 0.16), 0px 0px 1px rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    z-index: 1100;
+    margin: 1.75rem auto;
+  }
+
+.portfoliolist-checkbox .form-check-input:checked {
+    background-color: #3BC359;
+    border-color: #3BC359;
+}

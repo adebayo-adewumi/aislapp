@@ -1,0 +1,16 @@
+.button-filter {
+    background: #144A22;
+}
+
+.removeStock-modal{
+    padding: 30px;
+    position: fixed;
+    width: 450px;
+    top: 10%;
+    left: 40%;
+    background: #FFFFFF;
+    box-shadow: 0px 8px 24px -6px rgba(0, 0, 0, 0.16), 0px 0px 1px rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    z-index: 1100;
+    margin: 1.75rem auto;
+  }

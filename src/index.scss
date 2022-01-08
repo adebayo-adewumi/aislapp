@@ -1,0 +1,522 @@
+*,
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+body{
+  background: #F6F8FA;
+  font-family: 'Gotham Book' !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.fx-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-center {
+  text-align: center;
+}
+.text-28{
+  font-size: 28px;
+}
+.text-12{
+  font-size: 12px;
+}
+.text-16{
+  font-size: 16px;
+}
+.line-height-24{
+  line-height: 24px;
+}
+.line-height-28{
+  line-height: 28px;
+}
+.line-height-34{
+  line-height: 34px;
+}
+.border-1-d7{
+  border: 1px solid #D7DCE0
+}
+.text-13{
+  font-size: 13px;
+}
+.mb-30{
+  margin-bottom: 30px;
+}
+.text-color{
+  color: #144A22;
+  font-family: 'Gotham Black Regular';
+}
+.text-color-1{
+  color: #144A22;
+}
+.text-color-2{
+  color: #2C2A3B;
+}
+.text-color-3{
+  color: #394455;
+}
+.text-color-4{
+  color: #4B5563;
+}
+.font-gotham-black-regular{
+  font-family: 'Gotham Black Regular';
+}
+.pt-20{
+  padding-top: .15rem;
+}
+.button {
+  padding: 12px;
+  width: 100%;
+  background: #144A22;
+  border: 1px solid #144A22;
+  cursor: pointer;
+  border-radius: 8px;
+  color: #FFFFFF;
+}
+  
+  .header {
+    position: absolute;
+    width: 100%;
+    height: 80px;
+    left: 0px;
+    top: 0px;
+    background: #FFFFFF;
+  }
+  
+  .logo-container {
+    position: absolute;
+    left: 3.06%;
+    right: 88.4%;
+    top: 17.5%;
+    bottom: 28.08%;
+  }
+  
+  .logo {
+    position: absolute;
+    left: 3.06%;
+    right: 88.4%;
+    top: 17.5%;
+    bottom: 28.08%;
+  }
+  
+  .candle-stick-container {
+    position: relative;
+    width: 100%;
+    height: 470px;
+    left: 0px;
+    top: 84px;
+  }
+  
+  .candle-stick-box {
+    position: absolute;
+    width: 100%;
+    height: 284px;
+    left: 0px;
+    top: 186px;
+    background: #144A22;
+  }
+  
+  .candle-stick-box {
+    position: absolute;
+    width: 100%;
+    height: 284px;
+    left: 0px;
+    top: 186px;
+    background: #144A22;
+  }
+  
+  .candle-stick {
+    position: absolute;
+    background: url(../src/assets/images/candlesticks.svg);
+    left: 7.08%;
+    right: 57.96%;
+    top: 13%;
+    opacity: 0.8;
+    height: 229px;
+    width: 503.3533325195px;
+    border-radius: 0px;
+  }
+  
+  .smiling-lady {
+    position: absolute;
+    width: 267px;
+    height: 469px;
+    left: 240px;
+    top: -185px;
+    background: url(../src/assets/images/smiling-lady.png);
+    z-index: 1;
+  }
+  
+  .signup-text {
+    line-height: 24px;
+    display: flex;
+    justify-content: end;
+    grid-column-gap: 5px;
+    column-gap: 5px;
+    color: #2C2A3B;
+    text-align: right;
+    margin-bottom: 10px;
+  }
+  
+  .form {
+    width: 100%;
+  }
+  
+  .input {
+    box-sizing: border-box;
+    border-radius: 8px;
+    width: 100%;
+    font-family: "Gotham Book";
+    line-height: 24px;
+  }
+
+  .font-gotham{
+    font-family: "Gotham Book";
+  }
+  .border-1-d6{
+    border: 1px solid #D6DDE0;
+  }
+
+  .input-16 {
+    padding: 7px 10px;
+    width: 16rem;
+    font-family: "Gotham Book";
+    line-height: 24px;
+  }
+
+  .input-xsm {
+    border: 1px solid #D6DDE0;
+    box-sizing: border-box;
+    border-radius: 8px;
+    width: 100%;
+    font-family: "Gotham Book";
+    line-height: 24px;
+  }
+  
+  .text-14 {
+    font-size: 14px;
+  }
+
+  .text-25 {
+    font-size: 26px;
+  }
+  
+  .text-16 {
+    font-size: 16px;
+  }
+  
+  .terms {
+    display: flex;
+  }
+  
+  .mb-20 {
+    margin-bottom: 20px;
+  }
+  
+  .mb-10 {
+    margin-bottom: 10px;
+  }
+  
+  .mb-5 {
+    margin-bottom: 5px;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  
+  .text-right {
+    text-align: right;
+  }
+  
+  .hide-password {
+    position: absolute;
+    right: 0;
+    top: 35%;
+    margin: 0px 10px;
+    cursor: pointer;
+  }
+  
+  .show-password {
+    position: absolute;
+    right: 0;
+    top: 35%;
+    margin: 0px 10px;
+    cursor: pointer;
+    display: none;
+  }
+  
+  .relative {
+    position: relative;
+  }
+  
+  .invest-text {
+    padding-left: 99px;
+    position: relative;
+    top: 500px;
+  }
+  
+  .invest-text ul {
+    padding-left: 25px;
+  }
+  
+  .invest-text ul li {
+    padding: 10px 10px 0px;
+  }
+  
+  .text-37 {
+    font-size: 37px;
+    line-height: 34px;
+    color: #21202E;
+    font-family: "Gotham Black Regular" !important;
+  }
+  
+  .mt-5 {
+    margin-top: 5px;
+  }
+  .user-area-logo{
+    position: absolute;
+    left: 3.06%;
+    right: 88.4%;
+    top: 6%;
+    bottom: 28.08%;
+  }
+  .button-xsm{
+    padding: 12px;
+    width: 48px;
+    height: 48px;
+    background: #144A22;
+    border-radius: 8px;
+    margin: 9px 0px;
+    border: 0;
+}
+.bgcolor-1{
+  background: #144A22;
+}
+.bgcolor-f{
+  background: #F6F8FA;
+}
+.border_1{
+  border:1px solid #DADADA
+}
+.bgcolor-2{
+  background-color: #21202E;
+}
+.text-color-5{
+  color: #59595E;
+}
+
+.text-color-2a{
+  color: #2AD062;
+}
+
+.input-alt {
+  padding: 7px 10px;
+  width: 400px;
+  font-family: "Gotham Book";
+  line-height: 24px;
+}
+
+.input-alt:focus, .input-alt:active {
+  border: none !important;
+}
+
+.w-460{
+  width: 460px;
+}
+
+.w-490{
+  width: 490px;
+}
+.ml-custom{
+  margin-left: 17rem;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1050;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+}
+
+.text-green-950 {
+  color: #01E1F3;
+}
+
+.align-super{
+  vertical-align: super;
+}
+
+
+.border-top-1{
+  border-top: 0.5px solid #DADADA;
+}
+.border-left-1{
+  border-left: 0.5px solid #DADADA;
+}
+
+.border-left-1{
+  border-left: 0.5px solid #DADADA;
+}
+
+.border-right-1{
+  border-right: 0.5px solid #DADADA;
+}
+
+.border-bottom-1{
+  border-bottom: 0.6px solid #AAAAAA;
+}
+
+.border-bottom-1d{
+  border-bottom: 0.6px solid #DADADA;
+}
+
+.border-bottom-2{
+  border-bottom: 2px solid #000000;
+}
+
+.border-bottom-e{
+  border-bottom: 2px solid #EBEBEB;;
+}
+.w-56rem{
+  width: 56rem;
+}
+
+.w-22rem{
+  width: 22rem;
+}
+
+.w-21rem{
+  width: 21rem;
+}
+
+.p-02rem {
+  padding: 0.2rem;
+}
+
+.card-15px{
+  padding: 15px;
+  background: #FFFFFF;
+  border: 1px solid #D6DDE0;
+  box-sizing: border-box;
+  border-radius: 8px;
+  height: 100%;
+}
+
+.pagination li{
+  padding: 10px 20px;
+}
+
+.pagination li:hover{
+  background-color: #144A22;
+  color: #FFFFFF;
+}
+
+.pagination li.active{
+  background-color: #144A22;
+  color: #FFFFFF;
+}
+
+.text-color-9{
+  color: #999CA0;
+}
+
+.success-modal{
+  padding: 30px;
+  position: fixed;
+  width: 450px;
+  top: 14%;
+  right: 65%;
+  left: 35%;
+  background: #FFFFFF;
+  box-shadow: 0px 8px 24px -6px rgba(0, 0, 0, 0.16), 0px 0px 1px rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+  z-index: 1100;
+  margin: 1.75rem auto;
+}
+
+.w-32rem{
+ width: 32rem;
+}
+
+.w-42rem{
+ width: 42rem;
+}
+.w-22-4rem{
+ width: 22.4rem;
+}
+.left-47pc{
+  left: 47%;
+}
+.w-90pc{
+  width: 90%;
+}
+.card{
+  padding: 20px 30px;
+  background: #FFFFFF;
+  border: 1px solid #D6DDE0;
+  box-sizing: border-box;
+  border-radius: 8px;
+  height: 100%;
+}
+
+.card-xsm{
+  padding: 15px;
+  background: #FFFFFF;
+  border: 1px solid #D6DDE0;
+  box-sizing: border-box;
+  border-radius: 8px;
+  height: 100%;
+}
+
+.card-lg{
+  padding: 20px 30px;
+  width: 631px;
+  background: #FFFFFF;
+  border: 1px solid #D6DDE0;
+  box-sizing: border-box;
+  border-radius: 8px;
+  height: 100%;
+}
+
+.card-50{
+  padding: 20px 30px;
+  width: 50%;
+  background: #FFFFFF;
+  border: 1px solid #D6DDE0;
+  box-sizing: border-box;
+  border-radius: 8px;
+  height: 100%;
+}
+
+.card-md{
+  padding: 20px 30px;
+  width: 490px;
+  background: #FFFFFF;
+  border: 1px solid #D6DDE0;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
+
+.card-custom{
+  background: #FFFFFF;
+  border: 1px solid #D6DDE0;
+  box-sizing: border-box;
+  border-radius: 8px;
+  height: 100%;
+}
+
+.w-65p{
+ width: 65%
+}
+
+.-bottom-5{
+  bottom: -0.5rem
+}
