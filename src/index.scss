@@ -154,7 +154,7 @@ body{
   .signup-text {
     line-height: 24px;
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     grid-column-gap: 5px;
     column-gap: 5px;
     color: #2C2A3B;
@@ -519,4 +519,23 @@ body{
 
 .-bottom-5{
   bottom: -0.5rem
+}
+
+.generic-dropdown-card{
+  padding: 10px;
+  position: absolute;
+  background: #FFFFFF;
+  box-shadow: 0px 12px 12px -6px rgba(0, 0, 0, 0.16), 0px 0px 1px rgba(0, 0, 0, 0.4);
+  top: 4.5rem;
+  width: 230px;
+  z-index: 1105;
+}
+
+.element-cover{
+  position: absolute; 
+  padding: 5px; 
+  width: 100%; 
+  left: 0; 
+  top: 0; 
+  height:100%
 }

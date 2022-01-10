@@ -17,6 +17,7 @@ const AccountStatement = () => {
     const [endDate, setEndDate] = useState('');
     const [showStatement, setShowStatement] = useState<boolean>(true);
     const [showSuccess, setShowSuccess] = useState<boolean>(false);
+
     const changeStartDate = (e :any) => {
         setStartDateState(e);
         setStartDate(moment(e).format("DD/MM/YYYY"));
@@ -53,11 +54,6 @@ const AccountStatement = () => {
         else{
             setShowEndDateCalendar(true);
         }
-    }
-
-    function displayStatement(){
-        setShowStatement(true);
-        setShowSuccess(false);
     }
 
     function displaySuccess(){

@@ -6,9 +6,7 @@ import BulbIcon from '../../../assets/images/bulb.svg';
 import PictureIcon from '../../../assets/images/picture-icon.svg';
 import SuccessIcon from '../../../assets/images/success.gif';
 import ComputerIcon from '../../../assets/images/computer.svg';
-//import Selfie from '../../../assets/images/funke.jpeg';
 import Selfie from '../../../assets/images/gbemi.jpeg';
-//import Selfie from '../../../assets/images/kenny.jpeg';
 import { Link } from "react-router-dom";
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
@@ -37,7 +35,6 @@ const Register = () => {
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [dob, setDOB] = useState('');
-    const [fieldsAreNullOrEmpty, setFieldsAreNullOrEmpty] = useState<boolean>(false);
     const [isInvalidBVN, setIsInvalidBVN] = useState<boolean>(false);
     const [isInvalidEmail, setIsInvalidEmail] = useState<boolean>(false);
     const [isInvalidPhone, setIsInvalidPhone] = useState<boolean>(false);
@@ -77,12 +74,10 @@ const Register = () => {
     const [hasNumericCharacter, setHasNumericCharacter] = useState<boolean>(false);
     const [hasSpecialCharacter, setHasSpecialCharacter] = useState<boolean>(false);
     const [isPasswordMatch, setIsPasswordMatch] = useState<boolean>(true);
-    const [isPINMatch, setIsPINMatch] = useState<boolean>(true);
     const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
     const [isShowConfirmPassword, setIsShowConfirmPassword] = useState<boolean>(false);
     const [showOTPValidated, setShowOTPValidated] = useState<boolean>(true);
     const [showPasswordValidated, setShowPasswordValidated] = useState<boolean>(true);
-    const [bvnAndDobCypher, setBvnAndDobCypher] = useState('');
     const [firstname, setFirstName] = useState('Idowu');
     const [lastname, setLastName] = useState('Olasuyi');
     const [othername, setOtherName] = useState('Deborah');
@@ -95,7 +90,7 @@ const Register = () => {
             let digits = /[0-9]+/g;
 
             if(bvn.length > 0){
-                if(bvn.length == num && digits.test(bvn)){
+                if(bvn.length === num && digits.test(bvn)){
                     setIsInvalidBVN(false);
                 }
                 else{
@@ -142,7 +137,7 @@ const Register = () => {
         }
 
         async function checkIfOTPBoxIsNullOrEmpty(){
-            if(otpbox1 == '' || otpbox2 == '' || otpbox3 == '' || otpbox4 == '' || otpbox5 == '' || otpbox6 == ''){
+            if(otpbox1 === '' || otpbox2 === '' || otpbox3 === '' || otpbox4 === '' || otpbox5 === '' || otpbox6 === ''){
                 setIsInvalidOTP(true);
             }
             else{
@@ -151,17 +146,17 @@ const Register = () => {
         }
 
         async function checkIfOBIsNullOrEmpty(){
-            if(ob1 == '' || ob2 == '' || ob3 == '' || ob4 == ''){
+            if(ob1 === '' || ob2 === '' || ob3 === '' || ob4 === ''){
                 setIsInvalidPIN(true);
             }
-            else if(cob1 == '' || cob2 == '' || cob3 == '' || cob4 == ''){
+            else if(cob1 === '' || cob2 === '' || cob3 === '' || cob4 === ''){
                 setIsInvalidPIN(true);
             }
             else{
                 let _ob = ob1 +''+ ob2 +''+ ob3 +''+ ob4;
                 let _cob = cob1 +''+ cob2 +''+ cob3 +''+ cob4;
 
-                if(_ob == _cob){
+                if(_ob === _cob){
                     setIsInvalidPIN(false);
                 }
                 else{
@@ -186,7 +181,7 @@ const Register = () => {
         } 
 
         async function checkIfConfirmPasswordIsNullOrEmpty(){    
-            if(password != confirmPassword){
+            if(password !== confirmPassword){
                 setIsPasswordMatch(false);
             }
             else{
@@ -205,7 +200,6 @@ const Register = () => {
     });
 
     function verifyBVNAndDOB(){
-        
         let requestData = {
             "bvn": bvn,
             "dateOfBirth": dob
@@ -215,16 +209,6 @@ const Register = () => {
 
         let bvnAndDobCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
         localStorage.setItem('bvnAndDobCypher', bvnAndDobCypher);
-
-        // axios.post('https://cors-anywhere.herokuapp.com/http://34.252.87.56:7934/test/encrypt', requestData)
-        // .then(function (response) {
-        //     localStorage.setItem('bvnAndDobCypher', response.data.text);
-        //     setShowSpinner(false);
-        // })
-        // .catch(function (error) {
-        //     setShowSpinner(false);
-        //     console.log(error);
-        // });
         
         //VERIFY BVN AND DOB
         if(localStorage.getItem('bvnAndDobCypher')){
@@ -401,7 +385,8 @@ const Register = () => {
             "title": "Mr",
             "deviceId": "2e1a65c3-abe8-49cc-99cc-afb2afba085c",
             "osType": "Android",
-            "permanentAddress": "No 9 Lagos house Marina, Lagos"
+            "permanentAddress": "No 9 Lagos house Marina, Lagos",
+            'shA': showImgAvatar
         }
 
         setShowSpinner(true);
@@ -439,7 +424,7 @@ const Register = () => {
     }
 
     function checkIfEmailPasswordConfirmPasswordIsNullOrEmpty(){
-        if(email == '' || password == '' || confirmPassword == '' || password != confirmPassword){
+        if(email === '' || password === '' || confirmPassword === '' || password !== confirmPassword){
             setEmailPasswordConfirmPasswordIsNullOrEmpty(true);
         }
         else if(!hasMinAndMaxCharacter || !hasLowerCaseCharacter || !hasUpperCaseCharacter || !hasNumericCharacter || !hasSpecialCharacter){
@@ -459,7 +444,7 @@ const Register = () => {
         const lowerCase = /[a-z]+/g;
         const upperCase = /[A-Z]+/g;
         const numericCharacter = /\d+/g;
-        const specialCharacter = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]+/g;
+        const specialCharacter = /[ `!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]+/g;
 
         if(password.length >= minCharacters && password.length <= maxCharacters){
             setHasMinAndMaxCharacter(true);
@@ -498,7 +483,7 @@ const Register = () => {
     }
 
     function checkIfBVNPhoneDobIsNullOrEmpty(){
-        if(bvn == '' || phone == '' || dob == ''){
+        if(bvn === '' || phone === '' || dob === ''){
             setBVNPhoneDobIsNullOrEmpty(true);
         }
         else if(isInvalidBVN || isInvalidPhone || isInvalidDOB){
@@ -513,48 +498,7 @@ const Register = () => {
         setDateState(e);
         setDOB(moment(e).format("DD/MM/YYYY"));
         setShowCalendar(false);
-    }
-
-    function checkIfEmailIsNullOrEmpty(e :any){
-        setEmail(e.target.value);
-        checkIfFieldsAreNull()
-
-        validateEmail();
-    }
-
-    function checkIfPhoneIsNullOrEmpty(e :any){
-
-        setPhone(e.target.value);
-        
-        checkIfFieldsAreNull();
-
-        if(phone.length < 11){
-            setIsInvalidPhone(true);
-        }
-        else{
-            setIsInvalidPhone(false);
-        }
-    } 
-
-    function checkIfDOBIsNullOrEmpty(e :any){
-
-        setDOB(e.target.value);
-        checkIfFieldsAreNull();
-    }
-
-    function checkIfFieldsAreNull(){
-        if(bvn === ''){
-            setFieldsAreNullOrEmpty(true);
-        }
-        else if(phone === ''){
-            setFieldsAreNullOrEmpty(true);
-        }
-        else if(dob === ''){
-            setFieldsAreNullOrEmpty(true);
-        }
-        else{
-            setFieldsAreNullOrEmpty(false);
-        }
+        setIsInvalidPassword(true);
     }
 
     function validateEmail(){
@@ -811,7 +755,7 @@ const Register = () => {
 
                             <div className="flex space-x-10 mb-20">
                                 <div className="text-13 font-bold pt-4 w-full text-right">
-                                    <a href="#" className="no-underline text-black">Cancel</a>
+                                    <button type="button" className="no-underline text-black">Cancel</button>
                                 </div>
 
                                 <div className='w-full'>
@@ -825,8 +769,8 @@ const Register = () => {
                             <div className="text-center">
                                 <div className="mb-5 text-13">By creating an account, you agree to Anchoria </div>
                                 <div className="text-13">
-                                    <a href="#" className="no-underline"><strong>Terms & Conditions</strong></a> and 
-                                    <a href="#" className="no-underline"><strong> Privacy Policy</strong></a>
+                                    <button type="button" className="no-underline"><strong>Terms & Conditions</strong></button> and 
+                                    <button type="button" className="no-underline"><strong> Privacy Policy</strong></button>
                                 </div>
                             </div>
                         </form>
@@ -867,7 +811,7 @@ const Register = () => {
 
                         <div className="flex justify-end space-x-10 mb-20">
                             <div className="text-13 font-bold pt-4">
-                                <a href="#" className="no-underline text-black">Cancel</a>
+                                <button type="button" className="no-underline text-black">Cancel</button>
                             </div>
 
                             {/* <div><button onClick={confirmBVN} className=" bgcolor-1 rounded-lg text-white border-0 px-20 py-3 font-bold cursor-pointer" type='button'>Continue</button></div> */}
@@ -924,7 +868,7 @@ const Register = () => {
 
                             <div className="flex justify-end space-x-10 mb-30">
                                 <div className="text-13 font-bold pt-4">
-                                    <a href="#" className="no-underline text-black">Cancel</a>
+                                    <button type="button" className="no-underline text-black">Cancel</button>
                                 </div>
 
                                 <div>
@@ -974,7 +918,7 @@ const Register = () => {
 
                             <div className="flex justify-end space-x-10">
                                 <div className="text-13 font-bold pt-4">
-                                    <a href="#" className="no-underline text-black">Cancel</a>
+                                    <button type="button" className="no-underline text-black">Cancel</button>
                                 </div>
 
                                 <div>
@@ -1192,7 +1136,7 @@ const Register = () => {
                             {/* Proceed Button section */}
                             <div className="flex justify-end space-x-10 mb-20">
                                 <div className="text-13 font-bold pt-4">
-                                    <a href="#" className="no-underline text-black">Cancel</a>
+                                    <button type="button" className="no-underline text-black">Cancel</button>
                                 </div>
 
                                 <div>
@@ -1280,7 +1224,7 @@ const Register = () => {
 
                             <div className="flex justify-end space-x-10">
                                 <div className="text-13 font-bold pt-4">
-                                    <a href="#" className="no-underline text-black">Cancel</a>
+                                    <button type="button" className="no-underline text-black">Cancel</button>
                                 </div>
 
                                 <div>

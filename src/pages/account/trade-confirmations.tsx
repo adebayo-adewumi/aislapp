@@ -41,11 +41,6 @@ const TradeConfirmations = () => {
         setShowRemoveStockModal(false);
     }
 
-    function displayRemoveStockModal(){
-        setShowModalBG(true);
-        setShowRemoveStockModal(true);
-    }
-
     return (
         <div className="relative">
             <UserAreaHeader />

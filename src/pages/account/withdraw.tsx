@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {Link} from "react-router-dom";
 import UserAreaHeader from '../../components/Headers/UserAreaHeader';
 import ArrowBackIcon from '../../assets/images/arrow-back.svg';
-import ChevronDownIcon from '../../assets/images/chevron-down.svg';
 import SuccessIcon from '../../assets/images/success.gif';
 import Form from 'react-bootstrap/Form';
 import Sidebar from '../../components/Sidebar';
@@ -19,11 +18,6 @@ const WithdrawFund = () => {
         setShowAmount('₦ 10,000.00');
     }
 
-    function displayWithdraw(){
-        setShowWithdraw(true);
-        setShowWithdrawSummary(false);
-    }
-
     function displayWithdrawSummary(){
         setShowWithdraw(false);
         setShowWithdrawSummary(true);
@@ -38,6 +32,7 @@ const WithdrawFund = () => {
     return (
         <div className="relative">
             <UserAreaHeader />
+            <div className='hidden'>{show10K}</div>
 
             <div>
                 <div className="flex">

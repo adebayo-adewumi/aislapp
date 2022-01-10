@@ -29,7 +29,7 @@ const Reset = () => {
         } 
 
         async function checkIfConfirmPasswordIsNullOrEmpty(){    
-            if(password != confirmPassword){
+            if(password !== confirmPassword){
                 setIsPasswordMatch(false);
             }
             else{
@@ -42,7 +42,7 @@ const Reset = () => {
     });    
 
     function checkIfPasswordOrConfirmPasswordIsNullOrEmpty(){
-        if(password == '' || confirmPassword == '' || password != confirmPassword){
+        if(password === '' || confirmPassword === '' || password !== confirmPassword){
             setPasswordOrConfirmPasswordIsNullOrEmpty(true);
         }
         else if(!hasMinAndMaxCharacter || !hasLowerCaseCharacter || !hasUpperCaseCharacter || !hasNumericCharacter || !hasSpecialCharacter){
@@ -62,7 +62,7 @@ const Reset = () => {
         const lowerCase = /[a-z]+/g;
         const upperCase = /[A-Z]+/g;
         const numericCharacter = /\d+/g;
-        const specialCharacter = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]+/g;
+        const specialCharacter = /[ `!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]+/g;
 
         if(password.length >= minCharacters && password.length <= maxCharacters){
             setHasMinAndMaxCharacter(true);
@@ -103,6 +103,7 @@ const Reset = () => {
     function showPasswordResetSuccess(){
         setShowResetPasswordCard(false);
         setShowSuccessCard(true);
+        setIsInvalidPassword(false);
     }
 
     return (

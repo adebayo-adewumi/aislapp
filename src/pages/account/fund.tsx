@@ -19,9 +19,6 @@ const FundAccount = () => {
     const [showBankTransferSection, setShowBankTransferSection] = useState<boolean>(false);
 
     const [show5K, setShow5k] = useState('');
-    const [show8K, setShow8k] = useState('');
-    const [show10K, setShow10k] = useState('');
-    const [show15K, setShow15k] = useState('');
     const [showAmount, setShowAmount] = useState('');
 
     function performSwitchToDebit(){
@@ -90,14 +87,6 @@ const FundAccount = () => {
         setShowBankTransferSection(false);
     }
 
-    function displayBankTransferSection(){
-        setShowAmountSection(false);
-        setShowCardSection(false);
-        setShowPinSection(false);
-        setShowTransactionSection(false);
-        setShowBankTransferSection(true);
-    }
-
     return (
         <div className="relative">
             <UserAreaHeader />
@@ -113,6 +102,7 @@ const FundAccount = () => {
                                 <div>
                                     <div className="text-28 text-color-1 font-gotham-black-regular font-bold mb-10">Fund Account</div>
                                     <div className="font-bold mb-30">Provide the details below</div>
+                                    <span className='hidden'>{show5K}</span>
                                 </div>
                                 
                                 <div className='font-bold'>

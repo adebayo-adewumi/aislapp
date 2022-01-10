@@ -46,7 +46,7 @@ export const Base64 = {
     var n, r, i;
     var s, o, u, a;
     var f = 0;
-    e = e.replace(/[^A-Za-z0-9\+\/\=]/g, '');
+    e = e.replace(/[^A-Za-z0-9+/=]/g, '');
     while (f < e.length) {
       s = this._keyStr.indexOf(e.charAt(f++));
       o = this._keyStr.indexOf(e.charAt(f++));
@@ -56,10 +56,10 @@ export const Base64 = {
       r = ((o & 15) << 4) | (u >> 2);
       i = ((u & 3) << 6) | a;
       t = t + String.fromCharCode(n);
-      if (u != 64) {
+      if (u !== 64) {
         t = t + String.fromCharCode(r);
       }
-      if (a != 64) {
+      if (a !== 64) {
         t = t + String.fromCharCode(i);
       }
     }

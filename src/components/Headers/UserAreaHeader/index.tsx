@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import logo from '../../../assets/images/anchoria.svg';
 import notification from '../../../assets/images/notification.svg';
 import chevronDown from '../../../assets/images/chevron-down.svg';

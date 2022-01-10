@@ -108,7 +108,7 @@ const PortfolioDetails = () => {
             })
             .catch(function (error) {
     
-                console.log(error);
+                console.log(apiResponseHasError);
     
                 setApiResponseHasError(true);
     
@@ -119,7 +119,7 @@ const PortfolioDetails = () => {
         }
 
         getPortfolioDetails();
-    },[]);
+    });
 
     function displayAddNewStockModal(){
         setShowModalBG(true);

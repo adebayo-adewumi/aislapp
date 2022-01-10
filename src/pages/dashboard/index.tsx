@@ -1,9 +1,6 @@
 import React, {useState} from 'react';
 import {Link} from "react-router-dom";
 import '../dashboard/index.scss';
-import logo from '../../assets/images/anchoria.svg';
-import notification from '../../assets/images/notification.svg';
-import chevronDown from '../../assets/images/chevron-down.svg';
 import WalletIcon from '../../assets/images/wallet.svg';
 import HidePasswordIcon from '../../assets/images/hide-password.svg';
 import ArrowUpIcon from '../../assets/images/arrow-up.svg';
@@ -21,6 +18,7 @@ import Computer from '../../assets/images/computer.png';
 import SearchIcon from '../../assets/images/search.svg';
 import CloseIcon from '../../assets/images/close.svg';
 import Sidebar from '../../components/Sidebar';
+import UserAreaHeader from '../../components/Headers/UserAreaHeader';
 
 const Dashboard = () => {
 
@@ -59,79 +57,11 @@ const Dashboard = () => {
 
     return (
         <div className="relative">
-            <div className="topbar py-3 pl-4 pr-20 z-10">
-                <div className="flex justify-between">
-                    <div>
-                        <div className="logo-container">
-                            <img className="user-area-logo" src={logo} alt="Anchoria Logo" width="120" />
-                        </div>
-                    </div>
-
-                    <div>
-                        <div className="flex space-x-8">
-                            <div className="pt-2"><img src={notification} alt="bell" /></div>
-                            <div>
-                                <div className="flex space-x-4">
-                                    <div className="pt-1">
-                                        <img src="https://ui-avatars.com/api/?name=Adebayo+Adewunmi&amp;color=FFFFFF&amp;background=144A22" className="rounded-full h-10 w-10" />
-                                    </div>
-
-                                    <div className="font-bold text-color-1 pt-4">Adebayo Adewunmi</div>
-
-                                    <div className="pt-4">
-                                        <img src={chevronDown} alt="" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+           <UserAreaHeader / >
+               
             <div>
                 <div className="flex">
-                    <Sidebar />
-                    
-                    {/* <div className="sidebar">
-                        <ul>
-                            <li className="space-x-5 active">
-                                <div><img src={PageIcon} alt="" /></div>
-                                <div className="pt-1">Home</div>
-                            </li>
-                            <li className="space-x-5">
-                                <Link to="/trade" className="w-full no-underline flex">
-                                    <div><img src={TradeIcon} alt="" /></div>
-                                    <div className="pl-5 pt-1 text-gray-700">Trade</div>
-                                </Link>
-                            </li>
-                            <li className="space-x-5">
-                                <Link to="/portfolio" className="w-full no-underline flex">
-                                    <div><img src={PortfolioIcon} alt="" /></div>
-                                    <div className="pl-5 pt-1">Portfolio</div>
-                                </Link>
-                            </li>
-                            <li className="space-x-5">
-                                <Link to="/watchlist" className="w-full no-underline flex">
-                                    <div><img src={StarGrayIcon} alt="" /></div>
-                                    <div className="pl-5 pt-1">Watchlist</div>
-                                </Link>
-                            </li>
-                            <li className="space-x-5">
-                                <Link to="/account" className="w-full no-underline flex">
-                                    <div><img src={AccountIcon} alt="" /></div>
-                                    <div className="pl-5 pt-1">Account</div>
-                                </Link>
-                            </li>
-                            <li className="space-x-5">
-                                <div><img src={ProfileIcon} alt="" /></div>
-                                <div className="pt-1">Profile</div>
-                            </li>
-                            <li className="space-x-5">
-                                <div><img src={LearnIcon} alt="" /></div>
-                                <div className="pt-1">Learn</div>
-                            </li>
-                        </ul>
-                    </div> */}
+                    <Sidebar />   
 
                     <div className="main-content w-full p-10">
                         <div className="text-28 mb-20">

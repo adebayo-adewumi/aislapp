@@ -130,7 +130,7 @@ const Portfolio = () => {
                 <Link to={'details/'+item.uuid} className='no-underline' key={item.uuid}>
                     <div onClick={viewPortfolioDetails} className="card-custom p-5 flex justify-between cursor-pointer">
                         <div className="flex space-x-4">
-                            <div><img src={Math.floor(Math.random() * 4) == 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) == 2 ? RedBoxIcon : BlueBoxIcon} alt="" /></div>
+                            <div><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" /></div>
 
                             <div className="text-14">
                                 <div className="mb-10 font-bold text-color-2">{item.name}</div>
@@ -160,7 +160,7 @@ const Portfolio = () => {
             })
             .catch(function (error) {
     
-                console.log(error);
+                console.log(apiResponseHasError);
     
                 setApiResponseHasError(true);
     
@@ -172,7 +172,7 @@ const Portfolio = () => {
 
         getPortfolioList();
         checkIfPortfolioIsNullOrEmpty();
-    },[portfolioCount]);  
+    });  
 
     function showCreatePorfolioModal(){
         setShowCreatePortfolio(true);

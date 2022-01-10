@@ -8,7 +8,6 @@ import LockIcon from '../../assets/images/lock.svg';
 import DeleteCardIcon from '../../assets/images/delete-card.svg';
 import Sidebar from '../../components/Sidebar';
 import CloseIcon from '../../assets/images/close.svg';
-import { Select } from '@material-ui/core';
 
 const BankCard = () => {
     const [showDebitCards, setShowDebitCards] = useState<boolean>(true);
@@ -42,13 +41,6 @@ const BankCard = () => {
         setShowDebitCards(false);
         setShowBank(true);
         setShowBankHeader(true);
-    }
-
-    function displayCard(){
-        setShowDebitCards(true);
-        setShowAddCard(false);
-        setShowSuccess(false);
-        setShowManageCard(false);
     }
 
     function displayAddCard(){

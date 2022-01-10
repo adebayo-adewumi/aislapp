@@ -20,6 +20,7 @@ import WithdrawFund from '../pages/account/withdraw';
 import TradeConfirmations from '../pages/account/trade-confirmations';
 import Statement from '../pages/account/statement';
 import BankCard from '../pages/account/bank-card';
+import QuickSearch from '../pages/search/quick';
 
 const Main = () => {
 
@@ -99,6 +100,11 @@ const Main = () => {
                         <BankCard />
                       </RequireAuth>
                     } />
+                    <Route path="search/quick" element={
+                      
+                        <QuickSearch />
+                      
+                    } />
                   </Routes>
                 </BrowserRouter>
               </Suspense>
@@ -115,7 +121,7 @@ function RequireAuth({ children }: { children: JSX.Element }) {
 
   let isAuthenticated = localStorage.getItem('aislUserIsAuthenticated');
 
-  if (isAuthenticated != 'true' ) {
+  if (isAuthenticated !== 'true' ) {
     // Redirect them to the /login page, but save the current location they were
     // trying to go to when they were redirected. This allows us to send them
     // along to that page after they login, which is a nicer user experience

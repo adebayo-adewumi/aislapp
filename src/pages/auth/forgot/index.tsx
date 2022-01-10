@@ -10,8 +10,6 @@ const Forgot = () => {
     const [isEmailNullOrEmpty, setIsEmailNullOrEmpty] = useState<boolean>(true);
     const [showForgotPasswordCard, setShowForgotPasswordCard] = useState<boolean>(true);
     const [showResetPasswordLinkSentConfirmationCard, setShowResetPasswordLinkSentConfirmationCard] = useState<boolean>(false);
-
-    let width: number, height: number, gradient: { addColorStop: (arg0: number, arg1: any) => void; };
     
     useEffect(() => {
         async function checkIfEmailIsValid(){    

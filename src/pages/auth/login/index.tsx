@@ -6,7 +6,7 @@ import '../login/index.scss';
 import axios from 'axios';
 import { encryptData } from '../../../lib/encryptionHelper';
 import {generalEncKey} from '../../../common/constants/globals';
-import { AuthProvider, useAuthState } from '../../../contexts/authContext';
+import { useAuthState } from '../../../contexts/authContext';
 
 const Login = () => {
 
@@ -198,9 +198,9 @@ const Login = () => {
                             <div className="text-center text-14 mb-10">
                                 <div className="mb-5">By creating an account, you agree to Anchoria </div>
                                 <div>
-                                    <a href="#" className="no-underline text-color-1"><strong>Terms & Conditions </strong></a> 
+                                    <button type="button" className="no-underline text-color-1"><strong>Terms & Conditions </strong></button> 
                                     and 
-                                    <a href="#" className="no-underline text-color-1"><strong> Privacy Policy</strong></a>
+                                    <button type="button" className="no-underline text-color-1"><strong> Privacy Policy</strong></button>
                                 </div>
                             </div>
                         </form>
