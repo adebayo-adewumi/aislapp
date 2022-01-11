@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Link} from "react-router-dom";
 import '../portfolio/index.scss';
 import StarIcon from '../../assets/images/star.svg';
@@ -8,8 +8,28 @@ import AppleIcon from '../../assets/images/apple.svg';
 import SearchIcon from '../../assets/images/search.svg';
 import UserAreaHeader from '../../components/Headers/UserAreaHeader';
 import Sidebar from '../../components/Sidebar';
+import axios from 'axios';
 
 const Trade = () => {
+
+    useEffect(() => {
+
+        async function getStocks(){
+
+            let headers = {'Authorization': 'Bearer '+localStorage.getItem('aislUserToken')}
+    
+            axios.get('http://34.252.87.56:7932/stock', { headers })
+            .then(function (response) {
+                console.log(response.data)
+            })
+            .catch(function (error) {    
+                console.log(error);
+            });
+        }
+
+        getStocks();
+    },[]);  
+
     return (
         <div className="relative">
             <UserAreaHeader />

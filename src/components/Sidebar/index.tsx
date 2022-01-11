@@ -71,8 +71,8 @@ const Sidebar = () => {
                 </li>
 
                 <li className="space-x-5">
-                    <Link to="/profile" className={ urlPath === '/profile' ? "active w-full no-underline flex text-color-1" : "w-full no-underline flex text-gray-700"}>
-                        <div><img src={urlPath === '/profile' ? ProfileActiveIcon : ProfileIcon} alt="" /></div>
+                    <Link to="/account/profile" className={ urlPath === '/account/profile' ? "active w-full no-underline flex text-color-1" : "w-full no-underline flex text-gray-700"}>
+                        <div><img src={urlPath === '/account/profile' ? ProfileActiveIcon : ProfileIcon} alt="" /></div>
                         <div className="pl-5 pt-1">Profile</div>
                     </Link>
                 </li>
