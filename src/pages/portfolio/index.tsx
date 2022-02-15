@@ -169,7 +169,7 @@ const Portfolio = () => {
         getStockGraphData();
         getPortfolioList();
         checkIfPortfolioIsNullOrEmpty();
-    },[]);
+    },[apiResponseHasError, graphXAxis, graphYAxis, portfolioName]);
 
     function showCreatePorfolioModal() {
         setShowCreatePortfolio(true);

@@ -459,7 +459,7 @@ const Stock = () => {
         get6MStockGraphData();
         get1YStockGraphData();
 
-    }, []);
+    }, [apiResponseHasError, graph1DXAxis, graph1DYAxis, graph1MXAxis, graph1MYAxis, graph1WXAxis, graph1WYAxis, graph1YXAxis, graph1YYAxis, graph3MXAxis, graph3MYAxis, graph6MXAxis, graph6MYAxis]);
 
     function calculateStockOrderEstimate() {
         let customer = HelperFunctions.getCustomerInfo();
@@ -554,11 +554,11 @@ const Stock = () => {
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
         localStorage.setItem('genericCypher', genericCypher);
 
-        let headers = {
-            'Authorization': 'Bearer ' + localStorage.getItem('aislUserToken'),
-            'x-firebase-token': '12222',
-            'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
-        }
+        // let headers = {
+        //     'Authorization': 'Bearer ' + localStorage.getItem('aislUserToken'),
+        //     'x-firebase-token': '12222',
+        //     'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
+        // }
 
         getAxios(axios).post(stockTradingServiceBaseUrlUrl + '/stock/' + params.get("tradeAction"),
             {

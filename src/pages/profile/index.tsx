@@ -261,7 +261,7 @@ const Profile = () => {
         getNotificationLogs();
         getBankDetailsList();
         getBankList();
-    },[]);  
+    },[confirmPassword, confirmPin, password, pin]);  
 
     function checkIfPasswordOrConfirmPasswordIsNullOrEmpty(){
         if(password === '' || confirmPassword === '' || password !== confirmPassword){

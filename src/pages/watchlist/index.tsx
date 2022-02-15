@@ -80,7 +80,7 @@ const Watchlist = () => {
 
         checkIfWatchlistIsNullOrEmpty();
         getWatchlist();
-    }, []);
+    }, [watchList]);
 
     function closeModal() {
         setShowModalBG(false);

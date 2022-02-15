@@ -296,7 +296,7 @@ const PortfolioDetails = () => {
         getPortfolioDetails();
         // getStocksBought();
         //getPortfolioList();
-    }, []);
+    }, [apiResponseHasError,portfolioId]);
 
     function displayAddNewStockModal() {
         setShowModalBG(true);
