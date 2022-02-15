@@ -18147,6 +18147,9 @@
     --tw-text-opacity: 1;
     color: rgba(131, 24, 67, var(--tw-text-opacity));
 }
+.hover\:font-bold:hover {
+    font-weight: 700;
+}
 .focus\:text-transparent:focus {
     color: transparent;
 }

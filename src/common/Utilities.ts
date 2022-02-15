@@ -141,6 +141,14 @@ export const testMail = (value: string) => {
 export const getClassNames = (...classNames: Array<string>) =>
   classNames.join(" ");
 
-  export const getStoryTitle = (title: string) => {
-    return "AISL/"+title;
-  }
+export const getStoryTitle = (title: string) => {
+  return "AISL/" + title;
+}
+
+export const isNullOrUndefined = (val: any) => {
+  return val === null || val === undefined
+}
+
+export const defaultToZeroIfNullOrUndefined = (val: any) => {
+  return val === null || val === undefined ? 0 : val;
+}

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
 import '../watchlist/index.scss';
 import AtlasIcon from '../../assets/images/atlas.svg';
@@ -9,31 +9,349 @@ import UserAreaHeader from '../../components/Headers/UserAreaHeader';
 import RemoveStockIcon from '../../assets/images/remove-stock.svg';
 import Sidebar from '../../components/Sidebar';
 import ArrowBackIcon from '../../assets/images/arrow-back.svg';
+import axios from 'axios';
+import * as HelperFunctions from '../../lib/helper';
+import { Form } from 'react-bootstrap';
+import AnchoriaIcon from '../../assets/images/anchoria-icon.svg';
+import AnchoriaSpinner from '../../assets/images/anchoria-spinner.svg';
+import GreenBoxIcon from '../../assets/images/green-box.svg';
+import RedBoxIcon from '../../assets/images/red-box.svg';
+import BlueBoxIcon from '../../assets/images/blue-box.svg';
+import moment from 'moment';
+import { stockTradingServiceBaseUrlUrl } from '../../apiUrls';
+import { getAxios } from '../../network/httpClientWrapper';
+
 
 const TradeConfirmations = () => {
+    document.title = "Trade Confirmations - Anchoria";
+
     const [showModalBG, setShowModalBG] = useState<boolean>(false);
     const [showRemoveStockModal, setShowRemoveStockModal] = useState<boolean>(false);
 
     const [switchToAll, setSwitchToAll] = useState<boolean>(true);
-    const [switchToPurchase, setSwitchToPurchase] = useState<boolean>(false);
-    const [switchToSell, setSwitchToSell] = useState<boolean>(false);
+    const [switchToOpen, setSwitchToOpen] = useState<boolean>(false);
+    const [switchToExecuted, setSwitchToExecuted] = useState<boolean>(false);
+    const [switchToRejected, setSwitchToRejected] = useState<boolean>(false);
+    const [switchToCancelled, setSwitchToCancelled] = useState<boolean>(false);
+    const [showPageLoader, setShowPageLoader] = useState<boolean>(true);
+
+    const [orderAll, setOrderAll] = useState('');
+    const [orderOpen, setOrderOpen] = useState('');
+    const [orderExecuted, setOrderExecuted] = useState('');
+    const [orderRejected, setOrderRejected] = useState('');
+    const [orderCancelled, setOrderCancelled] = useState('');
+
+    useEffect(()=>{
+        function getAllOrders(){
+
+            setShowPageLoader(true);
+    
+            getAxios(axios).get(stockTradingServiceBaseUrlUrl+'/order/all')
+            .then(function (response) {
+                HelperFunctions.removeOverflowAndPaddingFromModalBody();
+                
+                const allOrders = response.data.data.map((item :any, index :any)=>
+                <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
+                    <div className="flex justify-between items-center text-14">
+                        <div className='flex-child'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold mb-10'>{item.stockCode}</div>
+                        </div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold mb-10'>{item.name}</div>
+                        </div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold '>{parseInt(item.qty)}</div>
+                        </div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold '>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
+                        </div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold '>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
+                        </div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold '>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
+                        </div> 
+
+                        <div className="text-color-2 flex-child">
+                            <Link to={"/stock?name="+item.name+"&symbol="+item.stockCode+"&close="+item.quotePrice+"&tradeAction=sell"}>
+                                <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
+                        </div> 
+                        
+                    </div>
+                </div>
+                );
+
+                setOrderAll(allOrders);
+
+                setShowPageLoader(false);
+            })
+            .catch(function (error) {
+                setShowPageLoader(false);
+               
+            });
+        }
+
+        function getOpenOrders(){
+    
+            getAxios(axios).get(stockTradingServiceBaseUrlUrl+'/order/open')
+            .then(function (response) {
+                HelperFunctions.removeOverflowAndPaddingFromModalBody();
+                
+                const openOrders = response.data.data.map((item :any, index :any)=>
+                <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
+                    <div className="flex justify-between items-center text-14">
+                        <div className='flex-child'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold mb-10'>{item.stockCode}</div>
+                        </div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold mb-10'>{item.name}</div>
+                        </div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold '>{parseInt(item.qty)}</div>
+                        </div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold '>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
+                        </div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold '>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
+                        </div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold '>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
+                        </div> 
+
+                        <div className="text-color-2 flex-child">
+                            <Link to={"/stock?name="+item.name+"&symbol="+item.stockCode+"&close="+item.quotePrice+"&tradeAction=sell"}>
+                                <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
+                        </div> 
+                        
+                    </div>
+                </div>
+                );
+
+                setOrderOpen(openOrders);
+            })
+            .catch(function (error) {
+    
+               
+            });
+        }
+
+        function getExecutedOrders(){
+    
+            getAxios(axios).get(stockTradingServiceBaseUrlUrl+'/order/executed')
+            .then(function (response) {
+                HelperFunctions.removeOverflowAndPaddingFromModalBody();
+                
+                const executedOrders = response.data.data.map((item :any, index :any)=>
+                <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
+                    <div className="flex justify-between items-center text-14">
+                        <div className='flex-child'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold mb-10'>{item.stockCode}</div>
+                        </div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold mb-10'>{item.name}</div>
+                        </div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold '>{parseInt(item.qty)}</div>
+                        </div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold '>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
+                        </div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold '>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
+                        </div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold '>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
+                        </div> 
+
+                        <div className="text-color-2 flex-child">
+                            <Link to={"/stock?name="+item.name+"&symbol="+item.stockCode+"&close="+item.quotePrice+"&tradeAction=sell"}>
+                                <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
+                        </div> 
+                        
+                    </div>
+                </div>
+                );
+
+                setOrderExecuted(executedOrders);
+            })
+            .catch(function (error) {
+    
+               
+            });
+        }
+
+        function getRejectedOrders(){
+    
+            getAxios(axios).get(stockTradingServiceBaseUrlUrl+'/order/rejected')
+            .then(function (response) {
+                HelperFunctions.removeOverflowAndPaddingFromModalBody();
+                
+                const rejectedOrders = response.data.data.map((item :any, index :any)=>
+                <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
+                    <div className="flex justify-between items-center text-14">
+                        <div className='flex-child'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold mb-10'>{item.stockCode}</div>
+                        </div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold mb-10'>{item.name}</div>
+                        </div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold '>{parseInt(item.qty)}</div>
+                        </div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold '>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
+                        </div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold '>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
+                        </div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold '>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
+                        </div> 
+
+                        <div className="text-color-2 flex-child">
+                            <Link to={"/stock?name="+item.name+"&symbol="+item.stockCode+"&close="+item.quotePrice+"&tradeAction=sell"}>
+                                <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
+                        </div> 
+                        
+                    </div>
+                </div>
+                );
+
+                setOrderRejected(rejectedOrders);
+            })
+            .catch(function (error) {
+    
+               
+            });
+        }
+
+        function getCancelledOrders(){
+    
+            getAxios(axios).get(stockTradingServiceBaseUrlUrl+'/order/cancelled')
+            .then(function (response) {
+                HelperFunctions.removeOverflowAndPaddingFromModalBody();
+                
+                const cancelledOrders = response.data.data.map((item :any, index :any)=>
+                <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
+                    <div className="flex justify-between items-center text-14">
+                        <div className='flex-child'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold mb-10'>{item.stockCode}</div>
+                        </div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold mb-10'>{item.name}</div>
+                        </div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold '>{parseInt(item.qty)}</div>
+                        </div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold '>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
+                        </div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold '>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
+                        </div>
+
+                        <div className="text-color-2 flex-child">
+                            <div className='font-bold '>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
+                        </div> 
+
+                        <div className="text-color-2 flex-child">
+                            <Link to={"/stock?name="+item.name+"&symbol="+item.stockCode+"&close="+item.quotePrice+"&tradeAction=sell"}>
+                                <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
+                        </div> 
+                        
+                    </div>
+                </div>
+                );
+
+                setOrderCancelled(cancelledOrders);
+            })
+            .catch(function (error) {
+    
+               
+            });
+        }
+
+        getAllOrders();
+        getOpenOrders();
+        getExecutedOrders();
+        getRejectedOrders();
+        getCancelledOrders();
+
+    },[])
 
     function performSwitchToAll(){
         setSwitchToAll(true);
-        setSwitchToPurchase(false);
-        setSwitchToSell(false);
+        setSwitchToOpen(false);
+        setSwitchToExecuted(false);
+        setSwitchToRejected(false);
+        setSwitchToCancelled(false);
     }
 
-    function performSwitchToPurchase(){
+    function performSwitchToOpen(){
         setSwitchToAll(false);
-        setSwitchToPurchase(true);
-        setSwitchToSell(false);
+        setSwitchToOpen(true);
+        setSwitchToExecuted(false);
+        setSwitchToRejected(false);
+        setSwitchToCancelled(false);
     }
 
-    function performSwitchToSell(){
+    function performSwitchToExecuted(){
         setSwitchToAll(false);
-        setSwitchToPurchase(false);
-        setSwitchToSell(true);
+        setSwitchToOpen(false);
+        setSwitchToExecuted(true);
+        setSwitchToRejected(false);
+        setSwitchToCancelled(false);
+    }
+
+    function performSwitchToRejected(){
+        setSwitchToAll(false);
+        setSwitchToOpen(false);
+        setSwitchToExecuted(false);
+        setSwitchToRejected(true);
+        setSwitchToCancelled(false);
+    }
+
+    function performSwitchToCancelled(){
+        setSwitchToAll(false);
+        setSwitchToOpen(false);
+        setSwitchToExecuted(false);
+        setSwitchToRejected(false);
+        setSwitchToCancelled(true);
     }
 
     function closeModal(){
@@ -61,7 +379,7 @@ const TradeConfirmations = () => {
 
                         <div className="text-16 font-bold text-color-2 mb-30">Summary of all your trades</div>
 
-                        {/*Quick Search*/}
+                        {/*Switch Search*/}
                         <div className="mb-20">
                             <div className="flex justify-between">
                                 <div>
@@ -71,16 +389,24 @@ const TradeConfirmations = () => {
                                         </div>
 
                                         <div>
-                                            <button onClick={performSwitchToPurchase} type='button' className={switchToPurchase ? "rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Purchase</button>
+                                            <button onClick={performSwitchToOpen} type='button' className={switchToOpen ? "rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Open</button>
                                         </div>
 
                                         <div>
-                                            <button onClick={performSwitchToSell} type='button' className={switchToSell ? "rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Sell Orders</button>
+                                            <button onClick={performSwitchToExecuted} type='button' className={switchToExecuted ? "rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Executed</button>
+                                        </div>
+
+                                        <div>
+                                            <button onClick={performSwitchToRejected} type='button' className={switchToRejected ? "rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Rejected</button>
+                                        </div>
+
+                                        <div>
+                                            <button onClick={performSwitchToCancelled} type='button' className={switchToCancelled ? "rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Cancelled</button>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div>
+                                <div className='hidden'>
                                     <div className="flex space-x-3">
                                         <div>
                                             <Link to="/trade" className='no-underline text-color-1'>
@@ -107,141 +433,51 @@ const TradeConfirmations = () => {
                         <div>
                             <div className="card mb-20 text-14">
                                 <div className="flex justify-between items-center">
-                                    <div className="font-bold text-color-2 opacity-0">Blank</div>
-                                    <div className="font-bold text-color-2">Stock Name</div>
-                                    <div className="font-bold text-color-2">Side</div>
-                                    <div className="font-bold text-color-2">Qty</div>
-                                    <div className="font-bold text-color-2">Amount Name</div>
-                                    <div className="font-bold text-color-2">Status</div>
-                                    <div className="font-bold text-color-2">Date/Time</div>
-                                    <div className="font-bold text-color-2 opacity-0">Blank</div>
+                                    <div className="font-bold text-color-2 flex-child opacity-0">Blank</div>
+                                    <div className="font-bold text-color-2 flex-child">Code</div>
+                                    <div className="font-bold text-color-2 flex-child">Name</div>
+                                    <div className="font-bold text-color-2 flex-child">Qty</div>
+                                    <div className="font-bold text-color-2 flex-child">Amount</div>
+                                    <div className="font-bold text-color-2 flex-child">Status</div>
+                                    <div className="font-bold text-color-2 flex-child">Date</div>
+                                    <div className="font-bold text-color-2 flex-child opacity-0">Blank</div>
                                 </div>
                             </div>
 
                             {/*All Section*/}
                             <div className={switchToAll ? '':'hidden'}>
-                                <div className="card-15px mb-20 text-14">
-                                    <div className="flex justify-between items-center">
-                                        <div> <img src={AtlasIcon} alt="" /></div>
-
-                                        <div className="font-bold text-color-2">Atlas</div>
-
-                                        <div className="font-bold">Buy</div>
-                                        <div className="font-bold">1000</div>
-                                        <div className="font-bold">₦60,000.00</div>
-                                        <div className="font-bold text-green-400">Successful</div>
-                                        <div className="font-bold">05 Dec, 2021 | 2:00pm </div>
-
-                                        <div className='flex justify-between space-x-2'>
-                                            <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">More</button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="card-15px mb-20 text-14">
-                                    <div className="flex justify-between items-center">
-                                        <div> <img src={AppleIcon} alt="" /></div>
-
-                                        <div className="font-bold text-color-2">APPL</div>
-
-                                        <div className="font-bold">Sell</div>
-                                        <div className="font-bold">1000</div>
-                                        <div className="font-bold">₦60,000.00</div>
-                                        <div className="font-bold text-red-400">Failed</div>
-                                        <div className="font-bold">05 Dec, 2021 | 2:00pm </div>
-
-                                        <div className='flex justify-between space-x-2'>
-                                            <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">More</button>
-                                        </div>
-                                    </div>
-                                </div>
+                                {orderAll}
                             </div>
                             {/*End*/}
 
-                            {/*Purchase Section*/}
-                            <div className={switchToPurchase ? '':'hidden'}>
-                                <div className="card-15px mb-20 text-14">
-                                    <div className="flex justify-between items-center">
-                                        <div> <img src={AtlasIcon} alt="" /></div>
-
-                                        <div className="font-bold text-color-2">Atlas</div>
-
-                                        <div className="font-bold">Buy</div>
-                                        <div className="font-bold">1000</div>
-                                        <div className="font-bold">₦60,000.00</div>
-                                        <div className="font-bold text-green-400">Successful</div>
-                                        <div className="font-bold">05 Dec, 2021 | 2:00pm </div>
-
-                                        <div className='flex justify-between space-x-2'>
-                                            <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">More</button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="card-15px mb-20 text-14">
-                                    <div className="flex justify-between items-center">
-                                        <div> <img src={AppleIcon} alt="" /></div>
-
-                                        <div className="font-bold text-color-2">APPL</div>
-
-                                        <div className="font-bold">Buy</div>
-                                        <div className="font-bold">1000</div>
-                                        <div className="font-bold">₦60,000.00</div>
-                                        <div className="font-bold text-red-400">Failed</div>
-                                        <div className="font-bold">05 Dec, 2021 | 2:00pm </div>
-
-                                        <div className='flex justify-between space-x-2'>
-                                            <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">More</button>
-                                        </div>
-                                    </div>
-                                </div>
+                            {/*Open Section*/}
+                            <div className={switchToOpen ? '':'hidden'}>
+                                {orderOpen}
                             </div>
                             {/*End*/}
 
-                            {/*Sell Section*/}
-                            <div className={switchToSell ? '':'hidden'}>
-                                <div className="card-15px mb-20 text-14">
-                                    <div className="flex justify-between items-center">
-                                        <div> <img src={AtlasIcon} alt="" /></div>
+                            {/*Executed Section*/}
+                            <div className={switchToExecuted ? '':'hidden'}>
+                                {orderExecuted}
+                            </div>
+                            {/*End*/}
 
-                                        <div className="font-bold text-color-2">Atlas</div>
+                            {/*Rejected Section*/}
+                            <div className={switchToRejected ? '':'hidden'}>
+                                {orderRejected}
+                            </div>
+                            {/*End*/}
 
-                                        <div className="font-bold">Sell</div>
-                                        <div className="font-bold">1000</div>
-                                        <div className="font-bold">₦60,000.00</div>
-                                        <div className="font-bold text-green-400">Successful</div>
-                                        <div className="font-bold">05 Dec, 2021 | 2:00pm </div>
-
-                                        <div className='flex justify-between space-x-2'>
-                                            <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">More</button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="card-15px mb-20 text-14">
-                                    <div className="flex justify-between items-center">
-                                        <div> <img src={AppleIcon} alt="" /></div>
-
-                                        <div className="font-bold text-color-2">APPL</div>
-
-                                        <div className="font-bold">Sell</div>
-                                        <div className="font-bold">1000</div>
-                                        <div className="font-bold">₦60,000.00</div>
-                                        <div className="font-bold text-red-400">Failed</div>
-                                        <div className="font-bold">05 Dec, 2021 | 2:00pm </div>
-
-                                        <div className='flex justify-between space-x-2'>
-                                            <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">More</button>
-                                        </div>
-                                    </div>
-                                </div>
+                            {/*Cancelled Section*/}
+                            <div className={switchToCancelled ? '':'hidden'}>
+                                {orderCancelled}
                             </div>
                             {/*End*/}
                         </div>
                         {/*End*/}
 
                         {/*Pagination section*/}
-                        <div>
+                        <div className='hidden'>
                             <div>
                                 <ul className='pagination list-none font-bold flex space-x-2 justify-end cursor-pointer text-13'>
                                     <li className='font-bold text-color-1 rounded-lg'>Previous</li>
@@ -255,6 +491,15 @@ const TradeConfirmations = () => {
                             </div>
                         </div>
                         {/*End*/}
+
+                        {/* Page Loader Section */}
+                        <div className={showPageLoader ? "page-loader-backdrop opacity-90":"hidden"}>
+                            <div className='ml-custom w-96 my-custom relative'>
+                                <div className='absolute top-44pc left-46pt5pc'><img src={AnchoriaIcon} alt="" /></div>
+                                <div className='text-center'><img src={AnchoriaSpinner} alt=""/></div>
+                            </div>
+                        </div>
+                        {/* End */}
                     </div>                    
                 </div>
             </div>

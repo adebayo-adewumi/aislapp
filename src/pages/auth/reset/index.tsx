@@ -4,6 +4,11 @@ import {Link} from "react-router-dom";
 import SpinnerIcon from "../../../assets/images/spinner.gif";
 import SuccessIcon from "../../../assets/images/success.gif";
 import '../reset/index.scss';
+import { encryptData } from '../../../lib/encryptionHelper';
+import {generalEncKey} from '../../../common/constants/globals';
+import axios from 'axios';
+import { authOnboardingServiceBaseUrl } from '../../../apiUrls';
+import { getAxios } from '../../../network/httpClientWrapper';
 
 const Reset = () => {
     const [password, setPassword] = useState('');
@@ -21,6 +26,11 @@ const Reset = () => {
     const [hasUpperCaseCharacter, setHasUppererCaseCharacter] = useState<boolean>(false);
     const [hasNumericCharacter, setHasNumericCharacter] = useState<boolean>(false);
     const [hasSpecialCharacter, setHasSpecialCharacter] = useState<boolean>(false);
+    const [showSpinner, setShowSpinner] = useState<boolean>(false);
+
+    document.title = "Reset Password - Anchoria";
+
+    const params = new URLSearchParams(window.location.search);
 
     useEffect(() => {
         async function checkIfPasswordIsNullOrEmpty(){
@@ -100,10 +110,32 @@ const Reset = () => {
         }
     }
 
-    function showPasswordResetSuccess(){
-        setShowResetPasswordCard(false);
-        setShowSuccessCard(true);
-        setIsInvalidPassword(false);
+    function resetPassword(){
+        let requestData = {
+            "email": localStorage.getItem("forgotPasswordEmail"),
+            "password": password,
+            "token": params.get("token")
+        }
+
+        let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
+        localStorage.setItem('genericCypher', genericCypher);
+        setShowSpinner(true);
+
+        getAxios(axios).post(authOnboardingServiceBaseUrl+'/customer/forgot-password-with-token',
+        {
+            "text": localStorage.getItem('genericCypher')
+        })
+        .then(function (response) {  
+            setShowSpinner(false);
+
+            setShowResetPasswordCard(false);
+            setShowSuccessCard(true);
+            setIsInvalidPassword(false);
+        })
+        .catch(function (error) {
+            console.log(error)
+            setShowSpinner(false);
+        });
     }
 
     return (
@@ -237,9 +269,9 @@ const Reset = () => {
                     {/* Proceed Button section */}
                     <div className="mb-20">
                         <div>
-                            <button onClick={showPasswordResetSuccess} className={passwordOrConfirmPasswordIsNullOrEmpty ? "w-full rounded-lg bgcolor-1 border-0 text-white opacity-50 px-20 py-3 font-bold text-16":"w-full rounded-lg bgcolor-1 border-0 text-white px-20 py-3 font-bold text-16 cursor-pointer"} type='button' disabled={passwordOrConfirmPasswordIsNullOrEmpty}>
-                                Proceed                                
-                                <img src={SpinnerIcon} alt="spinner icon" className="hidden" width="30"/>
+                            <button onClick={resetPassword} className={passwordOrConfirmPasswordIsNullOrEmpty ? "w-full rounded-lg bgcolor-1 border-0 text-white opacity-50 px-20 py-3 font-bold text-16":"w-full rounded-lg bgcolor-1 border-0 text-white px-20 py-3 font-bold text-16 cursor-pointer"} type='button' disabled={passwordOrConfirmPasswordIsNullOrEmpty}>
+                                <span className={ showSpinner ? "hidden" : ""}>Reset</span>
+                                <img src={SpinnerIcon} alt="spinner icon" className={ showSpinner ? "" : "hidden"} width="30"/>
                             </button>
                         </div>
                     </div>

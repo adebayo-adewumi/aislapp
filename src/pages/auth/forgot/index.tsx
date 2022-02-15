@@ -3,6 +3,10 @@ import GenericHeader from '../../../components/Headers/GenericHeader';
 import {Link} from "react-router-dom";
 import SendingEmails from "../../../assets/images/sending-emails.svg"
 import '../forgot/index.scss';
+import axios from 'axios';
+import SpinnerIcon from "../../../assets/images/spinner.gif";
+import { authOnboardingServiceBaseUrl } from '../../../apiUrls';
+import { getAxios } from '../../../network/httpClientWrapper';
 
 const Forgot = () => {
     const [email, setEmail] = useState('');
@@ -10,7 +14,12 @@ const Forgot = () => {
     const [isEmailNullOrEmpty, setIsEmailNullOrEmpty] = useState<boolean>(true);
     const [showForgotPasswordCard, setShowForgotPasswordCard] = useState<boolean>(true);
     const [showResetPasswordLinkSentConfirmationCard, setShowResetPasswordLinkSentConfirmationCard] = useState<boolean>(false);
-    
+    const [forgotPasswordHasError, setForgotPasswordHasError] = useState<boolean>(false);
+    const [forgotPasswordErrorMsg, setForgotPasswordErrorMsg] = useState<boolean>(false);
+    const [showSpinner, setShowSpinner] = useState<boolean>(false);
+
+    document.title = "Forgot Password - Anchoria";
+
     useEffect(() => {
         async function checkIfEmailIsValid(){    
             if(email.length > 0){
@@ -35,10 +44,36 @@ const Forgot = () => {
     }
 
     function sendResetPasswordLink(){
-        setShowForgotPasswordCard(false);
-        setShowResetPasswordLinkSentConfirmationCard(true);
-    }
+        setShowSpinner(true);  
     
+        getAxios(axios).get(authOnboardingServiceBaseUrl+'/customer/forgot-password?userEmail='+email)
+        .then(function (response) {
+
+            setShowForgotPasswordCard(false);
+            setShowResetPasswordLinkSentConfirmationCard(true);
+            setForgotPasswordHasError(false);
+
+            setShowSpinner(false);  
+
+            localStorage.setItem("forgotPasswordEmail", email);
+        })
+        .catch(function (error) {
+            setShowSpinner(false);  
+            setForgotPasswordHasError(true);
+            setForgotPasswordErrorMsg(error.response.data.message)
+        });        
+    }
+
+    function closeForgotPasswordHasError(){
+        setForgotPasswordHasError(false);
+    }
+
+    function displayForgotPasswordCard(){
+        setShowForgotPasswordCard(true);
+        setShowResetPasswordLinkSentConfirmationCard(false);
+        setForgotPasswordHasError(false);
+    }
+
 
     return (
         <div>
@@ -49,6 +84,28 @@ const Forgot = () => {
                     <div className="font-bold mb-20 forgot-text text-28 font-gotham-black-regular">Forgot Password</div>
                     <p className="mb-30 forgot-text text-16 line-height-28 font-bold">Type the email you used to sign up on Achoria and we'll send you a password reset email.</p>
 
+                    {/* Forgot Password Error */}
+                    <div className={forgotPasswordHasError ? "error-alert mb-20":"hidden"}>
+                        <div className="flex justify-between space-x-1 pt-3">
+                            <div className="flex">
+                                <div>
+                                    <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949"/>
+                                    </svg>
+                                </div>
+
+                                <div className="pt-1 text-14">{forgotPasswordErrorMsg}</div>
+                            </div>
+                            
+                            <div className="cursor-pointer" onClick={closeForgotPasswordHasError}>
+                                <svg  className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    {/* End */}
+
                     <div className="mb-30">
                         <div className="mb-2 text-14 line-height-24">Email</div>
                         <input value={email} onChange={e => setEmail(e.target.value)} placeholder="Enter your email address" className="input border-1-d6 px-3 py-3 text-24 outline-white"/>
@@ -56,7 +113,10 @@ const Forgot = () => {
                     </div>
 
                     <div className="mb-30 w-full">
-                        <button onClick={sendResetPasswordLink} className={ isEmailNullOrEmpty ? "w-full text-14 rounded-lg bgcolor-1 opacity-50 border-0 py-4 text-white font-bold text-24" : "w-full text-14 rounded-lg bgcolor-1 cursor-pointer focus:shadow-outline border-0 py-4 text-white font-bold text-24"} type='button' disabled={isEmailNullOrEmpty}>Proceed</button>
+                        <button onClick={sendResetPasswordLink} className={ isEmailNullOrEmpty ? "w-full text-14 rounded-lg bgcolor-1 opacity-50 border-0 py-4 text-white font-bold text-24" : "w-full text-14 rounded-lg bgcolor-1 cursor-pointer focus:shadow-outline border-0 py-4 text-white font-bold text-24"} type='button' disabled={isEmailNullOrEmpty}>
+                            <span className={ showSpinner ? "hidden" : ""}>Send Password Reset Link</span>
+                            <img src={SpinnerIcon} alt="spinner icon" className={ showSpinner ? "" : "hidden"} width="30"/>
+                        </button>
                     </div>
 
                     <div className="text-right font-bold forgot-text text-14">
@@ -73,7 +133,7 @@ const Forgot = () => {
                 <div className="text-center text-28 font-gotham-black-regular text-color-1 mb-30">Password reset confirmation</div>
                 <div className="text-center text-16 mb-10">We’ve sent a password rest link to </div>
                 <div className="text-center font-bold text-blue-600 mb-30">{email}</div>
-                <div className="text-center mb-20 text-14">Didn’t recieve an email? Check your spam folder, or <a href="/resend" className="no-underline text-blue-600 font-bold">resend</a></div>
+                <div className="text-center mb-20 text-14">Didn’t recieve an email? Check your spam folder, or <button type='button' className="no-underline border-0 bg-transparent text-blue-600 font-bold cursor-pointer text-lg" onClick={displayForgotPasswordCard}>resend</button></div>
             </div>
         </div>
     );

@@ -21,6 +21,5 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src"
-, "src/lib/crypto-js.min.js"  ]
+    "src", "src/lib/crypto-js.min.js"  ]
 }

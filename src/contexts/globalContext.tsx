@@ -1,8 +1,7 @@
 import { IGlobalState } from './../interfaces/global';
 import * as React from 'react';
 
-const CONTEXT_ERROR =
-  'Global context not found. Have you wrapped your components with GlobalContext.Consumer?';
+const CONTEXT_ERROR = 'Global context not found. Have you wrapped your components with GlobalContext.Consumer?';
 type Action = { type: 'SET_PROFILE'; data: {} };
 
 type dispatch = {

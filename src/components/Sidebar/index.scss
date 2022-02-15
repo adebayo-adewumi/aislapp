@@ -4,7 +4,7 @@
     width: 263px;
     height: 1336px;
     left: 0px;
-    top: 73px;
+    top: 0px;
     background: #FFFFFF;
     border-right: 1px solid #D6DDE0;
     box-sizing: border-box;
@@ -12,6 +12,7 @@
 .sidebar ul{
  list-style-type: none;
  padding-left: 0;
+ margin-top: 73px;
 }
 
 .sidebar ul li a{

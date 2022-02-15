@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Link} from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { Link } from "react-router-dom";
 import UserAreaHeader from '../../components/Headers/UserAreaHeader';
 import ArrowBackIcon from '../../assets/images/arrow-back.svg';
 import SuccessIcon from '../../assets/images/success.gif';
@@ -8,24 +8,116 @@ import LockIcon from '../../assets/images/lock.svg';
 import DeleteCardIcon from '../../assets/images/delete-card.svg';
 import Sidebar from '../../components/Sidebar';
 import CloseIcon from '../../assets/images/close.svg';
+import { encryptData } from '../../lib/encryptionHelper';
+import { generalEncKey } from '../../common/constants/globals';
+import axios from 'axios';
+import SpinnerIcon from '../../assets/images/spinner.gif';
+import moment from 'moment';
+import * as HelperFunctions from '../../lib/helper';
+import { getAxios } from '../../network/httpClientWrapper';
+import { getUtilitiesEndpoint, walletAndAccountServiceBaseUrl } from '../../apiUrls';
 
 const BankCard = () => {
+    document.title = "Cards & Banks - Anchoria";
+
     const [showDebitCards, setShowDebitCards] = useState<boolean>(true);
     const [showBank, setShowBank] = useState<boolean>(false);
+
     const [showAddCard, setShowAddCard] = useState<boolean>(false);
     const [showAddBank, setShowAddBank] = useState<boolean>(false);
+
     const [showSuccess, setShowSuccess] = useState<boolean>(false);
+
     const [showManageCard, setShowManageCard] = useState<boolean>(false);
     const [showManageBank, setShowManageBank] = useState<boolean>(false);
+
     const [showModalBG, setShowModalBG] = useState<boolean>(false);
-    const [showDeleteCardModal, setShowDeleteCardModal] = useState<boolean>(false);
+    const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+
     const [switchToDebit, setSwitchToDebit] = useState<boolean>(true);
     const [switchToBank, setSwitchToBank] = useState<boolean>(false);
+
+    const [showCardHeader, setShowCardHeader] = useState<boolean>(false);
+    const [showAddCardHeader, setShowAddCardHeader] = useState<boolean>(false);
+
     const [showBankHeader, setShowBankHeader] = useState<boolean>(false);
     const [showAddBankHeader, setShowAddBankHeader] = useState<boolean>(false);
+
     const [showBankSuccessMsg, setshowBankSuccessMsg] = useState<boolean>(false);
 
-    function performSwitchToDebit(){
+    const [showSpinner, setShowSpinner] = useState<boolean>(false);
+
+    const [accountName, setAccountName] = useState('');
+    const [accountNumber, setAccountNumber] = useState('');
+    const [bankCode, setBankCode] = useState('');
+    const [nameEnquiryId, setNameEnquiryId] = useState('');
+
+    const [bankDetailsList, setBankDetailsList] = useState([]);
+    const [selectedBankId, setSelectedBankId] = useState('');
+    const [selectedBankDetails, setSelectedBankDetails] = useState([{}]);
+
+    const [bankList, setBankList] = useState([]);
+
+    const [bankDetailsError, setBankDetailsError] = useState('');
+
+    const [deleteType, setDeleteType] = useState('');
+    const [isDeleteSuccess, setIsDeleteSuccess] = useState('');
+    const [isAddBankSuccess, setIsAddBankSuccess] = useState('');
+
+    const [apiResponseSuccessMsg, setApiResponseSuccessMsg] = useState('');
+
+    const [cardsList, setCardsList] = useState([{}]);
+    const [cardNumber, setCardNumber] = useState('');
+    const [cardExpiry, setCardExpiry] = useState('');
+    const [cardCVV, setCardCVV] = useState('');
+    const [defaultNewCardDebitMsg, setDefaultNewCardDebitMsg] = useState('');
+
+    useEffect(() => {
+        function getBankList() {
+            getAxios(axios).get(walletAndAccountServiceBaseUrl + '/wallet-api/get-banks')
+                .then(function (response) {
+                    setBankList(response.data.data.bank);
+                })
+                .catch(function (error) {
+                    console.log(error)
+                });
+        }
+
+        function getBankDetailsList() {
+
+            getAxios(axios).get(walletAndAccountServiceBaseUrl + '/wallet-api/bank-details')
+                .then(function (response) {
+                    setBankDetailsList(response.data.data);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+
+        function getCardsList() {
+
+            getAxios(axios).get(walletAndAccountServiceBaseUrl + '/wallet-api/card')
+                .then(function (response) {
+                    setCardsList(response.data.data);
+                })
+                .catch(function (error) { });
+        }
+
+        function getDefaultNewCardDebit() {
+            getAxios(axios).get(getUtilitiesEndpoint + '/default-new-card-debit')
+                .then(function (response) {
+                    setDefaultNewCardDebitMsg(response.data.message);
+                })
+                .catch(function (error) { });
+        }
+
+        getBankList();
+        getBankDetailsList();
+        getCardsList();
+        getDefaultNewCardDebit();
+    }, []);
+
+    function performSwitchToDebit() {
         setSwitchToDebit(true);
         setSwitchToBank(false);
 
@@ -34,23 +126,24 @@ const BankCard = () => {
         setShowBankHeader(false);
     }
 
-    function performSwitchToBank(){
+    function performSwitchToBank() {
         setSwitchToDebit(false);
         setSwitchToBank(true);
 
         setShowDebitCards(false);
+        setShowManageBank(false);
         setShowBank(true);
         setShowBankHeader(true);
     }
 
-    function displayAddCard(){
-        setShowDebitCards(true);
-        setShowAddCard(false);
+    function displayAddCard() {
+        setShowDebitCards(false);
+        setShowAddCard(true);
         setShowSuccess(false);
         setShowManageCard(false);
     }
 
-    function displayManageCard(){
+    function displayManageCard() {
         setShowDebitCards(false);
         setShowAddCard(false);
         setShowSuccess(false);
@@ -58,17 +151,7 @@ const BankCard = () => {
         setShowBank(false);
     }
 
-    function displayManageBank(){
-        setShowDebitCards(false);
-        setShowAddCard(false);
-        setShowSuccess(false);
-        setShowManageCard(false);
-        setShowBankHeader(false);
-        setShowManageBank(true);
-        setShowBank(false);
-    }
-
-    function displayAddBank(){
+    function displayAddBank() {
         setShowDebitCards(false);
         setShowBank(false);
         setShowAddCard(false);
@@ -79,27 +162,247 @@ const BankCard = () => {
         setShowBankHeader(false);
     }
 
-    function displaySuccess(){
-        setShowDebitCards(false);
-        setShowBank(false);
-        setShowAddCard(false);
-        setShowAddBank(false);
-        setShowSuccess(true);
-        setShowManageCard(false);
-        setShowAddBankHeader(false);
-        setShowBankHeader(false);
-        setshowBankSuccessMsg(true);
-    }
-
-    function displayDeleteCard(){
-        setShowModalBG(true);
-        setShowDeleteCardModal(true);
-    }
-
-    function closeModal(){
+    function closeModal() {
         setShowModalBG(false);
-        setShowDeleteCardModal(false);
+        setShowDeleteModal(false);
     }
+
+    function addBankDetails() {
+
+        let requestData = {
+            "accountName": accountName,
+            "accountNumber": accountNumber,
+            "bankCode": bankCode,
+            "bankName": 'VFD MICROFINANCE BANK',
+        }
+
+        console.log(requestData)
+
+        setShowSpinner(true);
+
+        let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
+        localStorage.setItem('genericCypher', genericCypher);
+
+        let headers = {
+            'Authorization': 'Bearer ' + localStorage.getItem('aislUserToken'),
+            'x-firebase-token': '12222',
+            'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
+        }
+
+        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/wallet-api/bank-details/add?nameEnquirySessionId=' + nameEnquiryId,
+            {
+                "text": localStorage.getItem('genericCypher')
+            },
+            { headers })
+            .then(function (response) {
+                setShowSpinner(false);
+                setApiResponseSuccessMsg(response.data.description);
+                setIsAddBankSuccess('true');
+            })
+            .catch(function (error) {
+                setShowSpinner(false);
+                alert("Unable to add bank details. Please try again later")
+            });
+    }
+
+    function validateAccountNumber(event: any) {
+        let ccNumberPattern: RegExp = /^\d{0,10}$/g;
+
+        if (ccNumberPattern.test(event.target.value)) {
+            setAccountNumber(event.target.value);
+        }
+        else {
+            return;
+        }
+    }
+
+    function validateAccountNumberOnKeyDown(event: any) {
+
+        let banklist = document.getElementById("bankList") as HTMLInputElement;
+        let acctNo = document.getElementById("accountNumber") as HTMLInputElement;
+        getAxios(axios).get(walletAndAccountServiceBaseUrl + '/wallet-api/name-enquiry?accountNo=' + acctNo.value + '&bankCode=' + banklist.value)
+            .then(function (response) {
+                setAccountName(response.data.data.name);
+                setNameEnquiryId(response.data.data.account.id);
+                setBankDetailsError('');
+            })
+            .catch(function (error) {
+                setBankDetailsError(error.response.data.message);
+            });
+
+        setBankCode(banklist.value);
+    }
+
+    function checkNameEnquiryOnBankDetails(event: any) {
+        if (accountNumber === '') {
+            setBankDetailsError('Kindly type you account number.');
+        }
+        else {
+            let bl = document.getElementById("bankList") as HTMLInputElement;
+
+
+            getAxios(axios).get(walletAndAccountServiceBaseUrl + '/wallet-api/name-enquiry?accountNo=' + accountNumber + '&bankCode=' + bl.value)
+                .then(function (response) {
+                    setAccountName(response.data.data.name);
+                    setBankDetailsError('');
+                })
+                .catch(function (error) {
+                    setBankDetailsError(error.response.data.message);
+                });
+
+            setBankCode(bl.value);
+        }
+    }
+
+    function selectBankDetails(event: any) {
+        let id = event.target.getAttribute("data-bank");
+        let bArr = [];
+        let bDetails: any = bankDetailsList.find((el: any) => el.id === id);
+
+        bArr.push(bDetails);
+
+        setSelectedBankId(id);
+        setSelectedBankDetails(bArr);
+
+        setShowDebitCards(false);
+        setShowAddCard(false);
+        setShowSuccess(false);
+        setShowManageCard(false);
+        setShowBankHeader(false);
+        setShowManageBank(true);
+        setShowBank(false);
+    }
+
+    function deleteBankCardDetails() {
+
+        let requestData = {
+            "bankDetailsId": selectedBankId
+        }
+
+        console.log(selectedBankId);
+
+        setShowSpinner(true);
+
+        let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
+        localStorage.setItem('genericCypher', genericCypher);
+
+        let apipath = "";
+
+        cardsList.map((item :any)=>{
+            apipath! = deleteType === "Card" ? 'card/delete/'+(item.cardNumber) :  '/bank-details/delete';
+        })
+
+        
+
+        let _headers = {
+            'Authorization': 'Bearer ' + localStorage.getItem('aislUserToken'),
+            'x-firebase-token': '12222',
+            'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
+        }
+
+        getAxios(axios).delete(walletAndAccountServiceBaseUrl + '/wallet-api/'+apipath,
+            {
+                data: {
+                    "text": localStorage.getItem('genericCypher'),
+                },
+                headers: _headers
+            },
+        )
+            .then(function (response) {
+                setIsDeleteSuccess('true');
+                setApiResponseSuccessMsg(response.data.description);
+                setShowSpinner(false);
+
+                window.location.reload();
+            })
+            .catch(function (error) {
+                setShowSpinner(false);
+                alert("Unable to delete. Please try again later");
+            });
+    }
+
+    function displayDeleteModal(event: any) {
+        let dtype = event.target.getAttribute("data-type");
+
+        setDeleteType(dtype);
+        setShowModalBG(true);
+        setShowDeleteModal(true);
+    }
+
+    function handleCreditCardNumberInputSelection(event: any) {
+        return HelperFunctions.ccNumberInputHandler(event);
+    }
+
+    function maskCreditCardNumberInput(event: any) {
+        setCardNumber(event.target.value);
+
+        return HelperFunctions.ccNumberInputHandler(event);
+    }
+
+    function handleCreditCardExpiryInputSelection(event: any) {
+        return HelperFunctions.ccExpiryInputKeyDownHandler(event);
+    }
+
+    function maskCreditCardExpiryInput(event: any) {
+
+        let exv = HelperFunctions.ccExpiryInputHandler(event);
+
+        setCardExpiry(exv);
+    }
+
+    function handleCreditCardCVVInputSelection(event: any) {
+        return HelperFunctions.ccCVVInputKeyDownHandler(event);
+    }
+
+    function maskCreditCardCVVInput(event: any) {
+
+        let cvv = HelperFunctions.ccCVVInputHandler(event);
+
+        setCardCVV(cvv);
+    }
+
+    function addCard() {
+        let customer = JSON.parse(localStorage.getItem("aislCustomerInfo") as string);
+
+        let requestData = {
+            "cardNumber": cardNumber.replaceAll(" ", ""),
+            "cvv": cardCVV,
+            "expiryMonth": cardExpiry.split("/")[0],
+            "expiryYear": cardExpiry.split("/")[1],
+            "currency": "NGN",
+            "email": customer.email,
+            "fullname": customer.firstName + " " + customer.lastName,
+            "phoneNumber": customer.phoneNumber,
+            "pin": "3310"
+        }
+
+        console.log(requestData)
+
+        setShowSpinner(true);
+
+        let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
+        localStorage.setItem('genericCypher', genericCypher);
+
+        let headers = {
+            'Authorization': 'Bearer ' + localStorage.getItem('aislUserToken'),
+            'x-firebase-token': '12222',
+            'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
+        }
+
+        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/wallet-api/card',
+            {
+                "text": localStorage.getItem('genericCypher')
+            },
+            { headers })
+            .then(function (response) {
+
+            })
+            .catch(function (error) {
+                console.log(error)
+                setShowSpinner(false);
+            });
+    }
+
 
     return (
         <div className="relative">
@@ -111,15 +414,15 @@ const BankCard = () => {
 
                     {/* Main Content section */}
                     <div className="main-content w-full p-10">
-                        <div className='m-auto w-42rem pt-12'>
+                        <div className='m-auto w-1/2 pt-12'>
 
                             {/*Card Header */}
-                            <div className={showDebitCards ? "flex justify-between":'hidden'}>
+                            <div className={showDebitCards ? "flex justify-between" : 'hidden'} style={{ width: '35rem' }}>
                                 <div>
                                     <div className="text-28 text-color-1 font-gotham-black-regular font-bold mb-10">Bank and Cards</div>
-                                    <div className="font-bold mb-30">Request for investment statements</div>
+                                    
                                 </div>
-                                
+
                                 <div className='font-bold'>
                                     <Link to='/account' className='no-underline text-color-1'>
                                         <img src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
@@ -129,12 +432,12 @@ const BankCard = () => {
                             {/*End*/}
 
                             {/*Bank Header */}
-                            <div className={showBankHeader ? "flex justify-between":'hidden'}>
+                            <div className={showBankHeader ? "flex justify-between" : 'hidden'}>
                                 <div>
                                     <div className="text-28 text-color-1 font-gotham-black-regular font-bold mb-10">Bank and Cards</div>
                                     <div className="font-bold mb-30">Request for investment statements</div>
                                 </div>
-                                
+
                                 <div className='font-bold'>
                                     <Link to='/account' className='no-underline text-color-1'>
                                         <img src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
@@ -144,65 +447,66 @@ const BankCard = () => {
                             {/*End*/}
 
                             {/*Add Card Header */}
-                            <div className={showAddCard ? "flex justify-between mb-30":"hidden"}>
+                            <div className={showAddCard ? "flex justify-between mb-30" : "hidden"}>
                                 <div>
                                     <div className="text-28 text-color-1 font-gotham-black-regular font-bold mb-10">Add New Card</div>
                                 </div>
-                                
+
                                 <div className='font-bold'>
                                     <Link to='/account' className='no-underline text-color-1'>
                                         <img src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
                                     </Link>
                                 </div>
                             </div>
-                            {/*End*/}  
+                            {/*End*/}
 
                             {/*Add Bank Header */}
-                            <div className={showAddBankHeader ? "flex justify-between mb-30":"hidden"}>
+                            <div className={showAddBankHeader ? "flex justify-between mb-30" : "hidden"}>
                                 <div>
                                     <div className="text-28 text-color-1 font-gotham-black-regular font-bold mb-10">Add New Bank</div>
                                 </div>
-                                
+
                                 <div className='font-bold'>
                                     <Link to='/account' className='no-underline text-color-1'>
                                         <img src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
                                     </Link>
                                 </div>
                             </div>
-                            {/*End*/}  
+                            {/*End*/}
 
                             {/*Manage Card Header */}
-                            <div className={showManageCard ? "flex justify-between mb-30":"hidden"}>
+                            <div className={showManageCard ? "flex justify-between mb-30" : "hidden"}>
                                 <div>
                                     <div className="text-28 text-color-1 font-gotham-black-regular font-bold mb-10">Manage Card</div>
                                 </div>
-                                
+
                                 <div className='font-bold'>
                                     <Link to='/account' className='no-underline text-color-1'>
                                         <img src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
                                     </Link>
                                 </div>
                             </div>
-                            {/*End*/}  
+                            {/*End*/}
 
                             {/*Manage Bank Header */}
-                            <div className={showManageBank ? "flex justify-between mb-30":"hidden"}>
+                            <div style={{ width: '35rem' }} className={showManageBank ? "flex justify-between mb-30" : "hidden"}>
                                 <div>
                                     <div className="text-28 text-color-1 font-gotham-black-regular font-bold mb-10">Manage Bank</div>
                                 </div>
-                                
-                                <div className='font-bold'>
-                                    <Link to='/account' className='no-underline text-color-1'>
+
+                                <div className='font-bold' onClick={performSwitchToBank}>
+                                    <div className='no-underline text-color-1'>
                                         <img src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
-                                    </Link>
+                                    </div>
                                 </div>
                             </div>
-                            {/*End*/}  
+                            {/*End*/}
 
-                            <div>
+                            <div className='mb-30 rounded-lg border-1-d6 bg-white p-10' style={{ width: '35rem' }}>
                                 {/* Cards Section */}
-                                <div className={showDebitCards ? 'amount-section rounded-lg border-1-d6 bg-white p-10':'hidden'}>
+                                <div className={showDebitCards ? 'amount-section' : 'hidden'}>
                                     <div>
+                                        {/* Switch */}
                                         <div className='mb-30'>
                                             <div className="border_1 flex justify-between rounded-lg p-02rem w-22-4rem">
                                                 <div className='w-1/2'>
@@ -213,17 +517,20 @@ const BankCard = () => {
                                                     <button onClick={performSwitchToBank} type='button' className={switchToBank ? "w-full rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "w-full cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Bank</button>
                                                 </div>
                                             </div>
-                                        </div> 
+                                        </div>
+                                        {/*End */}
 
-                                        <div className='mb-30' onClick={displayManageCard}>
-                                            <div className='bgcolor-2 rounded-xl p-0 relative cursor-pointer'>
-                                                <img src={MaskGroupImg} alt='' className="w-full" />
-                                                <div className='absolute bottom-0 px-7 py-6'>
-                                                    <div className='text-white font-bold mb-5'>****9803</div>
-                                                    <div className='text-green-500 font-bold'>Expires 09/2024</div>
+                                        {cardsList.map((item: any, index: any) =>
+                                            <div className='mb-30' onClick={displayManageCard} key={index}>
+                                                <div className='bgcolor-2 rounded-xl p-0 relative cursor-pointer'>
+                                                    <img src={MaskGroupImg} alt='' className="w-full" />
+                                                    <div className='absolute bottom-0 px-7 py-6'>
+                                                        <div className='text-white font-bold mb-5'>{item.cardNumber}</div>
+                                                        <div className='text-green-500 font-bold'>Expires {item.expiryDate}</div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>                                       
+                                        )}
 
                                         <div>
                                             <button onClick={displayAddCard} type='button' className='w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>Add New Card</button>
@@ -233,7 +540,7 @@ const BankCard = () => {
                                 {/* End */}
 
                                 {/* Bank Section */}
-                                <div className={showBank ? 'amount-section rounded-lg border-1-d6 bg-white p-10':'hidden'}>
+                                <div className={showBank ? 'amount-section' : 'hidden'}>
                                     <div>
                                         <div className='mb-30'>
                                             <div className="border_1 flex justify-between rounded-lg p-02rem w-22-4rem">
@@ -245,17 +552,20 @@ const BankCard = () => {
                                                     <button onClick={performSwitchToBank} type='button' className={switchToBank ? "w-full rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "w-full cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Bank</button>
                                                 </div>
                                             </div>
-                                        </div> 
+                                        </div>
 
-                                        <div className='mb-30' onClick={displayManageBank}>
-                                            <div className='bgcolor-2 rounded-xl p-0 relative cursor-pointer'>
-                                                <img src={MaskGroupImg} alt='' className="w-full" />
-                                                <div className='absolute bottom-0 px-7 py-6'>
-                                                    <div className='text-white font-bold mb-20'>Olatoyin Gbade</div>
-                                                    <div className='text-green-500 font-bold'>VFD Bank</div>
+                                        {
+                                            bankDetailsList.map((item: any, index: any) =>
+                                                <div className='mb-30' onClick={selectBankDetails} key={index} data-bank={item.id}>
+                                                    <div className='bgcolor-2 rounded-xl p-0 relative cursor-pointer' data-bank={item.id}>
+                                                        <img src={MaskGroupImg} alt='' className="w-full" data-bank={item.id} />
+                                                        <div className='absolute bottom-0 px-7 py-6' data-bank={item.id}>
+                                                            <div className='text-white text-sm mb-20' data-bank={item.id}>{item.accountName}</div>
+                                                            <div className='text-white font-bold' data-bank={item.id}>{item.bankName} ({item.accountNumber})</div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>                                       
+                                            )}
 
                                         <div>
                                             <button onClick={displayAddBank} type='button' className='w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>Add New Bank</button>
@@ -265,33 +575,49 @@ const BankCard = () => {
                                 {/* End */}
 
                                 {/* Add Card Section */}
-                                <div className={showAddCard ? 'card-section rounded-lg border-1-d6 bg-white p-10':'hidden'}>
+                                <div className={showAddCard ? 'card-section' : 'hidden'}>
                                     <div>
+                                        {/* Default message */}
+                                        <div className="otp-alert mb-20">
+                                            <div className='py-2'>
+                                                <div className="text-14 text-green-600 font-bold">{defaultNewCardDebitMsg}</div>
+                                            </div>
+                                        </div>
+                                        {/* End */}
+
+
                                         <div className='mb-20 text-color-1 text-xl font-bold'>Enter your card details below</div>
 
                                         <div className='mb-20'>
-                                            <div className='text-14 mb-10 font-bold'>Card Number</div>
+                                            <div className='text-14 mb-5 font-bold'>Card Number</div>
 
-                                            <div>
-                                                <input placeholder='Enter your 16 digits card number' type='text' className='input p-3 border-1-d6 outline-white font-bold text-lg' />
+                                            <div className='relative'>
+                                                <input value={cardNumber} onKeyDown={handleCreditCardNumberInputSelection} onChange={maskCreditCardNumberInput} placeholder='Enter your 16 digits card number' type='text' className='cc-number-input input p-5 border-1-d6 outline-white font-bold text-lg text-gray-600' maxLength={19} />
+
+                                                <img style={{ width: '10%', right: '20px' }} className="cc-types__img cc-types__img--amex hidden" alt="" />
+                                                <img style={{ width: '10%', right: '20px' }} className="cc-types__img cc-types__img--visa hidden" alt="" />
+                                                <img style={{ width: '10%', right: '20px' }} className="cc-types__img cc-types__img--mastercard hidden" alt="" />
+                                                <img style={{ width: '10%', right: '20px' }} className="cc-types__img cc-types__img--disc hidden" alt="" />
+                                                <img style={{ width: '13%', right: '10px' }} className="cc-types__img cc-types__img--generic hidden" alt="" />
+
                                             </div>
                                         </div>
 
                                         <div className='mb-20'>
                                             <div className='flex justify-between space-x-5'>
                                                 <div className='w-1/2'>
-                                                    <div className='text-lg mb-10 text-14 font-bold'>Validity</div>
+                                                    <div className='text-lg mb-5 text-14 font-bold'>Validity</div>
 
                                                     <div>
-                                                        <input placeholder='MM / YY' type='text' className='input p-3 border-1-d6 outline-white font-bold text-lg' />
+                                                        <input value={cardExpiry} onChange={maskCreditCardExpiryInput} onKeyDown={handleCreditCardExpiryInputSelection} placeholder='MM / YY' type='text' className='input p-5 cc-expiry-input border-1-d6 outline-white font-bold text-lg text-gray-600' maxLength={5} />
                                                     </div>
                                                 </div>
 
                                                 <div className='w-1/2'>
-                                                    <div className='text-lg mb-10 text-14 font-bold'>CVV</div>
+                                                    <div className='text-lg mb-5 text-14 font-bold'>CVV</div>
 
                                                     <div>
-                                                        <input placeholder='CVV' type='text' className='input p-3 border-1-d6 outline-white font-bold text-lg' />
+                                                        <input value={cardCVV} onChange={maskCreditCardCVVInput} onKeyDown={handleCreditCardCVVInputSelection} placeholder='CVV' type='text' className='input p-5 cc-cvv-input border-1-d6 outline-white font-bold text-lg text-gray-600' maxLength={3} />
                                                     </div>
                                                 </div>
                                             </div>
@@ -299,37 +625,141 @@ const BankCard = () => {
 
                                         <div className='mb-20'>
                                             <div className='text-center mb-10 mt-12'><img src={LockIcon} alt='' /></div>
-                                            <div className='px-20 pb-5 mt-1 mx-2 text-gray-900 text-center'>Your card details are secured and protected by our PCI-DSS compliant payment partners</div>
+                                            <div className='px-5 pb-5 mt-1 mx-2 text-gray-900 text-center'>Your card details are secured and protected by our PCI-DSS compliant payment partners</div>
                                         </div>
 
                                         <div>
-                                            <button onClick={displaySuccess} type='button' className='w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' >Save Card</button>
+                                            <button onClick={addCard} type='button' className='w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>
+                                                <span className={showSpinner ? "hidden" : ""}>Save Card</span>
+                                                <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                {/* End */}
+
+                                {/* Verify OTP Section */}
+                                <div className='otp-section hidden'>
+                                    <div className='otp-section'>
+                                        <div>
+
+                                            <div className='mt-6 mb-10 text-color-1 text-xl font-bold'>Enter OTP</div>
+
+                                            <div className='mb-20'>
+                                                <div>
+                                                    <input placeholder='Enter OTP sent to your phone' type='password' className='input p-4 text-lg font-bold border-1-d6 outline-white' max={6} />
+                                                </div>
+                                            </div>
+
+                                            <div>
+
+                                                <button type='button' className='w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>
+                                                    <span className={showSpinner ? "hidden" : ""}>Proceed</span>
+                                                    <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {/* End */}
+
+                                {/* Verify Card Section */}
+                                <div className='pin-section hidden'>
+                                    <div>                                        
+
+                                        <div>                                            
+
+                                            <div className='flex justify-between mb-30'>
+                                                <div>Card</div>
+                                                <div className='font-bold text-gray-500'> {cardNumber}</div>
+                                            </div>
+                                        </div>
+
+                                        <div className='border-bottom-1d mb-20'></div>
+
+                                        
+                                        <div>
+                                            <button type='button' className='w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' >
+                                                <span className={ showSpinner ? "hidden" : ""}>Proceed</span>
+                                                <img src={SpinnerIcon} alt="spinner icon" className={ showSpinner ? "" : "hidden"} width="15"/>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                                 {/* End */}
 
                                 {/* Add Bank Section */}
-                                <div className={showAddBank ? 'card-section rounded-lg border-1-d6 bg-white p-10':'hidden'}>
+                                <div className={showAddBank ? 'card-section' : 'hidden'}>
                                     <div>
-                                        <div className='mb-5 text-color-1 text-xl font-bold'>Enter your bank details below</div>
-                                        <div className='mb-30 text-color-1 text-md'>We pay your withdrawal into your bank account </div>
+                                        {/* Bank Details Error */}
+                                        <div className={bankDetailsError ? "error-alert mb-20" : "hidden"}>
+                                            <div className="flex justify-between space-x-1 pt-3">
+                                                <div className="flex">
+                                                    <div>
+                                                        <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
+                                                        </svg>
+                                                    </div>
 
-                                        <div className='mb-30'>
-                                            <div className='text-14 mb-10 font-bold'>Account Number</div>
+                                                    <div className="pt-1 text-14">{bankDetailsError}</div>
+                                                </div>
 
-                                            <div>
-                                                <input  type='text' className='input p-3 border-1-d6 outline-white font-bold text-lg' />
+                                                <div className="cursor-pointer">
+                                                    <svg className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50" />
+                                                    </svg>
+                                                </div>
                                             </div>
                                         </div>
+                                        {/* End */}
+
+                                        {/* Add Bank Success */}
+                                        <div className={isAddBankSuccess === 'true' ? "otp-alert mb-20" : "hidden"}>
+                                            <div className="flex otp-validated justify-between space-x-1 pt-3">
+                                                <div className="flex">
+                                                    <div>
+                                                        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062" />
+                                                            <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062" />
+                                                        </svg>
+                                                    </div>
+
+                                                    <div className="pt-1 text-14 text-color-1">{apiResponseSuccessMsg}</div>
+                                                </div>
+
+                                                <div className="cursor-pointer">
+                                                    <svg className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50" />
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {/* End */}
+
+
+                                        <div className='mb-5 text-color-1 text-xl font-bold'>Enter your bank details below</div>
+                                        <div className='mb-30 text-color-1 text-md'>We pay your withdrawal into your bank account </div>
 
                                         <div className='mb-30'>
                                             <div className='text-14 mb-10 font-bold'>Select Bank</div>
 
                                             <div>
-                                                <select className='input px-5 py-3 border-1-d6 outline-white font-bold text-lg' >
-                                                    <option>VFD Microfinance Bank</option>
+                                                <select onChange={checkNameEnquiryOnBankDetails} className='input px-5 py-3 border-1-d6 outline-white font-bold text-lg' id='bankList' >
+                                                    <option value="">...</option>
+                                                    {
+                                                        bankList.map((item: any) =>
+                                                            <option value={item.code}>{item.name}</option>
+                                                        )
+                                                    }
                                                 </select>
+                                            </div>
+                                        </div>
+
+                                        <div className='mb-30'>
+                                            <div className='text-14 mb-10 font-bold'>Account Number</div>
+
+                                            <div>
+                                                <input id="accountNumber" type='text' className='input p-3 border-1-d6 outline-white font-bold text-lg' value={accountNumber} onKeyDown={validateAccountNumberOnKeyDown} onChange={validateAccountNumber} maxLength={10} />
                                             </div>
                                         </div>
 
@@ -337,39 +767,44 @@ const BankCard = () => {
                                             <div className='text-14 mb-10 font-bold'>Account Name</div>
 
                                             <div>
-                                                <input  type='text' className='input p-3 border-1-d6 outline-white font-bold text-lg' />
+                                                <input readOnly type='text' className='input p-3 border-1-d6 outline-white font-bold text-lg' value={accountName} />
                                             </div>
                                         </div>
 
                                         <div>
-                                            <button onClick={displaySuccess} type='button' className='w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' >Proceed</button>
+                                            <button onClick={addBankDetails} type='button' className='w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' >
+                                                <span className={showSpinner ? "hidden" : ""}>Proceed</span>
+                                                <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                                 {/* End */}
 
                                 {/* Manage Card Section */}
-                                <div className={showManageCard ? 'pin-section rounded-lg border-1-d6 bg-white p-10':'hidden'}>
+                                <div className={showManageCard ? 'pin-section ' : 'hidden'}>
                                     <div>
                                         <div className='mb-30'>
                                             <div className='bgcolor-2 rounded-xl p-0 relative cursor-pointer'>
                                                 <img src={MaskGroupImg} alt='' className="w-full" />
-                                                <div className='absolute bottom-0 px-7 py-6'>
-                                                    <div className='text-white font-bold mb-5'>****9803</div>
-                                                    <div className='text-green-500 font-bold'>Expires 09/2024</div>
+                                                {cardsList.map((item :any, index :any) =>
+                                                <div className='absolute bottom-0 px-7 py-6' key={index}>
+                                                    <div className='text-white font-bold mb-5'>{item.cardNumber}</div>
+                                                    <div className='text-green-500 font-bold'>Expires {item.expiryMonth}/{item.expiryYear}</div>
                                                 </div>
+                                                )}
                                             </div>
-                                        </div> 
+                                        </div>
 
-                                        <div className='mb-20'>
+                                        <div className='mb-20 hidden'>
                                             <div className='mb-10 mt-12'><img src={LockIcon} alt='' /></div>
                                             <div className='mt-1 text-gray-900'>Make this card your default debit card for your payments and transactions</div>
                                         </div>
 
-                                        <div className="font-bold flex mb-30">
+                                        <div className="font-bold flex mb-30 hidden">
                                             <div className='mr-3'>Default debit card</div>
-                                            
-                                            <div  className='flex rounded-3xl p-1 bgcolor-1 ease-in-out transition delay-75 duration-75'>
+
+                                            <div className='flex rounded-3xl p-1 bgcolor-1 ease-in-out transition delay-75 duration-75'>
                                                 <button className="rounded-3xl knob border-0 cursor-pointer ease-in-out transition delay-75 duration-75" type="button"></button>
 
                                                 <button className="ml-0.5 p-1.5 rounded-3xl knob items-center border-0 cursor-pointer opacity-0 ease-in-out transition delay-75 duration-75" type="button"></button>
@@ -377,88 +812,75 @@ const BankCard = () => {
                                         </div>
 
                                         <div>
-                                            <div className='font-bold flex justify-between p-5 border-top-1'>
-                                                <div>Bank</div>
-                                                <div>VFD Microfinance bank</div>
-                                            </div>
-
-                                            <div className='font-bold flex justify-between p-5 border-top-1'>
-                                                <div>Date Added</div>
-                                                <div className='font-bold text-color-1 font-bold'>Aug 23, 2021</div>
-                                            </div>
-
-                                            <div className='font-bold flex justify-between mb-30 p-5 border-top-1'>
-                                                <div>Expriy Date</div>
-                                                <div className='font-bold text-gray-500'> July 13, 2022</div>
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <button onClick={displayDeleteCard} type='button' className='w-full font-bold text-lg border-0 bg-red-500 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' >Delete Card</button>
+                                            <button onClick={displayDeleteModal} type='button' className='w-full font-bold text-lg border-0 bg-red-500 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' data-type='Card'>Delete Card</button>
                                         </div>
                                     </div>
                                 </div>
                                 {/* End */}
 
                                 {/* Manage Bank Section */}
-                                <div className={showManageBank ? 'pin-section rounded-lg border-1-d6 bg-white p-10':'hidden'}>
+                                <div className={showManageBank ? 'pin-section' : 'hidden'}>
                                     <div>
-                                        <div className='mb-30'>
-                                            <div className='bgcolor-2 rounded-xl p-0 relative cursor-pointer'>
-                                                <img src={MaskGroupImg} alt='' className="w-full" />
-                                                <div className='absolute bottom-0 px-7 py-6'>
-                                                    <div className='text-white font-bold mb-20'>Olatoyin Gbade</div>
-                                                    <div className='text-green-500 font-bold'>VFD Bank</div>
+                                        {selectedBankDetails.map((item: any, index: any) =>
+                                            <div className='mb-30'>
+                                                <div className='bgcolor-2 rounded-xl p-0 relative cursor-pointer'>
+                                                    <img src={MaskGroupImg} alt='' className="w-full" />
+                                                    <div className='absolute bottom-0 px-7 py-6'>
+                                                        <div className='text-white text-sm mb-20'>{item.accountName}</div>
+                                                        <div className='text-white font-bold'>{item.bankName} ({item.accountNumber})</div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div> 
+                                        )}
 
-                                        <div className='mb-20'>
+                                        <div className='mb-20 hidden'>
                                             <div className='mb-10 mt-12'><img src={LockIcon} alt='' /></div>
                                             <div className='mt-1 text-gray-900'>Make this card your default debit card for your payments and transactions</div>
                                         </div>
 
-                                        <div className="font-bold flex mb-30">
+                                        <div className="font-bold flex mb-30 hidden">
                                             <div className='mr-3'>Default bank account </div>
-                                            
-                                            <div  className='flex rounded-3xl p-1 bgcolor-1 ease-in-out transition delay-75 duration-75'>
+
+                                            <div className='flex rounded-3xl p-1 bgcolor-1 ease-in-out transition delay-75 duration-75'>
                                                 <button className="rounded-3xl knob border-0 cursor-pointer ease-in-out transition delay-75 duration-75" type="button"></button>
 
                                                 <button className="ml-0.5 p-1.5 rounded-3xl knob items-center border-0 cursor-pointer opacity-0 ease-in-out transition delay-75 duration-75" type="button"></button>
                                             </div>
                                         </div>
 
-                                        <div>
-                                            <div className='font-bold flex justify-between p-5 border-top-1'>
-                                                <div>Bank</div>
-                                                <div>VFD Microfinance bank</div>
-                                            </div>
+                                        {selectedBankDetails.map((item: any, index: any) =>
+                                            <div>
+                                                <div className='flex justify-between py-5'>
+                                                    <div>Bank</div>
+                                                    <div className='font-bold'>{item.bankName}</div>
+                                                </div>
 
-                                            <div className='mb-30 font-bold flex justify-between p-5 border-top-1'>
-                                                <div>Date Added</div>
-                                                <div className='font-bold text-color-1 font-bold'>Aug 23, 2021</div>
+                                                <div className='mb-30 flex justify-between py-5 border-top-1'>
+                                                    <div>Date Added</div>
+                                                    <div className='font-bold text-color-1 font-bold'>{moment(item.updatedOn).format("MMMM Do, YYYY")}</div>
+                                                </div>
                                             </div>
-                                        </div>
+                                        )}
 
                                         <div>
-                                            <button onClick={displayDeleteCard} type='button' className='w-full font-bold text-lg border-0 bg-red-500 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' >Delete Card</button>
+                                            <button onClick={displayDeleteModal} type='button' className='w-full font-bold text-lg border-0 bg-red-500 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' data-type='Bank'>Delete bank</button>
                                         </div>
                                     </div>
                                 </div>
                                 {/* End */}
 
                                 {/* Success Section */}
-                                <div className={showSuccess ? 'amount-section rounded-lg border-1-d6 bg-white p-10':'hidden'}>
+                                <div className={showSuccess ? 'amount-section' : 'hidden'}>
                                     <div className="mx-auto w-2/3 h-64 relative">
-                                        <img src={SuccessIcon} alt="success icon" className="w-96"/>
+                                        <img src={SuccessIcon} alt="success icon" className="w-96" />
                                         <div className="bg-white p-3 w-full -bottom-10 absolute"></div>
                                     </div>
 
                                     <div className="relative z-10 text-color-1 font-gotham-black-regular text-28 text-center mb-20">Successful</div>
 
-                                    <div className={showBankSuccessMsg ? 'hidden':"px-20 pb-14 text-color-4 text-16 text-center"}>Your card details with card number endin <strong>****3990</strong> has been successfully saved</div>
+                                    <div className={showBankSuccessMsg ? 'hidden' : "px-20 pb-14 text-color-4 text-16 text-center"}>Your card details with card number endin <strong>****3990</strong> has been successfully saved</div>
 
-                                    <div className={showBankSuccessMsg ? "px-20 pb-14 text-color-4 text-16 text-center":'hidden'}>Your <strong>VFD Microfinance bank</strong> details with has been successfully saved</div>
+                                    <div className={showBankSuccessMsg ? "px-20 pb-14 text-color-4 text-16 text-center" : 'hidden'}>Your <strong>VFD Microfinance bank</strong> details with has been successfully saved</div>
 
                                     <div className="mb-30 text-center">
                                         <button className="bgcolor-1 w-96 rounded-lg border-0 cursor-pointer text-white p-5 font-bold">Close</button>
@@ -472,7 +894,7 @@ const BankCard = () => {
                 </div>
             </div>
 
-            <div className={showDeleteCardModal ? "set-price-alert-modal rounded-lg" : "hidden"}>
+            <div className={showDeleteModal ? "set-price-alert-modal rounded-lg" : "hidden"}>
                 <div className="mb-10 flex justify-between">
                     <div className="font-bold text-28 text-color-1 font-gotham-black-regular"></div>
 
@@ -481,32 +903,55 @@ const BankCard = () => {
                     </div>
                 </div>
 
-                <div className="border-1 mb-30"></div>
-
                 <div>
-                    <div className='text-center'>
+                    {/* Delete Success */}
+                    <div className={isDeleteSuccess === 'true' ? "otp-alert mb-20" : "hidden"}>
+                        <div className="flex otp-validated justify-between space-x-1 pt-3">
+                            <div className="flex">
+                                <div>
+                                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062" />
+                                        <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062" />
+                                    </svg>
+                                </div>
+
+                                <div className="pt-1 text-14 text-color-1">{apiResponseSuccessMsg}</div>
+                            </div>
+
+                            <div className="cursor-pointer">
+                                <svg className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    {/* End */}
+
+                    <div className='text-center mb-20'>
                         <img src={DeleteCardIcon} alt='' />
                     </div>
-                    <div className='text-red-500 font-bold text-center'>Delete Card</div>
-                    <div className='text-center my-8'>Enter your transaction to PIN confirm</div>
-                    <div className='font-bold text-center my-5'>Enter PIN</div>
-                    <div className='flex space-x-3 my-10'>
+                    <div className='text-red-500 font-bold text-3xl text-center mb-30'>Delete {deleteType}</div>
+                    <div className='text-center my-8 hidden'>Enter your transaction to PIN confirm</div>
+                    <div className='font-bold text-center my-5 hidden'>Enter PIN</div>
+                    <div className='flex space-x-3 my-10 hidden'>
                         <input type='password' className='text-center input p-3 border-1-d6 outline-white' />
                         <input type='password' className='text-center input p-3 border-1-d6 outline-white' />
                         <input type='password' className='text-center input p-3 border-1-d6 outline-white' />
                         <input type='password' className='text-center input p-3 border-1-d6 outline-white' />
-                        
                     </div>
                 </div>
 
                 <div className="flex space-x-5 mb-10">
                     <button type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer" onClick={closeModal}>Cancel</button>
 
-                    <button onClick={closeModal} type="button" className="py-4 w-full font-bold bg-red-500 text-white rounded-lg border-0 cursor-pointer">Delete</button>
+                    <button onClick={deleteBankCardDetails} type="button" className="py-4 w-full font-bold bg-red-500 text-white rounded-lg border-0 cursor-pointer">
+                        <span className={showSpinner ? "hidden" : ""}>Delete</span>
+                        <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
+                    </button>
                 </div>
             </div>
 
-            <div className={showModalBG ? "modal-backdrop opacity-40": "modal-backdrop opacity-40 hidden"}>
+            <div className={showModalBG ? "modal-backdrop opacity-40" : "modal-backdrop opacity-40 hidden"}>
             </div>
 
         </div>

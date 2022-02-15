@@ -42,6 +42,35 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script src="//code.tidio.co/fouwfr0cnygz4sj8kttyv0cz1rpaayva.js" async></script>
+<!-- Swap your javascript code above -->
+<script>
+   (function() {
+    function onTidioChatApiReady() {
+      (function() {
+          window.tidioChatApi.close();
+      })();
+    }
+
+    if (window.tidioChatApi) {
+      window.tidioChatApi.on("ready", onTidioChatApiReady);
+    } else {
+      document.addEventListener("tidioChat-ready", onTidioChatApiReady);
+    }
+  })();
+
+  setInterval(()=>{
+      let iframe = document.getElementsByTagName("iframe");
+      
+
+      [].forEach.call(iframe, (el)=>{
+        el.style.display = "none";
+        el.style.zIndex = "0";
+      });
+
+      //document.getElementById("tidio-chat-code").style.display = "block";
+    },1000);
+</script>
 </body>
 
 </html>

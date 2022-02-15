@@ -46,28 +46,31 @@
 
 .top-gainers-modal{
     padding: 30px;
-    position: fixed;
     width: 500px;
-    top: 0;
-    right: 65%;
-    left: 35%;
     background: #FFFFFF;
     box-shadow: 0px 8px 24px -6px rgba(0, 0, 0, 0.16), 0px 0px 1px rgba(0, 0, 0, 0.4);
     border-radius: 8px;
-    z-index: 1100;
-    margin: 1.75rem auto;
 }
 
 .top-losers-modal{
     padding: 30px;
-    position: fixed;
     width: 500px;
-    top: 0;
-    right: 65%;
-    left: 35%;
     background: #FFFFFF;
     box-shadow: 0px 8px 24px -6px rgba(0, 0, 0, 0.16), 0px 0px 1px rgba(0, 0, 0, 0.4);
     border-radius: 8px;
-    z-index: 1100;
-    margin: 1.75rem auto;
+}
+
+.newsImg{
+    width: 95px;
+    height: 145px;
+}
+
+.news-section:first-child{
+    margin-left: 0 !important;
+}
+
+.updatekyc-bg{
+    background-image: url("../../assets/images/updatekyc-bg.jpg");
+    background-repeat: no-repeat;
+    background-position: right 0%;
 }
