@@ -132,6 +132,29 @@ const Profile = () => {
 
 
     useEffect(() => {
+        function checkIfPasswordOrConfirmPasswordIsNullOrEmpty(){
+            if(password === '' || confirmPassword === '' || password !== confirmPassword){
+                setPasswordOrConfirmPasswordIsNullOrEmpty(true);
+            }
+            else if(!hasMinAndMaxCharacter || !hasLowerCaseCharacter || !hasUpperCaseCharacter || !hasNumericCharacter || !hasSpecialCharacter){
+                setPasswordOrConfirmPasswordIsNullOrEmpty(true);
+            }
+            else{
+                setIsPasswordMatch(true);
+                setPasswordOrConfirmPasswordIsNullOrEmpty(false);
+            }
+        }
+    
+        function checkIfPinOrConfirmPinIsNullOrEmpty(){
+            if(pin === '' || confirmPin === '' || pin !== confirmPin){
+                setPinOrConfirmPinIsNullOrEmpty(true);
+            }
+            else{
+                setIsPinMatch(true);
+                setPinOrConfirmPinIsNullOrEmpty(false);
+            }
+        }
+
         async function checkIfPasswordIsNullOrEmpty(){
             validatePassword();
             checkIfPasswordOrConfirmPasswordIsNullOrEmpty();
@@ -261,30 +284,7 @@ const Profile = () => {
         getNotificationLogs();
         getBankDetailsList();
         getBankList();
-    },[confirmPassword, confirmPin, password, pin]);  
-
-    function checkIfPasswordOrConfirmPasswordIsNullOrEmpty(){
-        if(password === '' || confirmPassword === '' || password !== confirmPassword){
-            setPasswordOrConfirmPasswordIsNullOrEmpty(true);
-        }
-        else if(!hasMinAndMaxCharacter || !hasLowerCaseCharacter || !hasUpperCaseCharacter || !hasNumericCharacter || !hasSpecialCharacter){
-            setPasswordOrConfirmPasswordIsNullOrEmpty(true);
-        }
-        else{
-            setIsPasswordMatch(true);
-            setPasswordOrConfirmPasswordIsNullOrEmpty(false);
-        }
-    }
-
-    function checkIfPinOrConfirmPinIsNullOrEmpty(){
-        if(pin === '' || confirmPin === '' || pin !== confirmPin){
-            setPinOrConfirmPinIsNullOrEmpty(true);
-        }
-        else{
-            setIsPinMatch(true);
-            setPinOrConfirmPinIsNullOrEmpty(false);
-        }
-    }
+    });  
 
     function changePassword(){
         let customer = HelperFunctions.getCustomerInfo();

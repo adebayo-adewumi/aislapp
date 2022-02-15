@@ -459,7 +459,7 @@ const Stock = () => {
         get6MStockGraphData();
         get1YStockGraphData();
 
-    }, [apiResponseHasError, graph1DXAxis, graph1DYAxis, graph1MXAxis, graph1MYAxis, graph1WXAxis, graph1WYAxis, graph1YXAxis, graph1YYAxis, graph3MXAxis, graph3MYAxis, graph6MXAxis, graph6MYAxis]);
+    });
 
     function calculateStockOrderEstimate() {
         let customer = HelperFunctions.getCustomerInfo();
