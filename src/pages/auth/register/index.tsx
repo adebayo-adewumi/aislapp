@@ -30,7 +30,6 @@ const Register = () => {
     const [bVNPhoneDobIsNullOrEmpty, setBVNPhoneDobIsNullOrEmpty] = useState<boolean>(false);
 
     const [showImgAvatar, ] = useState<boolean>(true);
-    const [showSelfieAvatar, ] = useState<boolean>(false);
 
     const [bvn, setBVN] = useState('');
     const [email, setEmail] = useState('');
@@ -97,6 +96,8 @@ const Register = () => {
     const [errorMsg, ] = useState('');
 
     const [hashedSelfieImg, setHashedSelfieImg] = useState('');
+
+    const [showSelfieAvatar, setShowSelfieAvatar] = useState<boolean>(false);
 
     document.title = "Register - Anchoria";
 
@@ -598,7 +599,7 @@ const Register = () => {
 
     function changeImgAvatar(event :any) {
         // setShowImgAvatar(false);
-        // //setShowSelfieAvatar(true);
+        setShowSelfieAvatar(true);
 
         let base64String = '';
 
