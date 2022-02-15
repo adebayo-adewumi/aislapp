@@ -18,13 +18,12 @@ const QuickSearch = () => {
     let queryParams = new URLSearchParams(window.location.search);
 
     const [stocksListStore, setStocksListStore] = useState<{[key: string] : []}>({});
-    const [stocksList, setStocksList] = useState([]);
+    const [, setStocksList] = useState([]);
     const [stockKeys, setStockKeys] = useState([]);
-    const [stockFilter, setStockFilter] = useState([]);
+    const [, setStockFilter] = useState([]);
 
-    const [showPageLoader, setShowPageLoader] = useState<boolean>(true);
-    const [showFilteredStocks, setShowFilteredStocks] = useState<boolean>(false);
-    const [showSpinner, setShowSpinner] = useState<boolean>(false);
+    const [, setShowPageLoader] = useState<boolean>(true);
+    const [, setShowFilteredStocks] = useState<boolean>(false);
 
     useEffect(() => {
         HelperFunctions.addOverflowAndPaddingToModalBody();

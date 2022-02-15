@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
 import '../watchlist/index.scss';
-import AtlasIcon from '../../assets/images/atlas.svg';
-import AppleIcon from '../../assets/images/apple.svg';
 import SearchIcon from '../../assets/images/search.svg';
 import SlidersIcon from '../../assets/images/sliders.svg';
 import UserAreaHeader from '../../components/Headers/UserAreaHeader';
@@ -11,7 +9,6 @@ import Sidebar from '../../components/Sidebar';
 import ArrowBackIcon from '../../assets/images/arrow-back.svg';
 import axios from 'axios';
 import * as HelperFunctions from '../../lib/helper';
-import { Form } from 'react-bootstrap';
 import AnchoriaIcon from '../../assets/images/anchoria-icon.svg';
 import AnchoriaSpinner from '../../assets/images/anchoria-spinner.svg';
 import GreenBoxIcon from '../../assets/images/green-box.svg';

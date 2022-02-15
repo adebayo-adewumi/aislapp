@@ -93,19 +93,16 @@ const Profile = () => {
     const [showModalBG, setShowModalBG] = useState<boolean>(false);
     const [showValidatePINModal, setShowValidatePINModal] = useState<boolean>(false);
 
-    const [pinValidatedForPersonalDetails, setPinValidatedForPersonalDetails] = useState<boolean>(false);
-    const [pinValidatedForEmployment, setPinValidatedForEmployment] = useState<boolean>(false);
-    const [pinValidatedForNok, setPinValidatedForNok] = useState<boolean>(false);
+    const [, setPinValidatedForPersonalDetails] = useState<boolean>(false);
+    const [, setPinValidatedForEmployment] = useState<boolean>(false);
+    const [, setPinValidatedForNok] = useState<boolean>(false);
 
     const [showSpinner, setShowSpinner] = useState<boolean>(false);
-    const [pinValidationType, setPinValidationType] = useState('');
+    const [pinValidationType, ] = useState('');
 
     const [notificationLogs, setNotificationLogs] = useState('');
 
     const [showNotificationDetailModal, setShowNotificationDetailModal] = useState<boolean>(false);
-
-    const [selectedNotificationId, setSelectedNotificationId] = useState('');
-    const [selectedNotificationDeatils, setSelectedNotificationDeatils] = useState('');
 
     const [bankDetailsList, setBankDetailsList] = useState([]);
 

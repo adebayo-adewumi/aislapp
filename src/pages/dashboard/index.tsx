@@ -19,7 +19,7 @@ import moment from 'moment';
 import ArrowDownIcon from '../../assets/images/arrow-down.svg';
 import AnchoriaIcon from '../../assets/images/anchoria-icon.svg';
 import AnchoriaSpinner from '../../assets/images/anchoria-spinner.svg';
-import { getNewsEndpoint, getPortfolioEndpoint, getTopGainersEndpoint, getTopLosersEndpoint, getTopMoverByValueEndpoint, portfolioServiceBaseUrlUrl, stockTradingServiceBaseUrlUrl, utilityServiceBaseUrlUrl, walletAndAccountServiceBaseUrl } from '../../apiUrls';
+import { getNewsEndpoint, getPortfolioEndpoint, getTopGainersEndpoint, getTopLosersEndpoint, getTopMoverByValueEndpoint, portfolioServiceBaseUrlUrl, walletAndAccountServiceBaseUrl } from '../../apiUrls';
 import { getAxios } from '../../network/httpClientWrapper';
 
 const Dashboard = () => {
@@ -253,15 +253,15 @@ const Dashboard = () => {
                 });
         }
 
-        function testApiForGet() {
-            let customer = HelperFunctions.getCustomerInfo();
+        // function testApiForGet() {
+        //     let customer = HelperFunctions.getCustomerInfo();
 
-            // getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/price?stockCode=NGXPREMIUM&endDate=2022-11-23&startDate=2021-11-23')
-            //     .then(function (response) { 
-            //         console.log(response.data);
-            //     })
-            //     .catch(function (error) { });
-        }
+        //     // getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/price?stockCode=NGXPREMIUM&endDate=2022-11-23&startDate=2021-11-23')
+        //     //     .then(function (response) { 
+        //     //         console.log(response.data);
+        //     //     })
+        //     //     .catch(function (error) { });
+        // }
 
         getWalletBalance();
         getTopGainers();
@@ -269,7 +269,7 @@ const Dashboard = () => {
         getNews();
         getPortfolioList();
         getTopMovers();
-        testApiForGet();
+        //testApiForGet();
 
     }, []);
 

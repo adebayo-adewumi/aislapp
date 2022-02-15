@@ -10,7 +10,6 @@ import CloseIcon from '../../assets/images/close.svg';
 import BriefcaseIcon from '../../assets/images/briefcase.svg';
 import SaveTagIcon from '../../assets/images/save-tag.svg';
 import ChartIcon from '../../assets/images/chart.svg';
-import Form from 'react-bootstrap/Form';
 import SpinnerHolderIcon from '../../assets/images/spinner-holder.svg';
 import SpinnerIcon from '../../assets/images/spinner.gif';
 import Chart from "react-apexcharts";
@@ -24,11 +23,7 @@ import { encryptData } from '../../lib/encryptionHelper';
 import { generalEncKey } from '../../common/constants/globals';
 import { getPortfolioEndpoint } from '../../apiUrls';
 import { getAxios } from '../../network/httpClientWrapper';
-import { Accordion } from 'react-bootstrap';
 
-type pathParams = {
-    portfolioId: string
-}
 
 const PortfolioDetails = () => {
     const { portfolioId } = useParams<string>();
@@ -45,10 +40,10 @@ const PortfolioDetails = () => {
     const [apiResponseHasError, setApiResponseHasError] = useState<boolean>(false);
     const [apiResponseSuccessMsg, setApiResponseSuccessMsg] = useState('');
 
-    const [stockSelected, setStockSelected] = useState<string[]>([]);
+    const [stockSelected, ] = useState<string[]>([]);
 
     const [stocksInPortfolio, setStocksInPortfolio] = useState('');
-    const [stocksBought, setStocksBought] = useState('');
+    const [stocksBought, ] = useState('');
 
     const [showSpinner, setShowSpinner] = useState<boolean>(false);
 
@@ -332,18 +327,7 @@ const PortfolioDetails = () => {
         //setShowDeleteModal(false);
     }
 
-    function displaySuccessModal() {
-        setShowModalBG(true);
-        setShowAddNewStockModal(false);
-        setShowPortfolioListModal(true);
-        setShowLoader(true);
-
-        setTimeout(() => {
-            setShowLoader(false);
-            setShowPortfolioListModal(false);
-            setShowSuccessModal(true);
-        }, 2000);
-    }
+   
 
     function addStockToPortfolio() {
         let requestData = {
@@ -372,12 +356,7 @@ const PortfolioDetails = () => {
             });
     }
 
-    function selectStockToMove(event: any) {
-        const sarr = stockSelected as string[];
-        sarr.push(event.target.value);
-
-        setStockSelected(sarr);
-    }
+    
 
     function closeApiResponseMsg() {
         setApiResponseHasError(false);

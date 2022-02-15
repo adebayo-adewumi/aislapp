@@ -27,8 +27,8 @@ const AccountStatement = () => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
 
-    const [showStatement, setShowStatement] = useState<boolean>(true);
-    const [showSuccess, setShowSuccess] = useState<boolean>(false);
+    const [showStatement, ] = useState<boolean>(true);
+    const [showSuccess, ] = useState<boolean>(false);
 
     const [walletBalance, setWalletBalance] = useState(0);
 

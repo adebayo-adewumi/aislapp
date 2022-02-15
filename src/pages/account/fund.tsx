@@ -163,31 +163,7 @@ const FundAccount = () => {
         setShowBankTransferSection(false);
     }
 
-    function displayOTPSection() {
-        setShowAmountSection(false);
-        setShowCardSection(false);
-        setShowOTPSection(true);
-        setShowPinSection(false);
-        setShowTransactionSection(false);
-        setShowBankTransferSection(false);
-    }
-
-    function displayPinSection() {
-        setShowAmountSection(false);
-        setShowCardSection(false);
-        setShowOTPSection(false);
-        setShowPinSection(true);
-        setShowTransactionSection(false);
-        setShowBankTransferSection(false);
-    }
-
-    function displayTransactionSection() {
-        setShowAmountSection(false);
-        setShowCardSection(false);
-        setShowPinSection(false);
-        setShowTransactionSection(true);
-        setShowBankTransferSection(false);
-    }
+    
 
     function slideToAmount(event: any) {
         let amount = parseFloat(event.target.value) * 5000;

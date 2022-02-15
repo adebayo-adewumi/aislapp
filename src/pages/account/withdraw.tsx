@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import UserAreaHeader from '../../components/Headers/UserAreaHeader';
 import ArrowBackIcon from '../../assets/images/arrow-back.svg';
-import SuccessIcon from '../../assets/images/success.gif';
 import SuccessCheckIcon from '../../assets/images/success-check.svg';
 import Form from 'react-bootstrap/Form';
 import Sidebar from '../../components/Sidebar';
@@ -69,12 +68,6 @@ const WithdrawFund = () => {
 
         setShowWithdraw(false);
         setShowWithdrawSummary(true);
-    }
-
-    function displaySuccess() {
-        setShowWithdraw(false);
-        setShowWithdrawSummary(false);
-        setShowSuccess(true);
     }
 
     function selectAmount(event: any) {

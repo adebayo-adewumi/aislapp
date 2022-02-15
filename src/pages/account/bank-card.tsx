@@ -37,13 +37,10 @@ const BankCard = () => {
     const [switchToDebit, setSwitchToDebit] = useState<boolean>(true);
     const [switchToBank, setSwitchToBank] = useState<boolean>(false);
 
-    const [showCardHeader, setShowCardHeader] = useState<boolean>(false);
-    const [showAddCardHeader, setShowAddCardHeader] = useState<boolean>(false);
-
     const [showBankHeader, setShowBankHeader] = useState<boolean>(false);
     const [showAddBankHeader, setShowAddBankHeader] = useState<boolean>(false);
 
-    const [showBankSuccessMsg, setshowBankSuccessMsg] = useState<boolean>(false);
+    const [showBankSuccessMsg, ] = useState<boolean>(false);
 
     const [showSpinner, setShowSpinner] = useState<boolean>(false);
 
@@ -290,9 +287,9 @@ const BankCard = () => {
 
         cardsList.map((item :any)=>{
             apipath! = deleteType === "Card" ? 'card/delete/'+(item.cardNumber) :  '/bank-details/delete';
-        })
 
-        
+            return apipath;
+        })
 
         let _headers = {
             'Authorization': 'Bearer ' + localStorage.getItem('aislUserToken'),

@@ -29,8 +29,8 @@ const Register = () => {
     const [showSuccess, setShowSuccess] = useState<boolean>(false);
     const [bVNPhoneDobIsNullOrEmpty, setBVNPhoneDobIsNullOrEmpty] = useState<boolean>(false);
 
-    const [showImgAvatar, setShowImgAvatar] = useState<boolean>(true);
-    const [showSelfieAvatar, setShowSelfieAvatar] = useState<boolean>(false);
+    const [showImgAvatar, ] = useState<boolean>(true);
+    const [showSelfieAvatar, ] = useState<boolean>(false);
 
     const [bvn, setBVN] = useState('');
     const [email, setEmail] = useState('');

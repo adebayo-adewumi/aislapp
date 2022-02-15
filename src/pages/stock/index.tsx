@@ -24,7 +24,6 @@ import AnchoriaIcon from '../../assets/images/anchoria-icon.svg';
 import AnchoriaSpinner from '../../assets/images/anchoria-spinner.svg';
 import { authOnboardingServiceBaseUrl, portfolioServiceBaseUrlUrl, stockTradingServiceBaseUrlUrl, utilityServiceBaseUrlUrl, walletAndAccountServiceBaseUrl } from '../../apiUrls';
 import { getAxios } from '../../network/httpClientWrapper';
-import { forEachChild } from 'typescript';
 
 const Stock = () => {
     const params = new URLSearchParams(window.location.search);
@@ -304,6 +303,8 @@ const Stock = () => {
                         if (item.name !== "availableToInvest") {
                             return <option value={item.uuid}>{item.name}</option>
                         }
+
+                        return false; 
                     });
 
                     setPortfolioList(listItems);
@@ -335,6 +336,8 @@ const Stock = () => {
 
                         setGraphYAxis(graph1DYAxis);
                         setGraphXAxis(graph1DXAxis);
+
+                        return false; 
                     });
                 }
             })
@@ -353,6 +356,8 @@ const Stock = () => {
                     response.data.map((item :any)=>{
                         graph1WYAxis.push(item.price);
                         graph1WXAxis.push(moment(item.date).format("MMM Do, YY"));
+
+                        return false;
                     });
                 }
             })
@@ -371,6 +376,8 @@ const Stock = () => {
                     response.data.map((item :any)=>{
                         graph1MYAxis.push(item.price);
                         graph1MXAxis.push(moment(item.date).format("MMM Do, YY"));
+
+                        return false; 
                     });
                 }
             })
@@ -389,6 +396,8 @@ const Stock = () => {
                     response.data.map((item :any)=>{
                         graph3MYAxis.push(item.price);
                         graph3MXAxis.push(moment(item.date).format("MMM Do, YY"));
+
+                        return false; 
                     });
                 }
             })
@@ -407,6 +416,8 @@ const Stock = () => {
                     response.data.map((item :any)=>{
                         graph6MYAxis.push(item.price);
                         graph6MXAxis.push(moment(item.date).format("MMM Do, YY"));
+
+                        return false; 
                     });
                 }
             })
@@ -425,6 +436,8 @@ const Stock = () => {
                     response.data.map((item :any)=>{
                         graph1YYAxis.push(item.price);
                         graph1YXAxis.push(moment(item.date).format("MMM Do, YY"));
+
+                        return false; 
                     });
                 }
             })

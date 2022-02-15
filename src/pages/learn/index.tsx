@@ -18,7 +18,6 @@ import Accordion  from 'react-bootstrap/Accordion';
 import * as HelperFunctions from '../../lib/helper';
 import axios from 'axios';
 import { utilityServiceBaseUrlUrl } from '../../apiUrls';
-import { Link } from 'react-router-dom';
 import ArrowBackIcon from '../../assets/images/arrow-back.svg';
 
 const Learn = () => {
@@ -309,25 +308,25 @@ const Learn = () => {
                             <div className='relative mb-56'>
                                 <div className='flex space-x-5 justify-center items-center absolute p-10 bg-white shadow-sm rounded-lg mx-auto' style={{width: '50rem',top: '-5rem',left: '15%'}}>
                                     <div>
-                                        <a href="https://web.facebook.com/Anchoriang" target="_blank">
+                                        <a href="https://web.facebook.com/Anchoriang" target="_blank" rel="noreferrer">
                                             <img src={FacebookIcon} alt=""  className='w-14'/>
                                         </a>
                                     </div> 
 
                                     <div>
-                                        <a href="https://www.instagram.com/anchoriang/" target="_blank">
+                                        <a href="https://www.instagram.com/anchoriang/" target="_blank" rel="noreferrer">
                                             <img src={InstagramIcon} alt=""  className='w-14'/>
                                         </a>
                                     </div>
 
                                     <div>
-                                        <a href="https://www.linkedin.com/company/anchoria-investment-and-securities-ltd" target="_blank">
+                                        <a href="https://www.linkedin.com/company/anchoria-investment-and-securities-ltd" target="_blank" rel="noreferrer">
                                             <img src={LinkedInIcon} alt=""  className='w-14'/>
                                         </a>
                                     </div>
 
                                     <div>
-                                        <a href="mailto:help@anchoriaonline.com" target="_blank">
+                                        <a href="mailto:help@anchoriaonline.com" target="_blank" rel="noreferrer">
                                             <img src={EmailIcon} alt=""  className='w-14'/>
                                         </a>
                                     </div>

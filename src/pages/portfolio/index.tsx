@@ -37,8 +37,8 @@ const Portfolio = () => {
     const [netPortfolioReturns, setNetPortfolioReturns] = useState(0);
     const [netPortfolioReturnsPercentage, setNetPortfolioReturnsPercentage] = useState(0);
     const [, setShowPageLoader] = useState<boolean>(true);
-    const [graphYAxis, setGraphYAxis] = useState<string[]>([]);
-    const [graphXAxis, setGraphXAxis] = useState<string[]>([]);
+    const [graphYAxis, ] = useState<string[]>([]);
+    const [graphXAxis, ] = useState<string[]>([]);
 
     let options = {
         chart: {
@@ -155,6 +155,8 @@ const Portfolio = () => {
                     //setGraphYAxis(gy);
 
                     graphXAxis.push(moment(item.date).format("MMM Do"));
+
+                    return false; 
                     //setGraphXAxis(gx);
                 });
                 

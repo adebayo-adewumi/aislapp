@@ -4,7 +4,6 @@ import '../stock/index.scss';
 import ArrowBackIcon from '../../assets/images/arrow-back.svg';
 import CementFactory from '../../assets/images/cement-factory.jpg';
 import Refinery from '../../assets/images/refinery.jpg';
-import StockNewsImg from '../../assets/images/bgstory3.png';
 import UserAreaHeader from '../../components/Headers/UserAreaHeader';
 import Sidebar from '../../components/Sidebar';
 import moment from 'moment';
