@@ -30,6 +30,7 @@ const Register = () => {
     const [bVNPhoneDobIsNullOrEmpty, setBVNPhoneDobIsNullOrEmpty] = useState<boolean>(false);
 
     const [showImgAvatar, ] = useState<boolean>(true);
+    const [showSelfieAvatar, setShowSelfieAvatar] = useState<boolean>(false);
 
     const [bvn, setBVN] = useState('');
     const [email, setEmail] = useState('');
@@ -93,11 +94,9 @@ const Register = () => {
     const [showSpinner, setShowSpinner] = useState<boolean>(false);
     const [bvnHasError, setBVNHasError] = useState<boolean>(false);
 
-    const [errorMsg, ] = useState('');
+    const [errorMsg, setErrorMsg] = useState('');
 
     const [hashedSelfieImg, setHashedSelfieImg] = useState('');
-
-    const [showSelfieAvatar, setShowSelfieAvatar] = useState<boolean>(false);
 
     document.title = "Register - Anchoria";
 
@@ -275,6 +274,8 @@ const Register = () => {
                 })
                 .then(function (response) {
                     localStorage.setItem('workflowReference', response.data.data.workflowDetails.workflowReference);
+                    localStorage.setItem('aislBVNDetails', JSON.stringify(response.data.data.bvnDetails));
+
                     setShowSpinner(false);
                     confirmBVN();
 
@@ -285,6 +286,56 @@ const Register = () => {
                     console.log(response.data.data);
                 })
                 .catch(function (error) {
+                    console.log(error);
+                    setShowSpinner(false);
+                });
+        }
+    }
+
+    function registerUser() {
+        let bvnDetails =  JSON.parse(localStorage.getItem("aislBVNDetails") as string);
+
+        let requestData = {
+            "birthDate": bvnDetails.dateOfBirth,
+            "bvn": bvn,
+            "email": email,
+            "firstName": firstname,
+            "lastName": lastname,
+            "nationality": bvnDetails.nationality,
+            "otherNames": othername,
+            "password": password,
+            "phoneNumber": phoneCode.concat(phone),
+            "pin": ob1 + '' + ob2 + '' + ob3 + '' + ob4,
+            "selfieImage": "data:image/jpeg;base64,"+hashedSelfieImg,
+            "selfieName": "developer@live.com",
+            "sex": bvnDetails.gender,
+            "termsFlag": "Y",
+            "title": bvnDetails.title,
+            "deviceId": "2e1a65c3-abe8-49cc-99cc-afb2afba085c",
+            "osType": "Android",
+            "permanentAddress": bvnDetails.residentialAddress,
+            'shA': showImgAvatar
+        }
+
+        setShowSpinner(true);
+
+        let createUserCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
+        localStorage.setItem('createUserCypher', createUserCypher);
+
+
+        //REGISTER USER
+        if (localStorage.getItem('createUserCypher')) {
+            setShowSpinner(true);
+            getAxios(axios).post(authOnboardingServiceBaseUrl.concat('/customer/add?workflowReference=') + localStorage.getItem('workflowReference'),
+                {
+                    "text": localStorage.getItem('createUserCypher')
+                })
+                .then(function (response:any) {
+                    setShowSpinner(false);
+                    confirmSuccess();
+                    console.log(response.data.data);
+                })
+                .catch(function (error:any) {
                     console.log(error);
                     setShowSpinner(false);
                 });
@@ -368,54 +419,6 @@ const Register = () => {
                     console.log(response.data.data);
                 })
                 .catch(function (error) {
-                    console.log(error);
-                    setShowSpinner(false);
-                });
-        }
-    }
-
-    function registerUser() {
-        let requestData = {
-            "birthDate": "07-Feb-1991",
-            "bvn": bvn,
-            "email": email,
-            "firstName": firstname,
-            "lastName": lastname,
-            "nationality": "Nigeria",
-            "otherNames": othername,
-            "password": password,
-            "phoneNumber": phoneCode.concat(phone),
-            "pin": ob1 + '' + ob2 + '' + ob3 + '' + ob4,
-            "selfieImage": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/4gxYSUN",
-            "selfieName": "developer@live.com",
-            "sex": "MALE",
-            "termsFlag": "Y",
-            "title": "Mr",
-            "deviceId": "2e1a65c3-abe8-49cc-99cc-afb2afba085c",
-            "osType": "Android",
-            "permanentAddress": "No 9 Lagos house Marina, Lagos",
-            'shA': showImgAvatar
-        }
-
-        setShowSpinner(true);
-
-        let createUserCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
-        localStorage.setItem('createUserCypher', createUserCypher);
-
-
-        //REGISTER USER
-        if (localStorage.getItem('createUserCypher')) {
-            setShowSpinner(true);
-            getAxios(axios).post(authOnboardingServiceBaseUrl.concat('/customer/add?workflowReference=') + localStorage.getItem('workflowReference'),
-                {
-                    "text": localStorage.getItem('createUserCypher')
-                })
-                .then(function (response:any) {
-                    setShowSpinner(false);
-                    confirmSuccess();
-                    console.log(response.data.data);
-                })
-                .catch(function (error:any) {
                     console.log(error);
                     setShowSpinner(false);
                 });
@@ -598,23 +601,33 @@ const Register = () => {
     }
 
     function changeImgAvatar(event :any) {
-        // setShowImgAvatar(false);
+        let fileExtArr = ["jpg", "jpeg", "png", "jpg", "jpeg", "jfif", "pjpeg", "pjp", "gif", ".webp"];
+
         setShowSelfieAvatar(true);
 
         let base64String = '';
 
         let file = event.target.files[0];
+
+        let fileExt = file.name.split(".")[1];
       
-        let reader = new FileReader();
+        if(fileExtArr.includes(fileExt.toLowerCase())){
+            let reader = new FileReader();
           
-        reader.onload = function () {
-            let result = reader.result as string;
+            reader.onload = function () {
+                let result = reader.result as string;
 
-            base64String = result.replace("data:", "").replace(/^.+,/, "");
-            setHashedSelfieImg(base64String);
+                base64String = result.replace("data:", "").replace(/^.+,/, "");
+                setHashedSelfieImg(base64String);
+            }
+
+            reader.readAsDataURL(file);
+
+            setErrorMsg('');
         }
-
-        reader.readAsDataURL(file);
+        else{
+            setErrorMsg("Uploaded file is not a valid image. Only JPG, PNG and GIF files are allowed.");
+        }
     }
 
     function displayCalendar() {
@@ -813,8 +826,9 @@ const Register = () => {
                             <div className="text-center">
                                 <div className="mb-5 text-13">By creating an account, you agree to Anchoria </div>
                                 <div className="text-13">
-                                    <button type="button" className="no-underline border-0 bg-transparent text-color-1 cursor-pointer"><strong>Terms & Conditions</strong></button> and
-                                    <button type="button" className="no-underline border-0 bg-transparent text-color-1 cursor-pointer"><strong> Privacy Policy</strong></button>
+                                    <a href="https://anchoriaonline.com/terms-and-conditions-of-use/" target="_blank" rel='noreferrer'><button type="button" className="no-underline border-0 bg-transparent text-color-1 cursor-pointer"><strong>Terms & Conditions</strong></button></a> and
+
+                                    <a href="https://anchoriaonline.com/anchoria-privacy-policy/" target="_blank" rel='noreferrer'><button type="button" className="no-underline border-0 bg-transparent text-color-1 cursor-pointer"><strong> Privacy Policy</strong></button></a>
                                 </div>
                             </div>
                         </form>
@@ -830,20 +844,14 @@ const Register = () => {
 
                         {/* Selfie Error */}
                         <div className={errorMsg !== '' ? "error-alert mb-20":"hidden"}>
-                            <div className="flex justify-between space-x-1 pt-3">
-                                <div className="flex">
-                                    <div>
-                                        <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949"/>
-                                        </svg>
-                                    </div>
-
-                                    <div className="pt-1 text-14">{errorMsg}</div>
+                            <div className="flex justify-between space-x-1 items-center">
+                                <div className="flex items-center"> 
+                                    <div className="text-sm">{errorMsg}</div>
                                 </div>
                                 
-                                <div className="cursor-pointer" onClick={closeBVNHasError}>
-                                    <svg  className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50"/>
+                                <div className="cursor-pointer hidden" onClick={closeBVNHasError}>
+                                    <svg  className="" width="20" height="20" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#FF0000"/>
                                     </svg>
                                 </div>
                             </div>
