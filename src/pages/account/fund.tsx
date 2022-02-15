@@ -90,7 +90,7 @@ const FundAccount = () => {
         checkIfCardOTPFilled();
         getFundingHistory();
 
-    },[cardNumber, cardExpiry, cardCVV, cardPIN, cardOTP]);
+    },[cardNumber, cardExpiry, cardCVV, cardPIN, cardOTP]); 
 
     function performSwitchToDebit() {
         setSwitchToDebit(true);
