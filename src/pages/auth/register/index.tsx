@@ -273,24 +273,29 @@ const Register = () => {
                     "text": localStorage.getItem('genericCypher')
                 })
                 .then(function (response) {
+                    if(response.data.statusCode !== 200){
+                        setErrorMsg(response.data.message);
+                        console.log(response.data.message);
+                    }
+                    
                     localStorage.setItem('workflowReference', response.data.data.workflowDetails.workflowReference);
                     localStorage.setItem('aislBVNDetails', JSON.stringify(response.data.data.bvnDetails));
+
+                    
 
                     setShowSpinner(false);
                     confirmBVN();
 
                     setFirstName(response.data.data.bvnDetails.firstName);
                     setLastName(response.data.data.bvnDetails.lastName);
-                    setOtherName(response.data.data.bvnDetails.middleName);
-
-                    console.log(response.data.data);
+                    setOtherName(response.data.data.bvnDetails.middleName);                    
                 })
                 .catch(function (error) {
-                    console.log(error);
                     setShowSpinner(false);
                 });
         }
     }
+
 
     function registerUser() {
         let bvnDetails =  JSON.parse(localStorage.getItem("aislBVNDetails") as string);
