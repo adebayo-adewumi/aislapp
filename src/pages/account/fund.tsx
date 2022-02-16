@@ -15,7 +15,7 @@ import CopyIcon from '../../assets/images/copy.svg';
 import "../../index.scss";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import moment from 'moment';
-import { authOnboardingServiceBaseUrl, walletAndAccountServiceBaseUrl } from '../../apiUrls';
+import { walletAndAccountServiceBaseUrl } from '../../apiUrls';
 import { getAxios } from '../../network/httpClientWrapper';
 
 
@@ -45,15 +45,17 @@ const FundAccount = () => {
 
     const [isCardDetailsFilled, setIsCardDetailsFilled] = useState<boolean>(false);
     const [isCardOTPFilled, setIsCardOTPFilled] = useState<boolean>(false);
-    const [isPinValid, setIsPinValid] = useState('');
 
     const [showSpinner, setShowSpinner] = useState<boolean>(false);
 
     const [apiResponseSuccessMsg, setApiResponseSuccessMsg] = useState('');
+    const [apiResponseErrorMsg, setApiResponseErrorMsg] = useState('');
+
     const [customer, setCustomer] = useState(JSON.parse(localStorage.getItem("aislCustomerInfo") as string));
     const [poptiptext, setPopTipText] = useState("Click to Copy");
 
     const [fundingHistory, setFundingHistory] = useState([{}]);
+    const [cardFundingDetails, setCardFundingDetails] = useState([{}]);
 
     useEffect(() => {
         setCustomer(JSON.parse(localStorage.getItem("aislCustomerInfo") as string));
@@ -90,7 +92,7 @@ const FundAccount = () => {
         checkIfCardOTPFilled();
         getFundingHistory();
 
-    },[cardNumber, cardExpiry, cardCVV, cardPIN, cardOTP]); 
+    }, [cardCVV, cardExpiry, cardNumber, cardOTP, cardPIN]);
 
     function performSwitchToDebit() {
         setSwitchToDebit(true);
@@ -177,7 +179,6 @@ const FundAccount = () => {
     }
 
     function fundAccountWithCard() {
-        let customer = HelperFunctions.getCustomerInfo();
 
         let requestData = {
             "cardNumber": "5531886652142950",
@@ -189,11 +190,8 @@ const FundAccount = () => {
             "email": "ayomide.oyediran@vfdtech.ng",
             "fullname": "Ayomide Oyediran",
             "phoneNumber": "08165131008",
-            "txtRef": HelperFunctions.generateRandomString(10),
-            "authorization": {
-                "mode": "pin",
-                "pin": "1234"
-            }
+            "saveCard": true,
+            "pin": "1234"
         }
 
         setShowSpinner(true);
@@ -201,7 +199,7 @@ const FundAccount = () => {
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
         localStorage.setItem('genericCypher', genericCypher);
 
-        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/wallet-api/fw/pay/card/' + customer.id,
+        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/wallet-api/fw/pay/card',
             {
                 "text": localStorage.getItem('genericCypher')
             })
@@ -214,9 +212,10 @@ const FundAccount = () => {
                 setShowPinSection(false);
 
                 localStorage.setItem("aislPayWithCardResponse", JSON.stringify(response.data.data));
+
+                setCardFundingDetails([response.data.data]);
             })
             .catch(function (error) {
-                console.log(error)
                 setShowSpinner(false);
             });
     }
@@ -252,6 +251,49 @@ const FundAccount = () => {
             });
     }
 
+    function verifyCardFunding() {
+        let paymentRes = JSON.parse(localStorage.getItem("aislPayWithCardResponse") as string);
+
+        let requestData = {
+            "transactionId": paymentRes.transactionId,
+            "firebaseToken": HelperFunctions.generateRandomString(10)
+        }
+
+        console.log(requestData)
+
+        setShowSpinner(true);
+
+        let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
+        localStorage.setItem('genericCypher', genericCypher);
+
+        let headers = {
+            'x-firebase-token': '12222',
+            'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
+        }
+
+        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/wallet-api/fw/transaction/verify',
+            {
+                "text": localStorage.getItem('genericCypher')
+            },{headers})
+            .then(function (response) {
+                setShowSpinner(false);
+
+                setShowAmountSection(false);
+                setShowCardSection(false);
+                setShowOTPSection(false);
+                setShowPinSection(false);
+                setShowTransactionSection(true);
+
+                setApiResponseSuccessMsg('');
+            })
+            .catch(function (error) {
+                
+                setShowSpinner(false);
+
+                setApiResponseErrorMsg(error.response.data.message);
+            });
+    }
+
     function handleCreditCardNumberInputSelection(event: any) {
         return HelperFunctions.ccNumberInputHandler(event);
     }
@@ -282,73 +324,6 @@ const FundAccount = () => {
         let cvv = HelperFunctions.ccCVVInputHandler(event);
 
         setCardCVV(cvv);
-    }
-
-    function validatePin() {
-        setShowSpinner(true);
-
-        let txnPin = document.getElementsByClassName("txn-pin");
-        let pin = '';
-
-        [].forEach.call(txnPin, (el: any) => {
-            pin += el.value
-        });
-
-        let PINData = {
-            "pin": pin
-        }
-
-        let validatePinCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(PINData));
-        localStorage.setItem('validatePinCypher', validatePinCypher);
-
-        let customer = HelperFunctions.getCustomerInfo();
-        getAxios(axios).post(authOnboardingServiceBaseUrl + '/customer/pin/validate?customerId=' + customer.id,
-            {
-                "text": localStorage.getItem('validatePinCypher')
-            })
-            .then(function (response) {
-                setIsPinValid('true');
-                setApiResponseSuccessMsg(response.data.message);
-
-                setShowSpinner(false);
-            })
-            .catch(function (error) {
-                setIsPinValid('false');
-                setApiResponseSuccessMsg(error.response.data.message);
-                setShowSpinner(false);
-            });
-    }
-
-    function verifyCardFunding() {
-        let paymentRes = JSON.parse(localStorage.getItem("aislPayWithCardResponse") as string);
-
-        let requestData = {
-            "transactionId": paymentRes.transactionId,
-            "firebaseToken": HelperFunctions.generateRandomString(10)
-        }
-
-        setShowSpinner(true);
-
-        let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
-        localStorage.setItem('genericCypher', genericCypher);
-
-        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/wallet-api/fw/transaction/verify',
-            {
-                "text": localStorage.getItem('genericCypher')
-            })
-            .then(function (response) {
-                setShowSpinner(false);
-
-                setShowAmountSection(false);
-                setShowCardSection(false);
-                setShowOTPSection(false);
-                setShowPinSection(false);
-                setShowTransactionSection(true);
-            })
-            .catch(function (error) {
-                console.log(error)
-                setShowSpinner(false);
-            });
     }
 
     function changePopTipTextToCopied() {
@@ -543,34 +518,11 @@ const FundAccount = () => {
                                 </div>
                                 {/* End */}
 
-                                {/* Enter PIN Section */}
+                                {/* Enter VERIFY Card Section */}
                                 <div className={showPinSection ? 'pin-section' : 'hidden'}>
                                     <div>
-                                        <div className='text-lg font-bold'>Amount</div>
-
-                                        <div className='mb-30 font-gotham-black-regular text-color-1 text-3xl'>₦ {showAmount}</div>
-
-                                        <div>
-                                            <div className='flex justify-between mb-30'>
-                                                <div>Fees</div>
-                                                <div>₦306.00</div>
-                                            </div>
-
-                                            <div className='flex justify-between mb-30'>
-                                                <div>Total Cost</div>
-                                                <div className='font-bold text-color-1 font-bold'>₦ 24,206.00</div>
-                                            </div>
-
-                                            <div className='flex justify-between mb-30'>
-                                                <div>Card</div>
-                                                <div className='font-bold text-gray-500'> (*** 3456)</div>
-                                            </div>
-                                        </div>
-
-                                        <div className='border-bottom-1d mb-20'></div>
-
-                                        {/* Pin Success */}
-                                        <div className={isPinValid === 'true' ? "otp-alert mb-20" : "hidden"}>
+                                        {/* verify Success */}
+                                        <div className={apiResponseSuccessMsg !== '' ? "otp-alert mb-20":"hidden"}>
                                             <div className="flex otp-validated justify-between space-x-1 pt-3">
                                                 <div className="flex">
                                                     <div>
@@ -592,8 +544,8 @@ const FundAccount = () => {
                                         </div>
                                         {/* End */}
 
-                                        {/* Pin Error */}
-                                        <div className={isPinValid !== 'false' ? "hidden" : "error-alert mb-20"}>
+                                        {/* verify Error */}
+                                        <div className={apiResponseErrorMsg !== '' ? "error-alert mb-20":"hidden"}>
                                             <div className="flex justify-between space-x-1 pt-3">
                                                 <div className="flex">
                                                     <div>
@@ -602,7 +554,7 @@ const FundAccount = () => {
                                                         </svg>
                                                     </div>
 
-                                                    <div className="pt-1 text-14">{apiResponseSuccessMsg}</div>
+                                                    <div className="pt-1 text-14">{apiResponseErrorMsg}</div>
                                                 </div>
 
                                                 <div className="cursor-pointer">
@@ -614,32 +566,31 @@ const FundAccount = () => {
                                         </div>
                                         {/* End */}
 
-                                        <div className='mb-20 text-color-1 text-xl font-bold'>Confirm Transaction PIN</div>
+                                        <div className='text-lg font-bold'>Amount</div>
 
-                                        <div className='mb-20'>
+                                        <div className='mb-30 font-gotham-black-regular text-color-1 text-3xl'>₦ {showAmount}</div>
 
+                                        {cardFundingDetails.map((item :any, index :any) =>
+                                        <div className='' key={index}>
+                                            <div className='flex justify-between mb-30'>
+                                                <div>Card</div>
+                                                <div>{item.cardNumber}</div>
+                                            </div>
 
-                                            <div className='text-13 font-bold mb-10'>Enter PIN</div>
+                                            <div className='flex justify-between mb-30'>
+                                                <div>Beneficiary Account Number</div>
+                                                <div className='font-bold text-color-1 font-bold'>{item.beneficiaryAccountNumber}</div>
+                                            </div>
 
-                                            <div className='flex space-x-3'>
-                                                <input type='password' className='text-center input p-3 border-1-d6 outline-white txn-pin' maxLength={1} />
-                                                <input type='password' className='text-center input p-3 border-1-d6 outline-white txn-pin' maxLength={1} />
-                                                <input type='password' className='text-center input p-3 border-1-d6 outline-white txn-pin' maxLength={1} />
-                                                <input type='password' className='text-center input p-3 border-1-d6 outline-white txn-pin' maxLength={1} />
-
-                                                <input type='password' className='text-center input p-3 border-1-d6 outline-white opacity-0' />
-                                                <input type='password' className='text-center input p-3 border-1-d6 outline-white opacity-0' />
-
+                                            <div className='flex justify-between mb-30'>
+                                                <div>Currency</div>
+                                                <div className='font-bold text-gray-500'>{item.currency}</div>
                                             </div>
                                         </div>
+                                        )}
 
                                         <div>
-                                            <button onClick={validatePin} type='button' className={isPinValid === 'false' || isPinValid === '' ? 'w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' : 'hidden'} >
-                                                <span className={showSpinner ? "hidden" : ""}>Validate</span>
-                                                <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
-                                            </button>
-
-                                            <button onClick={verifyCardFunding} type='button' className={isPinValid === 'true' ? 'w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' : 'hidden'} >
+                                            <button onClick={verifyCardFunding} type='button' className= 'w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' >
                                                 <span className={showSpinner ? "hidden" : ""}>Proceed</span>
                                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                             </button>
