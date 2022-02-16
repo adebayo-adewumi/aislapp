@@ -155,9 +155,9 @@ const Portfolio = () => {
                     //setGraphYAxis(gy);
 
                     graphXAxis.push(moment(item.date).format("MMM Do"));
-
-                    return false; 
                     //setGraphXAxis(gx);
+
+                    return false;
                 });
                 
             })
@@ -169,7 +169,7 @@ const Portfolio = () => {
         getStockGraphData();
         getPortfolioList();
         checkIfPortfolioIsNullOrEmpty();
-    });
+    },[apiResponseHasError, graphXAxis, graphYAxis, portfolioName]);
 
     function showCreatePorfolioModal() {
         setShowCreatePortfolio(true);
@@ -187,29 +187,29 @@ const Portfolio = () => {
         let requestData = {
             "name": portfolioName
         }
+
+        console.log(requestData)
+
         setShowSpinner(true);
-        let createPortfolioCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
-        localStorage.setItem('createPortfolioCypher', createPortfolioCypher);
+
+        let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
+        localStorage.setItem('genericCypher', genericCypher);
 
         //Login User
-        if (localStorage.getItem('createPortfolioCypher')) {
-            setShowSpinner(true);
-            
+        if (localStorage.getItem('genericCypher')) {
+            setShowSpinner(true);            
 
             getAxios(axios).post(createPortfolioEndpoint,
                 {
-                    "text": localStorage.getItem('createPortfolioCypher')
+                    "text": localStorage.getItem('genericCypher')
                 })
                 .then(function () {
                     setShowSpinner(false);
                     setShowCreatePortfolio(false);
                     setShowModalBG(true);
                     setShowSuccessModal(true);
-                    //getPortfolioList();
                 })
                 .catch(function (error) {
-
-                    console.log(error);
 
                     setShowSpinner(false);
 

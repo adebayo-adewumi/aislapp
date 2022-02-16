@@ -76,7 +76,7 @@ const PortfolioInfoCard: FunctionComponent<Props> = ({
 
                     <div className="text-14">
                         <div className="mb-10 font-bold text-color-2">{item.name}</div>
-                        <div className='text-black'>Count: {item.hasOwnProperty("listOfStocks") ? item.listOfStocks.length : 0}</div>
+                        <div className={item.hasOwnProperty("listOfStocks") ? 'text-black':'hidden'}>Count: {item.hasOwnProperty("listOfStocks") ? item.listOfStocks.length : 0}</div>
                     </div>
                 </div>
 
@@ -85,7 +85,7 @@ const PortfolioInfoCard: FunctionComponent<Props> = ({
                         <div className="text-color-1 font-bold">{title}</div>
                     </div>
                     <div className="font-gotham-black-regular text-color-1 text-24 mb-10">₦ {formatCurrencyWithDecimal(item.currentValue)}</div>
-                    <div>
+                    <div className={item.hasOwnProperty("listOfStocks") ? '':'hidden'}>
                         <span className={(item.portfolioReturn) >= 0 ? "text-green-500 text-24 font-bold" : "text-red-500 text-24 font-bold"}>
                             {formatCurrencyWithDecimal(defaultToZeroIfNullOrUndefined(item.portfolioReturn)).replace("-","")} |
                             {isNullOrUndefined(item.portfolioPercentageReturn)
@@ -94,7 +94,7 @@ const PortfolioInfoCard: FunctionComponent<Props> = ({
                     </div>
                 </div>
 
-                <div className='row d-flex justify-content-end align-items-end'>
+                <div className={item.hasOwnProperty("listOfStocks") ? 'row d-flex justify-content-end align-items-end':'hidden'}>
                     <div onClick={viewPortfolioDetails}><img src={ChevronRightIcon} alt="" /></div>
                     <div className='mr-2' onClick={deletePortfolio}><img src={DeleteIcon} alt="" /></div>
                 </div>
