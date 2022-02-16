@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import '../dashboard/index.scss';
 import WalletIcon from '../../assets/images/wallet.svg';
+import ShowPasswordIcon from '../../assets/images/show-password.svg';
 import HidePasswordIcon from '../../assets/images/hide-password.svg';
 import ArrowUpIcon from '../../assets/images/arrow-up.svg';
 import ArrowBidirectionalIcon from '../../assets/images/arrow-bidirectional.svg';
@@ -63,6 +64,9 @@ const Dashboard = () => {
     const [customer] = useState(JSON.parse(localStorage.getItem('aislCustomerInfo') as string));
 
     const [searchQuery, setSearchQuery] = useState('');
+
+    const [isShowPortfolioBalance, setIsShowPortfolioBalance] = useState<boolean>(false);
+    const [isShowWalletBalance, setIsShowWalletBalance] = useState<boolean>(false);
 
     useEffect(() => {
         document.title = "Dashboard - Anchoria";
@@ -359,6 +363,42 @@ const Dashboard = () => {
         return;
     }
 
+    function togglePortfolioBalanceDisplay(event :any){
+        let amountPlaceholder = event.target.getAttribute("data-placeholder");
+        let amount = event.target.getAttribute("data-amount");
+        let type = event.target.getAttribute("data-type");
+        let el = document.getElementById(type) as HTMLElement;
+
+        if(isShowPortfolioBalance){
+            setIsShowPortfolioBalance(false);
+
+            el.innerHTML = amount;
+        }
+        else{
+            setIsShowPortfolioBalance(true);
+            el.innerHTML = amountPlaceholder;
+        }
+
+    }
+
+    function toggleWalletBalanceDisplay(event :any){
+        let amountPlaceholder = event.target.getAttribute("data-placeholder");
+        let amount = event.target.getAttribute("data-amount");
+        let type = event.target.getAttribute("data-type");
+        let el = document.getElementById(type) as HTMLElement;
+
+        if(isShowWalletBalance){
+            setIsShowWalletBalance(false);
+
+            el.innerHTML = amount;
+        }
+        else{
+            setIsShowWalletBalance(true);
+            el.innerHTML = amountPlaceholder;
+        }
+
+    }
+
     return (
         <div className="relative">
 
@@ -397,7 +437,11 @@ const Dashboard = () => {
                                             <div className="mb-10">Total Portfolio Balance</div>
 
                                             <div className="font-bold text-28 font-gotham-black-regular">
-                                                <img src={WalletIcon} alt="" /> ₦ {HelperFunctions.formatCurrencyWithDecimal(totalPortfolioValue)} <img src={HidePasswordIcon} alt="" width="20" className="cursor-pointer" />
+                                                <img src={WalletIcon} alt="" /> ₦ <span id='portfolio-balance'>{HelperFunctions.formatCurrencyWithDecimal(totalPortfolioValue)}</span>
+                                                
+                                                <img onClick={togglePortfolioBalanceDisplay} src={HidePasswordIcon} data-placeholder="XXXXXX.XX" data-amount={HelperFunctions.formatCurrencyWithDecimal(totalPortfolioValue)} alt="" width="20" className={isShowPortfolioBalance ? "cursor-pointer": "hidden"} data-type="portfolio-balance" />
+
+                                                <img onClick={togglePortfolioBalanceDisplay} data-placeholder="XXXXXX.XX" data-amount={HelperFunctions.formatCurrencyWithDecimal(totalPortfolioValue)} src={ShowPasswordIcon} data-type="portfolio-balance" alt="" width="20" className={isShowPortfolioBalance ? "hidden": "cursor-pointer"} />
                                             </div>
                                         </div>
 
@@ -411,7 +455,7 @@ const Dashboard = () => {
 
                                 <div>
                                     <img src={netPortfolioReturns >= 0 ? ArrowUpIcon : ArrowDownIcon} alt="" width="20" className="align-middle" />
-                                    <span className={netPortfolioReturns >= 0 ? "text-green-500 font-bold font-gotham-black-regular mx-2" : "text-red-500 font-bold font-gotham-black-regular mx-2"}>{netPortfolioReturns >= 0 ? '+' + HelperFunctions.formatCurrencyWithDecimal(netPortfolioReturns).replace("-","") : HelperFunctions.formatCurrencyWithDecimal(netPortfolioReturns).replace("-","")} | {HelperFunctions.formatCurrencyWithDecimal(netPortfolioReturnsPercentage).replace("-","")}%</span>
+                                    <span data-placeholder="" className={netPortfolioReturns >= 0 ? "text-green-500 font-bold font-gotham-black-regular mx-2" : "text-red-500 font-bold font-gotham-black-regular mx-2"}>{netPortfolioReturns >= 0 ? HelperFunctions.formatCurrencyWithDecimal(netPortfolioReturns).replace("-","") : HelperFunctions.formatCurrencyWithDecimal(netPortfolioReturns).replace("-","")} | {HelperFunctions.formatCurrencyWithDecimal(netPortfolioReturnsPercentage).replace("-","")}%</span>
                                 </div>
                             </div>
 
@@ -422,7 +466,11 @@ const Dashboard = () => {
                                             <div className="mb-10">Total Wallet Balance</div>
 
                                             <div className="font-bold text-25 font-gotham-black-regular">
-                                                <img src={WalletIcon} alt="" /> ₦{HelperFunctions.formatCurrencyWithDecimal(walletBalance)} <img src={HidePasswordIcon} alt="" width="20" className="cursor-pointer" />
+                                                <img src={WalletIcon} alt="" /> ₦ <span id='wallet-balance'>{HelperFunctions.formatCurrencyWithDecimal(walletBalance)} </span>
+                                                
+                                                <img onClick={toggleWalletBalanceDisplay} src={HidePasswordIcon} data-placeholder="XXXXXX.XX" data-amount={HelperFunctions.formatCurrencyWithDecimal(walletBalance)} alt="" width="20" className={isShowWalletBalance ? "cursor-pointer": "hidden"} data-type="wallet-balance" />
+
+                                                <img onClick={toggleWalletBalanceDisplay} data-placeholder="XXXXXX.XX" data-amount={HelperFunctions.formatCurrencyWithDecimal(walletBalance)} src={ShowPasswordIcon} data-type="wallet-balance" alt="" width="20" className={isShowWalletBalance ? "hidden": "cursor-pointer"} />
                                             </div>
                                         </div>
 
