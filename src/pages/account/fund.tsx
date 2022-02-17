@@ -179,20 +179,23 @@ const FundAccount = () => {
     }
 
     function fundAccountWithCard() {
+        let customer = HelperFunctions.getCustomerInfo();
 
         let requestData = {
-            "cardNumber": "5531886652142950",
-            "cvv": "564",
-            "expiryMonth": "09",
-            "expiryYear": "32",
+            "cardNumber": cardNumber.replaceAll(" ",""),
+            "cvv": cardCVV,
+            "expiryMonth": cardExpiry.split("/")[0],
+            "expiryYear": cardExpiry.split("/")[1],
             "currency": "NGN",
-            "amount": "1000",
-            "email": "ayomide.oyediran@vfdtech.ng",
-            "fullname": "Ayomide Oyediran",
-            "phoneNumber": "08165131008",
+            "amount": parseFloat(showAmount),
+            "email": customer.email,
+            "fullname": customer.firstName+" "+customer.lastName,
+            "phoneNumber": customer.phoneNumber,
             "saveCard": true,
-            "pin": "1234"
+            "pin": parseInt(cardPIN)
         }
+
+        console.log(requestData);
 
         setShowSpinner(true);
 
@@ -225,18 +228,25 @@ const FundAccount = () => {
 
         let requestData = {
             "paymentReference": paymentRes.flwRef,
-            "otp": 12345
+            "otp": cardOTP
         }
+
+        console.log(requestData);
 
         setShowSpinner(true);
 
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
         localStorage.setItem('genericCypher', genericCypher);
 
+        let headers = {
+            'x-firebase-token': '12222',
+            'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
+        }
+
         getAxios(axios).post(walletAndAccountServiceBaseUrl + '/wallet-api/fw/pay/card/validate-otp',
             {
                 "text": localStorage.getItem('genericCypher')
-            })
+            }, {headers})
             .then(function (response) {
                 setShowSpinner(false);
 

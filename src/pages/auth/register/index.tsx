@@ -36,7 +36,7 @@ const Register = () => {
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [dob, setDOB] = useState('');
-    const [phoneCode, setPhoneCode] = useState('');
+    const [phoneCode, setPhoneCode] = useState('234');
 
     const [isInvalidBVN, setIsInvalidBVN] = useState<boolean>(false);
     const [isInvalidEmail, setIsInvalidEmail] = useState<boolean>(false);
@@ -52,6 +52,7 @@ const Register = () => {
     const [showCalendar, setShowCalendar] = useState<boolean>(false);
     const [openBVNModal, setOpenBVNModal] = useState<boolean>(false);
     const [openModalBackdrop, setOpenModalBackdrop] = useState<boolean>(false);
+    
 
     const [otpbox1, setOTPBox1] = useState('');
     const [otpbox2, setOTPBox2] = useState('');
@@ -221,6 +222,8 @@ const Register = () => {
             "dateOfBirth": dob
         }
 
+        console.log(phoneCode.concat(phone))
+
         setShowSpinner(true);
 
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
@@ -295,7 +298,6 @@ const Register = () => {
                 });
         }
     }
-
 
     function registerUser() {
         let bvnDetails =  JSON.parse(localStorage.getItem("aislBVNDetails") as string);
@@ -398,15 +400,6 @@ const Register = () => {
         let validatePhoneOTPCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
         localStorage.setItem('validatePhoneOTPCypher', validatePhoneOTPCypher);
 
-        // axios.post('https://cors-anywhere.herokuapp.com/http://34.252.87.56:7934/test/encrypt', requestData)
-        // .then(function (response) {
-        //     localStorage.setItem('validatePhoneOTPCypher', response.data.text);
-        //     setShowSpinner(false);
-        // })
-        // .catch(function (error) {
-        //     console.log(error);
-        //     setShowSpinner(false);
-        // });
 
         //VALIDATE OTP FOR PHONE
         if (localStorage.getItem('validatePhoneOTPCypher')) {
