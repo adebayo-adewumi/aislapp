@@ -11,13 +11,13 @@ import { encryptData } from '../../lib/encryptionHelper';
 import { generalEncKey } from '../../common/constants/globals';
 import SpinnerIcon from "../../assets/images/spinner.gif";
 import { getAxios } from '../../network/httpClientWrapper';
-import { authOnboardingServiceBaseUrl, portfolioServiceBaseUrlUrl, walletAndAccountServiceBaseUrl } from '../../apiUrls';
+import { portfolioServiceBaseUrlUrl, walletAndAccountServiceBaseUrl } from '../../apiUrls';
 
 const WithdrawFund = () => {
     document.title = "Withdraw Funds - Anchoria";
 
     const [showAmount, setShowAmount] = useState('');
-    const [showWithdraw, setShowWithdraw] = useState<boolean>(true);
+    const [showWithdraw, ] = useState<boolean>(true);
     const [showWithdrawSummary, setShowWithdrawSummary] = useState<boolean>(false);
     const [showSuccess, setShowSuccess] = useState<boolean>(false);
 
@@ -31,7 +31,7 @@ const WithdrawFund = () => {
 
     const [isPinValid, setIsPinValid] = useState('');
 
-    const [apiResponseSuccessMsg, setApiResponseSuccessMsg] = useState('');
+    const [apiResponseSuccessMsg, ] = useState('');
 
     useEffect(() => {
         function getWalletBalance() {
@@ -64,11 +64,7 @@ const WithdrawFund = () => {
         getBankDetailsList();
     }, []);
 
-    function displayWithdrawSummary() {
 
-        setShowWithdraw(false);
-        setShowWithdrawSummary(true);
-    }
 
     function selectAmount(event: any) {
         const amountBtns = document.getElementsByClassName("amount-btn");
@@ -146,46 +142,7 @@ const WithdrawFund = () => {
             });
     }
 
-    function validatePin() {
-        setShowSpinner(true);
-
-        let txnPin = document.getElementsByClassName("txn-pin");
-        let pin = '';
-
-        [].forEach.call(txnPin, (el: any) => {
-            pin += el.value
-        });
-
-        let PINData = {
-            "pin": pin
-        }
-
-        let validatePinCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(PINData));
-        localStorage.setItem('validatePinCypher', validatePinCypher);
-
-        let customer = HelperFunctions.getCustomerInfo();
-        getAxios(axios).post(authOnboardingServiceBaseUrl + '/customer/pin/validate?customerId=' + customer.id,
-            {
-                "text": localStorage.getItem('validatePinCypher')
-            })
-            .then(function (response) {
-                if(response.data.statusCode !== 200){
-                    setIsPinValid('false');
-                }
-                else{
-                    setIsPinValid('false');
-                }
-
-                setApiResponseSuccessMsg('Invalid PIN');
-
-                setShowSpinner(false);
-            })
-            .catch(function (error) {
-                setIsPinValid('false');
-                setApiResponseSuccessMsg(error.response.data.message);
-                setShowSpinner(false);
-            });
-    }
+    
 
     function closeSuccess() {
         window.location.reload();

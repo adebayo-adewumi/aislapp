@@ -284,7 +284,7 @@ const Profile = () => {
         getNotificationLogs();
         getBankDetailsList();
         getBankList();
-    },[]);  
+    });  
 
     function changePassword(){
         let customer = HelperFunctions.getCustomerInfo();

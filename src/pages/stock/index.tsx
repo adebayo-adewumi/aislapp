@@ -464,7 +464,7 @@ const Stock = () => {
         get6MStockGraphData();
         get1YStockGraphData();
 
-    },[]);
+    });
 
     function calculateStockOrderEstimate() {
         let customer = HelperFunctions.getCustomerInfo();
