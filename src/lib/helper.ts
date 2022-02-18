@@ -207,3 +207,18 @@ export const ccCVVInputHandler = (e: any) => {
     return el.value = ccCVVInputOldValue;
   }
 };
+export const progressToNextTextBox = (className :string) => {
+  let elts :any = document.getElementsByClassName(className);
+
+  Array.from(elts).forEach(function(elt :any){
+    elt.addEventListener("keyup", function(event :any) {
+      if (elt.value.length === 1) {
+        // Focus on the next sibling
+        elt.nextElementSibling.focus();
+      }
+      else{
+        return;
+      }
+    });
+  })
+};

@@ -20,7 +20,7 @@ import moment from 'moment';
 import ArrowDownIcon from '../../assets/images/arrow-down.svg';
 import AnchoriaIcon from '../../assets/images/anchoria-icon.svg';
 import AnchoriaSpinner from '../../assets/images/anchoria-spinner.svg';
-import { getNewsEndpoint, getPortfolioEndpoint, getTopGainersEndpoint, getTopLosersEndpoint, getTopMoverByValueEndpoint, portfolioServiceBaseUrlUrl, walletAndAccountServiceBaseUrl } from '../../apiUrls';
+import { getNewsEndpoint, getPortfolioEndpoint, getTopGainersEndpoint, getTopLosersEndpoint, getTopMoverByValueEndpoint, portfolioServiceBaseUrlUrl, stockTradingServiceBaseUrlUrl, utilityServiceBaseUrlUrl } from '../../apiUrls';
 import { getAxios } from '../../network/httpClientWrapper';
 
 const Dashboard = () => {
@@ -91,9 +91,9 @@ const Dashboard = () => {
 
             getAxios(axios).get(url)
                 .then(function (response) {
-                    const topmovers = response.data.data.map((el: any) =>
+                    const topmovers = response.data.data.map((el: any, index :any) =>
                         <div className="card-xsm w-2/5">
-                            <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.stockCode + "&sign=" + (el.sign === '+' ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose} className='no-underline'>
+                            <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.stockCode + "&sign=" + (el.sign === '+' ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose} className='no-underline' key={index}>
                                 <div className="mb-10">
                                     <img src={AtlasIcon} alt="" />
                                 </div>
@@ -148,8 +148,8 @@ const Dashboard = () => {
                     const fullGainersList = response.data.data;
                     const takeGainers = [response.data.data[0], response.data.data[1], response.data.data[2]];
 
-                    const listTopGainers = takeGainers.map((el: any) =>
-                        <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.stockCode + "&sign=" + (el.sign === '+' ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose} className='no-underline'>
+                    const listTopGainers = takeGainers.map((el: any, index :any) =>
+                        <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.stockCode + "&sign=" + (el.sign === '+' ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose} className='no-underline' key={index}>
                             <div className="card mb-30">
                                 <div className="flex justify-between w-full">
                                     <div className="flex space-x-5">
@@ -192,8 +192,8 @@ const Dashboard = () => {
                     const fullLosersList = response.data.data;
                     const takeLosers = [response.data.data[0], response.data.data[1], response.data.data[2]];
 
-                    const listTopLosers = takeLosers.map((item: any) =>
-                        <Link to={"/stock?name=" + item.name + "&sector=" + item.sector + "&symbol=" + item.stockCode + "&sign=" + (item.sign === '+' ? 'positive' : 'negative') + "&change=" + item.change + "&close=" + item.close + "&open=" + item.open + "&high=" + item.high + "&low=" + item.low + "&wkhigh=" + item.weekHigh52 + "&wklow=" + item.weekLow52 + "&volume=" + item.volume + "&mktsegment=" + item.mktSegment + "&pclose=" + item.pclose} className='no-underline'>
+                    const listTopLosers = takeLosers.map((item: any, index :any) =>
+                        <Link to={"/stock?name=" + item.name + "&sector=" + item.sector + "&symbol=" + item.stockCode + "&sign=" + (item.sign === '+' ? 'positive' : 'negative') + "&change=" + item.change + "&close=" + item.close + "&open=" + item.open + "&high=" + item.high + "&low=" + item.low + "&wkhigh=" + item.weekHigh52 + "&wklow=" + item.weekLow52 + "&volume=" + item.volume + "&mktsegment=" + item.mktSegment + "&pclose=" + item.pclose} className='no-underline' key={index}>
                             <div className="card mb-30">
                                 <div className="flex justify-between w-full">
                                     <div className="flex space-x-5">
@@ -233,13 +233,13 @@ const Dashboard = () => {
                 .then(function (response) {
                     const takeNews = [response.data.data[0], response.data.data[1], response.data.data[2]];
 
-                    const newsItem = takeNews.map((item: any) =>
-                        <Link to={"/news/details?author=" + item.author + "&date=" + item.date + "&id=" + item.id + "&imageUrl=" + item.imageUrl + "&snippet=" + item.snippet + "&source=" + item.source + "&title=" + item.title + "&url=" + item.url} className='no-underline'>
-                            <div className="flex justify-between space-x-5 w-4/6" key={item.id}>
+                    const newsItem = takeNews.map((item: any, index :any) =>
+                        <Link to={"/news/details?author=" + item.author + "&date=" + item.date + "&id=" + item.id + "&imageUrl=" + item.imageUrl + "&snippet=" + item.snippet + "&source=" + item.source + "&title=" + item.title + "&url=" + item.url} className='no-underline' key={index}>
+                            <div className="flex justify-between space-x-5" key={index} style={{width: '23rem'}}>
                                 <div>
                                     <div className="font-bold text-13 mb-10 text-black">{item.title}</div>
                                     <div className="text-13 text-color-5 mb-10 leading-5">
-                                        {item.snippet}
+                                        {item.snippet.substring(0, 100)}...
                                     </div>
                                     <div className="font-bold text-13 text-black mb-10">&middot; {moment(item.date).format("MMM Do YYYY, hh:ss a")}</div>
                                 </div>
@@ -255,6 +255,17 @@ const Dashboard = () => {
                 .catch(function (error) {
                     setNewsApiResponseSuccess(false);
                 });
+        }
+
+        function getWatchlist() {
+            let customer = HelperFunctions.getCustomerInfo();
+
+            getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/watchlist?customerId=' + customer.id)
+            .then(function (response) {
+                localStorage.SetItem("aislUserWatchlist", JSON.stringify(response.data.data));
+            })
+            .catch(function (error) {
+            });
         }
 
         // function testApiForGet() {
@@ -273,6 +284,7 @@ const Dashboard = () => {
         getNews();
         getPortfolioList();
         getTopMovers();
+        getWatchlist();
         //testApiForGet();
 
     }, []);
@@ -315,7 +327,7 @@ const Dashboard = () => {
 
     function getTopMovers(event: any) {
         let targetValue = event.target.getAttribute("data-value");
-        let url = walletAndAccountServiceBaseUrl.concat('/utils/top-movers?type=') + targetValue;
+        let url = utilityServiceBaseUrlUrl.concat('/utils/top-movers?type=') + targetValue;
 
         if (targetValue === "value") {
             setByValueActive(true);
@@ -329,9 +341,9 @@ const Dashboard = () => {
         getAxios(axios).get(url)
             .then(function (response) {
 
-                const topmovers = response.data.data.map((el: any) =>
-                    <div className="card-xsm w-2/5">
-                        <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.stockCode + "&sign=" + (el.sign === '+' ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose} className='no-underline'>
+                const topmovers = response.data.data.map((el: any, index :any) =>
+                    <div className="card-xsm w-2/5" key={index}>
+                        <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.stockCode + "&sign=" + (el.sign === '+' ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose} className='no-underline' >
                             <div className="mb-10">
                                 <img src={AtlasIcon} alt="" />
                             </div>
@@ -342,7 +354,7 @@ const Dashboard = () => {
                             </div>
 
                             <div>
-                                <div className="text-green-500 text-13">{HelperFunctions.formatCurrencyWithDecimal(el.percentageChange)} % </div>
+                                <div className="text-green-500 text-13 hidden">{HelperFunctions.formatCurrencyWithDecimal(el.percentageChange)} % </div>
                             </div>
                         </Link>
                     </div>
@@ -675,7 +687,7 @@ const Dashboard = () => {
                                 </svg>
                                 <span className="ml-2">₦ {HelperFunctions.formatCurrencyWithDecimal(unsettledBalance)}</span>
                             </div>
-                            <div className="text-white text-13">Money from your recent sell orders that are yet to reflect in available balance</div>
+                            <div className="text-white text-13">Money from your recent sell orders that is yet to reflect in available balance</div>
                         </div>
 
                         <div className="wallet-balance-card mb-30">
@@ -706,8 +718,8 @@ const Dashboard = () => {
                         <div className="border-1 mb-30"></div>
 
                         <div>
-                            {topGainersSeeMore.map((item: any) =>
-                                <Link to={"/stock?name=" + item.name + "&sector=" + item.sector + "&symbol=" + item.stockCode + "&sign=" + (item.sign === '+' ? 'positive' : 'negative') + "&change=" + item.change + "&close=" + item.close + "&open=" + item.open + "&high=" + item.high + "&low=" + item.low + "&wkhigh=" + item.weekHigh52 + "&wklow=" + item.weekLow52 + "&volume=" + item.volume + "&mktsegment=" + item.mktSegment + "&pclose=" + item.pclose} className='no-underline'>
+                            {topGainersSeeMore.map((item: any, index :any) =>
+                                <Link to={"/stock?name=" + item.name + "&sector=" + item.sector + "&symbol=" + item.stockCode + "&sign=" + (item.sign === '+' ? 'positive' : 'negative') + "&change=" + item.change + "&close=" + item.close + "&open=" + item.open + "&high=" + item.high + "&low=" + item.low + "&wkhigh=" + item.weekHigh52 + "&wklow=" + item.weekLow52 + "&volume=" + item.volume + "&mktsegment=" + item.mktSegment + "&pclose=" + item.pclose} className='no-underline' key={index}>
                                     <div className="card mb-30">
                                         <div className="flex justify-between w-full">
                                             <div className="flex space-x-5">
@@ -750,8 +762,8 @@ const Dashboard = () => {
                         <div className="border-1 mb-30"></div>
 
                         <div>
-                            {topLosersSeeMore.map((item: any) =>
-                                <Link to={"/stock?name=" + item.name + "&sector=" + item.sector + "&symbol=" + item.stockCode + "&sign=" + (item.sign === '+' ? 'positive' : 'negative') + "&change=" + item.change + "&close=" + item.close + "&open=" + item.open + "&high=" + item.high + "&low=" + item.low + "&wkhigh=" + item.weekHigh52 + "&wklow=" + item.weekLow52 + "&volume=" + item.volume + "&mktsegment=" + item.mktSegment + "&pclose=" + item.pclose} className='no-underline'>
+                            {topLosersSeeMore.map((item: any, index :any) =>
+                                <Link to={"/stock?name=" + item.name + "&sector=" + item.sector + "&symbol=" + item.stockCode + "&sign=" + (item.sign === '+' ? 'positive' : 'negative') + "&change=" + item.change + "&close=" + item.close + "&open=" + item.open + "&high=" + item.high + "&low=" + item.low + "&wkhigh=" + item.weekHigh52 + "&wklow=" + item.weekLow52 + "&volume=" + item.volume + "&mktsegment=" + item.mktSegment + "&pclose=" + item.pclose} className='no-underline' key={index}>
                                     <div className="card mb-30">
                                         <div className="flex justify-between w-full">
                                             <div className="flex space-x-5">

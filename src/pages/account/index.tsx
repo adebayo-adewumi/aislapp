@@ -179,7 +179,7 @@ const Account = () => {
                                 </svg> 
                                 <span className="ml-2">₦ {HelperFunctions.formatCurrencyWithDecimal(unsettledBalance)}</span>
                             </div>
-                            <div className="text-gray-300 text-13 leading-5">Money from your recent sell orders that are yet to reflect in available balance</div>
+                            <div className="text-gray-300 text-13 leading-5">Money from your recent sell orders that is yet to reflect in available balance</div>
                         </div>
 
                         <div className="wallet-balance-card mb-30">

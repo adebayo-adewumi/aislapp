@@ -10,7 +10,6 @@ import { Link } from "react-router-dom";
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import CalendarIcon from '../../../assets/images/calendar.svg';
-import GreenLearnIcon from '../../../assets/images/green-learn.svg';
 import SpinnerIcon from '../../../assets/images/spinner.gif';
 import moment from 'moment';
 import ArrowBackIcon from '../../../assets/images/arrow-back.svg';
@@ -18,6 +17,10 @@ import { encryptData } from '../../../lib/encryptionHelper';
 import { generalEncKey } from '../../../common/constants/globals';
 import { authOnboardingServiceBaseUrl, utilityServiceBaseUrlUrl } from '../../../apiUrls';
 import { getAxios } from '../../../network/httpClientWrapper';
+import CloseIcon from '../../../assets/images/close.svg';
+import CircleCheckGreenIcon from '../../../assets/images/circle-check-green.svg';
+import CircleInfoRedIcon from '../../../assets/images/circle-info-red.svg';
+import * as HelperFunctions from '../../../lib/helper';
 
 const Register = () => {
     const [showSignup, setShowSignup] = useState<boolean>(true);
@@ -52,7 +55,6 @@ const Register = () => {
     const [showCalendar, setShowCalendar] = useState<boolean>(false);
     const [openBVNModal, setOpenBVNModal] = useState<boolean>(false);
     const [openModalBackdrop, setOpenModalBackdrop] = useState<boolean>(false);
-    
 
     const [otpbox1, setOTPBox1] = useState('');
     const [otpbox2, setOTPBox2] = useState('');
@@ -101,7 +103,10 @@ const Register = () => {
 
     document.title = "Register - Anchoria";
 
+    
+
     useEffect(() => {
+
         async function checkIfBVNIsNullOrEmpty() {
             let num = 11;
             let digits = /[0-9]+/g;
@@ -205,6 +210,10 @@ const Register = () => {
                 setIsPasswordMatch(true);
             }
         }
+
+        HelperFunctions.progressToNextTextBox("pinBox");
+        HelperFunctions.progressToNextTextBox("cpinBox");
+        HelperFunctions.progressToNextTextBox("otpBox");
 
         checkIfBVNIsNullOrEmpty();
         checkIfPhoneIsNullOrEmpty();
@@ -1265,26 +1274,26 @@ const Register = () => {
                             <div className="mb-20">
                                 <div className="font-bold mb-5">PIN</div>
                                 <div className="flex space-x-2">
-                                    <input value={ob1} onChange={e => setOB1(e.target.value)} type="password" className="short-input text-center" maxLength={1} />
+                                    <input value={ob1} onChange={e => setOB1(e.target.value)} type="password" className="short-input text-center pinBox" maxLength={1} />
 
-                                    <input value={ob2} onChange={e => setOB2(e.target.value)} type="password" className="short-input text-center" maxLength={1} />
+                                    <input value={ob2} onChange={e => setOB2(e.target.value)} type="password" className="short-input text-center pinBox" maxLength={1} />
 
-                                    <input value={ob3} onChange={e => setOB3(e.target.value)} type="password" className="short-input text-center" maxLength={1} />
+                                    <input value={ob3} onChange={e => setOB3(e.target.value)} type="password" className="short-input text-center pinBox" maxLength={1} />
 
-                                    <input value={ob4} onChange={e => setOB4(e.target.value)} type="password" className="short-input text-center" maxLength={1} />
+                                    <input value={ob4} onChange={e => setOB4(e.target.value)} type="password" className="short-input text-center pinBox" maxLength={1} />
                                 </div>
                             </div>
 
                             <div className="mb-20">
                                 <div className="font-bold mb-5">Confirm PIN</div>
                                 <div className="flex space-x-2">
-                                    <input value={cob1} onChange={e => setCOB1(e.target.value)} type="password" className="short-input text-center" maxLength={1} />
+                                    <input value={cob1} onChange={e => setCOB1(e.target.value)} type="password" className="short-input text-center cpinBox" maxLength={1} />
 
-                                    <input value={cob2} onChange={e => setCOB2(e.target.value)} type="password" className="short-input text-center" maxLength={1} />
+                                    <input value={cob2} onChange={e => setCOB2(e.target.value)} type="password" className="short-input text-center cpinBox" maxLength={1} />
 
-                                    <input value={cob3} onChange={e => setCOB3(e.target.value)} type="password" className="short-input text-center" maxLength={1} />
+                                    <input value={cob3} onChange={e => setCOB3(e.target.value)} type="password" className="short-input text-center cpinBox" maxLength={1} />
 
-                                    <input value={cob4} onChange={e => setCOB4(e.target.value)} type="password" className="short-input text-center" maxLength={1} />
+                                    <input value={cob4} onChange={e => setCOB4(e.target.value)} type="password" className="short-input text-center cpinBox" maxLength={1} />
                                 </div>
                             </div>
 
@@ -1337,15 +1346,45 @@ const Register = () => {
 
                 <input type="file" id="selfie" className='opacity-0' onChange={changeImgAvatar} value=""/>
 
-                <div className={openBVNModal ? "bvninfo-modal" : "bvninfo-modal hidden"}>
-                    <div className='text-center mb-10'><img src={GreenLearnIcon} alt="" /></div>
-                    <div className='text-center text-28 font-gotham-black-regular mb-10'>Why we need your BVN</div>
-                    <div className='text-center mb-30 text-14 leading-5'>
-                        We do not store nor have access to your bank information via your BVN,
-                        we only need your BVN as part of the SEC regulatory requirements.
+                {/*Why we need your bvn section */}
+                <div className={openBVNModal ? "bvninfo-modal" : "bvninfo-modal hidden"}>  
+                    <div className='flex justify-between'>
+                        <div className='font-bold text-blue-800 text-lg font-gotham-black-regular  mb-10'>Why we need your BVN</div>
+
+                        <div onClick={closeModal}><img src={CloseIcon} alt="" className="cursor-pointer" /></div>
+                    </div>                  
+
+                    <div className='mb-20 text-14 leading-5'>
+                        To make sure you are the right person signing up, we only access your:
                     </div>
-                    <div><button onClick={closeModal} type='button' className='cursor-pointer w-full rounded-lg border-0 bgcolor-1 text-white text-24 p-3 font-bold'>Close</button></div>
+
+                    <div>
+                        <div className='flex items-center space-x-3 mb-10'>
+                            <div><img src={CircleCheckGreenIcon} alt=""/></div>
+                            <div>Full Name</div>
+                        </div>
+
+                        <div className='flex items-center space-x-3 mb-10'>
+                            <div><img src={CircleCheckGreenIcon} alt=""/></div>
+                            <div>Phone Number</div>
+                        </div>
+
+                        <div className='flex items-center space-x-3 mb-30'>
+                            <div><img src={CircleCheckGreenIcon} alt=""/></div>
+                            <div>Date of Birth</div>
+                        </div>
+
+                        <div className='flex space-x-3 mb-30'>
+                            <div><img src={CircleInfoRedIcon} alt=""/></div>
+                            <div className='text-sm'>Your BVN doesn't give us access to your bank account, transactions or any other private information,</div>
+                        </div>
+
+                        <div className='font-bold mb-10'>
+                            <div>To get your BVN, dial *565*0#</div>
+                        </div>
+                    </div>
                 </div>
+                {/*End */}
 
                 <div className={openModalBackdrop ? "modal-backdrop opacity-40" : "modal-backdrop opacity-40 hidden"}>
                 </div>

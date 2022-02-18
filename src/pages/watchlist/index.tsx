@@ -232,7 +232,7 @@ const Watchlist = () => {
                                             <button onClick={performSwitchToAll} type='button' className={switchToAll ? "rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>All</button>
                                         </div>
 
-                                        <div>
+                                        <div className='hidden'>
                                             <button onClick={performSwitchToAlert} type='button' className={switchToAlert ? "rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Alerts</button>
                                         </div>
                                     </div>

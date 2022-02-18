@@ -54,8 +54,8 @@ const FundAccount = () => {
     const [customer, setCustomer] = useState(JSON.parse(localStorage.getItem("aislCustomerInfo") as string));
     const [poptiptext, setPopTipText] = useState("Click to Copy");
 
-    const [fundingHistory, setFundingHistory] = useState([{}]);
-    const [cardFundingDetails, setCardFundingDetails] = useState([{}]);
+    const [fundingHistory, setFundingHistory] = useState([]);
+    const [cardFundingDetails, setCardFundingDetails] = useState([]);
 
     useEffect(() => {
         setCustomer(JSON.parse(localStorage.getItem("aislCustomerInfo") as string));
@@ -216,7 +216,7 @@ const FundAccount = () => {
 
                 localStorage.setItem("aislPayWithCardResponse", JSON.stringify(response.data.data));
 
-                setCardFundingDetails([response.data.data]);
+                setCardFundingDetails(response.data.data);
             })
             .catch(function (error) {
                 setShowSpinner(false);
@@ -714,7 +714,8 @@ const FundAccount = () => {
                                                     <th className='text-left   p-2'>Date</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+
+                                            <tbody className={fundingHistory.length > 0 ? '':'hidden'}>
                                                 {fundingHistory.map((item: any, index: any) =>
                                                     <tr key={index}>
                                                         <td className='text-left p-2' style={{ fontSize: '.80rem' }}>{item.fundingSources}</td>
@@ -722,6 +723,10 @@ const FundAccount = () => {
                                                         <td className='text-left text-xs  p-2' style={{ fontSize: '.80rem' }}>{moment(item.dateTime).format("MMM Do, YYYY hh:mm A")}</td>
                                                     </tr>
                                                 )}
+                                            </tbody>
+
+                                            <tbody className={fundingHistory.length <= 0 ? '':'hidden'}>
+                                                No records found
                                             </tbody>
                                         </table>
                                     </div>

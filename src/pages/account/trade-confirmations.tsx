@@ -47,45 +47,47 @@ const TradeConfirmations = () => {
             .then(function (response) {
                 HelperFunctions.removeOverflowAndPaddingFromModalBody();
                 
-                const allOrders = response.data.data.map((item :any, index :any)=>
-                <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
-                    <div className="flex justify-between items-center text-14">
-                        <div className='flex-child'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
+                if(response.data.data.length > 0){
+                    const allOrders = response.data.data.map((item :any, index :any)=>
+                    <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
+                        <div className="flex justify-between items-center text-14">
+                            <div className='flex-child'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
 
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold mb-10'>{item.stockCode}</div>
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold mb-10'>{item.stockCode}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold mb-10'>{item.name}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold '>{parseInt(item.qty)}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold '>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold '>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold '>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
+                            </div> 
+
+                            <div className="text-color-2 flex-child">
+                                <Link to={"/stock?name="+item.name+"&symbol="+item.stockCode+"&close="+item.quotePrice+"&tradeAction=sell"}>
+                                    <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
+                            </div> 
+                            
                         </div>
-
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold mb-10'>{item.name}</div>
-                        </div>
-
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold '>{parseInt(item.qty)}</div>
-                        </div>
-
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold '>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
-                        </div>
-
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold '>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
-                        </div>
-
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold '>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
-                        </div> 
-
-                        <div className="text-color-2 flex-child">
-                            <Link to={"/stock?name="+item.name+"&symbol="+item.stockCode+"&close="+item.quotePrice+"&tradeAction=sell"}>
-                                <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
-                        </div> 
-                        
                     </div>
-                </div>
-                );
+                    );
 
-                setOrderAll(allOrders);
+                    setOrderAll(allOrders);
+                }
 
                 setShowPageLoader(false);
             })
@@ -101,45 +103,47 @@ const TradeConfirmations = () => {
             .then(function (response) {
                 HelperFunctions.removeOverflowAndPaddingFromModalBody();
                 
-                const openOrders = response.data.data.map((item :any, index :any)=>
-                <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
-                    <div className="flex justify-between items-center text-14">
-                        <div className='flex-child'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
+                if(response.data.data.length > 0){
+                    const openOrders = response.data.data.map((item :any, index :any)=>
+                    <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
+                        <div className="flex justify-between items-center text-14">
+                            <div className='flex-child'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
 
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold mb-10'>{item.stockCode}</div>
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold mb-10'>{item.stockCode}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold mb-10'>{item.name}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold '>{parseInt(item.qty)}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold '>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold '>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold '>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
+                            </div> 
+
+                            <div className="text-color-2 flex-child">
+                                <Link to={"/stock?name="+item.name+"&symbol="+item.stockCode+"&close="+item.quotePrice+"&tradeAction=sell"}>
+                                    <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
+                            </div> 
+                            
                         </div>
-
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold mb-10'>{item.name}</div>
-                        </div>
-
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold '>{parseInt(item.qty)}</div>
-                        </div>
-
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold '>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
-                        </div>
-
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold '>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
-                        </div>
-
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold '>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
-                        </div> 
-
-                        <div className="text-color-2 flex-child">
-                            <Link to={"/stock?name="+item.name+"&symbol="+item.stockCode+"&close="+item.quotePrice+"&tradeAction=sell"}>
-                                <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
-                        </div> 
-                        
                     </div>
-                </div>
-                );
+                    );
 
-                setOrderOpen(openOrders);
+                    setOrderOpen(openOrders);
+                }
             })
             .catch(function (error) {
     
@@ -153,45 +157,47 @@ const TradeConfirmations = () => {
             .then(function (response) {
                 HelperFunctions.removeOverflowAndPaddingFromModalBody();
                 
-                const executedOrders = response.data.data.map((item :any, index :any)=>
-                <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
-                    <div className="flex justify-between items-center text-14">
-                        <div className='flex-child'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
+                if(response.data.data.length > 0){
+                    const executedOrders = response.data.data.map((item :any, index :any)=>
+                    <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
+                        <div className="flex justify-between items-center text-14">
+                            <div className='flex-child'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
 
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold mb-10'>{item.stockCode}</div>
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold mb-10'>{item.stockCode}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold mb-10'>{item.name}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold '>{parseInt(item.qty)}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold '>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold '>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold '>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
+                            </div> 
+
+                            <div className="text-color-2 flex-child">
+                                <Link to={"/stock?name="+item.name+"&symbol="+item.stockCode+"&close="+item.quotePrice+"&tradeAction=sell"}>
+                                    <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
+                            </div> 
+                            
                         </div>
-
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold mb-10'>{item.name}</div>
-                        </div>
-
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold '>{parseInt(item.qty)}</div>
-                        </div>
-
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold '>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
-                        </div>
-
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold '>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
-                        </div>
-
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold '>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
-                        </div> 
-
-                        <div className="text-color-2 flex-child">
-                            <Link to={"/stock?name="+item.name+"&symbol="+item.stockCode+"&close="+item.quotePrice+"&tradeAction=sell"}>
-                                <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
-                        </div> 
-                        
                     </div>
-                </div>
-                );
+                    );
 
-                setOrderExecuted(executedOrders);
+                    setOrderExecuted(executedOrders);
+                }
             })
             .catch(function (error) {
     
@@ -205,45 +211,47 @@ const TradeConfirmations = () => {
             .then(function (response) {
                 HelperFunctions.removeOverflowAndPaddingFromModalBody();
                 
-                const rejectedOrders = response.data.data.map((item :any, index :any)=>
-                <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
-                    <div className="flex justify-between items-center text-14">
-                        <div className='flex-child'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
+                if(response.data.data.length > 0){
+                    const rejectedOrders = response.data.data.map((item :any, index :any)=>
+                    <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
+                        <div className="flex justify-between items-center text-14">
+                            <div className='flex-child'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
 
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold mb-10'>{item.stockCode}</div>
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold mb-10'>{item.stockCode}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold mb-10'>{item.name}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold '>{parseInt(item.qty)}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold '>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold '>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold '>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
+                            </div> 
+
+                            <div className="text-color-2 flex-child">
+                                <Link to={"/stock?name="+item.name+"&symbol="+item.stockCode+"&close="+item.quotePrice+"&tradeAction=sell"}>
+                                    <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
+                            </div> 
+                            
                         </div>
-
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold mb-10'>{item.name}</div>
-                        </div>
-
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold '>{parseInt(item.qty)}</div>
-                        </div>
-
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold '>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
-                        </div>
-
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold '>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
-                        </div>
-
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold '>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
-                        </div> 
-
-                        <div className="text-color-2 flex-child">
-                            <Link to={"/stock?name="+item.name+"&symbol="+item.stockCode+"&close="+item.quotePrice+"&tradeAction=sell"}>
-                                <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
-                        </div> 
-                        
                     </div>
-                </div>
-                );
+                    );
 
-                setOrderRejected(rejectedOrders);
+                    setOrderRejected(rejectedOrders);
+                }
             })
             .catch(function (error) {
     
@@ -257,45 +265,47 @@ const TradeConfirmations = () => {
             .then(function (response) {
                 HelperFunctions.removeOverflowAndPaddingFromModalBody();
                 
-                const cancelledOrders = response.data.data.map((item :any, index :any)=>
-                <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
-                    <div className="flex justify-between items-center text-14">
-                        <div className='flex-child'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
+                if(response.data.data.length > 0){
+                    const cancelledOrders = response.data.data.map((item :any, index :any)=>
+                    <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
+                        <div className="flex justify-between items-center text-14">
+                            <div className='flex-child'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
 
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold mb-10'>{item.stockCode}</div>
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold mb-10'>{item.stockCode}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold mb-10'>{item.name}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold '>{parseInt(item.qty)}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold '>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold '>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold '>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
+                            </div> 
+
+                            <div className="text-color-2 flex-child">
+                                <Link to={"/stock?name="+item.name+"&symbol="+item.stockCode+"&close="+item.quotePrice+"&tradeAction=sell"}>
+                                    <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
+                            </div> 
+                            
                         </div>
-
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold mb-10'>{item.name}</div>
-                        </div>
-
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold '>{parseInt(item.qty)}</div>
-                        </div>
-
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold '>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
-                        </div>
-
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold '>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
-                        </div>
-
-                        <div className="text-color-2 flex-child">
-                            <div className='font-bold '>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
-                        </div> 
-
-                        <div className="text-color-2 flex-child">
-                            <Link to={"/stock?name="+item.name+"&symbol="+item.stockCode+"&close="+item.quotePrice+"&tradeAction=sell"}>
-                                <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
-                        </div> 
-                        
                     </div>
-                </div>
-                );
+                    );
 
-                setOrderCancelled(cancelledOrders);
+                    setOrderCancelled(cancelledOrders);
+                }
             })
             .catch(function (error) {
     
@@ -443,31 +453,42 @@ const TradeConfirmations = () => {
 
                             {/*All Section*/}
                             <div className={switchToAll ? '':'hidden'}>
-                                {orderAll}
+                                <div className={orderAll === '' ? 'text-gray-500 text-center':'hidden'}>No trades to display</div>
+
+                                <div>{orderAll}</div>
                             </div>
                             {/*End*/}
 
                             {/*Open Section*/}
                             <div className={switchToOpen ? '':'hidden'}>
-                                {orderOpen}
+                                <div className={orderOpen === '' ? 'text-gray-500 text-center':'hidden'}>No open trades to display</div>
+
+                                <div>{orderOpen}</div>
                             </div>
                             {/*End*/}
 
                             {/*Executed Section*/}
                             <div className={switchToExecuted ? '':'hidden'}>
-                                {orderExecuted}
+                                <div className={orderExecuted === '' ? 'text-gray-500 text-center':'hidden'}>No executed trades to display</div>
+
+                                <div>{orderExecuted}</div>                                
                             </div>
                             {/*End*/}
 
                             {/*Rejected Section*/}
                             <div className={switchToRejected ? '':'hidden'}>
-                                {orderRejected}
+                                <div className={orderRejected === '' ? 'text-gray-500 text-center':'hidden'}>No rejected trades to display</div>
+
+                                <div>{orderRejected}</div> 
                             </div>
                             {/*End*/}
 
                             {/*Cancelled Section*/}
                             <div className={switchToCancelled ? '':'hidden'}>
-                                {orderCancelled}
+                                <div className={orderCancelled === '' ? 'text-gray-500 text-center':'hidden'}>No cancelled trades to display</div>
+
+                                <div>{orderCancelled}</div> 
+                                
                             </div>
                             {/*End*/}
                         </div>

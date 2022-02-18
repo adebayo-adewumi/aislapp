@@ -50,7 +50,8 @@ const UserAreaHeader = () => {
                                 <div className="flex space-x-4">
                                     <div className="pt-1">
                                         <div className='rounded-full w-10 h-10 bg-green-900 text-white '>
-                                            <div className='pt-3 pl-2 font-bold'>{authCustomerInitials}</div>
+                                            <div className='pt-3 pl-2 font-bold hidden'>{authCustomerInitials}</div>
+                                            <img src={"https://ui-avatars.com/api/?name="+authCustomerFullname} className="rounded-full h-10 w-10"  alt=""/>
                                         </div>
                                     </div>
 

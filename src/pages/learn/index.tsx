@@ -301,48 +301,55 @@ const Learn = () => {
                         {/*Contact Us Section */}  
                         <div className={switchToContactUs ? '':'hidden'}>
                             <div className='px-24 py-16 mb-12 contactus-bg text-center'>
-                                <div className='font-bold text-2xl mb-10'>Contact Us</div>
-                                <div>Address: 12th floor, Elephant House, 214 Broad Street, Marina, Lagos</div>
-                            </div>
 
-                            <div className='relative mb-56'>
-                                <div className='flex space-x-5 justify-center items-center absolute p-10 bg-white shadow-sm rounded-lg mx-auto' style={{width: '50rem',top: '-5rem',left: '15%'}}>
-                                    <div>
-                                        <a href="https://web.facebook.com/Anchoriang" target="_blank" rel="noreferrer">
-                                            <img src={FacebookIcon} alt=""  className='w-14'/>
-                                        </a>
-                                    </div> 
+                                <div>                                    
+                                    <div className='p-10 bg-white shadow-sm rounded-lg mx-auto' style={{width: '50rem'}}>
 
-                                    <div>
-                                        <a href="https://www.instagram.com/anchoriang/" target="_blank" rel="noreferrer">
-                                            <img src={InstagramIcon} alt=""  className='w-14'/>
-                                        </a>
-                                    </div>
+                                        <div className='font-bold text-2xl mb-10'>Contact Us</div>
 
-                                    <div>
-                                        <a href="https://www.linkedin.com/company/anchoria-investment-and-securities-ltd" target="_blank" rel="noreferrer">
-                                            <img src={LinkedInIcon} alt=""  className='w-14'/>
-                                        </a>
-                                    </div>
+                                        <div className='mb-30'>Address: 12th floor, Elephant House, 214 Broad Street, Marina, Lagos</div>
 
-                                    <div>
-                                        <a href="mailto:help@anchoriaonline.com" target="_blank" rel="noreferrer">
-                                            <img src={EmailIcon} alt=""  className='w-14'/>
-                                        </a>
-                                    </div>
+                                        <div className='flex space-x-5 justify-center items-center'>       
+                                            <div>
+                                                <a href="https://web.facebook.com/Anchoriang" target="_blank" rel="noreferrer">
+                                                    <img src={FacebookIcon} alt=""  className='w-14'/>
+                                                </a>
+                                            </div> 
 
-                                    <div>
-                                        <div className='flex bgcolor-1 items-center space-x-2 py-4 font-bold px-5 rounded-3xl text-white'>
-                                            <img src={PhoneIcon} alt="" className='w-6'/> 
-                                            <span>+234 817 629 0550</span>
-                                        </div>
-                                    </div>
+                                            <div>
+                                                <a href="https://www.instagram.com/anchoriang/" target="_blank" rel="noreferrer">
+                                                    <img src={InstagramIcon} alt=""  className='w-14'/>
+                                                </a>
+                                            </div>
 
-                                    <div className='hidden'>
-                                        <img src={LivechatIcon} alt=""  className='w-36'/>
+                                            <div>
+                                                <a href="https://www.linkedin.com/company/anchoria-investment-and-securities-ltd" target="_blank" rel="noreferrer">
+                                                    <img src={LinkedInIcon} alt=""  className='w-14'/>
+                                                </a>
+                                            </div>
+
+                                            <div>
+                                                <a href="mailto:help@anchoriaonline.com" target="_blank" rel="noreferrer">
+                                                    <img src={EmailIcon} alt=""  className='w-14'/>
+                                                </a>
+                                            </div>
+
+                                            <div>
+                                                <div className='flex bgcolor-1 items-center space-x-2 py-4 font-bold px-5 rounded-3xl text-white'>
+                                                    <img src={PhoneIcon} alt="" className='w-6'/> 
+                                                    <span>+234 817 629 0550</span>
+                                                </div>
+                                            </div>
+
+                                            <div className='hidden'>
+                                                <img src={LivechatIcon} alt=""  className='w-36'/>
+                                            </div>
+                                        </div> 
                                     </div>
                                 </div>
                             </div>
+
+                            
                         </div> 
                         {/*End */}
 

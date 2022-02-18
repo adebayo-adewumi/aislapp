@@ -123,10 +123,15 @@ const WithdrawFund = () => {
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
         localStorage.setItem('genericCypher', genericCypher);
 
+        let headers = {
+            'x-firebase-token': '12222',
+            'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
+        }
+
         getAxios(axios).post(walletAndAccountServiceBaseUrl + '/wallet-api/withdraw/',
             {
                 "text": localStorage.getItem('genericCypher')
-            })
+            },{headers})
             .then(function (response) {
                 setIsPinValid('');
                 setShowSuccess(true);
@@ -164,8 +169,14 @@ const WithdrawFund = () => {
                 "text": localStorage.getItem('validatePinCypher')
             })
             .then(function (response) {
-                setIsPinValid('true');
-                setApiResponseSuccessMsg(response.data.message);
+                if(response.data.statusCode !== 200){
+                    setIsPinValid('false');
+                }
+                else{
+                    setIsPinValid('false');
+                }
+
+                setApiResponseSuccessMsg('Invalid PIN');
 
                 setShowSpinner(false);
             })
@@ -274,8 +285,9 @@ const WithdrawFund = () => {
                                         </div>
 
                                         <div>
-                                            <button onClick={displayWithdrawSummary} type='button' className='w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg  px-5 py-3 cursor-pointer'>
-                                                Proceed
+                                            <button onClick={withdrawFundFromWallet} type='button' className='w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>
+                                                <span className={showSpinner ? "hidden" : ""}>Proceed</span>
+                                                <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                             </button>
                                         </div>
                                     </div>
@@ -312,7 +324,7 @@ const WithdrawFund = () => {
                                             </div>
                                         )}
 
-                                        <div className="border-bottom-1d mb-20"></div>
+                                        <div className="border-bottom-1d mb-20 hidden"></div>
 
                                         {/* Pin Success */}
                                         <div className={isPinValid === 'true' ? "otp-alert mb-20" : "hidden"}>
@@ -338,7 +350,7 @@ const WithdrawFund = () => {
                                         {/* End */}
 
                                         {/* Pin Error */}
-                                        <div className={isPinValid !== 'false' ? "hidden" : "error-alert mb-20"}>
+                                        <div className={isPinValid === 'false' ? "error-alert mb-20" : "hidden"}>
                                             <div className="flex justify-between space-x-1 pt-3">
                                                 <div className="flex">
                                                     <div>
@@ -360,9 +372,9 @@ const WithdrawFund = () => {
                                         {/* End */}
 
 
-                                        <div className='font-bold text-color-1 text-lg mb-30'>Confirm Transaction PIN</div>
+                                        <div className='font-bold text-color-1 text-lg mb-30 hidden'>Confirm Transaction PIN</div>
 
-                                        <form>
+                                        <form className='hidden'>
                                             <div className="mb-20">
                                                 <div className="font-bold mb-10 text-sm">Enter PIN</div>
                                                 <div className="flex space-x-2">
@@ -378,12 +390,12 @@ const WithdrawFund = () => {
                                         </form>
 
                                         <div>
-                                            <button onClick={validatePin} type='button' className={isPinValid === 'false' || isPinValid === '' ? 'w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' : 'hidden'} >
+                                            {/* <button onClick={validatePin} type='button' className={isPinValid === 'false' || isPinValid === '' ? 'w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' : 'hidden'} >
                                                 <span className={showSpinner ? "hidden" : ""}>Validate</span>
                                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
-                                            </button>
+                                            </button> */}
 
-                                            <button onClick={withdrawFundFromWallet} type='button' className={isPinValid === 'true' ? 'w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' : 'hidden'} >
+                                            <button onClick={withdrawFundFromWallet} type='button' className='w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>
                                                 <span className={showSpinner ? "hidden" : ""}>Proceed</span>
                                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                             </button>

@@ -22,7 +22,7 @@ import { generalEncKey } from '../../common/constants/globals';
 import SpinnerIcon from "../../assets/images/spinner.gif";
 import AnchoriaIcon from '../../assets/images/anchoria-icon.svg';
 import AnchoriaSpinner from '../../assets/images/anchoria-spinner.svg';
-import { authOnboardingServiceBaseUrl, portfolioServiceBaseUrlUrl, stockTradingServiceBaseUrlUrl, utilityServiceBaseUrlUrl, walletAndAccountServiceBaseUrl } from '../../apiUrls';
+import { authOnboardingServiceBaseUrl, portfolioServiceBaseUrlUrl, stockTradingServiceBaseUrlUrl, utilityServiceBaseUrlUrl } from '../../apiUrls';
 import { getAxios } from '../../network/httpClientWrapper';
 
 const Stock = () => {
@@ -261,16 +261,19 @@ const Stock = () => {
         }
 
         function getTopFiveBids() {
-            getAxios(axios).get(walletAndAccountServiceBaseUrl.concat('/utils/top-five-bids/' + params.get("symbol")))
+            getAxios(axios).get(utilityServiceBaseUrlUrl.concat('/utils/top-five-bids/' + params.get("symbol")))
                 .then(function (response) {
-                    const bidsItem = response.data.data.map((item: any) =>
-                        <div key={item} className='flex bid-offer justify-between border-bottom-e py-4'>
-                            <div>{HelperFunctions.formatCurrencyWithDecimal(item.volume)}</div>
-                            <div className='text-green-500'>₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
-                        </div>
-                    );
+                    if(response.data.data.length > 0){
+                        const bidsItem = response.data.data.map((item: any) =>
+                            <div key={item} className='flex bid-offer justify-between border-bottom-e py-4'>
+                                <div>{HelperFunctions.formatCurrencyWithDecimal(item.volume)}</div>
+                                <div className='text-green-500'>₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
+                            </div>
+                        );
 
-                    setBidsList(bidsItem);
+                        setBidsList(bidsItem);
+                    }
+                    
                 })
                 .catch(function (error) {
                     console.log(error)
@@ -278,17 +281,19 @@ const Stock = () => {
         }
 
         function getTopFiveOffers() {
-            getAxios(axios).get(walletAndAccountServiceBaseUrl.concat('/utils/top-five-offers/' + params.get("symbol")))
+            getAxios(axios).get(utilityServiceBaseUrlUrl.concat('/utils/top-five-offers/' + params.get("symbol")))
                 .then(function (response) {
 
-                    const offersItem = response.data.data.map((item: any) =>
-                        <div key={item} className='flex offers justify-between border-bottom-e py-4'>
-                            <div>{HelperFunctions.formatCurrencyWithDecimal(item.volume)}</div>
-                            <div className='text-green-500'>₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
-                        </div>
-                    );
+                    if(response.data.data.length > 0){
+                        const offersItem = response.data.data.map((item: any) =>
+                            <div key={item} className='flex offers justify-between border-bottom-e py-4'>
+                                <div>{HelperFunctions.formatCurrencyWithDecimal(item.volume)}</div>
+                                <div className='text-green-500'>₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
+                            </div>
+                        );
 
-                    setOffersList(offersItem);
+                        setOffersList(offersItem);
+                    }
                 })
                 .catch(function (error) {
                     console.log(error)
@@ -459,7 +464,7 @@ const Stock = () => {
         get6MStockGraphData();
         get1YStockGraphData();
 
-    });
+    },[]);
 
     function calculateStockOrderEstimate() {
         let customer = HelperFunctions.getCustomerInfo();
@@ -1071,7 +1076,7 @@ const Stock = () => {
 
                                                 {stockInfo.map((item: any) =>
                                                     <div key={item}>
-                                                        <div className='font-gotham-black-regular font-bold text-color-1 text-xl'>₦ {HelperFunctions.formatCurrencyWithDecimal(parseFloat(item.price))}</div>
+                                                        <div className='font-gotham-black-regular font-bold text-color-1 text-xl mb-10'>₦ {HelperFunctions.formatCurrencyWithDecimal(parseFloat(item.price))}</div>
 
                                                         <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-14" : "font-bold text-red-500 text-14"}>{HelperFunctions.formatCurrencyWithDecimal(item.high - item.price).replace("-","")} | {HelperFunctions.formatCurrencyWithDecimal(((item.high - item.price) * 100) / item.price).replace("-","")}%  </div>
                                                     </div>
@@ -1092,8 +1097,12 @@ const Stock = () => {
                                                 <div className='text-color-1 font-bold'>View all</div>
                                             </div>
 
+                                            <div className={bidsList === '' ? 'text-sm':'hidden'}>
+                                                <div className='py-5 text-gray-500 px-6'>Nothing to display</div>
+                                            </div>
+
                                             <div className='px-6 bid-offer text-13'>
-                                                {bidsList}
+                                                {bidsList }
                                             </div>
                                         </div>
 
@@ -1103,8 +1112,12 @@ const Stock = () => {
                                                 <div className='text-color-1 font-bold'>View all</div>
                                             </div>
 
+                                            <div className={offersList === '' ? 'text-sm':'hidden'}>
+                                                <div className='py-5 text-gray-500 px-6'>Nothing to display</div>
+                                            </div>
+
                                             <div className='px-6 offers text-13'>
-                                                {offersList}
+                                                <div>{offersList}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -1119,7 +1132,7 @@ const Stock = () => {
                                                 <div className='py-3'>
                                                     <div className='flex space-x-24 text-14 border-bottom-e pb-6'>
                                                         <div>
-                                                            <div className='font-bold mb-20 font-gotham-black-regular'>Open</div>
+                                                            <div className='font-bold mb-20 font-gotham-black-regular'>Earnings per share</div>
                                                             <div>₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
                                                         </div>
 
@@ -1180,7 +1193,7 @@ const Stock = () => {
                                                         </div>
 
                                                         <div>
-                                                            <div className='font-bold mb-20 font-gotham-black-regular'>Market Segment</div>
+                                                            <div className='font-bold mb-20 font-gotham-black-regular'>Risk Factor</div>
                                                             <div></div>
                                                         </div>
                                                     </div>
@@ -1189,7 +1202,7 @@ const Stock = () => {
                                                 <div className='py-3'>
                                                     <div className='flex space-x-24 text-14 pb-6'>
                                                         <div>
-                                                            <div className='font-bold mb-20 font-gotham-black-regular'>% Spread</div>
+                                                            <div className='font-bold mb-20 font-gotham-black-regular'>Dividend Yield</div>
                                                             <div>{HelperFunctions.formatCurrencyWithDecimal(((item.high - item.price) * 100) / item.price)}%</div>
                                                         </div>
 
@@ -1356,11 +1369,13 @@ const Stock = () => {
                             <div>
                                 <div className='mb-10'>
                                     <img src={AtlasIcon} alt="" className="align-middle border-1-d6 rounded-lg" />
-                                    <span className="font-bold font-gotham-black-regular mx-3 text-xl">{item.symbol}</span> |
+                                    <span className="font-bold font-gotham-black-regular mx-3 text-xl">{params.get('symbol')}</span> |
                                     <span className="font-bold mx-3">{item.name}</span>
                                 </div>
 
-                                <div className="mb-20 w-32 bg-yellow-400 py-2 px-3 rounded-2xl text-14">{item.sector}</div>
+                                <div className="mb-20 py-1">
+                                    <span className='bg-yellow-400 py-2 px-3 rounded-2xl text-14'>{item.sector}</span>
+                                </div>
 
                                 <div className="leading-6 text-14 mb-20">{companyInfo.length > 250 ? companyInfo.substring(0, 250) + "..." : companyInfo}</div>
 
@@ -1373,7 +1388,7 @@ const Stock = () => {
 
 
                                 <div className='mb-20'>
-                                    <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-14" : "font-bold text-red-500 text-14"}>{HelperFunctions.formatCurrencyWithDecimal(item.high - item.price)} | {((item.high - item.price) * 100) / item.price}%  </div>
+                                    <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-14" : "font-bold text-red-500 text-14"}>{HelperFunctions.formatCurrencyWithDecimal(item.high - item.price).replace('-','')} | {HelperFunctions.formatCurrencyWithDecimal(((item.high - item.price) * 100) / item.price).replace('-','')}%  </div>
                                 </div>
                             </div>
                         )}

@@ -216,7 +216,7 @@ const Profile = () => {
             { headers })
             .then(function (response) {
                 let logs = response.data.data.map((item :any, index :any) =>
-                <div onClick={displayNotificationDetailModal} className={item.readFlag ? 'p-5 space-x-20  justify-between items-center flex border-bottom-1d cursor-pointer':'p-5 cursor-pointer space-x-20  justify-between flex border-bottom-1d bg-gray-100 items-center'} key={index} data-id={item.id}>
+                <div className={item.readFlag ? 'p-5 space-x-20  justify-between items-center flex border-bottom-1d cursor-pointer':'p-5 cursor-pointer space-x-20  justify-between flex border-bottom-1d bg-gray-100 items-center'} key={index} data-id={item.id}>
                     <div className='rounded-full bg-B9F1B4 px-3 shadow-sm py-3' data-id={item.id}>
                         <img src={BellIcon}  alt="" data-id={item.id}/>
                     </div>
@@ -232,10 +232,10 @@ const Profile = () => {
                         </div>
                     </div>
                     
-                    <div className={item.readFlag ? '':'font-bold'} data-id={item.id}>22-Dec-2021 | 9:56pm</div>
+                    <div className={item.readFlag ? '':'font-bold'} data-id={item.id}>{moment(item.createdOn).format("MMM Do, YYYY hh:mm A")}</div>
 
                     <div data-id={item.id}>
-                        <button onClick={displayNotificationDetailModal} type="button" className='cursor-pointer px-5 py-3 text-green-700 font-bold rounded-lg hover:bg-gray-300 border-0' data-id={item.id}>View</button>
+                        <button onClick={displayNotificationDetailModal} type="button" className='cursor-pointer px-5 py-3 text-green-700 font-bold rounded-lg hover:bg-gray-300 border-0 hidden' data-id={item.id}>View</button>
                     </div>
                 </div>
                 );
@@ -284,7 +284,7 @@ const Profile = () => {
         getNotificationLogs();
         getBankDetailsList();
         getBankList();
-    });  
+    },[]);  
 
     function changePassword(){
         let customer = HelperFunctions.getCustomerInfo();
@@ -1549,7 +1549,7 @@ const Profile = () => {
                             {/*End */}
 
                             {/*2FA Auth */}
-                            <div className='card hidden'>
+                            <div className='card' style={{display: 'none'}}>
                                 <div className='font-gotham-black-regular text-color-1 mb-20'>2 Factor Authentication</div>
 
 
@@ -1572,7 +1572,7 @@ const Profile = () => {
                                 </div>
 
                                 <div>
-                                    <button type="button" className='cursor-pointer px-5 py-3 bg-red-500 text-white font-bold rounded-lg border border-red-800'>Mark all read</button>
+                                    <button type="button" className='cursor-pointer px-5 py-3 bg-red-500 text-white font-bold rounded-lg border border-red-800 hidden'>Mark all read</button>
                                 </div>
                             </div>
 
