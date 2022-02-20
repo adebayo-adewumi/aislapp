@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from "react-router-dom";
 import '../dashboard/index.scss';
 import Sidebar from '../../components/Sidebar';
 import UserAreaHeader from '../../components/Headers/UserAreaHeader';
@@ -9,7 +8,7 @@ import AnchoriaIcon from '../../assets/images/anchoria-icon.svg';
 import AnchoriaSpinner from '../../assets/images/anchoria-spinner.svg';
 import * as HelperFunctions from '../../lib/helper';
 import { getAxios } from '../../network/httpClientWrapper';
-import { walletAndAccountServiceBaseUrl } from '../../apiUrls';
+import { utilityServiceBaseUrlUrl } from '../../apiUrls';
 
 const News = () => {
     document.title = "News - Anchoria";
@@ -22,11 +21,11 @@ const News = () => {
     useEffect(() => {
 
         function getNews() {
-            getAxios(axios).get(walletAndAccountServiceBaseUrl.concat('/utils/news'))
+            getAxios(axios).get(utilityServiceBaseUrlUrl.concat('/utils/news'))
                 .then(function (response:any) {
 
-                    const newsItem = response.data.data.map((item: any) =>
-                        <Link to={"/news/details?author=" + item.author + "&date=" + item.date + "&id=" + item.id + "&imageUrl=" + item.imageUrl + "&snippet=" + item.snippet + "&source=" + item.source + "&title=" + item.title + "&url=" + item.url} className='no-underline'>
+                    const newsItem = response.data.data.map((item: any, index :any) =>
+                        <a href={item.url === null || item.url === '' ? '#': item.url} className='no-underline' target="_blank" key={index} rel="noreferrer">
                             <div key={item.id}>
                                 <div className='mb-20'><img src={item.imageUrl} alt='' /></div>
                                 <div className='w-22rem'>
@@ -35,7 +34,7 @@ const News = () => {
                                     <div className='font-bold text-13 text-black'>&middot; {moment(item.date).format("MMM Do YYYY, hh:ss a")}</div>
                                 </div>
                             </div>
-                        </Link>
+                        </a>
                     ) as unknown as string;
 
                     setNewsList(newsItem);

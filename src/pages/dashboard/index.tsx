@@ -234,8 +234,8 @@ const Dashboard = () => {
                     const takeNews = [response.data.data[0], response.data.data[1], response.data.data[2]];
 
                     const newsItem = takeNews.map((item: any, index :any) =>
-                        <Link to={"/news/details?author=" + item.author + "&date=" + item.date + "&id=" + item.id + "&imageUrl=" + item.imageUrl + "&snippet=" + item.snippet + "&source=" + item.source + "&title=" + item.title + "&url=" + item.url} className='no-underline' key={index}>
-                            <div className="flex justify-between space-x-5" key={index} style={{width: '23rem'}}>
+                        <a href={item.url === null || item.url === '' ? '#': item.url} className='no-underline' target="_blank" key={index} rel="noreferrer">
+                            <div className="flex justify-between space-x-5" style={{width: '23rem'}}>
                                 <div>
                                     <div className="font-bold text-13 mb-10 text-black">{item.title}</div>
                                     <div className="text-13 text-color-5 mb-10 leading-5">
@@ -246,7 +246,7 @@ const Dashboard = () => {
 
                                 <div> <img src={item.imageUrl} className='newsImg rounded-lg' alt="" /></div>
                             </div>
-                        </Link>
+                        </a>
                     ) as unknown as string;
 
                     setNewsList(newsItem);
