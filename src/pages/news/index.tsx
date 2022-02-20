@@ -27,7 +27,9 @@ const News = () => {
                     const newsItem = response.data.data.map((item: any, index :any) =>
                         <a href={item.url === null || item.url === '' ? '#': item.url} className='no-underline' target="_blank" key={index} rel="noreferrer">
                             <div key={item.id}>
-                                <div className='mb-20'><img src={item.imageUrl} alt='' /></div>
+                                <div className='mb-20'>
+                                    <img src={item.imageUrl} alt='' style={{width:'75px', height:'75px'}}/>
+                                </div>
                                 <div className='w-22rem'>
                                     <div className='font-bold mb-10 text-14 w-6/6 text-black'>{item.title}</div>
                                     <div className='mb-10 text-13 tracking-wider leading-5 text-color-5'>{item.snippet}</div>
@@ -72,7 +74,7 @@ const News = () => {
                         {/* News Section */}
                         <div className='mb-30 news-section'>
                             <div className={newsApiResponseSuccess ? 'hidden' : 'text-sm text-gray-400'}>Nothing to display</div>
-                            <div className='grid gap-4 grid-cols-3 grid-rows-3 mb-12 mt-10'>
+                            <div className='grid gap-x-10 gap-y-24 grid-cols-3 grid-rows-3 mb-12 mt-10'>
                                 {newsList}
                             </div>
                         </div>
