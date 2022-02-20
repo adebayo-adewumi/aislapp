@@ -103,8 +103,6 @@ const Register = () => {
 
     document.title = "Register - Anchoria";
 
-    
-
     useEffect(() => {
 
         async function checkIfBVNIsNullOrEmpty() {
@@ -1258,8 +1256,8 @@ const Register = () => {
                         </div>
 
                         <div className="mb-20 text-color-2 flex justify-end space-x-2 text-16">
-                            <div>Already have an account?</div>
-                            <div><strong>Login</strong> </div>
+                            <span>Already have an account?</span>
+                            <Link to="/" className="no-underline text-color-1"><span><strong> Login</strong> </span></Link>
                         </div>
 
                         <div className="mb-20">

@@ -79,7 +79,7 @@ const Stock = () => {
     const [buyStockError, setBuyStockError] = useState('');
     const [priceEstimateError, setPriceEstimateError] = useState('');
     const [showPageLoader, setShowPageLoader] = useState<boolean>(true);
-    const [apiResponseHasError, setApiResponseHasError] = useState<boolean>(false);
+    const [, setApiResponseHasError] = useState<boolean>(false);
     const [apiResponseSuccessMsg, setApiResponseSuccessMsg] = useState('');
     const [portfolioList, setPortfolioList] = useState('');
     const [, setPortfolioIdToAddStock] = useState('');
@@ -196,33 +196,79 @@ const Stock = () => {
         HelperFunctions.removeOverflowAndPaddingFromModalBody();
     }
 
+    useEffect(() => {
+        const _params = new URLSearchParams(window.location.search);
+
+        function getStockQuote() {
+
+            getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/quote?stockCode=' + _params.get("symbol"))
+            .then(function (response) {
+
+                let arr = [response.data.data];
+
+                localStorage.setItem("aislStockInfo", JSON.stringify(response.data.data));
+
+                setStockInfo(arr);
+
+                setCompanyMktCap(HelperFunctions.formatCurrencyWithDecimal(response.data.data.marketCap));
+                setCompanyInfo(response.data.data.companyInfo);
+
+
+                setShowPageLoader(false);
+            })
+            .catch(function (error) {
+                setShowPageLoader(false);
+            });
+        }
+
+        function getTopFiveBids() {
+            getAxios(axios).get(utilityServiceBaseUrlUrl.concat('/utils/top-five-bids/' + _params.get("symbol")))
+                .then(function (response) {
+                    if(response.data.data.length > 0){
+                        const bidsItem = response.data.data.map((item: any) =>
+                            <div key={item} className='flex bid-offer justify-between border-bottom-e py-4'>
+                                <div>{HelperFunctions.formatCurrencyWithDecimal(item.volume)}</div>
+                                <div className='text-green-500'>₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
+                            </div>
+                        );
+
+                        setBidsList(bidsItem);
+                    }
+                    
+                })
+                .catch(function (error) {
+                    console.log(error)
+                });
+        }
+
+        function getTopFiveOffers() {
+            getAxios(axios).get(utilityServiceBaseUrlUrl.concat('/utils/top-five-offers/' + _params.get("symbol")))
+                .then(function (response) {
+
+                    if(response.data.data.length > 0){
+                        const offersItem = response.data.data.map((item: any) =>
+                            <div key={item} className='flex offers justify-between border-bottom-e py-4'>
+                                <div>{HelperFunctions.formatCurrencyWithDecimal(item.volume)}</div>
+                                <div className='text-green-500'>₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
+                            </div>
+                        );
+
+                        setOffersList(offersItem);
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error)
+                });
+        }
+
+        getStockQuote();
+        getTopFiveOffers();
+        getTopFiveBids();
+    },[]);
 
     useEffect(() => {
 
-        async function getStockQuote() {
-
-            getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/quote?stockCode=' + params.get("symbol"))
-                .then(function (response) {
-
-                    let arr = [response.data.data];
-
-                    localStorage.setItem("aislStockInfo", JSON.stringify(response.data.data));
-
-                    setStockInfo(arr);
-
-                    setCompanyMktCap(HelperFunctions.formatCurrencyWithDecimal(response.data.data[0].marketCap));
-                    setCompanyInfo(response.data.data[0].companyInfo);
-
-                    setShowPageLoader(false);
-                })
-                .catch(function (error) {
-                    setShowPageLoader(false);
-                });
-
-        }
-
         function getNews() {
-
 
             getAxios(axios).get(utilityServiceBaseUrlUrl + '/utils/news')
                 .then(function (response) {
@@ -248,52 +294,11 @@ const Stock = () => {
 
         function getWalletBalance() {
 
-
             let customer = HelperFunctions.getCustomerInfo();
 
             getAxios(axios).get(portfolioServiceBaseUrlUrl + '/account/balance?customerId=' + customer.id)
                 .then(function (response) {
                     setWalletBalance(response.data.data.balance);
-                })
-                .catch(function (error) {
-                    console.log(error)
-                });
-        }
-
-        function getTopFiveBids() {
-            getAxios(axios).get(utilityServiceBaseUrlUrl.concat('/utils/top-five-bids/' + params.get("symbol")))
-                .then(function (response) {
-                    if(response.data.data.length > 0){
-                        const bidsItem = response.data.data.map((item: any) =>
-                            <div key={item} className='flex bid-offer justify-between border-bottom-e py-4'>
-                                <div>{HelperFunctions.formatCurrencyWithDecimal(item.volume)}</div>
-                                <div className='text-green-500'>₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
-                            </div>
-                        );
-
-                        setBidsList(bidsItem);
-                    }
-                    
-                })
-                .catch(function (error) {
-                    console.log(error)
-                });
-        }
-
-        function getTopFiveOffers() {
-            getAxios(axios).get(utilityServiceBaseUrlUrl.concat('/utils/top-five-offers/' + params.get("symbol")))
-                .then(function (response) {
-
-                    if(response.data.data.length > 0){
-                        const offersItem = response.data.data.map((item: any) =>
-                            <div key={item} className='flex offers justify-between border-bottom-e py-4'>
-                                <div>{HelperFunctions.formatCurrencyWithDecimal(item.volume)}</div>
-                                <div className='text-green-500'>₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
-                            </div>
-                        );
-
-                        setOffersList(offersItem);
-                    }
                 })
                 .catch(function (error) {
                     console.log(error)
@@ -316,8 +321,6 @@ const Stock = () => {
                 })
                 .catch(function (error) {
 
-                    console.log(apiResponseHasError);
-
                     setApiResponseHasError(true);
 
                     setTimeout(() => {
@@ -326,9 +329,17 @@ const Stock = () => {
                 });
         }
 
+        getWalletBalance();
+        getPortfolioList();
+        getNews();
+    },[]);
+
+    useEffect(() => {
+        const _params = new URLSearchParams(window.location.search);
+
         function get1DStockGraphData() {
 
-            getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/price?stockCode='+params.get("symbol")+'&endDate='+moment(Date.now()).format("YYYY-MM-DD")+'&startDate='+moment().subtract(1, 'days').format("YYYY-MM-DD"))
+            getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/price?stockCode='+_params.get("symbol")+'&endDate='+moment(Date.now()).format("YYYY-MM-DD")+'&startDate='+moment().subtract(1, 'days').format("YYYY-MM-DD"))
             .then(function (response) { 
                 if(response.data.length === 0){
                     setGraph1DYAxis(["0","0","0","0","0","0","0","0","0","0","0","0"]);
@@ -351,7 +362,7 @@ const Stock = () => {
 
         function get1WStockGraphData() {
 
-            getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/price?stockCode='+params.get("symbol")+'&endDate='+moment(Date.now()).format("YYYY-MM-DD")+'&startDate='+moment().subtract(1, 'weeks').format("YYYY-MM-DD"))
+            getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/price?stockCode='+_params.get("symbol")+'&endDate='+moment(Date.now()).format("YYYY-MM-DD")+'&startDate='+moment().subtract(1, 'weeks').format("YYYY-MM-DD"))
             .then(function (response) { 
                 if(response.data.length === 0){
                     setGraph1WYAxis(["0","0","0","0","0","0","0","0","0","0","0","0"]);
@@ -371,7 +382,7 @@ const Stock = () => {
 
         function get1MStockGraphData() {
 
-            getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/price?stockCode='+params.get("symbol")+'&endDate='+moment(Date.now()).format("YYYY-MM-DD")+'&startDate='+moment().subtract(1, 'months').format("YYYY-MM-DD"))
+            getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/price?stockCode='+_params.get("symbol")+'&endDate='+moment(Date.now()).format("YYYY-MM-DD")+'&startDate='+moment().subtract(1, 'months').format("YYYY-MM-DD"))
             .then(function (response) { 
                 if(response.data.length === 0){
                     setGraph1MYAxis(["0","0","0","0","0","0","0","0","0","0","0","0"]);
@@ -391,7 +402,7 @@ const Stock = () => {
 
         function get3MStockGraphData() {
 
-            getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/price?stockCode='+params.get("symbol")+'&endDate='+moment(Date.now()).format("YYYY-MM-DD")+'&startDate='+moment().subtract(3, 'months').format("YYYY-MM-DD"))
+            getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/price?stockCode='+_params.get("symbol")+'&endDate='+moment(Date.now()).format("YYYY-MM-DD")+'&startDate='+moment().subtract(3, 'months').format("YYYY-MM-DD"))
             .then(function (response) { 
                 if(response.data.length === 0){
                     setGraph3MYAxis(["0","0","0","0","0","0","0","0","0","0","0","0"]);
@@ -411,7 +422,7 @@ const Stock = () => {
 
         function get6MStockGraphData() {
 
-            getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/price?stockCode='+params.get("symbol")+'&endDate='+moment(Date.now()).format("YYYY-MM-DD")+'&startDate='+moment().subtract(6, 'months').format("YYYY-MM-DD"))
+            getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/price?stockCode='+_params.get("symbol")+'&endDate='+moment(Date.now()).format("YYYY-MM-DD")+'&startDate='+moment().subtract(6, 'months').format("YYYY-MM-DD"))
             .then(function (response) { 
                 if(response.data.length === 0){
                     setGraph6MYAxis(["0","0","0","0","0","0","0","0","0","0","0","0"]);
@@ -431,7 +442,7 @@ const Stock = () => {
 
         function get1YStockGraphData() {
 
-            getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/price?stockCode='+params.get("symbol")+'&endDate='+moment(Date.now()).format("YYYY-MM-DD")+'&startDate='+moment().subtract(1, 'years').format("YYYY-MM-DD"))
+            getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/price?stockCode='+_params.get("symbol")+'&endDate='+moment(Date.now()).format("YYYY-MM-DD")+'&startDate='+moment().subtract(1, 'years').format("YYYY-MM-DD"))
             .then(function (response) { 
                 if(response.data.length === 0){
                     setGraph1YYAxis(["0","0","0","0","0","0","0","0","0","0","0","0"]);
@@ -449,14 +460,6 @@ const Stock = () => {
             .catch(function (error) {});
         }
 
-        getPortfolioList();
-
-        getNews();
-        getStockQuote();
-        getWalletBalance();
-        getTopFiveBids();
-        getTopFiveOffers();
-
         get1DStockGraphData();
         get1WStockGraphData();
         get1MStockGraphData();
@@ -464,7 +467,8 @@ const Stock = () => {
         get6MStockGraphData();
         get1YStockGraphData();
 
-    });
+    },[graph1DXAxis, graph1DYAxis, graph1MXAxis, graph1MYAxis, graph1WXAxis, graph1WYAxis, graph1YXAxis, graph1YYAxis, graph3MXAxis, graph3MYAxis, graph6MXAxis, graph6MYAxis]);
+
 
     function calculateStockOrderEstimate() {
         let customer = HelperFunctions.getCustomerInfo();
@@ -1007,7 +1011,7 @@ const Stock = () => {
                             <div>
                                 <div className="flex justify-between">
                                     <div className="w-3/6">
-                                        <div className='mb-6 leading-5'>{companyInfo.length > 250 ? companyInfo.substring(0, 250) + "..." : companyInfo}</div>
+                                        <div className='mb-6 leading-5 text-sm'>{companyInfo.length > 250 ? companyInfo.substring(0, 250) + "..." : companyInfo}</div>
 
                                         <div className="font-bold flex ">
                                             <div className='mr-3'>Enable price alerts</div>
@@ -1130,85 +1134,108 @@ const Stock = () => {
                                         {stockInfo.map((item: any) =>
                                             <div key={item}>
                                                 <div className='py-3'>
-                                                    <div className='flex space-x-24 text-14 border-bottom-e pb-6'>
-                                                        <div>
-                                                            <div className='font-bold mb-20 font-gotham-black-regular'>Earnings per share</div>
-                                                            <div>₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
+                                                    <div className='flex space-x-10 text-14 pb-6'>
+                                                        <div className='w-1/2'>
+                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Earnings per share</div>
+                                                            <div>₦ {HelperFunctions.formatCurrencyWithDecimal(item.earningsPerShare)}</div>
                                                         </div>
 
-                                                        <div>
-                                                            <div className='font-bold mb-20 font-gotham-black-regular'>Mkt Cap</div>
+                                                        <div className='w-1/2'>
+                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Mkt Cap</div>
                                                             <div>₦ {HelperFunctions.formatCurrencyWithDecimal(item.marketCap)}</div>
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div className='py-3'>
-                                                    <div className='flex space-x-24 text-14 border-bottom-e pb-6'>
-                                                        <div>
-                                                            <div className='font-bold mb-20 font-gotham-black-regular'>High</div>
+                                                    <div className='flex space-x-10 text-14 pb-6'>
+                                                        <div className='w-1/2'>
+                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>High</div>
                                                             <div>₦ {HelperFunctions.formatCurrencyWithDecimal(item.high)}</div>
                                                         </div>
 
-                                                        <div>
-                                                            <div className='font-bold mb-20 font-gotham-black-regular'>Low</div>
+                                                        <div className='w-1/2'>
+                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Low</div>
                                                             <div>₦ {HelperFunctions.formatCurrencyWithDecimal(item.low)}</div>
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div className='py-3'>
-                                                    <div className='flex space-x-24 text-14 border-bottom-e pb-6'>
-                                                        <div>
-                                                            <div className='font-bold mb-20 font-gotham-black-regular'>52 Week High</div>
+                                                    <div className='flex space-x-10 text-14 pb-6'>
+                                                        <div className='w-1/2'>
+                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>52 Week High</div>
                                                             <div>₦ {HelperFunctions.formatCurrencyWithDecimal(item.weekHigh52)}</div>
                                                         </div>
 
-                                                        <div>
-                                                            <div className='font-bold mb-20 font-gotham-black-regular'>52 Week Low</div>
+                                                        <div className='w-1/2'>
+                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>52 Week Low</div>
                                                             <div>₦ {HelperFunctions.formatCurrencyWithDecimal(item.weekLow52)}</div>
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div className='py-3'>
-                                                    <div className='flex space-x-24 text-14 border-bottom-e pb-6'>
-                                                        <div>
-                                                            <div className='font-bold mb-20 font-gotham-black-regular'>Volume</div>
+                                                    <div className='flex space-x-10 text-14 pb-6'>
+                                                        <div className='w-1/2'>
+                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Volume</div>
                                                             <div>{item.volume}</div>
                                                         </div>
 
-                                                        <div>
-                                                            <div className='font-bold mb-20 font-gotham-black-regular'>Average Volume</div>
+                                                        <div className='w-1/2'>
+                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Average Volume</div>
                                                             <div>{HelperFunctions.formatCurrencyWithDecimal(item.avgDailyVolume)}</div>
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div className='py-3'>
-                                                    <div className='flex space-x-24 text-14 border-bottom-e pb-6'>
-                                                        <div>
-                                                            <div className='font-bold mb-20 font-gotham-black-regular'>Sector</div>
+                                                    <div className='flex space-x-10 text-14 pb-6'>
+                                                        <div className='w-1/2'>
+                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Sector</div>
                                                             <div>{item.sector}</div>
                                                         </div>
 
-                                                        <div>
-                                                            <div className='font-bold mb-20 font-gotham-black-regular'>Risk Factor</div>
-                                                            <div></div>
+                                                        <div className='w-1/2'>
+                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Risk Factor</div>
+                                                            <div>{HelperFunctions.formatCurrencyWithDecimal(item.riskFactor)}</div>
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div className='py-3'>
-                                                    <div className='flex space-x-24 text-14 pb-6'>
-                                                        <div>
-                                                            <div className='font-bold mb-20 font-gotham-black-regular'>Dividend Yield</div>
-                                                            <div>{HelperFunctions.formatCurrencyWithDecimal(((item.high - item.price) * 100) / item.price)}%</div>
+                                                    <div className='flex space-x-10 text-14 pb-6'>
+                                                        <div className='w-1/2'>
+                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Dividend Yield</div>
+                                                            <div>₦ {HelperFunctions.formatCurrencyWithDecimal(item.dividendYield)}</div>
                                                         </div>
 
-                                                        <div>
-                                                            <div className='font-bold mb-20 font-gotham-black-regular'>Previous Close</div>
+                                                        <div className='w-1/2'>
+                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Previous Close</div>
                                                             <div>₦ {HelperFunctions.formatCurrencyWithDecimal(item.lclose)}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div className='py-3'>
+                                                    <div className='flex space-x-10 text-14 pb-6'>
+                                                        <div className='w-1/2'>
+                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Nominal Value</div>
+                                                            <div>{item.norminalValue}</div>
+                                                        </div>
+
+                                                        <div className='w-1/2'>
+                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Trades</div>
+                                                            <div>{item.trades}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div className='py-3'>
+                                                    <div className='flex space-x-10 text-14 pb-6'>
+                                                        <div>
+                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Value of Trades</div>
+                                                            <div>₦ {HelperFunctions.formatCurrencyWithDecimal(item.valueOfTrades)}</div>
                                                         </div>
                                                     </div>
                                                 </div>

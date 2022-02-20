@@ -65,7 +65,6 @@ const WithdrawFund = () => {
     }, []);
 
 
-
     function selectAmount(event: any) {
         const amountBtns = document.getElementsByClassName("amount-btn");
 
@@ -141,8 +140,6 @@ const WithdrawFund = () => {
                 setShowWithdrawSummary(false);
             });
     }
-
-    
 
     function closeSuccess() {
         window.location.reload();

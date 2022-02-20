@@ -69,6 +69,10 @@ const FundAccount = () => {
             }
         }
 
+        checkIfCardDetailsAreFilled();
+    },[cardNumber, cardExpiry, cardCVV, cardPIN]);
+
+    useEffect(() =>{
         function checkIfCardOTPFilled() {
             if (cardOTP === '') {
                 setIsCardOTPFilled(false);
@@ -78,6 +82,12 @@ const FundAccount = () => {
             }
         }
 
+        checkIfCardOTPFilled();
+    },[cardOTP]);
+
+    useEffect(() =>{
+        setCustomer(JSON.parse(localStorage.getItem("aislCustomerInfo") as string));
+
         function getFundingHistory() {
             getAxios(axios).get(walletAndAccountServiceBaseUrl + '/wallet-api/funding-history')
                 .then(function (response) {
@@ -85,14 +95,11 @@ const FundAccount = () => {
                 })
                 .catch(function (error) { });
         }
-
-
-
-        checkIfCardDetailsAreFilled();
-        checkIfCardOTPFilled();
+    
         getFundingHistory();
 
-    }, [cardCVV, cardExpiry, cardNumber, cardOTP, cardPIN]);
+    },[]);
+    
 
     function performSwitchToDebit() {
         setSwitchToDebit(true);
@@ -205,22 +212,24 @@ const FundAccount = () => {
         getAxios(axios).post(walletAndAccountServiceBaseUrl + '/wallet-api/fw/pay/card',
             {
                 "text": localStorage.getItem('genericCypher')
-            })
-            .then(function (response) {
-                setShowSpinner(false);
+        })
+        .then(function (response) {
+            setShowSpinner(false);
 
-                setShowAmountSection(false);
-                setShowCardSection(false);
-                setShowOTPSection(true);
-                setShowPinSection(false);
+            setShowAmountSection(false);
+            setShowCardSection(false);
+            setShowOTPSection(true);
+            setShowPinSection(false);
 
-                localStorage.setItem("aislPayWithCardResponse", JSON.stringify(response.data.data));
+            localStorage.setItem("aislPayWithCardResponse", JSON.stringify(response.data.data));
 
-                setCardFundingDetails(response.data.data);
-            })
-            .catch(function (error) {
-                setShowSpinner(false);
-            });
+            setCardFundingDetails([response.data.data] as any);
+
+            console.log(cardFundingDetails)
+        })
+        .catch(function (error) {
+            setShowSpinner(false);
+        });
     }
 
     function validateFundWithCardOTP() {
@@ -726,7 +735,7 @@ const FundAccount = () => {
                                             </tbody>
 
                                             <tbody className={fundingHistory.length <= 0 ? '':'hidden'}>
-                                                No records found
+                                                <tr>No records found</tr>
                                             </tbody>
                                         </table>
                                     </div>

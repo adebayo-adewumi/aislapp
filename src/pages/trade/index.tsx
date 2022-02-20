@@ -23,6 +23,7 @@ import { getStocksEndpoint, stockTradingServiceBaseUrlUrl } from '../../apiUrls'
 const Trade = () => {
 
     document.title = "Trade - Anchoria";
+    HelperFunctions.addOverflowAndPaddingToModalBody();
 
     const [stocksListStore, setStocksListStore] = useState<{ [key: string]: [] }>({});
     const [stocksList, setStocksList] = useState([]);
@@ -41,9 +42,8 @@ const Trade = () => {
     const [stockSymbol, setStockSymbol] = useState('');
 
     useEffect(() => {
-        HelperFunctions.addOverflowAndPaddingToModalBody();
 
-        async function getStocks() {
+        function getStocks() {
 
             getAxios(axios).get(getStocksEndpoint)
                 .then(function (response) {
