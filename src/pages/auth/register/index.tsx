@@ -411,11 +411,14 @@ const Register = () => {
                     localStorage.setItem('aislUserWorkflowReference', response.data.data.value);
                     setShowSpinner(false);
 
+                    if(response.data.statusCode !== 200){
+                        setErrorMsg("Invalid OTP");
+                    }
+
                     createUser();
-                    console.log(response.data.data);
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    setErrorMsg(error.response.data.message);
                     setShowSpinner(false);
                 });
         }
