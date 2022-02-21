@@ -972,7 +972,7 @@ const Register = () => {
                         <div className="text-16 text-color-4 mb-20">Enter the 6 digits OTP sent to your phone number</div>
 
                         <form>
-                            <div className="mb-30">
+                            <div>
                                 <div className="font-bold mb-5">Enter OTP</div>
                                 <div className="flex space-x-2 mb-10">
                                     <input value={otpbox1} onChange={e => setOTPBox1(e.target.value)} type="password" className="short-input text-center otpBox" maxLength={1} />
@@ -989,7 +989,11 @@ const Register = () => {
                                 </div>
                             </div>
 
-                            <div className="border-1 mb-20"></div>
+                            <div>
+                                <button onClick={generateOTPForPhone} className='bg-white border-0 mb-30 font-bold cursor-pointer text-green-800 resend-otp'>
+                                    Resend OTP
+                                </button>
+                            </div>
 
                             <div className="flex justify-end space-x-10">
                                 <div className="text-13 ">
