@@ -275,7 +275,7 @@ const Register = () => {
         //VERIFY BVN AND Selfie
         if (localStorage.getItem('genericCypher')) {
             setShowSpinner(true);
-            axios.post(utilityServiceBaseUrlUrl.concat('/bvn/details-by-selfie?workflowReference=') + localStorage.getItem('aislUserWorkflowReference'),
+            axios.post(utilityServiceBaseUrlUrl.concat('/bvn/details-by-selfie?workflowReferenceValue=') + localStorage.getItem('aislUserWorkflowReference'),
                 {
                     "text": localStorage.getItem('genericCypher')
                 })
@@ -403,7 +403,7 @@ const Register = () => {
         if (localStorage.getItem('genericCypher')) {
             setShowSpinner(true);
 
-            getAxios(axios).post(utilityServiceBaseUrlUrl.concat('/otp/validate?workflowReference=') + localStorage.getItem('aislUserWorkflowReference'),
+            getAxios(axios).post(utilityServiceBaseUrlUrl.concat('/otp/validate?workflowReferenceValue=') + localStorage.getItem('aislUserWorkflowReference'),
                 {
                     "text": localStorage.getItem('genericCypher')
                 })
