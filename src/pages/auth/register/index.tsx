@@ -597,7 +597,7 @@ const Register = () => {
     }
 
     function changeImgAvatar(event :any) {
-        let fileExtArr = ["jpg", "jpeg", "png", "jpg", "jpeg", "jfif", "pjpeg", "pjp", "gif", ".webp"];
+        let fileExtArr = ["jpg", "jpeg", "png", "jfif", "pjpeg", "pjp", "gif", "webp"];
 
         setShowSelfieAvatar(true);
 
@@ -622,7 +622,7 @@ const Register = () => {
             setErrorMsg('');
         }
         else{
-            setErrorMsg("Uploaded file is not a valid image. Only JPG, PNG and GIF files are allowed.");
+            setErrorMsg("Uploaded file is not a valid image. Only JPEG, JPG, PNG and GIF files are allowed.");
         }
     }
 
