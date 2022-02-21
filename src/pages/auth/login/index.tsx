@@ -187,12 +187,12 @@ const Login = () => {
                                 </button>
                             </div>
 
-                            <div className="text-center text-14 mb-10">
-                                <div className="mb-5">By creating an account, you agree to Anchoria </div>
-                                <div>
-                                    <button type="button" className="cursor-pointer no-underline border-0 bg-white text-color-1 font-bold">Terms & Conditions</button>
-                                    and
-                                    <button type="button" className="cursor-pointer no-underline border-0 bg-white text-color-1 font-bold">Privacy Policy</button>
+                            <div className="text-center">
+                                <div className="mb-5 text-13">By creating an account, you agree to Anchoria </div>
+                                <div className="text-13">
+                                    <a href="https://anchoriaonline.com/terms-and-conditions-of-use/" target="_blank" rel='noreferrer'><button type="button" className="no-underline border-0 bg-transparent text-color-1 cursor-pointer"><strong>Terms & Conditions</strong></button></a> and
+
+                                    <a href="https://anchoriaonline.com/anchoria-privacy-policy/" target="_blank" rel='noreferrer'><button type="button" className="no-underline border-0 bg-transparent text-color-1 cursor-pointer"><strong> Privacy Policy</strong></button></a>
                                 </div>
                             </div>
                         </form>

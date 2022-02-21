@@ -229,7 +229,6 @@ const Register = () => {
             "dateOfBirth": dob
         }
 
-        console.log(phoneCode.concat(phone))
 
         setShowSpinner(true);
 
@@ -244,11 +243,9 @@ const Register = () => {
                     "text": localStorage.getItem('genericCypher')
                 })
                 .then(function (response) {
-                    localStorage.setItem('workflowReference', response.data.data.workflowReference);
+                    localStorage.setItem('aislUserWorkflowReference', response.data.data.value);
                     setShowSpinner(false);
                     displaySelfie();
-
-                    console.log(response.data.data);
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -278,7 +275,7 @@ const Register = () => {
         //VERIFY BVN AND Selfie
         if (localStorage.getItem('genericCypher')) {
             setShowSpinner(true);
-            axios.post(utilityServiceBaseUrlUrl.concat('/bvn/details-by-selfie?workflowReference=') + localStorage.getItem('workflowReference'),
+            axios.post(utilityServiceBaseUrlUrl.concat('/bvn/details-by-selfie?workflowReference=') + localStorage.getItem('aislUserWorkflowReference'),
                 {
                     "text": localStorage.getItem('genericCypher')
                 })
@@ -288,10 +285,8 @@ const Register = () => {
                         console.log(response.data.message);
                     }
                     
-                    localStorage.setItem('workflowReference', response.data.data.workflowDetails.workflowReference);
-                    localStorage.setItem('aislBVNDetails', JSON.stringify(response.data.data.bvnDetails));
-
-                    
+                    localStorage.setItem('aislUserWorkflowReference', response.data.data.workflowDetails.value);
+                    localStorage.setItem('aislBVNDetails', JSON.stringify(response.data.data.bvnDetails));                    
 
                     setShowSpinner(false);
                     confirmBVN();
@@ -322,7 +317,7 @@ const Register = () => {
             "pin": ob1 + '' + ob2 + '' + ob3 + '' + ob4,
             "selfieImage": "data:image/jpeg;base64,"+hashedSelfieImg,
             "selfieName": "developer@live.com",
-            "sex": bvnDetails.gender,
+            "sex": bvnDetails.gender.toUpperCase(),
             "termsFlag": "Y",
             "title": bvnDetails.title,
             "deviceId": "2e1a65c3-abe8-49cc-99cc-afb2afba085c",
@@ -331,18 +326,20 @@ const Register = () => {
             'shA': showImgAvatar
         }
 
+        console.log(requestData)
+
         setShowSpinner(true);
 
-        let createUserCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
-        localStorage.setItem('createUserCypher', createUserCypher);
+        let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
+        localStorage.setItem('genericCypher', genericCypher);
 
 
         //REGISTER USER
-        if (localStorage.getItem('createUserCypher')) {
+        if (localStorage.getItem('genericCypher')) {
             setShowSpinner(true);
-            getAxios(axios).post(authOnboardingServiceBaseUrl.concat('/customer/add?workflowReference=') + localStorage.getItem('workflowReference'),
+            getAxios(axios).post(authOnboardingServiceBaseUrl.concat('/customer/add?workflowReferenceValue=') + localStorage.getItem('aislUserWorkflowReference'),
                 {
-                    "text": localStorage.getItem('createUserCypher')
+                    "text": localStorage.getItem('genericCypher')
                 })
                 .then(function (response:any) {
                     setShowSpinner(false);
@@ -358,66 +355,60 @@ const Register = () => {
 
     function generateOTPForPhone() {
         let requestData = {
-            "phoneNumber": phone,
-            "workflowReference": localStorage.getItem('workflowReference')
+            "phoneNumber": phoneCode.concat(phone),
+            "workflowReferenceValue": localStorage.getItem('aislUserWorkflowReference')
         }
+
+        console.log(requestData);
 
         setShowSpinner(true);
 
-        let phoneOTPCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
-        localStorage.setItem('phoneOTPCypher', phoneOTPCypher);
+        let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
+        localStorage.setItem('genericCypher', genericCypher);
 
-        // axios.post('https://cors-anywhere.herokuapp.com/http://34.252.87.56:7934/test/encrypt', requestData)
-        // .then(function (response) {
-        //     localStorage.setItem('phoneOTPCypher', response.data.text);
-        //     setShowSpinner(false);
-        // })
-        // .catch(function (error) {
-        //     console.log(error);
-        //     setShowSpinner(false);
-        // });
 
         //GENERATE OTP FOR PHONE
-        if (localStorage.getItem('phoneOTPCypher')) {
+        if (localStorage.getItem('genericCypher')) {
             setShowSpinner(true);
             getAxios(axios).post(utilityServiceBaseUrlUrl.concat('/otp/generate'),
                 {
-                    "text": localStorage.getItem('phoneOTPCypher')
+                    "text": localStorage.getItem('genericCypher')
                 })
                 .then(function (response) {
                     setShowSpinner(false);
                     confirmOTP();
-                    console.log(response.data.data);
                 })
                 .catch(function (error) {
-                    console.log(error);
                     setShowSpinner(false);
+                    confirmOTP();
                 });
         }
     }
 
     function validateOTPForPhone() {
         let requestData = {
-            "phoneNumber": phone,
+            "workflowReferenceValue": localStorage.getItem('aislUserWorkflowReference'),
             "otp": otpbox1 + '' + otpbox2 + '' + otpbox3 + '' + otpbox4 + '' + otpbox5 + '' + otpbox6
         }
 
+        console.log(requestData)
+
         setShowSpinner(true);
 
-        let validatePhoneOTPCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
-        localStorage.setItem('validatePhoneOTPCypher', validatePhoneOTPCypher);
+        let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
+        localStorage.setItem('genericCypher', genericCypher);
 
 
         //VALIDATE OTP FOR PHONE
-        if (localStorage.getItem('validatePhoneOTPCypher')) {
+        if (localStorage.getItem('genericCypher')) {
             setShowSpinner(true);
 
-            getAxios(axios).post(utilityServiceBaseUrlUrl.concat('/otp/validate?workflowReference=') + localStorage.getItem('workflowReference'),
+            getAxios(axios).post(utilityServiceBaseUrlUrl.concat('/otp/validate?workflowReference=') + localStorage.getItem('aislUserWorkflowReference'),
                 {
-                    "text": localStorage.getItem('validatePhoneOTPCypher')
+                    "text": localStorage.getItem('genericCypher')
                 })
                 .then(function (response) {
-                    localStorage.setItem('workflowReference', response.data.data.verificationRef);
+                    localStorage.setItem('aislUserWorkflowReference', response.data.data.value);
                     setShowSpinner(false);
 
                     createUser();
