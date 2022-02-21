@@ -2,23 +2,23 @@ import React, {useState, useEffect} from 'react';
 import GenericHeader from '../../../components/Headers/GenericHeader';
 import {Link} from "react-router-dom";
 import SendingEmails from "../../../assets/images/sending-emails.svg"
-import '../forgot/index.scss';
+import '../forgot-pin/index.scss';
 import axios from 'axios';
 import SpinnerIcon from "../../../assets/images/spinner.gif";
 import { authOnboardingServiceBaseUrl } from '../../../apiUrls';
 import { getAxios } from '../../../network/httpClientWrapper';
 
-const Forgot = () => {
+const ForgotPin = () => {
     const [email, setEmail] = useState('');
     const [isInvalidEmail, setIsInvalidEmail] = useState<boolean>(false);
     const [isEmailNullOrEmpty, setIsEmailNullOrEmpty] = useState<boolean>(true);
-    const [showForgotPasswordCard, setShowForgotPasswordCard] = useState<boolean>(true);
-    const [showResetPasswordLinkSentConfirmationCard, setShowResetPasswordLinkSentConfirmationCard] = useState<boolean>(false);
-    const [forgotPasswordHasError, setForgotPasswordHasError] = useState<boolean>(false);
-    const [forgotPasswordErrorMsg, setForgotPasswordErrorMsg] = useState<boolean>(false);
+    const [showForgotPinCard, setShowForgotPinCard] = useState<boolean>(true);
+    const [showResetPinLinkSentConfirmationCard, setShowResetPinLinkSentConfirmationCard] = useState<boolean>(false);
+    const [forgotPinHasError, setForgotPinHasError] = useState<boolean>(false);
+    const [forgotPinErrorMsg, setForgotPinErrorMsg] = useState<boolean>(false);
     const [showSpinner, setShowSpinner] = useState<boolean>(false);
 
-    document.title = "Forgot Password - Anchoria";
+    document.title = "Forgot Pin - Anchoria";
 
     useEffect(() => {
         async function checkIfEmailIsValid(){    
@@ -43,35 +43,35 @@ const Forgot = () => {
         }
     }
 
-    function sendResetPasswordLink(){
+    function sendResetPinLink(){
         setShowSpinner(true);  
     
-        getAxios(axios).get(authOnboardingServiceBaseUrl+'/customer/forgot-password/initiate?email='+email)
+        getAxios(axios).get(authOnboardingServiceBaseUrl+'/customer/forgot-pin/initiate?email='+email)
         .then(function (response) {
 
-            setShowForgotPasswordCard(false);
-            setShowResetPasswordLinkSentConfirmationCard(true);
-            setForgotPasswordHasError(false);
+            setShowForgotPinCard(false);
+            setShowResetPinLinkSentConfirmationCard(true);
+            setForgotPinHasError(false);
 
             setShowSpinner(false);  
 
-            localStorage.setItem("forgotPasswordEmail", email);
+            localStorage.setItem("forgotPinEmail", email);
         })
         .catch(function (error) {
             setShowSpinner(false);  
-            setForgotPasswordHasError(true);
-            setForgotPasswordErrorMsg(error.response.data.message)
+            setForgotPinHasError(true);
+            setForgotPinErrorMsg(error.response.data.message)
         });        
     }
 
-    function closeForgotPasswordHasError(){
-        setForgotPasswordHasError(false);
+    function closeForgotPinHasError(){
+        setForgotPinHasError(false);
     }
 
-    function displayForgotPasswordCard(){
-        setShowForgotPasswordCard(true);
-        setShowResetPasswordLinkSentConfirmationCard(false);
-        setForgotPasswordHasError(false);
+    function displayForgotPinCard(){
+        setShowForgotPinCard(true);
+        setShowResetPinLinkSentConfirmationCard(false);
+        setForgotPinHasError(false);
     }
 
 
@@ -79,13 +79,13 @@ const Forgot = () => {
         <div>
             <GenericHeader />
 
-            <div className={showForgotPasswordCard ? "mx-auto forgot-password-form-container mt-32" : "mx-auto forgot-password-form-container mt-32 hidden"}>
+            <div className={showForgotPinCard ? "mx-auto forgot-pin-form-container mt-32" : "mx-auto forgot-pin-form-container mt-32 hidden"}>
                 <form>
-                    <div className="font-bold mb-20 forgot-text text-28 font-gotham-black-regular">Forgot Password</div>
-                    <p className="mb-30 forgot-text text-16 line-height-28 font-bold">Type the email you used to sign up on Achoria and we'll send you a password reset email.</p>
+                    <div className="font-bold mb-20 forgot-text text-28 font-gotham-black-regular">Forgot Pin</div>
+                    <p className="mb-30 forgot-text text-16 line-height-28 font-bold">Type the email you used to sign up on Achoria and we'll send you a pin reset email.</p>
 
-                    {/* Forgot Password Error */}
-                    <div className={forgotPasswordHasError ? "error-alert mb-20":"hidden"}>
+                    {/* Forgot Pin Error */}
+                    <div className={forgotPinHasError ? "error-alert mb-20":"hidden"}>
                         <div className="flex justify-between space-x-1 pt-3">
                             <div className="flex">
                                 <div>
@@ -94,10 +94,10 @@ const Forgot = () => {
                                     </svg>
                                 </div>
 
-                                <div className="pt-1 text-14">{forgotPasswordErrorMsg}</div>
+                                <div className="pt-1 text-14">{forgotPinErrorMsg}</div>
                             </div>
                             
-                            <div className="cursor-pointer" onClick={closeForgotPasswordHasError}>
+                            <div className="cursor-pointer" onClick={closeForgotPinHasError}>
                                 <svg  className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50"/>
                                 </svg>
@@ -113,8 +113,8 @@ const Forgot = () => {
                     </div>
 
                     <div className="mb-30 w-full">
-                        <button onClick={sendResetPasswordLink} className={ isEmailNullOrEmpty ? "w-full text-14 rounded-lg bgcolor-1 opacity-50 border-0 py-4 text-white font-bold text-24" : "w-full text-14 rounded-lg bgcolor-1 cursor-pointer focus:shadow-outline border-0 py-4 text-white font-bold text-24"} type='button' disabled={isEmailNullOrEmpty}>
-                            <span className={ showSpinner ? "hidden" : ""}>Send Password Reset Link</span>
+                        <button onClick={sendResetPinLink} className={ isEmailNullOrEmpty ? "w-full text-14 rounded-lg bgcolor-1 opacity-50 border-0 py-4 text-white font-bold text-24" : "w-full text-14 rounded-lg bgcolor-1 cursor-pointer focus:shadow-outline border-0 py-4 text-white font-bold text-24"} type='button' disabled={isEmailNullOrEmpty}>
+                            <span className={ showSpinner ? "hidden" : ""}>Send Pin Reset Link</span>
                             <img src={SpinnerIcon} alt="spinner icon" className={ showSpinner ? "" : "hidden"} width="30"/>
                         </button>
                     </div>
@@ -125,18 +125,18 @@ const Forgot = () => {
                 </form>
             </div>
 
-            <div className={showResetPasswordLinkSentConfirmationCard ? "mx-auto reset-password-link-confirmation-container mt-32" : "mx-auto reset-password-link-confirmation-container mt-32 hidden"}>
+            <div className={showResetPinLinkSentConfirmationCard ? "mx-auto reset-pin-link-confirmation-container mt-32" : "mx-auto reset-pin-link-confirmation-container mt-32 hidden"}>
                 <div className="sending-emails-img mx-auto w-56 mb-30">
                     <img src={SendingEmails} alt="" />
                 </div>
 
-                <div className="text-center text-28 font-gotham-black-regular text-color-1 mb-30">Password reset confirmation</div>
-                <div className="text-center text-16 mb-10">We’ve sent a password rest link to </div>
+                <div className="text-center text-28 font-gotham-black-regular text-color-1 mb-30">Pin reset confirmation</div>
+                <div className="text-center text-16 mb-10">We’ve sent a pin rest link to </div>
                 <div className="text-center font-bold text-blue-600 mb-30">{email}</div>
-                <div className="text-center mb-20 text-14">Didn’t recieve an email? Check your spam folder, or <button type='button' className="no-underline border-0 bg-transparent text-blue-600 font-bold cursor-pointer text-lg" onClick={displayForgotPasswordCard}>resend</button></div>
+                <div className="text-center mb-20 text-14">Didn’t recieve an email? Check your spam folder, or <button type='button' className="no-underline border-0 bg-transparent text-blue-600 font-bold cursor-pointer text-lg" onClick={displayForgotPinCard}>resend</button></div>
             </div>
         </div>
     );
 };
 
-export default Forgot;
+export default ForgotPin;

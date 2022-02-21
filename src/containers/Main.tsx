@@ -5,7 +5,9 @@ import { BrowserRouter, Route, Routes} from 'react-router-dom'; //Navigate, useL
 import Login from '../pages/auth/login';
 import Register from '../pages/auth/register';
 import Forgot from '../pages/auth/forgot';
+import ForgotPin from '../pages/auth/forgot-pin';
 import Reset from '../pages/auth/reset';
+import ResetPin from '../pages/auth/reset-pin';
 import Dashboard from '../pages/dashboard';
 import { ToastProvider } from 'react-toast-notifications';
 import Portfolio from '../pages/portfolio';
@@ -40,7 +42,9 @@ const Main = () => {
                     <Route index element={<Login />} />
                     <Route path="register" element={<Register />} />
                     <Route path="forgot" element={<Forgot />} />
+                    <Route path="forgot-pin" element={<ForgotPin />} />
                     <Route path="reset" element={<Reset />} />
+                    <Route path="reset-pin" element={<ResetPin />} />
                     <Route path="dashboard" element={
                       <RequireAuth>
                         <Dashboard />
