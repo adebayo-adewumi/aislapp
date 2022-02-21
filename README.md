@@ -171,3 +171,115 @@ Web
 
 9 Complete the sell stock flow
 10 Graph
+
+
+// function getPortfolioList() {
+        //     let customer = HelperFunctions.getCustomerInfo();
+
+        // //     
+
+        // //     getAxios(axios).get('http://34.252.87.56:7933/portfolio/',
+        // //         { headers })
+        // //         .then(function (response) {
+
+        //             console.log(response.data)
+
+        //             const listItems = response.data.data.portfolio.map((item: any) =>
+        //                 <Accordion defaultActiveKey="0" className='mb-30'>
+        //                     <Accordion.Item eventKey="0" className='portfoliolist-accordion'>
+        //                         <Accordion.Header className='font-gotham-black-regular m-0 portfoliolist-accordion-header font-bold'>{item.name}</Accordion.Header>
+        //                         <Accordion.Body>
+        //                             {
+        //                                 item.listOfStocks === undefined ? '' : item.listOfStocks.map((item: any) =>
+        //                                     <div className="portfoliolist-card card mb-30 cursor-pointer">
+        //                                         <div className="flex justify-between items-center text-14">
+        //                                             <div> <img src={AtlasIcon} alt="" /></div>
+
+        //                                             <div className="text-color-2">
+        //                                                 <div className='font-bold mb-10'>{item.symbol}</div>
+        //                                                 <div>{item.name}</div>
+        //                                             </div>
+
+        //                                             <div className="text-color-2">
+        //                                                 <div className='mb-10'>Current Price</div>
+        //                                                 <div className='font-bold '>₦ {item.price}</div>
+        //                                             </div>
+
+        //                                             <div className="text-color-2">
+        //                                                 <div className='mb-10'>Units Owned</div>
+        //                                                 <div className='font-bold '>{item.units}</div>
+        //                                             </div>
+
+        //                                             <div>
+        //                                                 <Form.Check type="checkbox" onClick={selectStockToMove} defaultValue={item.id} className='portfoliolist-checkbox' />
+        //                                             </div>
+        //                                         </div>
+        //                                     </div>
+        //                                 )
+        //                             }
+        //                         </Accordion.Body>
+        //                     </Accordion.Item>
+        //                 </Accordion>
+        //             );
+
+        //             setStocksBought(listItems);
+        //         })
+        //         .catch(function (error) {
+
+        //             console.log(apiResponseHasError);
+
+        //             setApiResponseHasError(true);
+
+        //             setTimeout(() => {
+        //                 setApiResponseHasError(false);
+        //             }, 3000);
+        //         });
+        // }
+
+        // function getStocksBought() {
+        //     
+
+        //     getAxios(axios).get(process.env.REACT_APP_STOCK_SERVICE_URL + '/stock/' + customer.id + '/bought?pageNo=0&pageSize=20', { headers })
+        //         .then(function (response) {
+        //             HelperFunctions.removeOverflowAndPaddingFromModalBody();
+
+        //             const listOfStocksBought = response.data.data.map((item: any) =>
+        //                 <div className="portfoliolist-card card mb-30 cursor-pointer">
+        //                     <div className="flex justify-between items-center text-14">
+        //                         <div> <img src={AtlasIcon} alt="" /></div>
+
+        //                         <div className="text-color-2">
+        //                             <div className='font-bold mb-10'>{item.symbol}</div>
+        //                             <div>{item.name}</div>
+        //                         </div>
+
+        //                         <div className="text-color-2">
+        //                             <div className='mb-10'>Current Price</div>
+        //                             <div className='font-bold '>₦ {HelperFunctions.formatCurrencyWithDecimal(item.currentPrice)}</div>
+        //                         </div>
+
+        //                         <div className="text-color-2">
+        //                             <div className='mb-10'>Units Owned</div>
+        //                             <div className='font-bold '>{item.units}</div>
+        //                         </div>
+
+        //                         <div>
+        //                             <Form.Check type="checkbox" onClick={selectStockToMove} className='portfoliolist-checkbox' defaultValue={item.id} />
+        //                         </div>
+        //                     </div>
+        //                 </div>
+        //             );
+
+        //             setStocksBought(listOfStocksBought);
+        //         })
+        //         .catch(function (error) {
+
+        //             console.log(apiResponseHasError);
+
+        //             setApiResponseHasError(true);
+
+        //             setTimeout(() => {
+        //                 setApiResponseHasError(false);
+        //             }, 3000);
+        //         });
+        // }

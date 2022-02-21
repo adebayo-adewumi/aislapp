@@ -28,7 +28,7 @@ const Portfolio = () => {
     const [showSuccess, setShowSuccessModal] = useState<boolean>(false);
     const [portfolioName, setPortfolioName] = useState('');
     const [showSpinner, setShowSpinner] = useState<boolean>(false);
-    const [apiResponseHasError, setApiResponseHasError] = useState<boolean>(false);
+    const [, setApiResponseHasError] = useState<boolean>(false);
     const [portfolioIsNullOrEmpty, setPortfolioIsNullOrEmpty] = useState<boolean>(true);
     const [portfolioCount, setPortfolioCount] = useState(0);
     const [portfolioList, setPortfolioList] = useState('');
@@ -102,6 +102,8 @@ const Portfolio = () => {
         }
     ];
 
+    HelperFunctions.removeOverflowAndPaddingFromModalBody();
+
     useEffect(() => {
         function checkIfPortfolioIsNullOrEmpty() {
 
@@ -112,6 +114,11 @@ const Portfolio = () => {
                 setPortfolioIsNullOrEmpty(false);
             }
         }
+
+        checkIfPortfolioIsNullOrEmpty();
+    },[portfolioName]);
+
+    useEffect(() =>{
 
         function getPortfolioList() {
             getAxios(axios).get(getPortfolioEndpoint)
@@ -135,8 +142,6 @@ const Portfolio = () => {
                 })
                 .catch(function () {
     
-                    console.log(apiResponseHasError);
-    
                     setApiResponseHasError(true);
     
                     setTimeout(() => {
@@ -152,12 +157,10 @@ const Portfolio = () => {
 
                 response.data.map((item :any, index :any)=>{
                     graphYAxis.push(item.price);
-                    //setGraphYAxis(gy);
 
                     graphXAxis.push(moment(item.date).format("MMM Do"));
-                    //setGraphXAxis(gx);
-
-                    return false;
+                    
+                    return true;
                 });
                 
             })
@@ -168,8 +171,8 @@ const Portfolio = () => {
     
         getStockGraphData();
         getPortfolioList();
-        checkIfPortfolioIsNullOrEmpty();
-    },[apiResponseHasError, graphXAxis, graphYAxis, portfolioName]);
+        
+    },[graphXAxis,graphYAxis]);
 
     function showCreatePorfolioModal() {
         setShowCreatePortfolio(true);
@@ -221,8 +224,6 @@ const Portfolio = () => {
                 });
         }
     }
-
-    HelperFunctions.removeOverflowAndPaddingFromModalBody();
 
     return (
         <LoaderContainer showPageLoader={showSpinner}>

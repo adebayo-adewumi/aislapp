@@ -360,6 +360,11 @@ const Stock = () => {
             .catch(function (error) {});
         }
 
+        get1DStockGraphData();
+    },[graph1DXAxis, graph1DYAxis]);
+
+    useEffect(() => {
+        const _params = new URLSearchParams(window.location.search);
         function get1WStockGraphData() {
 
             getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/price?stockCode='+_params.get("symbol")+'&endDate='+moment(Date.now()).format("YYYY-MM-DD")+'&startDate='+moment().subtract(1, 'weeks').format("YYYY-MM-DD"))
@@ -379,6 +384,12 @@ const Stock = () => {
             })
             .catch(function (error) {});
         }
+
+        get1WStockGraphData();
+    },[graph1WXAxis, graph1WYAxis]);
+
+    useEffect(() => {
+        const _params = new URLSearchParams(window.location.search);
 
         function get1MStockGraphData() {
 
@@ -400,6 +411,12 @@ const Stock = () => {
             .catch(function (error) {});
         }
 
+        get1MStockGraphData();
+    },[graph1MXAxis, graph1MYAxis]);
+
+    useEffect(() => {
+        const _params = new URLSearchParams(window.location.search);
+
         function get3MStockGraphData() {
 
             getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/price?stockCode='+_params.get("symbol")+'&endDate='+moment(Date.now()).format("YYYY-MM-DD")+'&startDate='+moment().subtract(3, 'months').format("YYYY-MM-DD"))
@@ -420,6 +437,11 @@ const Stock = () => {
             .catch(function (error) {});
         }
 
+        get3MStockGraphData();
+    },[graph3MXAxis, graph3MYAxis,]);
+
+    useEffect(() => {
+        const _params = new URLSearchParams(window.location.search);
         function get6MStockGraphData() {
 
             getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/price?stockCode='+_params.get("symbol")+'&endDate='+moment(Date.now()).format("YYYY-MM-DD")+'&startDate='+moment().subtract(6, 'months').format("YYYY-MM-DD"))
@@ -440,6 +462,11 @@ const Stock = () => {
             .catch(function (error) {});
         }
 
+        get6MStockGraphData();
+    },[graph6MXAxis, graph6MYAxis]);
+
+    useEffect(() => {
+        const _params = new URLSearchParams(window.location.search);
         function get1YStockGraphData() {
 
             getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/price?stockCode='+_params.get("symbol")+'&endDate='+moment(Date.now()).format("YYYY-MM-DD")+'&startDate='+moment().subtract(1, 'years').format("YYYY-MM-DD"))
@@ -460,14 +487,8 @@ const Stock = () => {
             .catch(function (error) {});
         }
 
-        get1DStockGraphData();
-        get1WStockGraphData();
-        get1MStockGraphData();
-        get3MStockGraphData();
-        get6MStockGraphData();
         get1YStockGraphData();
-
-    },[graph1DXAxis, graph1DYAxis, graph1MXAxis, graph1MYAxis, graph1WXAxis, graph1WYAxis, graph1YXAxis, graph1YYAxis, graph3MXAxis, graph3MYAxis, graph6MXAxis, graph6MYAxis]);
+    },[graph1YXAxis, graph1YYAxis]);
 
 
     function calculateStockOrderEstimate() {
@@ -1251,12 +1272,12 @@ const Stock = () => {
                         <div className={showAbout ? 'mb-30 about-section' : 'mb-30 about-section hidden'}>
                             <div className='mb-10'>
                                 <div className='flex'>
-                                    <div className='w-56rem'>
+                                    <div className='w-full'>
                                         <p className='font-bold mb-20 font-gotham-black-regular'>About</p>
                                         <div className='tracking-widest text-14 leading-8 pr-10 mb-30'>{companyInfo}</div>
                                     </div>
 
-                                    <div className='px-10 h-44 border-left-1'>
+                                    <div className='px-10 h-44 border-left-1 hidden'>
                                         <div className='mb-30'>
                                             <p className='font-gotham-black-regular mb-10'>Group Managing Director</p>
                                             <p className='text-14'></p>
@@ -1275,26 +1296,28 @@ const Stock = () => {
                             <div className='mt-10'>
                                 <div className='card-stock'>
                                     <div className='font-gotham-black-regular mb-30 mt-5'>Statistics Overview</div>
-                                    <div className='flex justify-between mb-20'>
+                                    {stockInfo.map((item: any, index: any) =>
+                                    <div className='flex justify-between mb-20' key={index}>
                                         <div>
                                             <div className='font-gotham-black-regular text-14 mb-10'>Shares Outstanding</div>
-                                            <div className='text-13'></div>
+                                            <div className='text-13'>{HelperFunctions.formatCurrencyWithDecimal(item.sharesOutstanding)}</div>
                                         </div>
 
                                         <div className='border-left-1'></div>
 
                                         <div>
                                             <div className='font-gotham-black-regular text-14 mb-10'>Registrar</div>
-                                            <div className='text-13'>Anchoria Investment Services Limited</div>
+                                            <div className='text-13'>{item.registrar}</div>
                                         </div>
 
                                         <div className='border-left-1'></div>
 
                                         <div className='w-72'>
                                             <div className='font-gotham-black-regular text-14 mb-10'>Institutional Owership</div>
-                                            <div className='text-13'></div>
+                                            <div className='text-13'>{item.institutionalOwnerShip}</div>
                                         </div>
                                     </div>
+                                    )}
                                 </div>
                             </div>
                         </div>

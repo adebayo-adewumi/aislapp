@@ -50,9 +50,7 @@ const Watchlist = () => {
     useEffect(() => {
 
         function getWatchlist() {
-            let customer = HelperFunctions.getCustomerInfo();
-
-            
+            let customer = HelperFunctions.getCustomerInfo();            
 
             getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/watchlist?customerId=' + customer.id)
                 .then(function (response) {
@@ -68,6 +66,10 @@ const Watchlist = () => {
                 });
         }
 
+        getWatchlist();
+    },[]);
+
+    useEffect(() => {
         function checkIfWatchlistIsNullOrEmpty() {
 
             if (watchList === '') {
@@ -79,8 +81,7 @@ const Watchlist = () => {
         }
 
         checkIfWatchlistIsNullOrEmpty();
-        getWatchlist();
-    });
+    },[watchList]);
 
     function closeModal() {
         setShowModalBG(false);
