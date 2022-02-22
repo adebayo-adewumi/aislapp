@@ -993,7 +993,7 @@ const Register = () => {
                             </div>
 
                             <div>
-                                <button onClick={generateOTPForPhone} className='bg-white border-0 mb-30 font-bold cursor-pointer text-green-800 resend-otp'>
+                                <button onClick={generateOTPForPhone} className='bg-white border-0 mb-30 font-bold cursor-pointer text-green-800 resend-otp' type='button'>
                                     Resend OTP
                                 </button>
                             </div>
