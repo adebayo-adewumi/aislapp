@@ -793,7 +793,7 @@ const Register = () => {
                                     <div className="mb-10 text-13">Date of birth (DD / MM / YYYY)</div>
                                     <div className='flex justify-between items-center border-1-d6 rounded-lg'>
                                         <div className='w-full'>
-                                            <input type="text" value={dob} onChange={e => setDOB(e.target.value)} className="outline-white border-0 p-3 input text-14" placeholder="DD / MM / YYYY" />
+                                            <input readOnly value={dob} onChange={e => setDOB(e.target.value)} className="outline-white border-0 p-3 input text-14" placeholder="DD / MM / YYYY" />
                                         </div>
                                         <div className='p-3 cursor-pointer' onClick={e => displayCalendar()}>
                                             <img src={CalendarIcon} alt="" width="20" />
