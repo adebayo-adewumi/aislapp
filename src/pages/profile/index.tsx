@@ -1388,7 +1388,10 @@ const Profile = () => {
                                 <div className='card'>
                                     
 
-                                    <div className='font-gotham-black-regular text-color-1 mb-30'>Bank Details</div>
+                                    <div className='font-gotham-black-regular text-color-1 mb-10'>Bank Details</div>
+                                    <div className='font-bold text-color-1 mb-30'>Proceeds from your stock sales would be deposited into this account
+
+</div>
 
 
                                     <div className='flex mb-30'>
