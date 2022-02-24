@@ -694,7 +694,7 @@ const FundAccount = () => {
                                             <div className='pl-3'>
                                                 <ul>
                                                     <li className='p-1'>Copy your wallect ID</li>
-                                                    <li className='p-1'>Open Vbank app and click on funds transfer</li>
+                                                    <li className='p-1'>Open your bank app and click on funds transfer</li>
                                                     <li className='p-1'>Select (VFD Microfinance bank) beneficiary bank,</li>
                                                     <li className='p-1'>Enter your wallet ID as account number</li>
                                                     <li className='p-1'>Input amount and transfer</li>
@@ -703,7 +703,7 @@ const FundAccount = () => {
                                             </div>
                                         </div>
 
-                                        <div className='flex space-x-3'>
+                                        <div className='flex space-x-3 hidden'>
                                             <button type='button' className='w-full font-bold border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-4 cursor-pointer' >Close</button>
                                         </div>
                                     </div>
