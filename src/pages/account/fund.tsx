@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from "react-router-dom";
 import UserAreaHeader from '../../components/Headers/UserAreaHeader';
 import ArrowBackIcon from '../../assets/images/arrow-back.svg';
 import Form from 'react-bootstrap/Form';
-import SuccessIcon from '../../assets/images/success.gif';
+import SuccessCheckIcon from '../../assets/images/success-check.svg';
 import InfoIcon from '../../assets/images/info.svg';
 import Sidebar from '../../components/Sidebar';
 import * as HelperFunctions from '../../lib/helper';
@@ -172,8 +171,6 @@ const FundAccount = () => {
         setShowBankTransferSection(false);
     }
 
-    
-
     function slideToAmount(event: any) {
         let amount = parseFloat(event.target.value) * 5000;
         let formatAmount = HelperFunctions.formatCurrencyWithDecimal(amount);
@@ -194,7 +191,7 @@ const FundAccount = () => {
             "expiryMonth": cardExpiry.split("/")[0],
             "expiryYear": cardExpiry.split("/")[1],
             "currency": "NGN",
-            "amount": parseFloat(showAmount),
+            "amount": parseFloat(showAmount.replaceAll(',','')),
             "email": customer.email,
             "fullname": customer.firstName+" "+customer.lastName,
             "phoneNumber": customer.phoneNumber,
@@ -224,8 +221,6 @@ const FundAccount = () => {
             localStorage.setItem("aislPayWithCardResponse", JSON.stringify(response.data.data));
 
             setCardFundingDetails([response.data.data] as any);
-
-            console.log(cardFundingDetails)
         })
         .catch(function (error) {
             setShowSpinner(false);
@@ -263,6 +258,8 @@ const FundAccount = () => {
                 setShowCardSection(false);
                 setShowOTPSection(false);
                 setShowPinSection(true);
+
+                setCardFundingDetails([response.data.data] as any);
             })
             .catch(function (error) {
                 console.log(error)
@@ -302,6 +299,8 @@ const FundAccount = () => {
                 setShowOTPSection(false);
                 setShowPinSection(false);
                 setShowTransactionSection(true);
+
+                setCardFundingDetails([response.data.data] as any);
 
                 setApiResponseSuccessMsg('');
             })
@@ -367,10 +366,8 @@ const FundAccount = () => {
                                     <span className='hidden'>{showAmount}</span>
                                 </div>
 
-                                <div className='font-bold'>
-                                    <Link to='/account' className='no-underline text-color-1'>
-                                        <img src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
-                                    </Link>
+                                <div className='font-bold' onClick={performSwitchToDebit}>                                    
+                                    <img src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
                                 </div>
                             </div>
 
@@ -621,8 +618,8 @@ const FundAccount = () => {
                                 {/* Transaction success Section */}
                                 <div className={showTransactionSection ? 'transaction-section' : 'hidden'}>
                                     <div>
-                                        <div className="mx-auto w-65p h-64 relative">
-                                            <img src={SuccessIcon} alt="success icon" className="w-22rem" />
+                                        <div className="mx-auto w-56 h-64 relative">
+                                            <img src={SuccessCheckIcon} alt="success icon" className="w-56" />
                                             <div className="bg-white p-2 w-full -bottom-5 absolute"></div>
                                         </div>
 
@@ -630,42 +627,43 @@ const FundAccount = () => {
 
                                         <div className='border-bottom-1d'></div>
 
-                                        <div className='mb-30'>
-                                            <div className='flex justify-between p-5 border-bottom-1d'>
+                                        {cardFundingDetails.map((item :any, index :any) =>
+                                        <div className='mb-30' key={index}>
+                                            <div className='flex justify-between py-5 border-bottom-1d text-sm'>
                                                 <div>Card</div>
-                                                <div className='font-bold text-gray-500'> (*** 3456)</div>
+                                                <div className='font-bold'>{item.cardNumber}</div>
                                             </div>
 
-                                            <div className='flex justify-between p-5 border-bottom-1d'>
-                                                <div>Fees</div>
-                                                <div className='font-bold'>₦306.00</div>
-                                            </div>
-
-                                            <div className='flex justify-between p-5 border-bottom-1d'>
+                                            <div className='flex justify-between py-5 border-bottom-1d text-sm'>
                                                 <div>Amount Funded</div>
-                                                <div className='font-bold'>₦306.00</div>
+                                                <div className='font-bold'>₦ {HelperFunctions.formatCurrencyWithDecimal(item.amount)}</div>
                                             </div>
 
-                                            <div className='flex justify-between p-5 border-bottom-1d'>
-                                                <div>Total Amount</div>
-                                                <div className='font-bold text-color-1 font-bold'>₦ 24,206.00</div>
-                                            </div>
-
-                                            <div className='flex justify-between p-5 border-bottom-1d'>
+                                            <div className='flex justify-between py-5 border-bottom-1d text-sm'>
                                                 <div>Date</div>
-                                                <div className='font-bold text-color-1 font-bold'>29 August 2021 | 4:56 PM</div>
+                                                <div className='font-bold text-color-1 font-bold'>{moment(item.updatedOn).format("DD MMMM YYYY | hh:mm A")}</div>
                                             </div>
 
-                                            <div className='flex justify-between p-5 border-bottom-1d'>
-                                                <div>Reference</div>
-                                                <div className='font-bold text-color-1 font-bold'>JU79273399334892HKS</div>
+                                            <div className='flex justify-between py-5 border-bottom-1d text-sm'>
+                                                <div>Beneficiary Account Number</div>
+                                                <div className='font-bold text-color-1 font-bold'>{item.beneficiaryAccountNumber}</div>
                                             </div>
+
+                                            <div className='flex justify-between py-5 border-bottom-1d text-sm'>
+                                                <div>Reference</div>
+                                                <div className='font-bold text-color-1 font-bold'>{item.flwRef}</div>
+                                            </div>
+
+                                            
                                         </div>
+                                        )}
 
                                         <div className='flex space-x-3'>
-                                            <button type='button' className='w-2/5 font-bold border-0 rounded-lg focus:shadow-outline px-5 py-2 bg-gray-200 cursor-pointer'>Share</button>
+                                            <button type='button' className='w-2/5 font-bold border-0 opacity-0 rounded-lg focus:shadow-outline px-5 py-2 bg-gray-200 cursor-pointer'>Share</button>
 
-                                            <button type='button' className='w-3/5 font-bold border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' >Close</button>
+                                            
+                                            <button onClick={performSwitchToDebit} type='button' className='w-3/5 font-bold border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' >Close</button>
+                                            
                                         </div>
                                     </div>
                                 </div>
