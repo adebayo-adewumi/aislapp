@@ -79,6 +79,7 @@ const Profile = () => {
     const [nokFirstname, setNokFirstname] = useState('');
     const [nokLastname, setNokLastname] = useState('');
     const [nokPhone, setNokPhone] = useState('');
+    const [nokPhoneCode, setNokPhoneCode] = useState('');
     const [nokEmail, setNokEmail] = useState('');
     const [nokAddress, setNokAddress] = useState('');
     const [nokRelationship, setNokRelationship] = useState('');
@@ -1466,12 +1467,74 @@ const Profile = () => {
                                             </div>
 
                                             <div className='w-1/3'>
-                                                <div className='text-gray-700 mb-4'>Phone number</div>
-                                                <div><input value={nokPhone} onChange={e => setNokPhone(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
+                                                <div className='text-gray-700 mb-3'>Phone number</div>
+
+                                                <div className='flex border-1-d6 rounded-lg p-2'>
+                                                    <select onChange={e => setNokPhoneCode(e.target.value)} className='border-0 font-gotham outline-white text-sm'>
+                                                        <option value="234">+234</option>
+                                                        <option value="1">+1</option>
+                                                        <option value="44">+44</option>
+                                                        <option value="213">+213</option>
+                                                        <option value="376">+376</option>
+                                                        <option value="244">+244</option>
+                                                        <option value="1264">+1264</option>
+                                                        <option value="1268">+1268</option>
+                                                        <option value="54">+54</option>
+                                                        <option value="374">+374</option>
+                                                        <option value="297">+297</option>
+                                                        <option value="61">+61</option>
+                                                        <option value="43">+43</option>
+                                                        <option value="994">+994</option>
+                                                        <option value="1242">+1242</option>
+                                                        <option value="973">+973</option>
+                                                        <option value="880">+880</option>
+                                                        <option value="1246">+1246</option>
+                                                        <option value="375">+375</option>
+                                                        <option value="32">+32</option>
+                                                        <option value="501">+501</option>
+                                                        <option value="229">+229</option>
+                                                        <option value="1441">+1441</option>
+                                                        <option value="975">+975</option>
+                                                        <option value="591">+591</option>
+                                                        <option  value="387">+387</option>
+                                                        <option  value="267">+267</option>
+                                                        <option  value="55">+55</option>
+                                                        <option  value="673">+673</option>
+                                                        <option  value="359">+359</option>
+                                                        <option  value="226">+226</option>
+                                                        <option  value="257">+257</option>
+                                                        <option  value="855">+855</option>
+                                                        <option  value="237">+237</option>
+                                                        <option  value="1">+1</option>
+                                                        <option  value="238">+238</option>
+                                                        <option  value="1345">+1345</option>
+                                                        <option  value="236">+236</option>
+                                                        <option  value="56">+56</option>
+                                                        <option  value="86">+86</option>
+                                                        <option  value="57">+57</option>
+                                                        <option  value="269">+269</option>
+                                                        <option  value="242">+242</option>
+                                                        <option  value="682">+682</option>
+                                                        <option  value="506">+506</option>
+                                                        <option  value="385">+385</option>
+                                                        <option  value="53">+53</option>
+                                                        <option  value="599">+599</option>
+                                                        <option  value="90392">+90392</option>
+                                                        <option  value="357">+357</option>
+                                                        <option  value="420">+420</option>
+                                                        <option  value="45">+45</option>
+                                                        <option  value="253">+253</option>
+                                                        <option  value="1809">+1809</option>
+                                                        <option  value="1809">+1809</option>
+                                                        
+                                                    </select>
+
+                                                    <input value={nokPhone} onChange={e => setNokPhone(e.target.value)} className="px-2 py-1 border-0 input text-lg outline-white" placeholder="ex: 813 000 1111 OR 0813 000 1111" type="text" />
+                                                </div>                                                
                                             </div>
 
                                             <div className='w-1/3'>
-                                                <div className='text-gray-700 mb-4'>Relationship</div>
+                                                <div className='text-gray-700 mb-3'>Relationship</div>
                                                 <div>
                                                     <select value={nokRelationship} onChange={e => setNokRelationship(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
                                                         <option value="">Select relationship</option>
