@@ -68,6 +68,7 @@ const BankCard = () => {
     const [cardExpiry, setCardExpiry] = useState('');
     const [cardCVV, setCardCVV] = useState('');
     const [defaultNewCardDebitMsg, setDefaultNewCardDebitMsg] = useState('');
+    const [isBankDetailsFilled, setIsBankDetailsFilled] = useState<boolean>(false)
 
     useEffect(() => {
         function getBankList() {
@@ -113,6 +114,40 @@ const BankCard = () => {
         getCardsList();
         getDefaultNewCardDebit();
     }, []);
+
+    useEffect(()=>{
+        function checkNameEnquiryOnBankDetails() {
+            if (accountNumber === '' || bankCode === '') {
+                setBankDetailsError('Kindly provide your bank name and account number.');
+                setIsBankDetailsFilled(false);
+            }
+            else {    
+    
+                getAxios(axios).get(walletAndAccountServiceBaseUrl + '/wallet-api/name-enquiry?accountNo=' + accountNumber + '&bankCode=' + bankCode)
+                .then(function (response) {
+
+                    if(response.data.statusCode !== 200){
+                        setBankDetailsError(response.data.message);
+                        setAccountName('');
+                        setIsBankDetailsFilled(false);
+                    }
+                    else{
+                        setAccountName(response.data.data.name);
+                        setBankDetailsError('');
+                        setIsBankDetailsFilled(true);
+                    }
+                    
+                })
+                .catch(function (error) {
+                    setBankDetailsError(error.response.data.message);
+                    setAccountName('');
+                    setIsBankDetailsFilled(false);
+                });
+            }
+        }
+
+        checkNameEnquiryOnBankDetails();
+    },[accountNumber, bankCode])
 
     function performSwitchToDebit() {
         setSwitchToDebit(true);
@@ -193,12 +228,18 @@ const BankCard = () => {
             { headers })
             .then(function (response) {
                 setShowSpinner(false);
-                setApiResponseSuccessMsg(response.data.description);
-                setIsAddBankSuccess('true');
+
+                if(response.data.statusCode !== 200){
+                    setBankDetailsError(response.data.message)
+                }
+                else{
+                    setApiResponseSuccessMsg(response.data.description);
+                    setIsAddBankSuccess('true');
+                }
             })
             .catch(function (error) {
                 setShowSpinner(false);
-                alert("Unable to add bank details. Please try again later")
+                setBankDetailsError(error.response.data.message);
             });
     }
 
@@ -230,26 +271,7 @@ const BankCard = () => {
         setBankCode(banklist.value);
     }
 
-    function checkNameEnquiryOnBankDetails(event: any) {
-        if (accountNumber === '') {
-            setBankDetailsError('Kindly type you account number.');
-        }
-        else {
-            let bl = document.getElementById("bankList") as HTMLInputElement;
-
-
-            getAxios(axios).get(walletAndAccountServiceBaseUrl + '/wallet-api/name-enquiry?accountNo=' + accountNumber + '&bankCode=' + bl.value)
-                .then(function (response) {
-                    setAccountName(response.data.data.name);
-                    setBankDetailsError('');
-                })
-                .catch(function (error) {
-                    setBankDetailsError(error.response.data.message);
-                });
-
-            setBankCode(bl.value);
-        }
-    }
+    
 
     function selectBankDetails(event: any) {
         let id = event.target.getAttribute("data-bank");
@@ -420,39 +442,36 @@ const BankCard = () => {
                                     
                                 </div>
 
-                                <div className='font-bold'>
-                                    <Link to='/account' className='no-underline text-color-1'>
+                                <div className='font-bold' onClick={performSwitchToDebit}>
                                         <img src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
-                                    </Link>
+                                    
                                 </div>
                             </div>
                             {/*End*/}
 
                             {/*Bank Header */}
-                            <div className={showBankHeader ? "flex justify-between" : 'hidden'}>
+                            <div className={showBankHeader ? "flex justify-between" : 'hidden'} style={{ width: '35rem' }}>
                                 <div>
                                     <div className="text-28 text-color-1 font-gotham-black-regular font-bold mb-10">Bank and Cards</div>
-                                    <div className="font-bold mb-30">Request for investment statements</div>
+                                    <div className="font-bold mb-30 hidden">Request for investment statements</div>
                                 </div>
 
-                                <div className='font-bold'>
-                                    <Link to='/account' className='no-underline text-color-1'>
+                                <div className='font-bold' onClick={performSwitchToDebit}>
                                         <img src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
-                                    </Link>
+                                    
                                 </div>
                             </div>
                             {/*End*/}
 
                             {/*Add Card Header */}
-                            <div className={showAddCard ? "flex justify-between mb-30" : "hidden"}>
+                            <div className={showAddCard ? "flex justify-between mb-30" : "hidden"} style={{ width: '35rem' }}>
                                 <div>
                                     <div className="text-28 text-color-1 font-gotham-black-regular font-bold mb-10">Add New Card</div>
                                 </div>
 
-                                <div className='font-bold'>
-                                    <Link to='/account' className='no-underline text-color-1'>
+                                <div className='font-bold' onClick={performSwitchToDebit}>
                                         <img src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
-                                    </Link>
+                                    
                                 </div>
                             </div>
                             {/*End*/}
@@ -463,10 +482,9 @@ const BankCard = () => {
                                     <div className="text-28 text-color-1 font-gotham-black-regular font-bold mb-10">Add New Bank</div>
                                 </div>
 
-                                <div className='font-bold'>
-                                    <Link to='/account' className='no-underline text-color-1'>
+                                <div className='font-bold' onClick={performSwitchToDebit}>
                                         <img src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
-                                    </Link>
+                                    
                                 </div>
                             </div>
                             {/*End*/}
@@ -477,10 +495,9 @@ const BankCard = () => {
                                     <div className="text-28 text-color-1 font-gotham-black-regular font-bold mb-10">Manage Card</div>
                                 </div>
 
-                                <div className='font-bold'>
-                                    <Link to='/account' className='no-underline text-color-1'>
+                                <div className='font-bold' onClick={performSwitchToDebit}>
                                         <img src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
-                                    </Link>
+                                    
                                 </div>
                             </div>
                             {/*End*/}
@@ -517,6 +534,8 @@ const BankCard = () => {
                                         </div>
                                         {/*End */}
 
+                                        <div className={cardsList.length === 0 ? 'pb-16 text-gray-500':'hidden'}>No card added</div>
+
                                         {cardsList.map((item: any, index: any) =>
                                             <div className='mb-30' onClick={displayManageCard} key={index}>
                                                 <div className='bgcolor-2 rounded-xl p-0 relative cursor-pointer'>
@@ -551,14 +570,16 @@ const BankCard = () => {
                                             </div>
                                         </div>
 
+                                        <div className={bankDetailsList.length === 0 ? 'pb-16 text-gray-500':'hidden'}>No bank details added</div>
+
                                         {
                                             bankDetailsList.map((item: any, index: any) =>
                                                 <div className='mb-30' onClick={selectBankDetails} key={index} data-bank={item.id}>
-                                                    <div className='bgcolor-2 rounded-xl p-0 relative cursor-pointer' data-bank={item.id}>
-                                                        <img src={MaskGroupImg} alt='' className="w-full" data-bank={item.id} />
-                                                        <div className='absolute bottom-0 px-7 py-6' data-bank={item.id}>
-                                                            <div className='text-white text-sm mb-20' data-bank={item.id}>{item.accountName}</div>
-                                                            <div className='text-white font-bold' data-bank={item.id}>{item.bankName} ({item.accountNumber})</div>
+                                                    <div className='rounded-xl relative cursor-pointer' data-bank={item.id}>
+                                                        <img src={MaskGroupImg} alt='' className="w-full hidden" data-bank={item.id} />
+                                                        <div className='bg-gray-100 px-4 py-3 rounded' data-bank={item.id}>
+                                                            <div className='text-sm mb-10' data-bank={item.id}>{item.accountName}</div>
+                                                            <div className='font-bold' data-bank={item.id}>{item.bankName} ({item.accountNumber})</div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -701,11 +722,7 @@ const BankCard = () => {
                                                     <div className="pt-1 text-14">{bankDetailsError}</div>
                                                 </div>
 
-                                                <div className="cursor-pointer">
-                                                    <svg className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50" />
-                                                    </svg>
-                                                </div>
+                                               
                                             </div>
                                         </div>
                                         {/* End */}
@@ -735,13 +752,13 @@ const BankCard = () => {
 
 
                                         <div className='mb-5 text-color-1 text-xl font-bold'>Enter your bank details below</div>
-                                        <div className='mb-30 text-color-1 text-md'>We pay your withdrawal into your bank account </div>
+                                        <div className='mb-30 text-color-1 text-md'>We pay your withdrawal into your bank account </div>                                        
 
                                         <div className='mb-30'>
                                             <div className='text-14 mb-10 font-bold'>Select Bank</div>
 
                                             <div>
-                                                <select onChange={checkNameEnquiryOnBankDetails} className='input px-5 py-3 border-1-d6 outline-white font-bold text-lg' id='bankList' >
+                                                <select onChange={e => setBankCode(e.target.value)} className='input px-5 py-3 border-1-d6 outline-white font-bold text-lg' id='bankList' >
                                                     <option value="">...</option>
                                                     {
                                                         bankList.map((item: any) =>
@@ -756,7 +773,7 @@ const BankCard = () => {
                                             <div className='text-14 mb-10 font-bold'>Account Number</div>
 
                                             <div>
-                                                <input id="accountNumber" type='text' className='input p-3 border-1-d6 outline-white font-bold text-lg' value={accountNumber} onKeyDown={validateAccountNumberOnKeyDown} onChange={validateAccountNumber} maxLength={10} />
+                                                <input id="accountNumber" type='text' className='input p-3 border-1-d6 outline-white font-bold text-lg' onChange={e => setAccountNumber(e.target.value)} maxLength={10} />
                                             </div>
                                         </div>
 
@@ -769,7 +786,7 @@ const BankCard = () => {
                                         </div>
 
                                         <div>
-                                            <button onClick={addBankDetails} type='button' className='w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' >
+                                            <button onClick={addBankDetails} type='button' className={isBankDetailsFilled ? 'w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer':'w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer opacity-50'} disabled={!isBankDetailsFilled}>
                                                 <span className={showSpinner ? "hidden" : ""}>Proceed</span>
                                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                             </button>
