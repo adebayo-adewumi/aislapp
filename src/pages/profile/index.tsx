@@ -19,6 +19,7 @@ import LockIcon from '../../assets/images/lock.svg';
 import moment from 'moment';
 import DeleteCardIcon from '../../assets/images/delete-card.svg';
 import { authOnboardingServiceBaseUrl } from '../../apiUrls';
+import { getAxios } from '../../network/httpClientWrapper';
 
 const Profile = () => {   
     
@@ -73,6 +74,7 @@ const Profile = () => {
     const [employer, setEmployer] = useState('');
     const [profession, setProfession] = useState('');
     const [salary, setSalary] = useState('');
+    const [political, setPolitical] = useState('');
 
     const [nokFirstname, setNokFirstname] = useState('');
     const [nokLastname, setNokLastname] = useState('');
@@ -80,9 +82,13 @@ const Profile = () => {
     const [nokEmail, setNokEmail] = useState('');
     const [nokAddress, setNokAddress] = useState('');
     const [nokRelationship, setNokRelationship] = useState('');
+    const [nokRelationshipSelected, setNokRelationshipSelected] = useState('');
+    const [nokRelationshipOtherValue, setNokRelationshipOtherValue] = useState('');
 
     const [idFile, setIdFile] = useState('');
     const [idBase64Img, setIdBase64Img] = useState('');
+    const [idType, setIdType] = useState('');
+    const [idNumber, setIdNumber] = useState('');
 
     const [utilityBillFile, setUtilityBillFile] = useState('');
     const [utilityBillBase64Img, setUtilityBillBase64Img] = useState('');
@@ -135,6 +141,13 @@ const Profile = () => {
     const [selectedBankDetails, setSelectedBankDetails] = useState([{}]);
 
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+
+    const [isPersonalDetailsFilled, setIsPersonalDetailsFilled] = useState<boolean>(false);
+    const [isEmploymentDetailsFilled, setIsEmploymentDetailsFilled] = useState<boolean>(false);
+    const [isNOKDetailsFilled, setIsNOKDetailsFilled] = useState<boolean>(false);
+
+    const [employmentDetails, setEmploymentDetails] = useState('');
+    const [nokDetails, setNOKDetails] = useState('');
 
 
     useEffect(() => {
@@ -346,6 +359,108 @@ const Profile = () => {
         getBankDetailsList();
         getBankList();
     },[]);
+
+    useEffect(()=>{
+
+        function getEmploymentDetails() {
+
+            getAxios(axios).get(authOnboardingServiceBaseUrl + '/customer/kyc/employment-details')
+                .then(function (response) { 
+                    setEmploymentDetails(JSON.stringify(response.data.data));
+                    setEmployer(employmentDetails === '' ? '': response.data.data.employer );                 
+                    setSalary(employmentDetails === '' ? '': response.data.data.salary );                 
+                    setProfession(employmentDetails === '' ? '': response.data.data.profession );                 
+                })
+                .catch(function (error) {});
+        }
+
+        
+
+        getEmploymentDetails();
+
+    },[employmentDetails]);
+
+    useEffect(()=>{
+
+        function getNOKDetails() {
+
+            getAxios(axios).get(authOnboardingServiceBaseUrl + '/customer/kyc/nok-details')
+                .then(function (response) { 
+                    setNOKDetails(JSON.stringify(response.data.data));
+                    setNokFirstname(nokDetails === '' ? '': response.data.data.firstName );                 
+                    setNokLastname(nokDetails === '' ? '': response.data.data.lastName );                 
+                    setNokPhone(nokDetails === '' ? '': response.data.data.phoneNumber );                
+                })
+                .catch(function (error) {});
+        }        
+
+        getNOKDetails();
+
+    },[nokDetails])
+
+    useEffect(() => {
+        function checkIfPersonalDetailsFieldsAreFilled(){
+            if(address === '' || city === '' || state === '' || country === '' || idBase64Img === '' || utilityBillBase64Img === '' || signatureBase64Img === '' || idType === '' || idNumber === ''){
+                setIsPersonalDetailsFilled(false);
+            }
+            else{
+                setIsPersonalDetailsFilled(true);
+            }
+        }
+
+        checkIfPersonalDetailsFieldsAreFilled();
+    },[address,city,state,country,idBase64Img,utilityBillBase64Img,signatureBase64Img,idType,idNumber]);
+
+    useEffect(() => {
+        function checkIfEmploymentDetailsFieldsAreFilled(){
+            if(employer === '' || salary === '' || profession === '' || political === '' ){
+
+                setIsEmploymentDetailsFilled(false);
+            }
+            else{
+                setIsEmploymentDetailsFilled(true);
+            }
+        }
+
+        checkIfEmploymentDetailsFieldsAreFilled();
+    },[employer, salary, profession, political]);
+
+    useEffect(() => {
+        function checkIfNOKDetailsFieldsAreFilled(){
+            if(nokFirstname === '' || nokLastname === '' || nokPhone === '' || nokEmail === '' || nokAddress === '' || nokRelationship === '' ){
+
+                setIsNOKDetailsFilled(false);
+            }
+            else{
+                setIsNOKDetailsFilled(true);
+                setNokRelationshipSelected('');
+            }
+
+            if(nokRelationship === "Other"){
+                setNokRelationshipSelected('Other');
+            }
+            else{
+                setNokRelationshipSelected('');
+            }
+        }
+
+        checkIfNOKDetailsFieldsAreFilled();
+    },[nokFirstname, nokLastname, nokPhone, nokRelationship, nokAddress, nokEmail]);
+
+    useEffect(() => {
+        function checkIfNOKRelationshipOtherFieldsIsFilled(){
+            if((nokRelationship === 'Other' && nokRelationshipOtherValue === '') || nokFirstname === '' || nokLastname === '' || nokEmail === '' || nokAddress === '' || nokPhone === '' ){
+
+                setIsNOKDetailsFilled(false);
+            }
+            else{
+                setIsNOKDetailsFilled(true);
+            }
+
+        }
+
+        checkIfNOKRelationshipOtherFieldsIsFilled();
+    },[nokRelationship, nokRelationshipOtherValue,nokFirstname, nokLastname, nokPhone, nokAddress, nokEmail]);
 
     function changePassword(){
         let customer = HelperFunctions.getCustomerInfo();
@@ -690,14 +805,17 @@ const Profile = () => {
 
     function deleteIdFile(){
         setIdFile('');
+        setIdBase64Img('');
     }
 
     function deleteUtilityBillFile(){
         setUtilityBillFile('');
+        setUtilityBillBase64Img('');
     }
 
     function deleteSignatureFile(){
         setSignatureFile('');
+        setSignatureBase64Img('');
     }
 
     function validatePin(){
@@ -946,6 +1064,7 @@ const Profile = () => {
         setShowNotificationDetailModal(false);
     }
 
+
     return (
         <div className="relative">
             <UserAreaHeader />
@@ -998,6 +1117,7 @@ const Profile = () => {
 
                         {/*KYC section */}
                         <div className={switchToKYC ? '':'hidden'}>
+
                             {/*Personal details card */}
                             <div className='mb-30'>
                                 <div className='card'>
@@ -1131,22 +1251,22 @@ const Profile = () => {
                                     <div className='flex w-2/4 justify-between mb-30'>
                                         <div className='flex items-center'>
                                             <div className='text-gray-900 mr-2'>Drivers License</div>
-                                            <Form.Check type="radio" name="idtype"  className='portfoliolist-checkbox' /> 
+                                            <Form.Check type="radio" name="idtype" value="Drivers License" className='portfoliolist-checkbox' checked={idType === 'Drivers License'} onChange={e => setIdType(e.target.value)} /> 
                                         </div>
 
                                         <div className='flex items-center'>
                                             <div className='text-gray-900 mr-2'>Int'l Passport</div>
-                                            <Form.Check type="radio" name="idtype" className='portfoliolist-checkbox' /> 
+                                            <Form.Check type="radio" name="idtype" value="International Passport" className='portfoliolist-checkbox' checked={idType === "International Passport"} onChange={e => setIdType(e.target.value)}/> 
                                         </div>
 
                                         <div className='flex items-center'>
                                             <div className='text-gray-900 mr-2'>NIN</div>
-                                            <Form.Check type="radio" name="idtype" className='portfoliolist-checkbox' /> 
+                                            <Form.Check type="radio" name="idtype" value="NIN" className='portfoliolist-checkbox' checked={idType === "NIN"} onChange={e => setIdType(e.target.value)}/> 
                                         </div>
 
                                         <div className='flex items-center'>
                                             <div className='text-gray-900 mr-2'>Voters Card</div>
-                                            <Form.Check type="radio"  name="idtype" className='portfoliolist-checkbox' /> 
+                                            <Form.Check type="radio"  name="idtype" value="Voters Card" className='portfoliolist-checkbox' checked={idType === "Voters Card"} onChange={e => setIdType(e.target.value)}/> 
                                         </div>
                                     </div>
 
@@ -1165,7 +1285,7 @@ const Profile = () => {
 
                                         <div className='w-1/2'>
                                             <div className='text-gray-900 mr-2 mb-10'>ID Number</div>
-                                            <input type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/>
+                                            <input type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full' value={idNumber} onChange={e => setIdNumber(e.target.value)}/>
                                         </div>
                                     </div>
 
@@ -1195,7 +1315,7 @@ const Profile = () => {
 
                                         <div>
 
-                                            <button onClick={sendPersonalDetails} type='button' className="mt-9 rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer">
+                                            <button onClick={sendPersonalDetails} type='button' className={isPersonalDetailsFilled ? "mt-9 rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer":"mt-9 rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer opacity-50"} disabled={!isPersonalDetailsFilled}>
                                                 <span className={ showPersonalSpinner ? "hidden" : ""}>Update</span>
                                                 <img src={SpinnerIcon} alt="spinner icon" className={ showPersonalSpinner ? "" : "hidden"} width="15"/>
                                             </button>
@@ -1239,12 +1359,12 @@ const Profile = () => {
                                         <div className='flex w-3/4 space-x-6'>
                                             <div className='w-1/2'>
                                                 <div className='text-gray-700 mb-4'>Name of employer</div>
-                                                <div><input value={employer} onChange={e => setEmployer(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
+                                                <div><input defaultValue={employmentDetails === '' ? '' : JSON.parse(employmentDetails).employer} onChange={e => setEmployer(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
                                             </div>
 
                                             <div className='w-1/2'>
                                                 <div className='text-gray-700 mb-4'>Profession</div>
-                                                <div><input value={profession} onChange={e => setProfession(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg outline-white rounded-lg w-full'/></div>
+                                                <div><input defaultValue={employmentDetails === '' ? '' : JSON.parse(employmentDetails).profession} onChange={e => setProfession(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg outline-white rounded-lg w-full'/></div>
                                             </div>
                                         </div>
                                     </div>
@@ -1257,6 +1377,9 @@ const Profile = () => {
                                                     <div>
                                                         <select onChange={e => setSalary(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
                                                             <option value=''>Select a salary</option>
+
+                                                            <option value={employmentDetails === '' ? '...' : JSON.parse(employmentDetails).salary} selected={employmentDetails === '' ? '' : JSON.parse(employmentDetails).salary}>{employmentDetails === '' ? '' : JSON.parse(employmentDetails).salary}</option>
+
                                                             <option value='Less than 250,000'>Less than 250,000</option>
                                                             <option value='250,000 - 1m'>250,000 - 1m</option>
                                                             <option value='1m - 5m'>1m - 5m</option>
@@ -1268,8 +1391,8 @@ const Profile = () => {
                                                 <div className='w-1/2'>
                                                     <div className='text-gray-700 mb-4'>Are you a politically exposed person?</div>
                                                     <div>
-                                                        <select className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
-                                                            <option value='...'>...</option>
+                                                        <select onChange={e => setPolitical(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
+                                                            <option value=''>...</option>
                                                             <option value='Yes'>Yes</option>
                                                             <option value='No'>No</option>
                                                         </select>
@@ -1279,7 +1402,7 @@ const Profile = () => {
 
                                             <div>
 
-                                                <button onClick={sendEmployeeDetails} type='button' className="mt-9 rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer">
+                                                <button onClick={sendEmployeeDetails} type='button' className={isEmploymentDetailsFilled ? "mt-9 rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer":"mt-9 rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer opacity-50"} disabled={!isEmploymentDetailsFilled}>
                                                     <span className={ showEmploymentSpinner ? "hidden" : ""}>Update</span>
                                                     <img src={SpinnerIcon} alt="spinner icon" className={ showEmploymentSpinner ? "" : "hidden"} width="15"/>
                                                 </button>
@@ -1356,8 +1479,18 @@ const Profile = () => {
                                                         <option value="Mother">Mother</option>
                                                         <option value="Sister">Sister</option>
                                                         <option value="Brother">Brother</option>
+                                                        <option value="Other">Other</option>
                                                     </select>
                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className={nokRelationshipSelected === 'Other' ? '':'hidden'}>
+                                        <div className='flex justify-between space-x-5 mb-30'>
+                                            <div className='flex-1'>
+                                                <div className='text-gray-700 mb-4'>Other relationship type</div>
+                                                <div><input defaultValue={nokRelationshipOtherValue} onChange={e => setNokRelationshipOtherValue(e.target.value)}  type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
                                             </div>
                                         </div>
                                     </div>
@@ -1371,7 +1504,7 @@ const Profile = () => {
 
                                             <div>
 
-                                                <button onClick={sendNextOfKin} type='button' className="mt-9 rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer">
+                                                <button onClick={sendNextOfKin} type='button' className={isNOKDetailsFilled ? "mt-9 rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer":"mt-9 rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer opacity-50"} disabled={!isNOKDetailsFilled}>
                                                     <span className={ showNokSpinner ? "hidden" : ""}>Update</span>
                                                     <img src={SpinnerIcon} alt="spinner icon" className={ showNokSpinner ? "" : "hidden"} width="15"/>
                                                 </button>
