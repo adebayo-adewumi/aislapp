@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from "react-router-dom";
 import UserAreaHeader from '../../components/Headers/UserAreaHeader';
 import ArrowBackIcon from '../../assets/images/arrow-back.svg';
 import SuccessIcon from '../../assets/images/success.gif';
@@ -47,7 +46,6 @@ const BankCard = () => {
     const [accountName, setAccountName] = useState('');
     const [accountNumber, setAccountNumber] = useState('');
     const [bankCode, setBankCode] = useState('');
-    const [nameEnquiryId, setNameEnquiryId] = useState('');
 
     const [bankDetailsList, setBankDetailsList] = useState([]);
     const [selectedBankId, setSelectedBankId] = useState('');
@@ -156,6 +154,8 @@ const BankCard = () => {
         setShowDebitCards(true);
         setShowBank(false);
         setShowBankHeader(false);
+        setShowAddBankHeader(false)
+        setShowAddBank(false);
     }
 
     function performSwitchToBank() {
@@ -221,7 +221,7 @@ const BankCard = () => {
             'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
         }
 
-        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/wallet-api/bank-details/add?nameEnquirySessionId=' + nameEnquiryId,
+        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/wallet-api/bank-details/add?nameEnquirySessionId=12233333',
             {
                 "text": localStorage.getItem('genericCypher')
             },
@@ -243,40 +243,12 @@ const BankCard = () => {
             });
     }
 
-    function validateAccountNumber(event: any) {
-        let ccNumberPattern: RegExp = /^\d{0,10}$/g;
-
-        if (ccNumberPattern.test(event.target.value)) {
-            setAccountNumber(event.target.value);
-        }
-        else {
-            return;
-        }
-    }
-
-    function validateAccountNumberOnKeyDown(event: any) {
-
-        let banklist = document.getElementById("bankList") as HTMLInputElement;
-        let acctNo = document.getElementById("accountNumber") as HTMLInputElement;
-        getAxios(axios).get(walletAndAccountServiceBaseUrl + '/wallet-api/name-enquiry?accountNo=' + acctNo.value + '&bankCode=' + banklist.value)
-            .then(function (response) {
-                setAccountName(response.data.data.name);
-                setNameEnquiryId(response.data.data.account.id);
-                setBankDetailsError('');
-            })
-            .catch(function (error) {
-                setBankDetailsError(error.response.data.message);
-            });
-
-        setBankCode(banklist.value);
-    }
-
-    
-
     function selectBankDetails(event: any) {
         let id = event.target.getAttribute("data-bank");
         let bArr = [];
         let bDetails: any = bankDetailsList.find((el: any) => el.id === id);
+
+        console.log(id);
 
         bArr.push(bDetails);
 
@@ -292,7 +264,7 @@ const BankCard = () => {
         setShowBank(false);
     }
 
-    function deleteBankCardDetails() {
+    function deleteCardDetails() {
 
         let requestData = {
             "bankDetailsId": selectedBankId
@@ -327,6 +299,33 @@ const BankCard = () => {
                 headers: _headers
             },
         )
+            .then(function (response) {
+                setIsDeleteSuccess('true');
+                setApiResponseSuccessMsg(response.data.description);
+                setShowSpinner(false);
+
+                window.location.reload();
+            })
+            .catch(function (error) {
+                setShowSpinner(false);
+                alert("Unable to delete. Please try again later");
+            });
+    }
+
+    function deleteBankDetails() {
+
+        setShowSpinner(true);
+
+        let _headers = {
+            'Authorization': 'Bearer ' + localStorage.getItem('aislUserToken'),
+            'x-firebase-token': '12222',
+            'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
+        }
+
+        getAxios(axios).delete(walletAndAccountServiceBaseUrl + '/wallet-api/bank-details/delete/'+selectedBankId,
+            {
+                headers: _headers
+            })
             .then(function (response) {
                 setIsDeleteSuccess('true');
                 setApiResponseSuccessMsg(response.data.description);
@@ -438,7 +437,7 @@ const BankCard = () => {
                             {/*Card Header */}
                             <div className={showDebitCards ? "flex justify-between" : 'hidden'} style={{ width: '35rem' }}>
                                 <div>
-                                    <div className="text-28 text-color-1 font-gotham-black-regular font-bold mb-10">Bank and Cards</div>
+                                    <div className="text-28 text-color-1 font-gotham-black-regular font-bold mb-30">Bank and Cards</div>
                                     
                                 </div>
 
@@ -452,7 +451,7 @@ const BankCard = () => {
                             {/*Bank Header */}
                             <div className={showBankHeader ? "flex justify-between" : 'hidden'} style={{ width: '35rem' }}>
                                 <div>
-                                    <div className="text-28 text-color-1 font-gotham-black-regular font-bold mb-10">Bank and Cards</div>
+                                    <div className="text-28 text-color-1 font-gotham-black-regular font-bold mb-30">Bank and Cards</div>
                                     <div className="font-bold mb-30 hidden">Request for investment statements</div>
                                 </div>
 
@@ -577,7 +576,7 @@ const BankCard = () => {
                                                 <div className='mb-30' onClick={selectBankDetails} key={index} data-bank={item.id}>
                                                     <div className='rounded-xl relative cursor-pointer' data-bank={item.id}>
                                                         <img src={MaskGroupImg} alt='' className="w-full hidden" data-bank={item.id} />
-                                                        <div className='bg-gray-100 px-4 py-3 rounded' data-bank={item.id}>
+                                                        <div className='bg-gray-100 px-4 py-3 rounded hover:bg-gray-200' data-bank={item.id}>
                                                             <div className='text-sm mb-10' data-bank={item.id}>{item.accountName}</div>
                                                             <div className='font-bold' data-bank={item.id}>{item.bankName} ({item.accountNumber})</div>
                                                         </div>
@@ -800,7 +799,7 @@ const BankCard = () => {
                                     <div>
                                         <div className='mb-30'>
                                             <div className='bgcolor-2 rounded-xl p-0 relative cursor-pointer'>
-                                                <img src={MaskGroupImg} alt='' className="w-full" />
+                                                <img src={MaskGroupImg} alt='' className="w-full " />
                                                 {cardsList.map((item :any, index :any) =>
                                                 <div className='absolute bottom-0 px-7 py-6' key={index}>
                                                     <div className='text-white font-bold mb-5'>{item.cardNumber}</div>
@@ -837,11 +836,15 @@ const BankCard = () => {
                                     <div>
                                         {selectedBankDetails.map((item: any, index: any) =>
                                             <div className='mb-30'>
-                                                <div className='bgcolor-2 rounded-xl p-0 relative cursor-pointer'>
-                                                    <img src={MaskGroupImg} alt='' className="w-full" />
-                                                    <div className='absolute bottom-0 px-7 py-6'>
-                                                        <div className='text-white text-sm mb-20'>{item.accountName}</div>
-                                                        <div className='text-white font-bold'>{item.bankName} ({item.accountNumber})</div>
+                                                <div className='rounded-xl p-0'>
+                                                    <img src={MaskGroupImg} alt='' className="w-full hidden" />
+                                                    <div className='px-4 py-6 bg-gray-100 rounded'>
+                                                        <div className='text-sm mb-10'>{item.accountName}</div>
+                                                        <div className='font-bold mb-10'>{item.bankName} ({item.accountNumber})</div>
+
+                                                        <div className='flex justify-between'>
+                                                            <div className='text-sm'>{moment(item.updatedOn).format("MMMM Do, YYYY")}</div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -864,12 +867,12 @@ const BankCard = () => {
 
                                         {selectedBankDetails.map((item: any, index: any) =>
                                             <div>
-                                                <div className='flex justify-between py-5'>
+                                                <div className='flex justify-between py-5 hidden'>
                                                     <div>Bank</div>
                                                     <div className='font-bold'>{item.bankName}</div>
                                                 </div>
 
-                                                <div className='mb-30 flex justify-between py-5 border-top-1'>
+                                                <div className='hidden mb-30 flex justify-between py-5 border-top-1'>
                                                     <div>Date Added</div>
                                                     <div className='font-bold text-color-1 font-bold'>{moment(item.updatedOn).format("MMMM Do, YYYY")}</div>
                                                 </div>
@@ -944,21 +947,18 @@ const BankCard = () => {
                     <div className='text-center mb-20'>
                         <img src={DeleteCardIcon} alt='' />
                     </div>
-                    <div className='text-red-500 font-bold text-3xl text-center mb-30'>Delete {deleteType}</div>
-                    <div className='text-center my-8 hidden'>Enter your transaction to PIN confirm</div>
-                    <div className='font-bold text-center my-5 hidden'>Enter PIN</div>
-                    <div className='flex space-x-3 my-10 hidden'>
-                        <input type='password' className='text-center input p-3 border-1-d6 outline-white' />
-                        <input type='password' className='text-center input p-3 border-1-d6 outline-white' />
-                        <input type='password' className='text-center input p-3 border-1-d6 outline-white' />
-                        <input type='password' className='text-center input p-3 border-1-d6 outline-white' />
-                    </div>
+                    <div className='text-red-500 font-bold text-3xl text-center mb-30'>Delete {deleteType}</div>                    
                 </div>
 
                 <div className="flex space-x-5 mb-10">
                     <button type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer" onClick={closeModal}>Cancel</button>
 
-                    <button onClick={deleteBankCardDetails} type="button" className="py-4 w-full font-bold bg-red-500 text-white rounded-lg border-0 cursor-pointer">
+                    <button onClick={deleteCardDetails} type="button" className={deleteType === 'Card' ? "py-4 w-full font-bold bg-red-500 text-white rounded-lg border-0 cursor-pointer":"hidden"}>
+                        <span className={showSpinner ? "hidden" : ""}>Delete</span>
+                        <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
+                    </button>
+
+                    <button onClick={deleteBankDetails} type="button" className={deleteType === 'Bank' ?"py-4 w-full font-bold bg-red-500 text-white rounded-lg border-0 cursor-pointer":"hidden"}>
                         <span className={showSpinner ? "hidden" : ""}>Delete</span>
                         <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                     </button>
