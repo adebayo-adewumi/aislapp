@@ -30,6 +30,8 @@ const TradeConfirmations = () => {
     const [switchToExecuted, setSwitchToExecuted] = useState<boolean>(false);
     const [switchToRejected, setSwitchToRejected] = useState<boolean>(false);
     const [switchToCancelled, setSwitchToCancelled] = useState<boolean>(false);
+    const [switchToSold, setSwitchToSold] = useState<boolean>(false);
+
     const [showPageLoader, setShowPageLoader] = useState<boolean>(true);
 
     const [orderAll, setOrderAll] = useState('');
@@ -37,6 +39,7 @@ const TradeConfirmations = () => {
     const [orderExecuted, setOrderExecuted] = useState('');
     const [orderRejected, setOrderRejected] = useState('');
     const [orderCancelled, setOrderCancelled] = useState('');
+    const [orderSold, setOrderSold] = useState('');
 
     useEffect(()=>{
         function getAllOrders(){
@@ -313,11 +316,63 @@ const TradeConfirmations = () => {
             });
         }
 
+        function getSoldOrders(){
+    
+            getAxios(axios).get(stockTradingServiceBaseUrlUrl+'/stock/sold?pageNo=0&pageSize=20')
+            .then(function (response) {
+                HelperFunctions.removeOverflowAndPaddingFromModalBody();
+                
+                if(response.data.data.length > 0){
+                    const soldOrders = response.data.data.map((item :any, index :any)=>
+                    <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
+                        <div className="flex justify-between items-center text-14">
+                            <div className='flex-child'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold mb-10'>{item.stockCode}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold mb-10'>{item.name}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold '>{parseInt(item.qty)}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold '>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold '>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
+                            </div>
+
+                            <div className="text-color-2 flex-child">
+                                <div className='font-bold '>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
+                            </div> 
+
+                            <div className="text-color-2 flex-child">
+                                <Link to={"/stock?name="+item.name+"&symbol="+item.stockCode+"&close="+item.quotePrice+"&tradeAction=sell"}>
+                                    <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
+                            </div> 
+                            
+                        </div>
+                    </div>
+                    );
+
+                    setOrderSold(soldOrders);
+                }
+            })
+            .catch(function (error) { });
+        }
+
         getAllOrders();
         getOpenOrders();
         getExecutedOrders();
         getRejectedOrders();
         getCancelledOrders();
+        getSoldOrders();
 
     },[])
 
@@ -327,6 +382,7 @@ const TradeConfirmations = () => {
         setSwitchToExecuted(false);
         setSwitchToRejected(false);
         setSwitchToCancelled(false);
+        setSwitchToSold(false);
     }
 
     function performSwitchToOpen(){
@@ -335,6 +391,7 @@ const TradeConfirmations = () => {
         setSwitchToExecuted(false);
         setSwitchToRejected(false);
         setSwitchToCancelled(false);
+        setSwitchToSold(false);
     }
 
     function performSwitchToExecuted(){
@@ -343,6 +400,7 @@ const TradeConfirmations = () => {
         setSwitchToExecuted(true);
         setSwitchToRejected(false);
         setSwitchToCancelled(false);
+        setSwitchToSold(false);
     }
 
     function performSwitchToRejected(){
@@ -351,6 +409,7 @@ const TradeConfirmations = () => {
         setSwitchToExecuted(false);
         setSwitchToRejected(true);
         setSwitchToCancelled(false);
+        setSwitchToSold(false);
     }
 
     function performSwitchToCancelled(){
@@ -359,6 +418,16 @@ const TradeConfirmations = () => {
         setSwitchToExecuted(false);
         setSwitchToRejected(false);
         setSwitchToCancelled(true);
+        setSwitchToSold(false);
+    }
+
+    function performSwitchToSold(){
+        setSwitchToAll(false);
+        setSwitchToOpen(false);
+        setSwitchToExecuted(false);
+        setSwitchToRejected(false);
+        setSwitchToCancelled(false);
+        setSwitchToSold(true);
     }
 
     function closeModal(){
@@ -409,6 +478,10 @@ const TradeConfirmations = () => {
 
                                         <div>
                                             <button onClick={performSwitchToCancelled} type='button' className={switchToCancelled ? "rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Cancelled</button>
+                                        </div>
+
+                                        <div>
+                                            <button onClick={performSwitchToSold} type='button' className={switchToSold ? "rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Sold</button>
                                         </div>
                                     </div>
                                 </div>
@@ -488,6 +561,15 @@ const TradeConfirmations = () => {
                                 <div className={orderCancelled === '' ? 'text-gray-500 text-center':'hidden'}>No cancelled trades to display</div>
 
                                 <div>{orderCancelled}</div> 
+                                
+                            </div>
+                            {/*End*/}
+
+                            {/*Sold Section*/}
+                            <div className={switchToSold ? '':'hidden'}>
+                                <div className={orderSold === '' ? 'text-gray-500 text-center':'hidden'}>No sold trades to display</div>
+
+                                <div>{orderSold}</div> 
                                 
                             </div>
                             {/*End*/}

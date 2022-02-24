@@ -18,7 +18,7 @@ import MaskGroupImg from '../../assets/images/mask-group.svg';
 import LockIcon from '../../assets/images/lock.svg';
 import moment from 'moment';
 import DeleteCardIcon from '../../assets/images/delete-card.svg';
-import { authOnboardingServiceBaseUrl } from '../../apiUrls';
+import { authOnboardingServiceBaseUrl, walletAndAccountServiceBaseUrl } from '../../apiUrls';
 import { getAxios } from '../../network/httpClientWrapper';
 
 const Profile = () => {   
@@ -149,6 +149,8 @@ const Profile = () => {
 
     const [employmentDetails, setEmploymentDetails] = useState('');
     const [nokDetails, setNOKDetails] = useState('');
+
+    const [bankDetails, setBankDetails] = useState<any[]>([]);
 
 
     useEffect(() => {
@@ -462,6 +464,19 @@ const Profile = () => {
 
         checkIfNOKRelationshipOtherFieldsIsFilled();
     },[nokRelationship, nokRelationshipOtherValue,nokFirstname, nokLastname, nokPhone, nokAddress, nokEmail]);
+
+    useEffect(() => {
+        function getBankDetails() {
+
+            getAxios(axios).get(walletAndAccountServiceBaseUrl + '/wallet-api/bank-details')
+                .then(function (response) { 
+                    setBankDetails(response.data.data)
+                })
+                .catch(function (error) { });
+        }
+
+        getBankDetails();
+    },[]);
 
     function changePassword(){
         let customer = HelperFunctions.getCustomerInfo();
@@ -1582,54 +1597,31 @@ const Profile = () => {
                             {/*Bank Details */}
                             <div className='mb-30'>
                                 <div className='card'>
-                                    
-
                                     <div className='font-gotham-black-regular text-color-1 mb-10'>Bank Details</div>
-                                    <div className='font-bold text-color-1 mb-30'>Proceeds from your stock sales would be deposited into this account
+                                    <div className='font-bold text-color-1 mb-30'>Proceeds from your stock sales would be deposited into this account</div>
 
-</div>
+                                    <div className='mb-20'>
+                                        <div>
+                                            <div className='text-gray-700 mb-4'>Primary Bank Details</div>
 
-
-                                    <div className='flex mb-30'>
-                                        <div className='flex w-3/4 space-x-6'>
-                                            
-                                            <div className='w-1/2'>
-                                                <div className='text-gray-700 mb-4'>Select Bank</div>
-
-                                                <div>
-                                                    <select onChange={checkNameEnquiryOnBankDetails} className='input px-5 py-3 border-1-d6 outline-white font-bold text-lg' id='bankList' >
-                                                        <option value="">...</option>
-                                                        {
-                                                            bankList.map((item :any) =>
-                                                            <option value={item.code}>{item.name}</option>
-                                                            )
-                                                        }
-                                                    </select>
-                                                </div>
+                                            <div>
+                                                <select className='input px-5 py-3 border-1-d6 outline-white font-bold text-lg' id='bankList' >
+                                                    {
+                                                        bankDetails.map((item :any) =>
+                                                        <option value={item.code}>{item.name}</option>
+                                                        )
+                                                    }
+                                                </select>
                                             </div>
-
-                                            <div className='w-1/2'>
-                                                <div className='text-gray-700 mb-4'>Account Number</div>
-                                                <div><input id="accountNumber" type='text' className='input p-3 border-1-d6 outline-white font-bold text-lg' value={accountNumber} onKeyDown={validateAccountNumberOnKeyDown} onChange={validateAccountNumber} maxLength={10}/></div>
-                                            </div>
-
-                                        </div>
+                                        </div>                                         
                                     </div>
 
                                     <div>
-                                        <div className='flex justify-between space-x-5'>
-                                            <div className='flex-1'>
-                                                <div className='text-gray-700 mb-4'>Account Name</div>
-                                                <div><input readOnly type='text' className='input p-3 border-1-d6 outline-white font-bold text-lg' value={accountName}/></div>
-                                            </div>
-
-                                            <div>
-
-                                                <button onClick={addBankDetails} type='button' className="mt-9 rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer">
-                                                    <span className={ showSpinner ? "hidden" : ""}>Update</span>
-                                                    <img src={SpinnerIcon} alt="spinner icon" className={ showSpinner ? "" : "hidden"} width="15"/>
-                                                </button>
-                                            </div>
+                                        <div>
+                                            <button onClick={addBankDetails} type='button' className="rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer">
+                                                <span className={ showSpinner ? "hidden" : ""}>Update</span>
+                                                <img src={SpinnerIcon} alt="spinner icon" className={ showSpinner ? "" : "hidden"} width="15"/>
+                                            </button>
                                         </div>
                                     </div>
 

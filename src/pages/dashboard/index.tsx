@@ -20,7 +20,7 @@ import moment from 'moment';
 import ArrowDownIcon from '../../assets/images/arrow-down.svg';
 import AnchoriaIcon from '../../assets/images/anchoria-icon.svg';
 import AnchoriaSpinner from '../../assets/images/anchoria-spinner.svg';
-import { authOnboardingServiceBaseUrl, getNewsEndpoint, getPortfolioEndpoint, getTopGainersEndpoint, getTopLosersEndpoint, getTopMoverByValueEndpoint, portfolioServiceBaseUrlUrl, stockTradingServiceBaseUrlUrl, utilityServiceBaseUrlUrl } from '../../apiUrls';
+import {getNewsEndpoint, getPortfolioEndpoint, getTopGainersEndpoint, getTopLosersEndpoint, getTopMoverByValueEndpoint, portfolioServiceBaseUrlUrl, stockTradingServiceBaseUrlUrl, utilityServiceBaseUrlUrl } from '../../apiUrls';
 import { getAxios } from '../../network/httpClientWrapper';
 
 const Dashboard = () => {
@@ -268,16 +268,6 @@ const Dashboard = () => {
             });
         }
 
-        // function testApiForGet() {
-        //     //let customer = HelperFunctions.getCustomerInfo();
-
-        //     getAxios(axios).get(authOnboardingServiceBaseUrl + '/customer/kyc/nok-details')
-        //         .then(function (response) { 
-        //             console.log(response.data);
-        //         })
-        //         .catch(function (error) { });
-        // }
-
         getWalletBalance();
         getTopGainers();
         getTopLosers();
@@ -285,7 +275,6 @@ const Dashboard = () => {
         getPortfolioList();
         getTopMovers();
         getWatchlist();
-        //testApiForGet();
 
     }, []);
 
