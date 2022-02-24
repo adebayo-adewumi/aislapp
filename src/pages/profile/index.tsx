@@ -674,7 +674,7 @@ const Profile = () => {
             "emailId": nokEmail,
             "firstName": nokFirstname,
             "lastName": nokLastname,
-            "phoneNumber": nokPhone,
+            "phoneNumber": nokPhoneCode.concat(nokPhone),
             "relationship": nokRelationship
         }
 
