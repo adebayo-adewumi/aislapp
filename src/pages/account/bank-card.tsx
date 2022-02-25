@@ -25,6 +25,11 @@ const BankCard = () => {
     const [showAddCard, setShowAddCard] = useState<boolean>(false);
     const [showAddBank, setShowAddBank] = useState<boolean>(false);
 
+    const [showAddCardHeader, setShowAddCardHeader] = useState<boolean>(false);
+
+    const [showOTPSection, setShowOTPSection] = useState<boolean>(false);
+    const [showVerifyCardSection, setShowVerifyCardSection] = useState<boolean>(false);
+
     const [showSuccess, setShowSuccess] = useState<boolean>(false);
 
     const [showManageCard, setShowManageCard] = useState<boolean>(false);
@@ -38,6 +43,7 @@ const BankCard = () => {
 
     const [showBankHeader, setShowBankHeader] = useState<boolean>(false);
     const [showAddBankHeader, setShowAddBankHeader] = useState<boolean>(false);
+
 
     const [showBankSuccessMsg, ] = useState<boolean>(false);
 
@@ -65,8 +71,12 @@ const BankCard = () => {
     const [cardNumber, setCardNumber] = useState('');
     const [cardExpiry, setCardExpiry] = useState('');
     const [cardCVV, setCardCVV] = useState('');
+    const [cardPIN, setCardPIN] = useState('');
+    const [cardOTP, setCardOTP] = useState('');
     const [defaultNewCardDebitMsg, setDefaultNewCardDebitMsg] = useState('');
-    const [isBankDetailsFilled, setIsBankDetailsFilled] = useState<boolean>(false)
+    const [isBankDetailsFilled, setIsBankDetailsFilled] = useState<boolean>(false);
+
+    const [cardFundingDetails, setCardFundingDetails] = useState('');
 
     useEffect(() => {
         function getBankList() {
@@ -171,6 +181,7 @@ const BankCard = () => {
     function displayAddCard() {
         setShowDebitCards(false);
         setShowAddCard(true);
+        setShowAddCardHeader(true);
         setShowSuccess(false);
         setShowManageCard(false);
     }
@@ -391,7 +402,9 @@ const BankCard = () => {
             "email": customer.email,
             "fullname": customer.firstName + " " + customer.lastName,
             "phoneNumber": customer.phoneNumber,
-            "pin": "3310"
+            "saveCard": true,
+            "pin": cardPIN,
+            "amount": 1089
         }
 
         console.log(requestData)
@@ -403,7 +416,7 @@ const BankCard = () => {
 
         let headers = {
             'Authorization': 'Bearer ' + localStorage.getItem('aislUserToken'),
-            'x-firebase-token': '12222',
+            'x-firebase-token': '12345',
             'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
         }
 
@@ -413,10 +426,89 @@ const BankCard = () => {
             },
             { headers })
             .then(function (response) {
+                setShowOTPSection(true);
+                setShowAddCard(false);
+                setShowSpinner(false);
+                setShowAddCardHeader(true);
 
+                setShowVerifyCardSection(true);
+
+                setCardFundingDetails(JSON.stringify(response.data.data));
             })
             .catch(function (error) {
                 console.log(error)
+                setShowSpinner(false);
+            });
+    }
+
+    function validateFundWithCardOTP() {
+        let paymentRef = JSON.parse(cardFundingDetails);
+
+        let requestData = {
+            "paymentReference": paymentRef.flwRef,
+            "otp": cardOTP
+        }
+
+        console.log(requestData);
+
+        setShowSpinner(true);
+
+        let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
+        localStorage.setItem('genericCypher', genericCypher);
+
+        let headers = {
+            'x-firebase-token': '12222',
+            'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
+        }
+
+        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/wallet-api/fw/pay/card/validate-otp',
+            {
+                "text": localStorage.getItem('genericCypher')
+            }, {headers})
+            .then(function (response) {
+                setShowSpinner(false);
+                setShowOTPSection(false);
+                setCardFundingDetails(JSON.stringify(response.data.data));
+            })
+            .catch(function (error) {
+                console.log(error)
+                setShowSpinner(false);
+            });
+    }
+
+    function verifyCardFunding() {
+        let paymentRes = JSON.parse(cardFundingDetails);
+
+        let requestData = {
+            "transactionId": paymentRes.transactionId,
+            "firebaseToken": HelperFunctions.generateRandomString(10)
+        }
+
+        console.log(requestData)
+
+        setShowSpinner(true);
+
+        let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
+        localStorage.setItem('genericCypher', genericCypher);
+
+        let headers = {
+            'x-firebase-token': '12222',
+            'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
+        }
+
+        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/wallet-api/fw/transaction/verify',
+            {
+                "text": localStorage.getItem('genericCypher')
+            },{headers})
+            .then(function (response) {
+                setShowSpinner(false);
+                setShowOTPSection(false);
+                setCardFundingDetails([response.data.data] as any);
+
+                setApiResponseSuccessMsg('');
+            })
+            .catch(function (error) {
+                
                 setShowSpinner(false);
             });
     }
@@ -463,7 +555,7 @@ const BankCard = () => {
                             {/*End*/}
 
                             {/*Add Card Header */}
-                            <div className={showAddCard ? "flex justify-between mb-30" : "hidden"} style={{ width: '35rem' }}>
+                            <div className={showAddCardHeader ? "flex justify-between mb-30" : "hidden"} style={{ width: '35rem' }}>
                                 <div>
                                     <div className="text-28 text-color-1 font-gotham-black-regular font-bold mb-10">Add New Card</div>
                                 </div>
@@ -641,6 +733,14 @@ const BankCard = () => {
                                         </div>
 
                                         <div className='mb-20'>
+                                            <div className='text-lg mb-5 text-14 font-bold'>PIN</div>
+
+                                            <div className='mb-30'>
+                                                <input value={cardPIN} onChange={e => setCardPIN(e.target.value)} type='password' className='input p-4 border-1-d6 text-2xl outline-white' maxLength={4} />
+                                            </div>
+                                        </div>
+
+                                        <div className='mb-20'>
                                             <div className='text-center mb-10 mt-12'><img src={LockIcon} alt='' /></div>
                                             <div className='px-5 pb-5 mt-1 mx-2 text-gray-900 text-center'>Your card details are secured and protected by our PCI-DSS compliant payment partners</div>
                                         </div>
@@ -656,7 +756,7 @@ const BankCard = () => {
                                 {/* End */}
 
                                 {/* Verify OTP Section */}
-                                <div className='otp-section hidden'>
+                                <div className={showOTPSection ? 'otp-section': 'hidden'}>
                                     <div className='otp-section'>
                                         <div>
 
@@ -664,13 +764,13 @@ const BankCard = () => {
 
                                             <div className='mb-20'>
                                                 <div>
-                                                    <input placeholder='Enter OTP sent to your phone' type='password' className='input p-4 text-lg font-bold border-1-d6 outline-white' max={6} />
+                                                    <input onChange={e => setCardOTP(e.target.value)} placeholder='Enter OTP sent to your phone' type='password' className='input p-4 text-lg font-bold border-1-d6 outline-white' max={6} />
                                                 </div>
                                             </div>
 
                                             <div>
 
-                                                <button type='button' className='w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>
+                                                <button type='button' onClick={validateFundWithCardOTP} className='w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>
                                                     <span className={showSpinner ? "hidden" : ""}>Proceed</span>
                                                     <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                                 </button>
@@ -680,25 +780,81 @@ const BankCard = () => {
                                 </div>
                                 {/* End */}
 
-                                {/* Verify Card Section */}
-                                <div className='pin-section hidden'>
-                                    <div>                                        
+                                {/* VERIFY Card Section */}
+                                <div className={showVerifyCardSection ? 'pin-section' : 'hidden'}>
+                                    <div>
+                                        {/* verify Success */}
+                                        <div className={apiResponseSuccessMsg !== '' ? "otp-alert mb-20":"hidden"}>
+                                            <div className="flex otp-validated justify-between space-x-1 pt-3">
+                                                <div className="flex">
+                                                    <div>
+                                                        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062" />
+                                                            <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062" />
+                                                        </svg>
+                                                    </div>
 
-                                        <div>                                            
+                                                    <div className="pt-1 text-14 text-color-1">{apiResponseSuccessMsg}</div>
+                                                </div>
 
-                                            <div className='flex justify-between mb-30'>
-                                                <div>Card</div>
-                                                <div className='font-bold text-gray-500'> {cardNumber}</div>
+                                                <div className="cursor-pointer">
+                                                    <svg className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50" />
+                                                    </svg>
+                                                </div>
                                             </div>
                                         </div>
+                                        {/* End */}
 
-                                        <div className='border-bottom-1d mb-20'></div>
+                                        {/* verify Error */}
+                                        <div className={apiResponseSuccessMsg !== '' ? "error-alert mb-20":"hidden"}>
+                                            <div className="flex justify-between space-x-1 pt-3">
+                                                <div className="flex">
+                                                    <div>
+                                                        <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
+                                                        </svg>
+                                                    </div>
+
+                                                    <div className="pt-1 text-14"></div>
+                                                </div>
+
+                                                <div className="cursor-pointer">
+                                                    <svg className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50" />
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {/* End */}
+
+                                        <div className='text-lg font-bold'>Verify Card Details</div>
+
+                                        <div className='mb-30 font-gotham-black-regular text-color-1 text-3xl'>₦ {cardFundingDetails === '' ? '' : JSON.parse(cardFundingDetails).amount}</div>
 
                                         
+                                        <div className=''>
+                                            <div className='flex justify-between mb-30'>
+                                                <div>Card</div>
+                                                <div>{cardFundingDetails === '' ? '' : JSON.parse(cardFundingDetails).cardNumber}</div>
+                                            </div>
+
+                                            <div className='flex justify-between mb-30'>
+                                                <div>Beneficiary Account Number</div>
+                                                <div className='font-bold text-color-1 font-bold'>{cardFundingDetails === '' ? '' : JSON.parse(cardFundingDetails).beneficiaryAccountNumber}</div>
+                                            </div>
+
+                                            <div className='flex justify-between mb-30'>
+                                                <div>Currency</div>
+                                                <div className='font-bold text-gray-500'>{cardFundingDetails === '' ? '' : JSON.parse(cardFundingDetails).currency}</div>
+                                            </div>
+                                        </div>
+                                        
+
                                         <div>
-                                            <button type='button' className='w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' >
-                                                <span className={ showSpinner ? "hidden" : ""}>Proceed</span>
-                                                <img src={SpinnerIcon} alt="spinner icon" className={ showSpinner ? "" : "hidden"} width="15"/>
+                                            <button onClick={verifyCardFunding} type='button' className= 'w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' >
+                                                <span className={showSpinner ? "hidden" : ""}>Proceed</span>
+                                                <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                             </button>
                                         </div>
                                     </div>

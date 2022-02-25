@@ -17,21 +17,21 @@ const WithdrawFund = () => {
     document.title = "Withdraw Funds - Anchoria";
 
     const [showAmount, setShowAmount] = useState('');
-    const [showWithdraw, ] = useState<boolean>(true);
+    const [showWithdraw, setShowWithdraw] = useState<boolean>(true);
     const [showWithdrawSummary, setShowWithdrawSummary] = useState<boolean>(false);
     const [showSuccess, setShowSuccess] = useState<boolean>(false);
 
     const [walletBalance, setWalletBalance] = useState(0);
-    const [bankDetailsList, setBankDetailsList] = useState([]);
+    const [bankDetailsList, setBankDetailsList] = useState<any[]>([]);
 
     const [selectedBankId, setSelectedBankId] = useState('');
-    const [selectedBankDetails, setSelectedBankDetails] = useState([{}]);
+    const [selectedBankDetails, setSelectedBankDetails] = useState('');
 
     const [showSpinner, setShowSpinner] = useState<boolean>(false);
 
-    const [isPinValid, setIsPinValid] = useState('');
-
     const [apiResponseSuccessMsg, ] = useState('');
+
+    const [isWithdrawDetailsFilled, setIsWithdrawDetailsFilled] = useState<boolean>(false);
 
     useEffect(() => {
         function getWalletBalance() {
@@ -64,6 +64,19 @@ const WithdrawFund = () => {
         getBankDetailsList();
     }, []);
 
+    useEffect(()=>{
+        function checkIfAmountAndSelectedBankAccountAreFilled(){
+            if(showAmount === '' || selectedBankId === ''){
+                setIsWithdrawDetailsFilled(false);
+            }
+            else{
+                setIsWithdrawDetailsFilled(true);
+            }
+        }
+
+        checkIfAmountAndSelectedBankAccountAreFilled();
+    },[showAmount, selectedBankId]);
+
 
     function selectAmount(event: any) {
         const amountBtns = document.getElementsByClassName("amount-btn");
@@ -92,21 +105,26 @@ const WithdrawFund = () => {
     }
 
     function selectBankDetails(event: any) {
-        let id = event.target.value;
-        let bArr = [];
-        let bDetails: any = bankDetailsList.find((el: any) => el.id === id);
 
-        bArr.push(bDetails);
+        if(event.target.value !== ''){
+            let id = event.target.value;
+            
+            let bDetails: any = bankDetailsList.find((el: any) => el.id === id);
 
-        setSelectedBankId(id);
-        setSelectedBankDetails(bArr);
+            setSelectedBankId(id);
+            setSelectedBankDetails(JSON.stringify(bDetails));
+        }
+        else{
+            setSelectedBankId('');
+            setSelectedBankDetails('');
+        }
     }
 
     function withdrawFundFromWallet() {
         let bDetails: any = bankDetailsList.find((el: any) => el.id === selectedBankId);
 
         let requestData = {
-            "amount": parseFloat(showAmount),
+            "amount": parseFloat(showAmount.replaceAll(',','')),
             "bankCode": bDetails.bankCode,
             "bankName": bDetails.bankName,
             "accountNumber": bDetails.accountNumber,
@@ -128,13 +146,12 @@ const WithdrawFund = () => {
                 "text": localStorage.getItem('genericCypher')
             },{headers})
             .then(function (response) {
-                setIsPinValid('');
                 setShowSuccess(true);
                 setShowSpinner(false);
                 setShowWithdrawSummary(false);
+                setShowWithdraw(false);
             })
             .catch(function (error) {
-                setIsPinValid('');
                 setShowSuccess(false);
                 setShowSpinner(false);
                 setShowWithdrawSummary(false);
@@ -230,8 +247,8 @@ const WithdrawFund = () => {
 
                                         <div className='mb-30 bg-gray-100 p-3 rounded border-gray-500 border'>
 
-                                            <select id='banksDetailsId' onChange={selectBankDetails} className='bg-gray-100 border-0 w-full text-xl'>
-                                                <option>Select Bank Account</option>
+                                            <select id='banksDetailsId' onChange={selectBankDetails} className='bg-gray-100 border-0 w-full text-xl cursor-pointer'>
+                                                <option value="">Select Bank Account</option>
                                                 {bankDetailsList.map((item: any, index: number) =>
                                                     <option key={index} className='font-bold' value={item.id}>{item.accountName} | {item.bankName} | {item.accountNumber}</option>
                                                 )}
@@ -239,7 +256,7 @@ const WithdrawFund = () => {
                                         </div>
 
                                         <div>
-                                            <button onClick={withdrawFundFromWallet} type='button' className='w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>
+                                            <button onClick={withdrawFundFromWallet} type='button' className={isWithdrawDetailsFilled ? 'w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer':'w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer opacity-50'} disabled={!isWithdrawDetailsFilled}>
                                                 <span className={showSpinner ? "hidden" : ""}>Proceed</span>
                                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                             </button>
@@ -268,20 +285,20 @@ const WithdrawFund = () => {
                                             </div>
                                         </div>
 
-                                        {selectedBankDetails.map((item: any, index: any) =>
-                                            <div className='mb-30 bg-gray-100 p-3 rounded border-gray-500 border' key={index}>
+                                        
+                                            <div className='mb-30 bg-gray-100 p-3 rounded border-gray-500 border'>
                                                 <div className='mb-10 flex justify-between'>
                                                     <div>Bank Account</div>
                                                 </div>
 
-                                                <div className='font-bold text-color-1'>{item.accountName} | {item.bankName} | {item.accountNumber}</div>
+                                                <div className='font-bold text-color-1'>{selectedBankDetails === '' ? '': JSON.parse(selectedBankDetails).accountName} | {selectedBankDetails === '' ? '': JSON.parse(selectedBankDetails).bankName} | {selectedBankDetails === '' ? '': JSON.parse(selectedBankDetails).accountNumber}</div>
                                             </div>
-                                        )}
+                                        
 
                                         <div className="border-bottom-1d mb-20 hidden"></div>
 
                                         {/* Pin Success */}
-                                        <div className={isPinValid === 'true' ? "otp-alert mb-20" : "hidden"}>
+                                        <div className="otp-alert mb-20 hidden">
                                             <div className="flex otp-validated justify-between space-x-1 pt-3">
                                                 <div className="flex">
                                                     <div>
@@ -304,7 +321,7 @@ const WithdrawFund = () => {
                                         {/* End */}
 
                                         {/* Pin Error */}
-                                        <div className={isPinValid === 'false' ? "error-alert mb-20" : "hidden"}>
+                                        <div className="error-alert mb-20 hidden">
                                             <div className="flex justify-between space-x-1 pt-3">
                                                 <div className="flex">
                                                     <div>
