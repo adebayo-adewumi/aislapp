@@ -1605,10 +1605,10 @@ const Profile = () => {
                                             <div className='text-gray-700 mb-4'>Primary Bank Details</div>
 
                                             <div>
-                                                <select className='input px-5 py-3 border-1-d6 outline-white font-bold text-lg' id='bankList' >
+                                                <select className='font-bold input px-5 py-3 border-1-d6 outline-white font-bold text-lg' id='bankList' >
                                                     {
-                                                        bankDetails.map((item :any) =>
-                                                        <option value={item.code}>{item.name}</option>
+                                                        bankDetails.map((item :any, index: any) =>
+                                                        <option value={item.bankCode} key={index}>{item.accountName} | {item.bankName} | {item.accountNumber}</option>
                                                         )
                                                     }
                                                 </select>
@@ -1618,7 +1618,7 @@ const Profile = () => {
 
                                     <div>
                                         <div>
-                                            <button onClick={addBankDetails} type='button' className="rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer">
+                                            <button onClick={addBankDetails} type='button' className="rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer hidden">
                                                 <span className={ showSpinner ? "hidden" : ""}>Update</span>
                                                 <img src={SpinnerIcon} alt="spinner icon" className={ showSpinner ? "" : "hidden"} width="15"/>
                                             </button>
