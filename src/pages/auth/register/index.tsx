@@ -671,7 +671,7 @@ const Register = () => {
                                         </svg>
                                     </div>
 
-                                    <div className="pt-1 text-14">BVN and Date of Birth does not match</div>
+                                    <div className="pt-1 text-sm">BVN and Date of Birth does not match</div>
                                 </div>
 
                                 <div className="cursor-pointer" onClick={closeBVNHasError}>
@@ -683,7 +683,7 @@ const Register = () => {
                         </div>
                         {/* End */}
 
-                        <div className="mb-30 flex justify-between text-14">
+                        <div className="mb-30 flex justify-between text-sm">
                             <div className='font-bold cursor-pointer opacity-0'>
                                 <img width="20" src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
                             </div>
@@ -694,15 +694,15 @@ const Register = () => {
                             </div>
                         </div>
 
-                        <div className="mb-10 text-28 text-color-1 font-gotham-black-regular"><strong>Signup</strong></div>
-                        <div className="mb-30 text-16">Provide the details below to get started</div>
+                        <div className="mb-10 text-xl text-color-1 font-gotham-black-regular"><strong>Signup</strong></div>
+                        <div className="mb-30 text-sm">Provide the details below to get started</div>
 
                         <form className="form">
                             {/* BVN Section*/}
                             <div className="mb-20">
                                 <div className="flex justify-between mb-10">
-                                    <span className="text-13">BVN (Bank Verification Number) </span>
-                                    <span onClick={displayBVNModal} className="text-13 flex justify-between cursor-pointer">
+                                    <span className="text-sm">BVN (Bank Verification Number) </span>
+                                    <span onClick={displayBVNModal} className="text-sm flex justify-between cursor-pointer">
                                         <span className="mr-2">Why we need this</span>
                                         <svg width="22" height="21" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path fillRule="evenodd" clipRule="evenodd" d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2ZM12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4ZM12 16C12.5523 16 13 16.4477 13 17C13 17.5523 12.5523 18 12 18C11.4477 18 11 17.5523 11 17C11 16.4477 11.4477 16 12 16ZM12 6C14.2091 6 16 7.79086 16 10C16 11.7948 14.8179 13.3135 13.1898 13.8201L13 13.874V14C13 14.5523 12.5523 15 12 15C11.4872 15 11.0645 14.614 11.0067 14.1166L11 14V13C11 12.4872 11.386 12.0645 11.8834 12.0067L12.1493 11.9945C13.1841 11.9182 14 11.0544 14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 10.5523 9.55228 11 9 11C8.44772 11 8 10.5523 8 10C8 7.79086 9.79086 6 12 6Z" fill="#353F50" />
@@ -710,7 +710,7 @@ const Register = () => {
                                     </span>
                                 </div>
 
-                                <input value={bvn} onChange={e => setBVN(e.target.value)} className="border-1-d6 p-3 input text-14 outline-white" placeholder="Enter your BVN" type='text' />
+                                <input value={bvn} onChange={e => setBVN(e.target.value)} className="border-1-d6 p-3 input text-sm outline-white" placeholder="Enter your BVN" type='text' />
 
                                 <div className={isInvalidBVN ? "text-red-500 text-sm mt-2" : "text-red-500 text-sm mt-2 hidden"}>BVN can only consist of 11 digits</div>
                             </div>
@@ -719,7 +719,7 @@ const Register = () => {
                             {/* Phone Section*/}
                             <div className="mb-20">
                                 <div>
-                                    <div className="mb-10 text-13">Phone number</div>
+                                    <div className="mb-10 text-sm">Phone number</div>
                                     <div className='flex border-1-d6 rounded-lg p-2'>
                                         <select onChange={e => setPhoneCode(e.target.value)} className='border-0 font-gotham outline-white'>
                                             <option value="234">+234</option>
@@ -780,7 +780,7 @@ const Register = () => {
                                             {/* <option  value="593">Ecuador (+593)</option><option  value="20">Egypt (+20)</option><option  value="503">El Salvador (+503)</option><option  value="240">Equatorial Guinea (+240)</option><option  value="291">Eritrea (+291)</option><option  value="372">Estonia (+372)</option><option  value="251">Ethiopia (+251)</option><option  value="500">Falkland Islands (+500)</option><option  value="298">Faroe Islands (+298)</option><option  value="679">Fiji (+679)</option><option  value="358">Finland (+358)</option><option  value="33">France (+33)</option><option  value="594">French Guiana (+594)</option><option  value="689">French Polynesia (+689)</option><option  value="241">Gabon (+241)</option><option  value="220">Gambia (+220)</option><option  value="7880">Georgia (+7880)</option><option  value="49">Germany (+49)</option><option  value="233">Ghana (+233)</option><option  value="350">Gibraltar (+350)</option><option  value="30">Greece (+30)</option><option  value="299">Greenland (+299)</option><option  value="1473">Grenada (+1473)</option><option  value="590">Guadeloupe (+590)</option><option  value="671">Guam (+671)</option><option  value="502">Guatemala (+502)</option><option  value="224">Guinea (+224)</option><option  value="245">Guinea - Bissau (+245)</option><option  value="592">Guyana (+592)</option><option  value="509">Haiti (+509)</option><option  value="504">Honduras (+504)</option><option  value="852">Hong Kong (+852)</option><option  value="36">Hungary (+36)</option><option  value="354">Iceland (+354)</option><option  value="91">India (+91)</option><option  value="62">Indonesia (+62)</option><option  value="98">Iran (+98)</option><option  value="964">Iraq (+964)</option><option  value="353">Ireland (+353)</option><option  value="972">Israel (+972)</option><option  value="39">Italy (+39)</option><option  value="1876">Jamaica (+1876)</option><option  value="81">Japan (+81)</option><option  value="962">Jordan (+962)</option><option  value="7">Kazakhstan (+7)</option><option  value="254">Kenya (+254)</option><option  value="686">Kiribati (+686)</option><option  value="850">Korea North (+850)</option><option  value="82">Korea South (+82)</option><option  value="965">Kuwait (+965)</option><option  value="996">Kyrgyzstan (+996)</option><option  value="856">Laos (+856)</option><option  value="371">Latvia (+371)</option><option  value="961">Lebanon (+961)</option><option  value="266">Lesotho (+266)</option><option  value="231">Liberia (+231)</option><option  value="218">Libya (+218)</option><option  value="417">Liechtenstein (+417)</option><option  value="370">Lithuania (+370)</option><option  value="352">Luxembourg (+352)</option><option  value="853">Macao (+853)</option><option  value="389">Macedonia (+389)</option><option  value="261">Madagascar (+261)</option><option  value="265">Malawi (+265)</option><option  value="60">Malaysia (+60)</option><option  value="960">Maldives (+960)</option><option  value="223">Mali (+223)</option><option  value="356">Malta (+356)</option><option  value="692">Marshall Islands (+692)</option><option  value="596">Martinique (+596)</option><option  value="222">Mauritania (+222)</option><option  value="269">Mayotte (+269)</option><option  value="52">Mexico (+52)</option><option  value="691">Micronesia (+691)</option><option  value="373">Moldova (+373)</option><option  value="377">Monaco (+377)</option><option  value="976">Mongolia (+976)</option><option  value="1664">Montserrat (+1664)</option><option  value="212">Morocco (+212)</option><option  value="258">Mozambique (+258)</option><option  value="95">Myanmar (+95)</option><option  value="264">Namibia (+264)</option><option  value="674">Nauru (+674)</option><option  value="977">Nepal (+977)</option><option  value="31">Netherlands (+31)</option><option  value="687">New Caledonia (+687)</option><option  value="64">New Zealand (+64)</option><option  value="505">Nicaragua (+505)</option><option  value="227">Niger (+227)</option><option  value="234">Nigeria (+234)</option><option  value="683">Niue (+683)</option><option  value="672">Norfolk Islands (+672)</option><option  value="670">Northern Marianas (+670)</option><option  value="47">Norway (+47)</option><option  value="968">Oman (+968)</option><option  value="680">Palau (+680)</option><option  value="507">Panama (+507)</option><option  value="675">Papua New Guinea (+675)</option><option  value="595">Paraguay (+595)</option><option  value="51">Peru (+51)</option><option  value="63">Philippines (+63)</option><option  value="48">Poland (+48)</option><option  value="351">Portugal (+351)</option><option  value="1787">Puerto Rico (+1787)</option><option  value="974">Qatar (+974)</option><option  value="262">Reunion (+262)</option><option  value="40">Romania (+40)</option><option  value="7">Russia (+7)</option><option  value="250">Rwanda (+250)</option><option  value="378">San Marino (+378)</option><option  value="239">Sao Tome &amp; Principe (+239)</option><option  value="966">Saudi Arabia (+966)</option><option  value="221">Senegal (+221)</option><option  value="381">Serbia (+381)</option><option  value="248">Seychelles (+248)</option><option  value="232">Sierra Leone (+232)</option><option  value="65">Singapore (+65)</option><option  value="1">Sint Maarten (+1)</option><option  value="421">Slovak Republic (+421)</option><option  value="386">Slovenia (+386)</option><option  value="677">Solomon Islands (+677)</option><option  value="252">Somalia (+252)</option><option  value="27">South Africa (+27)</option><option  value="34">Spain (+34)</option><option  value="94">Sri Lanka (+94)</option><option  value="290">St. Helena (+290)</option><option  value="1869">St. Kitts (+1869)</option><option  value="1758">St. Lucia (+1758)</option><option  value="249">Sudan (+249)</option><option  value="597">Suriname (+597)</option><option  value="268">Swaziland (+268)</option><option  value="46">Sweden (+46)</option><option  value="41">Switzerland (+41)</option><option  value="963">Syria (+963)</option><option  value="886">Taiwan (+886)</option><option  value="7">Tajikstan (+7)</option><option  value="66">Thailand (+66)</option><option  value="228">Togo (+228)</option><option  value="676">Tonga (+676)</option><option  value="1868">Trinidad &amp; Tobago (+1868)</option><option  value="216">Tunisia (+216)</option><option  value="90">Turkey (+90)</option><option  value="7">Turkmenistan (+7)</option><option  value="993">Turkmenistan (+993)</option><option  value="1649">Turks &amp; Caicos Islands (+1649)</option><option  value="688">Tuvalu (+688)</option><option  value="256">Uganda (+256)</option><option  value="380">Ukraine (+380)</option><option  value="971">United Arab Emirates (+971)</option><option  value="598">Uruguay (+598)</option><option  value="7">Uzbekistan (+7)</option><option  value="678">Vanuatu (+678)</option><option  value="379">Vatican City (+379)</option><option  value="58">Venezuela (+58)</option><option  value="84">Vietnam (+84)</option><option  value="84">Virgin Islands - British (+1284)</option><option  value="84">Virgin Islands - US (+1340)</option><option  value="681">Wallis and Futuna (+681)</option><option  value="969">Yemen (North) (+969)</option><option  value="967">Yemen (South) (+967)</option><option  value="260">Zambia (+260)</option><option  value="263">Zimbabwe (+263)</option> */}
                                         </select>
 
-                                        <input value={phone} onChange={e => setPhone(e.target.value)} className="px-2 py-1 border-0 input text-14 outline-white" placeholder="ex: 813 000 1111 OR 0813 000 1111" type="text" />
+                                        <input value={phone} onChange={e => setPhone(e.target.value)} className="px-2 py-1 border-0 input text-sm outline-white" placeholder="ex: 813 000 1111 OR 0813 000 1111" type="text" />
                                     </div>
                                     <div className={isInvalidPhone ? "text-red-500 text-sm mt-2" : "text-red-500 text-sm mt-2 hidden"}>Kindly enter a valid phone number</div>
                                 </div>
@@ -790,10 +790,10 @@ const Register = () => {
                             {/* DOB Section*/}
                             <div className="mb-20">
                                 <div>
-                                    <div className="mb-10 text-13">Date of birth (DD / MM / YYYY)</div>
+                                    <div className="mb-10 text-sm">Date of birth (DD / MM / YYYY)</div>
                                     <div className='flex justify-between items-center border-1-d6 rounded-lg'>
                                         <div className='w-full'>
-                                            <input readOnly value={dob} onChange={e => setDOB(e.target.value)} className="outline-white border-0 p-3 input text-14" placeholder="DD / MM / YYYY" />
+                                            <input readOnly value={dob} onChange={e => setDOB(e.target.value)} className="outline-white border-0 p-3 input text-sm" placeholder="DD / MM / YYYY" />
                                         </div>
                                         <div className='p-3 cursor-pointer' onClick={e => displayCalendar()}>
                                             <img src={CalendarIcon} alt="" width="20" />
@@ -810,7 +810,7 @@ const Register = () => {
                             <div className="border-1 mb-20"></div>
 
                             <div className="flex space-x-10 mb-20">
-                                <div className="text-13 font-bold opacity-0 w-full text-right">
+                                <div className="text-sm font-bold opacity-0 w-full text-right">
                                     <button type="button" className="no-underline text-black border-0 bg-gray-100 rounded-lg px-5 py-3 cursor-pointer font-bold">Cancel</button>
                                 </div>
 
@@ -823,8 +823,8 @@ const Register = () => {
                             </div>
 
                             <div className="text-center">
-                                <div className="mb-5 text-13">By creating an account, you agree to Anchoria </div>
-                                <div className="text-13">
+                                <div className="mb-5 text-sm">By creating an account, you agree to Anchoria </div>
+                                <div className="text-sm">
                                     <a href="https://anchoriaonline.com/terms-and-conditions-of-use/" target="_blank" rel='noreferrer'><button type="button" className="no-underline border-0 bg-transparent text-color-1 cursor-pointer"><strong>Terms & Conditions</strong></button></a> and
 
                                     <a href="https://anchoriaonline.com/anchoria-privacy-policy/" target="_blank" rel='noreferrer'><button type="button" className="no-underline border-0 bg-transparent text-color-1 cursor-pointer"><strong> Privacy Policy</strong></button></a>
@@ -835,7 +835,7 @@ const Register = () => {
 
                     {/* Selfie Section */}
                     <div className={showSelfie ? "selfie-container " : "selfie-container hidden"}>
-                        <div className="mb-30 flex justify-between text-14">
+                        <div className="mb-30 flex justify-between text-sm">
                             <div className='font-bold cursor-pointer' onClick={displaySignup}>
                                 <img width="20" src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
                             </div>
@@ -864,7 +864,7 @@ const Register = () => {
                                 <img src={BulbIcon} alt="bulb icon" />
                             </div>
 
-                            <div className="text-red-500 text-13 pt-2"><strong>Tips:</strong> Browse and upload a clear headshot from your device</div>
+                            <div className="text-red-500 text-sm pt-2"><strong>Tips:</strong> Browse and upload a clear headshot from your device</div>
                         </div>
 
                         <div onClick={triggerSelfieUpload} className="relative selfie-placeholder p-16 mb-30 cursor-pointer">
@@ -876,15 +876,15 @@ const Register = () => {
                                 <img src={"data:image/png;base64,"+hashedSelfieImg} alt="" width="230" height='220' />
                             </div>
 
-                            <div className="text-13 text-center">File format: JPG, PNG, GIF, PDF</div>
+                            <div className="text-sm text-center">File format: JPG, PNG, GIF, PDF</div>
                         </div>
 
-                        <div className="mb-20 font-bold text-13 text-red-500 hidden">Remove</div>
+                        <div className="mb-20 font-bold text-sm text-red-500 hidden">Remove</div>
 
                         <div className="border-1 mb-20"></div>
 
                         <div className="flex justify-end space-x-10 mb-20 items-center">
-                            <div className="text-13 font-bold">
+                            <div className="text-sm font-bold">
                                 <button onClick={displaySignup} type="button" className="font-bold cursor-pointer no-underline text-black border-0 px-5 py-3 bg-gray-100 rounded-lg">Cancel</button>
                             </div>
 
@@ -902,33 +902,33 @@ const Register = () => {
 
                     {/* User Details From BVN Section */}
                     <div className={showBVN ? "confirm-bvn-container " : "confirm-bvn-container hidden"}>
-                        <div className="mb-30 flex justify-between text-14" onClick={displaySelfie}>
+                        <div className="mb-30 flex justify-between text-sm" onClick={displaySelfie}>
                             <div className='font-bold cursor-pointer'>
                                 <img width="20" src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
                             </div>
                         </div>
 
-                        <div className="mb-20 text-28 text-color"><strong>Confirm your details</strong></div>
-                        <div className="mb-30 text-16">Confirm your BVN data</div>
+                        <div className="mb-20 text-xl text-color"><strong>Confirm your details</strong></div>
+                        <div className="mb-30 text-sm">Confirm your BVN data</div>
 
                         <form className="form">
 
                             <div className="flex justify-between mb-30 space-x-3">
                                 <div className="relative">
                                     <div className="mb-5 text-sm">First Name</div>
-                                    <input className="border-1-d6 input text-14 bg-gray-200 p-3" type="text" readOnly value={firstname} />
+                                    <input className="border-1-d6 input text-sm bg-gray-200 p-3" type="text" readOnly value={firstname} />
                                 </div>
 
                                 <div className="relative">
                                     <div className="mb-5 text-sm">Last Name</div>
-                                    <div><input className="border-1-d6 p-3 input text-14 bg-gray-200" type="text" readOnly value={lastname} /></div>
+                                    <div><input className="border-1-d6 p-3 input text-sm bg-gray-200" type="text" readOnly value={lastname} /></div>
                                 </div>
                             </div>
 
                             <div className="mb-30">
                                 <div className="relative">
                                     <div className="mb-5 text-sm">Other Names</div>
-                                    <input className="border-1-d6 p-3 input text-14 bg-gray-200" type="text" readOnly value={othername} />
+                                    <input className="border-1-d6 p-3 input text-sm bg-gray-200" type="text" readOnly value={othername} />
 
                                 </div>
                             </div>
@@ -936,14 +936,14 @@ const Register = () => {
                             <div className="mb-20">
                                 <div className="relative">
                                     <div className="mb-5 text-sm">Date of Birth</div>
-                                    <input className="border-1-d6 p-3 input text-14 bg-gray-200" type="text" value={dob} />
+                                    <input className="border-1-d6 p-3 input text-sm bg-gray-200" type="text" value={dob} />
                                 </div>
                             </div>
 
                             <div className="border-1 mb-30"></div>
 
                             <div className="flex justify-end space-x-10 mb-30">
-                                <div className="text-13 font-bold ">
+                                <div className="text-sm font-bold ">
                                     <button onClick={displaySelfie} type="button" className="no-underline bg-gray-100 font-bold px-5 py-3 rounded-lg text-black border-0 cursor-pointer">Cancel</button>
                                 </div>
 
@@ -960,7 +960,7 @@ const Register = () => {
 
                     {/*OTP Section */}
                     <div className={showOTP ? "confirm-otp-container " : "confirm-otp-container hidden"}>
-                        <div className="mb-30 flex justify-between text-14" onClick={confirmBVN}>
+                        <div className="mb-30 flex justify-between text-sm" onClick={confirmBVN}>
                             <div className='font-bold cursor-pointer'>
                                 <img width="20" src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
                             </div>
@@ -970,9 +970,9 @@ const Register = () => {
                             <img src={ComputerIcon} alt="computer icon" />
                         </div>
 
-                        <div className="font-gotham-black-regular text-28 text-color-1 mb-20">Confirm your account</div>
+                        <div className="font-gotham-black-regular text-xl text-color-1 mb-20">Confirm your account</div>
 
-                        <div className="text-16 text-color-4 mb-20">Enter the 6 digits OTP sent to your phone number</div>
+                        <div className="text-sm text-color-4 mb-20">Enter the 6 digits OTP sent to your phone number</div>
 
                         <form>
                             <div>
@@ -999,7 +999,7 @@ const Register = () => {
                             </div>
 
                             <div className="flex justify-end space-x-10">
-                                <div className="text-13 ">
+                                <div className="text-sm ">
                                     <button onClick={confirmBVN} type="button" className="no-underline bg-gray-100 font-bold px-5 py-3 rounded-lg text-black border-0 cursor-pointer">Cancel</button>
                                 </div>
 
@@ -1027,7 +1027,7 @@ const Register = () => {
                                         </svg>
                                     </div>
 
-                                    <div className="pt-1 text-14 text-color-1">OTP successfully validated</div>
+                                    <div className="pt-1 text-sm text-color-1">OTP successfully validated</div>
                                 </div>
 
                                 <div className="cursor-pointer" onClick={closeOTPValidated}>
@@ -1039,7 +1039,7 @@ const Register = () => {
                         </div>
                         {/* End */}
 
-                        <div className="mb-30 flex justify-between text-14" onClick={confirmOTP}>
+                        <div className="mb-30 flex justify-between text-sm" onClick={confirmOTP}>
                             <div className='font-bold cursor-pointer'>
                                 <img width="20" src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
                             </div>
@@ -1055,7 +1055,7 @@ const Register = () => {
                                         </svg>
                                     </div>
 
-                                    <div className="pt-1 text-14 text-color-1">OTP successfully validated</div>
+                                    <div className="pt-1 text-sm text-color-1">OTP successfully validated</div>
                                 </div>
 
                                 <div className="cursor-pointer" onClick={closeOTPValidated}>
@@ -1066,18 +1066,18 @@ const Register = () => {
                             </div>
                         </div>
 
-                        <div className="mb-20 text-28 font-gotham-black-regular text-color-1">Create user details</div>
+                        <div className="mb-20 text-xl font-gotham-black-regular text-color-1">Create user details</div>
 
-                        <div className="mb-20 text-16 text-color-4">Create a new username and password</div>
+                        <div className="mb-20 text-sm text-color-4">Create a new username and password</div>
 
                         <form className="form">
 
                             <div className="mb-30">
                                 <div className="relative">
-                                    <div className="mb-10 text-16">Email</div>
-                                    <input value={email} onChange={e => setEmail(e.target.value)} className="outline-white border-1-d6 p-3 input text-14" placeholder="Enter email address" type="text" />
+                                    <div className="mb-10 text-sm">Email</div>
+                                    <input value={email} onChange={e => setEmail(e.target.value)} className="outline-white border-1-d6 p-3 input text-sm" placeholder="Enter email address" type="text" />
 
-                                    <div className="hidden flex space-x-2 absolute right-0 text-13 top-55">
+                                    <div className="hidden flex space-x-2 absolute right-0 text-sm top-55">
                                         <div>Available</div>
                                         <div>
                                             <svg width="33" height="33" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1093,11 +1093,11 @@ const Register = () => {
 
                             <div className="mb-10">
                                 <div className="relative">
-                                    <div className="mb-10 text-16">Password</div>
+                                    <div className="mb-10 text-sm">Password</div>
 
                                     <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
                                         <div className='w-full'>
-                                            <input value={password} onChange={e => setPassword(e.target.value)} type={isShowPassword ? 'text' : 'password'} className="outline-white input border-0 text-14 p-3" placeholder="Enter password" name="password" />
+                                            <input value={password} onChange={e => setPassword(e.target.value)} type={isShowPassword ? 'text' : 'password'} className="outline-white input border-0 text-sm p-3" placeholder="Enter password" name="password" />
                                         </div>
 
                                         <div className='px-2 pt-1'>
@@ -1118,7 +1118,7 @@ const Register = () => {
                             {/* Password Policy section */}
                             <div>
                                 <div className="flex space-x-5 mb-10">
-                                    <div className="flex text-13 space-x-1 text-color-3">
+                                    <div className="flex text-xs space-x-1 text-color-3">
                                         <div>
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasMinAndMaxCharacter ? '#2AD062' : '#999CA0'} />
@@ -1129,7 +1129,7 @@ const Register = () => {
                                         <div className={hasMinAndMaxCharacter ? "pt-20 text-color-2a font-bold" : "pt-20"}>At least 8 characters strong</div>
                                     </div>
 
-                                    <div className="flex text-13 space-x-1 text-color-3">
+                                    <div className="flex text-xs space-x-1 text-color-3">
                                         <div>
                                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasLowerCaseCharacter ? "#2AD062" : "#999CA0"} />
@@ -1142,7 +1142,7 @@ const Register = () => {
                                 </div>
 
                                 <div className="flex space-x-3 mb-10">
-                                    <div className="flex text-13 space-x-1 text-color-3">
+                                    <div className="flex text-xs space-x-1 text-color-3">
                                         <div>
                                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasUpperCaseCharacter ? "#2AD062" : "#999CA0"} />
@@ -1153,7 +1153,7 @@ const Register = () => {
                                         <div className={hasUpperCaseCharacter ? "pt-20 font-bold text-color-2a" : "pt-20"}>One or more upper case character</div>
                                     </div>
 
-                                    <div className="flex text-13 space-x-1 text-color-3">
+                                    <div className="flex text-xs space-x-1 text-color-3">
                                         <div>
                                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasNumericCharacter ? "#2AD062" : "#999CA0"} />
@@ -1167,7 +1167,7 @@ const Register = () => {
 
                                 <div className="flex space-x-3 mb-30">
 
-                                    <div className="flex text-13 space-x-1 text-color-3">
+                                    <div className="flex text-xs space-x-1 text-color-3">
                                         <div>
                                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasSpecialCharacter ? "#2AD062" : "#999CA0"} />
@@ -1184,10 +1184,10 @@ const Register = () => {
                             {/* Confirm Password section */}
                             <div className="mb-20">
                                 <div className="relative">
-                                    <div className="mb-10 text-16">Confirm Password</div>
+                                    <div className="mb-10 text-sm">Confirm Password</div>
                                     <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
                                         <div className='w-full'>
-                                            <input value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="outline-white input border-0 text-14 p-3" placeholder="Type your password again" name="password" type={isShowConfirmPassword ? 'text' : 'password'} />
+                                            <input value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="outline-white input border-0 text-sm p-3" placeholder="Type your password again" name="password" type={isShowConfirmPassword ? 'text' : 'password'} />
                                         </div>
 
                                         <div className='px-2 pt-1'>
@@ -1208,12 +1208,12 @@ const Register = () => {
 
                             {/* Proceed Button section */}
                             <div className="flex justify-end space-x-10 mb-20 items-center">
-                                <div className="text-13">
+                                <div className="text-sm">
                                     <button type="button" className="no-underline bg-gray-100 font-bold px-5 py-3 rounded-lg text-black border-0 cursor-pointer">Cancel</button>
                                 </div>
 
                                 <div>
-                                    <button onClick={confirmPin} className={emailPasswordConfirmPasswordIsNullOrEmpty ? "w-full rounded-lg bgcolor-1 border-0 text-white opacity-50 px-20 py-3 font-bold text-16" : "w-full rounded-lg bgcolor-1 border-0 text-white px-20 py-3 font-bold text-16 cursor-pointer"} type='button' disabled={emailPasswordConfirmPasswordIsNullOrEmpty}>
+                                    <button onClick={confirmPin} className={emailPasswordConfirmPasswordIsNullOrEmpty ? "w-full rounded-lg bgcolor-1 border-0 text-white opacity-50 px-20 py-3 font-bold text-sm" : "w-full rounded-lg bgcolor-1 border-0 text-white px-20 py-3 font-bold text-sm cursor-pointer"} type='button' disabled={emailPasswordConfirmPasswordIsNullOrEmpty}>
                                         Proceed
                                         <img src={SpinnerIcon} alt="spinner icon" className="hidden" width="15" />
                                     </button>
@@ -1236,7 +1236,7 @@ const Register = () => {
                                         </svg>
                                     </div>
 
-                                    <div className="pt-1 text-14 text-color-1">Password successfully updated</div>
+                                    <div className="pt-1 text-sm text-color-1">Password successfully updated</div>
                                 </div>
 
                                 <div className="cursor-pointer" onClick={closePasswordValidated}>
@@ -1247,13 +1247,13 @@ const Register = () => {
                             </div>
                         </div>
 
-                        <div className="mb-30 flex justify-between text-14" onClick={createUser}>
+                        <div className="mb-30 flex justify-between text-sm" onClick={createUser}>
                             <div className='font-bold cursor-pointer'>
                                 <img width="20" src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
                             </div>
                         </div>
 
-                        <div className="mb-20 text-color-2 flex justify-end space-x-2 text-16">
+                        <div className="mb-20 text-color-2 flex justify-end space-x-2 text-sm">
                             <span>Already have an account?</span>
                             <Link to="/" className="no-underline text-color-1"><span><strong> Login</strong> </span></Link>
                         </div>
@@ -1262,9 +1262,9 @@ const Register = () => {
                             <img src={ComputerIcon} alt="computer icon" />
                         </div>
 
-                        <div className="font-gotham-black-regular text-28 text-color-1 mb-20">Protect your account</div>
+                        <div className="font-gotham-black-regular text-xl text-color-1 mb-20">Protect your account</div>
 
-                        <div className="text-16 text-color-4 mb-20">Enter a 4 Digits transaction PIN</div>
+                        <div className="text-sm text-color-4 mb-20">Enter a 4 Digits transaction PIN</div>
 
                         <form>
                             <div className="mb-20">
@@ -1298,7 +1298,7 @@ const Register = () => {
                             <div className="border-1 mb-20"></div>
 
                             <div className="flex justify-end space-x-10">
-                                <div className="text-13">
+                                <div className="text-sm">
                                     <button type="button" className="no-underline bg-gray-100 font-bold px-5 py-3 rounded-lg text-black border-0 cursor-pointer">Cancel</button>
                                 </div>
 
@@ -1319,8 +1319,8 @@ const Register = () => {
                             <div className="bg-white p-3 w-full -bottom-10 absolute"></div>
                         </div>
 
-                        <div className="relative z-10 text-color-1 font-gotham-black-regular text-28 text-center mb-20">Successful</div>
-                        <div className="text-color-4 text-16 text-center mb-14">Your registration was successful</div>
+                        <div className="relative z-10 text-color-1 font-gotham-black-regular text-xl text-center mb-20">Successful</div>
+                        <div className="text-color-4 text-sm text-center mb-14">Your registration was successful</div>
                         <div className="mb-30 text-center">
                             <Link to="/"> <button className="bgcolor-1 w-96 rounded-lg border-0 cursor-pointer text-white p-5 font-bold">Proceed to Login</button></Link>
                         </div>
@@ -1328,7 +1328,7 @@ const Register = () => {
                 </div>
 
                 <div className="invest-text pl-11">
-                    <div className="text-37">
+                    <div className="text-lg">
                         <strong>Investing is for everyone</strong>
                     </div>
                     <div>
@@ -1350,7 +1350,7 @@ const Register = () => {
                         <div onClick={closeModal}><img src={CloseIcon} alt="" className="cursor-pointer" /></div>
                     </div>                  
 
-                    <div className='mb-20 text-14 leading-5'>
+                    <div className='mb-20 text-sm leading-5'>
                         To make sure you are the right person signing up, we only access your:
                     </div>
 

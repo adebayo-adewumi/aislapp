@@ -4,7 +4,7 @@ import '../stock/index.scss';
 import ArrowBackIcon from '../../assets/images/arrow-back.svg';
 import StarIcon from '../../assets/images/star.svg';
 import CloseIcon from '../../assets/images/close.svg';
-import SuccessIcon from '../../assets/images/success.gif';
+import SuccessCheckIcon from '../../assets/images/success-check.svg';
 import UserAreaHeader from '../../components/Headers/UserAreaHeader';
 import Form from 'react-bootstrap/Form';
 import Sidebar from '../../components/Sidebar';
@@ -307,8 +307,8 @@ const Stock = () => {
         }
 
         function getPortfolioList() {
-            let customer = HelperFunctions.getCustomerInfo();
-            getAxios(axios).get(portfolioServiceBaseUrlUrl.concat(customer.id))
+
+            getAxios(axios).get(portfolioServiceBaseUrlUrl.concat('/portfolio'))
                 .then(function (response) {
                     const listItems = response.data.data.portfolio.map((item: any) => {
                         if (item.name !== "availableToInvest") {
@@ -330,8 +330,9 @@ const Stock = () => {
                 });
         }
 
-        getWalletBalance();
         getPortfolioList();
+        getWalletBalance();
+        
         getNews();
     },[]);
 
@@ -585,20 +586,20 @@ const Stock = () => {
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
         localStorage.setItem('genericCypher', genericCypher);
 
-        // let headers = {
-        //     'Authorization': 'Bearer ' + localStorage.getItem('aislUserToken'),
-        //     'x-firebase-token': '12222',
-        //     'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
-        // }
+        let headers = {
+            'Authorization': 'Bearer ' + localStorage.getItem('aislUserToken'),
+            'x-firebase-token': '12222',
+            'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
+        }
 
         getAxios(axios).post(stockTradingServiceBaseUrlUrl + '/stock/' + params.get("tradeAction"),
             {
                 "text": localStorage.getItem('genericCypher')
-            })
+            },{headers})
             .then(function (response) {
                 setShowSpinner(false);
 
-                if (response.data.data === 'null') {
+                if (response.data.statusCode !== 200) {
                     setBuyStockError(response.data.message);
 
                     setTimeout(() => {
@@ -612,12 +613,10 @@ const Stock = () => {
                     setShowTradeStockModal(false);
                     setShowOrderSummaryModal(false);
                 }
-
-                console.log(response.data)
             })
             .catch(function (error) {
-                console.log(error)
                 setShowSpinner(false);
+                setBuyStockError(error.response.data.message);
             });
 
         //Add Stock to Portfolio
@@ -1834,7 +1833,7 @@ const Stock = () => {
                     <div className="buy-stocks-modal rounded-lg">
                         {/* Buy Stock Error */}
                         <div className={buyStockError === '' ? "hidden" : "error-alert mb-20"}>
-                            <div className="flex justify-between space-x-1 pt-3">
+                            <div className="flex justify-between space-x-1">
                                 <div className="flex">
                                     <div>
                                         <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1842,13 +1841,7 @@ const Stock = () => {
                                         </svg>
                                     </div>
 
-                                    <div className="pt-1 text-14">{buyStockError}</div>
-                                </div>
-
-                                <div className="cursor-pointer">
-                                    <svg className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50" />
-                                    </svg>
+                                    <div className="text-sm">{buyStockError}</div>
                                 </div>
                             </div>
                         </div>
@@ -1961,7 +1954,7 @@ const Stock = () => {
                             <div className='py-3' >
                                 <div className='flex justify-between text-lg'>
                                     <div>Fees</div>
-                                    <div className='font-bold'>₦ {HelperFunctions.formatCurrencyWithDecimal(estimatedCost - (parseFloat(stockInfo === ''?'':JSON.parse(stockInfo).price) * parseInt(stockUnit)))}</div>
+                                    <div className='font-bold'>₦ {HelperFunctions.formatCurrencyWithDecimal(estimatedCost - (parseFloat(stockInfo === ''?'':JSON.parse(stockInfo).price) * parseInt(stockUnit))).replace('-','')}</div>
                                 </div>
                             </div>
                         
@@ -1993,7 +1986,7 @@ const Stock = () => {
 
             <div className={showSuccessModal ? "stock-success-modal w-32rem" : "hidden"}>
                 <div className="ml-8 mr-auto w-full h-64 relative">
-                    <img src={SuccessIcon} alt="success icon" className="w-96" />
+                    <img src={SuccessCheckIcon} alt="success icon" className="w-96" />
                     <div className="bg-white p-3 w-96 -bottom-10 absolute"></div>
                 </div>
 

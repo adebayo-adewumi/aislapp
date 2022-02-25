@@ -81,8 +81,8 @@ const Forgot = () => {
 
             <div className={showForgotPasswordCard ? "mx-auto forgot-password-form-container mt-32" : "mx-auto forgot-password-form-container mt-32 hidden"}>
                 <form>
-                    <div className="font-bold mb-20 forgot-text text-28 font-gotham-black-regular">Forgot Password</div>
-                    <p className="mb-30 forgot-text text-16 line-height-28 font-bold">Type the email you used to sign up on Achoria and we'll send you a password reset email.</p>
+                    <div className="font-bold mb-20 forgot-text text-xl font-gotham-black-regular">Forgot Password</div>
+                    <p className="mb-30 forgot-text text-sm line-height-28 font-bold">Type the email you used to sign up on Achoria and we'll send you a password reset email.</p>
 
                     {/* Forgot Password Error */}
                     <div className={forgotPasswordHasError ? "error-alert mb-20":"hidden"}>
@@ -130,8 +130,8 @@ const Forgot = () => {
                     <img src={SendingEmails} alt="" />
                 </div>
 
-                <div className="text-center text-28 font-gotham-black-regular text-color-1 mb-30">Password reset confirmation</div>
-                <div className="text-center text-16 mb-10">We’ve sent a password rest link to </div>
+                <div className="text-center text-xl font-gotham-black-regular text-color-1 mb-30">Password reset confirmation</div>
+                <div className="text-center text-sm mb-10">We’ve sent a password rest link to </div>
                 <div className="text-center font-bold text-blue-600 mb-30">{email}</div>
                 <div className="text-center mb-20 text-14">Didn’t recieve an email? Check your spam folder, or <button type='button' className="no-underline border-0 bg-transparent text-blue-600 font-bold cursor-pointer text-lg" onClick={displayForgotPasswordCard}>resend</button></div>
             </div>
