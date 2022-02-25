@@ -268,6 +268,18 @@ const Dashboard = () => {
             });
         }
 
+        // function testApiForGet() {
+        //     //let customer = HelperFunctions.getCustomerInfo();
+
+        //     getAxios(axios).get(walletAndAccountServiceBaseUrl + '/wallet-api/bank-details')
+        //         .then(function (response) { 
+        //             console.log(response.data);
+        //         })
+        //         .catch(function (error) { });
+        // }
+
+        // testApiForGet();
+
         getWalletBalance();
         getTopGainers();
         getTopLosers();
@@ -275,6 +287,7 @@ const Dashboard = () => {
         getPortfolioList();
         getTopMovers();
         getWatchlist();
+        
 
     }, []);
 

@@ -79,7 +79,7 @@ const PortfolioInfoCard: FunctionComponent<Props> = ({
             {showFailure && <FailureAlert message={errorMessage} showFailure={showFailure} closeModal ={closeModal}/>}
             {showModalBG && <ModalBackground showModalBG={showModalBG}/>}
             
-            <div className="card-custom p-5 flex justify-between cursor-pointer" onClick={viewPortfolioDetails}>
+            <div className="card-custom p-5 flex justify-between cursor-pointer">
                 <div className="flex space-x-4">
                     <div><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" /></div>
 
@@ -105,7 +105,9 @@ const PortfolioInfoCard: FunctionComponent<Props> = ({
 
                 <div className={item.hasOwnProperty("uuid") ? 'row d-flex justify-content-end align-items-end':'hidden'}>
                     <div onClick={viewPortfolioDetails}><img src={ChevronRightIcon} alt="" /></div>
-                    <div className='mr-2' onClick={deletePortfolio}><img src={DeleteIcon} alt="" /></div>
+                    <div className='mr-2' onClick={deletePortfolio}>
+                        <img src={DeleteIcon} alt="" />
+                    </div>
                 </div>
             </div>
         </LoaderContainer>

@@ -92,7 +92,7 @@ const Stock = () => {
 
     const [pin, setPin] = useState('');
 
-    const [stockInfo, setStockInfo] = useState([{}]);
+    const [stockInfo, setStockInfo] = useState('');
 
     const [stockSymbol, ] = useState('');
 
@@ -130,8 +130,11 @@ const Stock = () => {
                 enabled: false
             },
             title: {
-                text: "Date Range",
+                text: "",
             },
+            labels:{
+                show: false
+            }
         },
         yaxis: {
             tooltip: {
@@ -204,11 +207,9 @@ const Stock = () => {
             getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/quote?stockCode=' + _params.get("symbol"))
             .then(function (response) {
 
-                let arr = [response.data.data];
-
                 localStorage.setItem("aislStockInfo", JSON.stringify(response.data.data));
 
-                setStockInfo(arr);
+                setStockInfo(JSON.stringify(response.data.data));
 
                 setCompanyMktCap(HelperFunctions.formatCurrencyWithDecimal(response.data.data.marketCap));
                 setCompanyInfo(response.data.data.companyInfo);
@@ -225,8 +226,8 @@ const Stock = () => {
             getAxios(axios).get(utilityServiceBaseUrlUrl.concat('/utils/top-five-bids/' + _params.get("symbol")))
                 .then(function (response) {
                     if(response.data.data.length > 0){
-                        const bidsItem = response.data.data.map((item: any) =>
-                            <div key={item} className='flex bid-offer justify-between border-bottom-e py-4'>
+                        const bidsItem = response.data.data.map((item: any, index:any) =>
+                            <div key={index} className='flex bid-offer justify-between border-bottom-e py-4'>
                                 <div>{HelperFunctions.formatCurrencyWithDecimal(item.volume)}</div>
                                 <div className='text-green-500'>₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
                             </div>
@@ -246,8 +247,8 @@ const Stock = () => {
                 .then(function (response) {
 
                     if(response.data.data.length > 0){
-                        const offersItem = response.data.data.map((item: any) =>
-                            <div key={item} className='flex offers justify-between border-bottom-e py-4'>
+                        const offersItem = response.data.data.map((item: any, index:any) =>
+                            <div key={index} className='flex offers justify-between border-bottom-e py-4'>
                                 <div>{HelperFunctions.formatCurrencyWithDecimal(item.volume)}</div>
                                 <div className='text-green-500'>₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
                             </div>
@@ -274,8 +275,8 @@ const Stock = () => {
                 .then(function (response) {
                     const takeNews = [response.data.data[0], response.data.data[1], response.data.data[2]];
 
-                    const newsItem = takeNews.map((item: any) =>
-                        <div key={item.id}>
+                    const newsItem = takeNews.map((item: any, index:any) =>
+                        <div key={index}>
                             <div className='mb-20'><img src={item.imageUrl} alt='' /></div>
                             <div className='w-22rem'>
                                 <div className='font-bold mb-10 text-14 w-6/6'>{item.title}</div>
@@ -1008,14 +1009,14 @@ const Stock = () => {
                         {/* Company Name section */}
                         <div className='mb-30'>
                             <div className="flex justify-between mb-20">
-                                {stockInfo.map((item: any, index: number) =>
-                                    <div key={index}>
+                                
+                                    <div>
                                         <img src={AtlasIcon} alt="" className="align-middle" />
                                         <span className="font-bold font-gotham-black-regular mx-3 text-xl">{params.get('symbol')}</span> |
                                         <span className="font-bold mx-3">{params.get('name')}</span> |
-                                        <span className="bg-yellow-500 py-2 px-3 rounded-2xl mx-3 text-14">{item.sector}</span>
+                                        <span className="bg-yellow-500 py-2 px-3 rounded-2xl mx-3 text-14">{stockInfo === '' ? '' : JSON.parse(stockInfo).sector}</span>
                                     </div>
-                                )}
+                                
 
                                 <div>
                                     <button onClick={displayAddToWatchListModal} className="cursor-pointer focus:shadow-outline rounded-lg bg-gray-300 py-3 px-5 border-0 font-bold" type='button'>
@@ -1053,14 +1054,14 @@ const Stock = () => {
 
                                         <div className='border-left-1'></div>
 
-                                        {stockInfo.map((item: any) =>
-                                            <div className="w-44" key={item}>
+                                        
+                                            <div className="w-44" >
                                                 <div className="mb-5">Total Value</div>
-                                                <div className="font-bold font-gotham-black-regular mb-5">₦ {HelperFunctions.formatCurrencyWithDecimal(item.price * parseInt(params.get("units") as string))}</div>
+                                                <div className="font-bold font-gotham-black-regular mb-5">₦ {(stockInfo === ''? '':JSON.parse(stockInfo).price) * parseInt(params.get("units") as string)}</div>
 
-                                                <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-14" : "font-bold text-red-500 text-14"}>{HelperFunctions.formatCurrencyWithDecimal(item.high - item.price)} | {HelperFunctions.formatCurrencyWithDecimal(((item.high - item.price) * 100) / item.price)}%  </div>
+                                                <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-14" : "font-bold text-red-500 text-14"}>{stockInfo === '' ? '' : JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === '' ? '' : JSON.parse(stockInfo).percentageChange.replace('-','')}%  </div>
                                             </div>
-                                        )}
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -1099,13 +1100,14 @@ const Stock = () => {
                                                     </div>
                                                 </div>
 
-                                                {stockInfo.map((item: any) =>
-                                                    <div key={item}>
-                                                        <div className='font-gotham-black-regular font-bold text-color-1 text-xl mb-10'>₦ {HelperFunctions.formatCurrencyWithDecimal(parseFloat(item.price))}</div>
+                                                
+                                                    <div>
+                                                        <div className='font-gotham-black-regular font-bold text-color-1 text-xl mb-10'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
 
-                                                        <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-14" : "font-bold text-red-500 text-14"}>{HelperFunctions.formatCurrencyWithDecimal(item.high - item.price).replace("-","")} | {HelperFunctions.formatCurrencyWithDecimal(((item.high - item.price) * 100) / item.price).replace("-","")}%  </div>
+                                                        <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-14" : "font-bold text-red-500 text-14"}>
+                                                            {stockInfo === '' ? '' : JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === '' ? '' : JSON.parse(stockInfo).percentageChange.replace('-','')}%
+                                                         </div>
                                                     </div>
-                                                )}
                                             </div>
 
                                             <div>
@@ -1152,116 +1154,115 @@ const Stock = () => {
                                     <div className='card-stock w-stock'>
                                         <div className='font-bold font-gotham-black-regular mb-20 pt-5'>Statistics Overview</div>
 
-                                        {stockInfo.map((item: any) =>
-                                            <div key={item}>
-                                                <div className='py-3'>
-                                                    <div className='flex space-x-10 text-14 pb-6'>
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Earnings per share</div>
-                                                            <div>₦ {HelperFunctions.formatCurrencyWithDecimal(item.earningsPerShare)}</div>
-                                                        </div>
-
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Mkt Cap</div>
-                                                            <div>₦ {HelperFunctions.formatCurrencyWithDecimal(item.marketCap)}</div>
-                                                        </div>
+                                        <div >
+                                            <div className='py-3'>
+                                                <div className='flex space-x-10 text-14 pb-6'>
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Earnings per share</div>
+                                                        <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).earningsPerShare)}</div>
                                                     </div>
-                                                </div>
 
-                                                <div className='py-3'>
-                                                    <div className='flex space-x-10 text-14 pb-6'>
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>High</div>
-                                                            <div>₦ {HelperFunctions.formatCurrencyWithDecimal(item.high)}</div>
-                                                        </div>
-
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Low</div>
-                                                            <div>₦ {HelperFunctions.formatCurrencyWithDecimal(item.low)}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className='py-3'>
-                                                    <div className='flex space-x-10 text-14 pb-6'>
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>52 Week High</div>
-                                                            <div>₦ {HelperFunctions.formatCurrencyWithDecimal(item.weekHigh52)}</div>
-                                                        </div>
-
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>52 Week Low</div>
-                                                            <div>₦ {HelperFunctions.formatCurrencyWithDecimal(item.weekLow52)}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className='py-3'>
-                                                    <div className='flex space-x-10 text-14 pb-6'>
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Volume</div>
-                                                            <div>{item.volume}</div>
-                                                        </div>
-
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Average Volume</div>
-                                                            <div>{HelperFunctions.formatCurrencyWithDecimal(item.avgDailyVolume)}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className='py-3'>
-                                                    <div className='flex space-x-10 text-14 pb-6'>
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Sector</div>
-                                                            <div>{item.sector}</div>
-                                                        </div>
-
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Risk Factor</div>
-                                                            <div>{HelperFunctions.formatCurrencyWithDecimal(item.riskFactor)}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className='py-3'>
-                                                    <div className='flex space-x-10 text-14 pb-6'>
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Dividend Yield</div>
-                                                            <div>₦ {HelperFunctions.formatCurrencyWithDecimal(item.dividendYield)}</div>
-                                                        </div>
-
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Previous Close</div>
-                                                            <div>₦ {HelperFunctions.formatCurrencyWithDecimal(item.lclose)}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className='py-3'>
-                                                    <div className='flex space-x-10 text-14 pb-6'>
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Nominal Value</div>
-                                                            <div>{item.norminalValue}</div>
-                                                        </div>
-
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Trades</div>
-                                                            <div>{item.trades}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className='py-3'>
-                                                    <div className='flex space-x-10 text-14 pb-6'>
-                                                        <div>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Value of Trades</div>
-                                                            <div>₦ {HelperFunctions.formatCurrencyWithDecimal(item.valueOfTrades)}</div>
-                                                        </div>
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Mkt Cap</div>
+                                                        <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).marketCap)}</div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        )}
+
+                                            <div className='py-3'>
+                                                <div className='flex space-x-10 text-14 pb-6'>
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-20 font-gotham-black-regular'>High</div>
+                                                        <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).high)}</div>
+                                                    </div>
+
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Low</div>
+                                                        <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).low)}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className='py-3'>
+                                                <div className='flex space-x-10 text-14 pb-6'>
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-20 font-gotham-black-regular'>52 Week High</div>
+                                                        <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).weekHigh52)}</div>
+                                                    </div>
+
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-20 font-gotham-black-regular'>52 Week Low</div>
+                                                        <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).weekLow52)}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className='py-3'>
+                                                <div className='flex space-x-10 text-14 pb-6'>
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Volume</div>
+                                                        <div>{stockInfo === ''?'':JSON.parse(stockInfo).volume}</div>
+                                                    </div>
+
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Average Volume</div>
+                                                        <div>{HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).avgDailyVolume)}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className='py-3'>
+                                                <div className='flex space-x-10 text-14 pb-6'>
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Sector</div>
+                                                        <div>{stockInfo === ''?'':JSON.parse(stockInfo).sector}</div>
+                                                    </div>
+
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Risk Factor</div>
+                                                        <div>{HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).riskFactor)}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className='py-3'>
+                                                <div className='flex space-x-10 text-14 pb-6'>
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Dividend Yield</div>
+                                                        <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).dividendYield)}</div>
+                                                    </div>
+
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Previous Close</div>
+                                                        <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).lclose)}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className='py-3'>
+                                                <div className='flex space-x-10 text-14 pb-6'>
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Nominal Value</div>
+                                                        <div>{stockInfo === ''?'':JSON.parse(stockInfo).norminalValue}</div>
+                                                    </div>
+
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Trades</div>
+                                                        <div>{stockInfo === ''?'':JSON.parse(stockInfo).trades}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className='py-3'>
+                                                <div className='flex space-x-10 text-14 pb-6'>
+                                                    <div>
+                                                        <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Value of Trades</div>
+                                                        <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).valueOfTrades)}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -1296,28 +1297,28 @@ const Stock = () => {
                             <div className='mt-10'>
                                 <div className='card-stock'>
                                     <div className='font-gotham-black-regular mb-30 mt-5'>Statistics Overview</div>
-                                    {stockInfo.map((item: any, index: any) =>
-                                    <div className='flex justify-between mb-20' key={index}>
+                                    
+                                    <div className='flex justify-between mb-20'>
                                         <div>
                                             <div className='font-gotham-black-regular text-14 mb-10'>Shares Outstanding</div>
-                                            <div className='text-13'>{HelperFunctions.formatCurrencyWithDecimal(item.sharesOutstanding)}</div>
+                                            <div className='text-13'>{HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).sharesOutstanding)}</div>
                                         </div>
 
                                         <div className='border-left-1'></div>
 
                                         <div>
                                             <div className='font-gotham-black-regular text-14 mb-10'>Registrar</div>
-                                            <div className='text-13'>{item.registrar}</div>
+                                            <div className='text-13'>{stockInfo === ''?'':JSON.parse(stockInfo).registrar}</div>
                                         </div>
 
                                         <div className='border-left-1'></div>
 
                                         <div className='w-72'>
                                             <div className='font-gotham-black-regular text-14 mb-10'>Institutional Owership</div>
-                                            <div className='text-13'>{item.institutionalOwnerShip}</div>
+                                            <div className='text-13'>{stockInfo === ''?'':JSON.parse(stockInfo).institutionalOwnerShip}</div>
                                         </div>
                                     </div>
-                                    )}
+                                    
                                 </div>
                             </div>
                         </div>
@@ -1380,12 +1381,12 @@ const Stock = () => {
                         <div className='mb-30 flex space-x-5'>
                             <div className='w-1/2'>
                                 <div className='font-bold mb-10'>High</div>
-                                <input type="text" className="input border-1-d6 p-2 outline-white" />
+                                <input type="number" className="input border-1-d6 p-2 outline-white" />
                             </div>
 
                             <div className='w-1/2'>
                                 <div className='font-bold mb-10'>Low</div>
-                                <input type="text" className="input border-1-d6 p-2 outline-white" />
+                                <input type="number" className="input border-1-d6 p-2 outline-white" />
                             </div>
                         </div>
 
@@ -1415,33 +1416,33 @@ const Stock = () => {
 
                 <div>
                     <div>
-                        {stockInfo.map((item: any, index: number) =>
-                            <div>
+                        
+                            <div >
                                 <div className='mb-10'>
                                     <img src={AtlasIcon} alt="" className="align-middle border-1-d6 rounded-lg" />
                                     <span className="font-bold font-gotham-black-regular mx-3 text-xl">{params.get('symbol')}</span> |
-                                    <span className="font-bold mx-3">{item.name}</span>
+                                    <span className="font-bold mx-3">{stockInfo === ''?'':JSON.parse(stockInfo).name}</span>
                                 </div>
 
                                 <div className="mb-20 py-1">
-                                    <span className='bg-yellow-400 py-2 px-3 rounded-2xl text-14'>{item.sector}</span>
+                                    <span className='bg-yellow-400 py-2 px-3 rounded-2xl text-14'>{stockInfo === ''?'':JSON.parse(stockInfo).sector}</span>
                                 </div>
 
                                 <div className="leading-6 text-14 mb-20">{companyInfo.length > 250 ? companyInfo.substring(0, 250) + "..." : companyInfo}</div>
 
 
 
-                                <div className='mb-20' key={index}>
+                                <div className='mb-20' >
                                     <div className='mb-10 font-bold'>Current Price</div>
-                                    <div className='font-gotham-black-regular text-color-1 text-28'>₦ {item.price}</div>
+                                    <div className='font-gotham-black-regular text-color-1 text-28'>₦ {stockInfo === ''?'':JSON.parse(stockInfo).price}</div>
                                 </div>
 
 
                                 <div className='mb-20'>
-                                    <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-14" : "font-bold text-red-500 text-14"}>{HelperFunctions.formatCurrencyWithDecimal(item.high - item.price).replace('-','')} | {HelperFunctions.formatCurrencyWithDecimal(((item.high - item.price) * 100) / item.price).replace('-','')}%  </div>
+                                    <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-14" : "font-bold text-red-500 text-14"}>{stockInfo === ''?'':JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === ''?'':JSON.parse(stockInfo).percentageChange.replace('-','')}%  </div>
                                 </div>
                             </div>
-                        )}
+                        
 
                         <div className='mb-30 font-bold flex'>
                             <Form.Check onChange={displayHighLow} type='radio' className='portfoliolist-checkbox' />
@@ -1451,12 +1452,12 @@ const Stock = () => {
                         <div className={showHighLow ? 'mb-30 flex space-x-5' : 'mb-30 flex space-x-5 hidden'}>
                             <div className='w-1/2'>
                                 <div className='font-bold mb-10'>High</div>
-                                <input type="text" className="input border-1-d6 p-2" />
+                                <input type="number" className="input border-1-d6 p-2" />
                             </div>
 
                             <div className='w-1/2'>
                                 <div className='font-bold mb-10'>Low</div>
-                                <input type="text" className="input border-1-d6 p-2" />
+                                <input type="number" className="input border-1-d6 p-2" />
                             </div>
                         </div>
 
@@ -1529,12 +1530,12 @@ const Stock = () => {
                             </div>
                         </div>
 
-                        {stockInfo.map((item: any, index: number) =>
-                            <div className='mb-20' key={index}>
+                        
+                            <div className='mb-20' >
                                 <div className='mb-10 font-bold'>Current Price /Per Share</div>
-                                <div className='font-gotham-black-regular text-28 font-bold text-color-1'>₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
+                                <div className='font-gotham-black-regular text-28 font-bold text-color-1'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
                             </div>
-                        )}
+                        
 
                         <div className='border-bottom-1d mb-20'></div>
 
@@ -1555,7 +1556,7 @@ const Stock = () => {
                                         <div className="mb-10">Unit</div>
 
                                         <div>
-                                            <input onChange={e => setStockUnit(e.target.value)} type='text' className='font-bold input border-1-d6 p-2 outline-white' value={stockUnit} />
+                                            <input onChange={e => setStockUnit(e.target.value)} type='number' className='font-bold input border-1-d6 p-2 outline-white' value={stockUnit} />
                                         </div>
                                     </div>
 
@@ -1598,7 +1599,7 @@ const Stock = () => {
                                     <div className="mb-10">Maximum Limit</div>
 
                                     <div>
-                                        <input onChange={e => setPriceToleranceAndLimit(e.target.value)} type='text' className='font-bold input border-1-d6 p-2 outline-white' placeholder='Maximum price per share' value={priceToleranceAndLimit} />
+                                        <input onChange={e => setPriceToleranceAndLimit(e.target.value)} type='number' className='font-bold input border-1-d6 p-2 outline-white' placeholder='Maximum price per share' value={priceToleranceAndLimit} />
                                     </div>
                                 </div>
 
@@ -1653,7 +1654,7 @@ const Stock = () => {
                                         <div className="mb-10">Price Tolerance</div>
 
                                         <div>
-                                            <input type='text' onChange={e => setPriceToleranceAndLimit(e.target.value)} className='font-bold input border-1-d6 p-2 outline-white' value={priceToleranceAndLimit} />
+                                            <input type='number' onChange={e => setPriceToleranceAndLimit(e.target.value)} className='font-bold input border-1-d6 p-2 outline-white' value={priceToleranceAndLimit} />
                                         </div>
                                     </div>
 
@@ -1708,7 +1709,7 @@ const Stock = () => {
                                             <div className="mb-10">Price Tolerance and Limit</div>
 
                                             <div>
-                                                <input onChange={e => setPriceToleranceAndLimit(e.target.value)} value={priceToleranceAndLimit} type='text' className='font-bold input border-1-d6 p-2 outline-white' />
+                                                <input onChange={e => setPriceToleranceAndLimit(e.target.value)} value={priceToleranceAndLimit} type='number' className='font-bold input border-1-d6 p-2 outline-white' />
                                             </div>
                                         </div>
 
@@ -1872,12 +1873,12 @@ const Stock = () => {
                             </div>
                         </div>
 
-                        {stockInfo.map((item: any) =>
-                            <div className='mb-20'>
+                        
+                            <div className='mb-20' >
                                 <div className='mb-10 font-bold'>Current Price /Per Share</div>
-                                <div className='font-gotham-black-regular text-28 font-bold text-color-1'>₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
+                                <div className='font-gotham-black-regular text-28 font-bold text-color-1'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
                             </div>
-                        )}
+                        
 
                         <div className={params.get("tradeAction") === 'buy' ? '' : 'hidden'} >
                             <div className='mb-10'>Add this stocks to a portfolio <span className='text-yellow-700'>(Optional)</span></div>
@@ -1945,25 +1946,25 @@ const Stock = () => {
 
                         <div className={orderType !== 'Market' ? 'border-bottom-1d' : 'hidden'}></div>
 
-                        {stockInfo.map((item: any) =>
-                            <div className='py-3'>
+                        
+                            <div className='py-3' >
                                 <div className='flex justify-between text-lg'>
                                     <div>Cost</div>
-                                    <div className='font-bold'>₦ {parseFloat(item.price) * parseInt(stockUnit)}</div>
+                                    <div className='font-bold'>₦ {(stockInfo === '' ? '' : JSON.parse(stockInfo).price) * parseInt(stockUnit)}</div>
                                 </div>
                             </div>
-                        )}
+                        
 
                         <div className='border-bottom-1d'></div>
 
-                        {stockInfo.map((item: any) =>
-                            <div className='py-3'>
+                        
+                            <div className='py-3' >
                                 <div className='flex justify-between text-lg'>
                                     <div>Fees</div>
-                                    <div className='font-bold'>₦ {HelperFunctions.formatCurrencyWithDecimal(estimatedCost - (parseFloat(item.price) * parseInt(stockUnit)))}</div>
+                                    <div className='font-bold'>₦ {HelperFunctions.formatCurrencyWithDecimal(estimatedCost - (parseFloat(stockInfo === ''?'':JSON.parse(stockInfo).price) * parseInt(stockUnit)))}</div>
                                 </div>
                             </div>
-                        )}
+                        
 
                         <div className='border-bottom-1d'></div>
 
@@ -1979,10 +1980,6 @@ const Stock = () => {
 
                         <div className='flex space-x-5 mb-10'>
                             <button type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer" onClick={closeModal}>Cancel</button>
-
-                            {/* <button onClick={displayValidatePinModal} type='button' className={pinValidatedForBuyStock ? "hidden":"w-full bgcolor-1 rounded-lg text-white p-4 font-bold text-lg border-0 focus:shadow-outline cursor-pointer"} data-value="buy-stock">
-                                Confirm Order
-                            </button> */}
 
                             <button onClick={tradeStock} className='w-full bgcolor-1 rounded-lg text-white p-4 font-bold text-lg border-0 focus:shadow-outline cursor-pointer'>
                                 <span className={showSpinner ? "hidden" : ""}>Confirm Order</span>

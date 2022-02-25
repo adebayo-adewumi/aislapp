@@ -525,7 +525,10 @@ const Profile = () => {
         let customer = HelperFunctions.getCustomerInfo();
 
         let requestData = {
-            "pin": pin
+            "newPin": pin,
+            "oldPin":oldPin,
+            "email":customer.email,
+            "token":"578000"
         }
 
         setShowPinSpinner(true);
@@ -539,7 +542,7 @@ const Profile = () => {
             'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
         }
 
-        axios.put(authOnboardingServiceBaseUrl+'/customer/pin/change?customerId='+customer.id, 
+        axios.put(authOnboardingServiceBaseUrl+'/customer/change-pin', 
         {
             "text" : localStorage.getItem('genericCypher')
         },{headers})
@@ -1838,7 +1841,7 @@ const Profile = () => {
                                     <div className='flex justify-between space-x-5'>
                                         <div className='w-3/4'>
                                             <div className='text-gray-700 mb-4'>Old Pin</div>
-                                            <div><input value={oldPin} onChange={e => setOldPin(e.target.value)} type='password' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
+                                            <div><input value={oldPin} onChange={e => setOldPin(e.target.value)} type='password' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full' maxLength={4}/></div>
                                         </div>
                                     </div>
                                 </div>
@@ -1850,7 +1853,7 @@ const Profile = () => {
                                             
                                             <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
                                                 <div className='w-full'>
-                                                    <input value={pin} onChange={e => setPin(e.target.value)} className="outline-white p-3 input border-0 text-14" type={isShowPin ? 'text' : 'password'} name="password"/>
+                                                    <input value={pin} onChange={e => setPin(e.target.value)} className="outline-white p-3 input border-0 text-14" type={isShowPin ? 'text' : 'password'} name="password" maxLength={4}/>
                                                 </div>
 
                                                 <div className='px-2 pt-1'>
@@ -1870,7 +1873,7 @@ const Profile = () => {
                                             
                                             <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
                                                 <div className='w-full'>
-                                                    <input value={confirmPin} onChange={e => setConfirmPin(e.target.value)} className="outline-white p-3 input border-0 text-14"  type={isShowConfirmPin ? 'text' : 'password'} name="password"/>
+                                                    <input value={confirmPin} onChange={e => setConfirmPin(e.target.value)} className="outline-white p-3 input border-0 text-14"  type={isShowConfirmPin ? 'text' : 'password'} name="password" maxLength={4}/>
                                                 </div>
 
                                                 <div className='px-2 pt-1'>
