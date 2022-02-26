@@ -199,11 +199,11 @@ const Login = () => {
                     </div>
                 </div>
 
-                <div className="invest-text top-4 relative pl-5 md:pl-24 md:pt-7 md:top-full">
+                <div className="invest-text top-4 relative pl-5 md:pl-24 md:pt-7 md:top-full z-0">
                     <div className="font-gotham-black-regular font-bold text-2xl md:text-4xl">
                         <strong>Investing is for everyone</strong>
                     </div>
-                    <div className='h-44'>
+                    <div className='md:h-44 h-5'>
                         <ul className='list-disc-important'>
                             <li>Build wealth plans</li>
                             <li>Transparent historical returns</li>

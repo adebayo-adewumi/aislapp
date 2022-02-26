@@ -1331,7 +1331,7 @@ const Register = () => {
                     <div className="font-gotham-black-regular font-bold text-2xl md:text-4xl">
                         <strong>Investing is for everyone</strong>
                     </div>
-                    <div className='h-44'>
+                    <div className='md:h-44 h-5'>
                         <ul className='list-disc-important'>
                             <li>Build wealth plans</li>
                             <li>Transparent historical returns</li>
