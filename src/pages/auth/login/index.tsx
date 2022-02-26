@@ -111,11 +111,11 @@ const Login = () => {
             <GenericHeader />
 
             <div className="candle-stick-container h-96">
-                <div className="candle-stick-box">
-                    <div className="smiling-lady"></div>
-                    <div className="candle-stick"></div>
+                <div className="candle-stick-box md:bg-green-900">
+                    <div className="smiling-lady hidden md:block"></div>
+                    <div className="candle-stick hidden md:block"></div>
 
-                    <div className="login-container">
+                    <div className="login-container md:rounded-lg mx-auto md:mx-0 w-full md:w-4/12 md:absolute">
 
                         {/* Login Error */}
                         <div className={loginHasError ? "error-alert mb-20" : "hidden"}>
@@ -199,8 +199,8 @@ const Login = () => {
                     </div>
                 </div>
 
-                <div className="invest-text pl-11">
-                    <div className="text-37">
+                <div className="invest-text top-4 relative pl-5 md:pl-24 md:pt-7 md:top-full">
+                    <div className="font-gotham-black-regular font-bold text-2xl md:text-4xl">
                         <strong>Investing is for everyone</strong>
                     </div>
                     <div className='h-44'>

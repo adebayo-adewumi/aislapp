@@ -653,13 +653,12 @@ const Register = () => {
         <div>
             <GenericHeader />
 
-            <div className="candle-stick-container signup-h">
-                <div className="candle-stick-box">
-                    <div className="smiling-lady"></div>
+            <div className="candle-stick-container h-96">
+                <div className="candle-stick-box md:bg-green-900">
+                    <div className="smiling-lady hidden md:block"></div>
+                    <div className="candle-stick hidden md:block"></div>
 
-                    <div className="candle-stick"></div>
-
-                    <div className={showSignup ? "signup-container " : "signup-container hidden"}>
+                    <div className={showSignup ? "signup-container md:rounded-lg mx-auto md:mx-0 w-full md:w-4/12 md:absolute" : "hidden"}>
 
                         {/* BVN Validated Error */}
                         <div className={bvnHasError ? "error-alert mb-20" : "hidden"}>
@@ -700,9 +699,10 @@ const Register = () => {
                         <form className="form">
                             {/* BVN Section*/}
                             <div className="mb-20">
-                                <div className="flex justify-between mb-10">
-                                    <span className="text-sm">BVN (Bank Verification Number) </span>
-                                    <span onClick={displayBVNModal} className="text-sm flex justify-between cursor-pointer">
+                                <div className="flex md:justify-between md:space-x-0 space-x-5 mb-10">
+                                    <span className="text-xs md:text-sm">BVN (Bank Verification Number) </span>
+
+                                    <span onClick={displayBVNModal} className="flex md:justify-between justify-end text-xs md:text-sm cursor-pointer">
                                         <span className="mr-2">Why we need this</span>
                                         <svg width="22" height="21" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path fillRule="evenodd" clipRule="evenodd" d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2ZM12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4ZM12 16C12.5523 16 13 16.4477 13 17C13 17.5523 12.5523 18 12 18C11.4477 18 11 17.5523 11 17C11 16.4477 11.4477 16 12 16ZM12 6C14.2091 6 16 7.79086 16 10C16 11.7948 14.8179 13.3135 13.1898 13.8201L13 13.874V14C13 14.5523 12.5523 15 12 15C11.4872 15 11.0645 14.614 11.0067 14.1166L11 14V13C11 12.4872 11.386 12.0645 11.8834 12.0067L12.1493 11.9945C13.1841 11.9182 14 11.0544 14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 10.5523 9.55228 11 9 11C8.44772 11 8 10.5523 8 10C8 7.79086 9.79086 6 12 6Z" fill="#353F50" />
@@ -719,7 +719,7 @@ const Register = () => {
                             {/* Phone Section*/}
                             <div className="mb-20">
                                 <div>
-                                    <div className="mb-10 text-sm">Phone number</div>
+                                    <div className="mb-5 text-xs md:text-sm">Phone number</div>
                                     <div className='flex border-1-d6 rounded-lg p-2'>
                                         <select onChange={e => setPhoneCode(e.target.value)} className='border-0 font-gotham outline-white'>
                                             <option value="234">+234</option>
@@ -790,7 +790,7 @@ const Register = () => {
                             {/* DOB Section*/}
                             <div className="mb-20">
                                 <div>
-                                    <div className="mb-10 text-sm">Date of birth (DD / MM / YYYY)</div>
+                                    <div className="mb-5 text-xs md:text-sm">Date of birth (DD / MM / YYYY)</div>
                                     <div className='flex justify-between items-center border-1-d6 rounded-lg'>
                                         <div className='w-full'>
                                             <input readOnly value={dob} onChange={e => setDOB(e.target.value)} className="outline-white border-0 p-3 input text-sm" placeholder="DD / MM / YYYY" />
@@ -809,7 +809,7 @@ const Register = () => {
 
                             <div className="border-1 mb-20"></div>
 
-                            <div className="flex space-x-10 mb-20">
+                            <div className="flex mb-20">
                                 <div className="text-sm font-bold opacity-0 w-full text-right">
                                     <button type="button" className="no-underline text-black border-0 bg-gray-100 rounded-lg px-5 py-3 cursor-pointer font-bold">Cancel</button>
                                 </div>
@@ -834,7 +834,7 @@ const Register = () => {
                     </div>
 
                     {/* Selfie Section */}
-                    <div className={showSelfie ? "selfie-container " : "selfie-container hidden"}>
+                    <div className={showSelfie ? "selfie-container " : "hidden"}>
                         <div className="mb-30 flex justify-between text-sm">
                             <div className='font-bold cursor-pointer' onClick={displaySignup}>
                                 <img width="20" src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
@@ -901,7 +901,7 @@ const Register = () => {
                     {/*End */}
 
                     {/* User Details From BVN Section */}
-                    <div className={showBVN ? "confirm-bvn-container " : "confirm-bvn-container hidden"}>
+                    <div className={showBVN ? "confirm-bvn-container " : "hidden"}>
                         <div className="mb-30 flex justify-between text-sm" onClick={displaySelfie}>
                             <div className='font-bold cursor-pointer'>
                                 <img width="20" src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
@@ -959,7 +959,7 @@ const Register = () => {
                     {/*End */}
 
                     {/*OTP Section */}
-                    <div className={showOTP ? "confirm-otp-container " : "confirm-otp-container hidden"}>
+                    <div className={showOTP ? "confirm-otp-container " : "hidden"}>
                         <div className="mb-30 flex justify-between text-sm" onClick={confirmBVN}>
                             <div className='font-bold cursor-pointer'>
                                 <img width="20" src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
@@ -1015,7 +1015,7 @@ const Register = () => {
                     {/*End */}
 
                     {/*User Email & Password Section*/}
-                    <div className={showUser ? "create-user-container relative " : "create-user-container relative hidden"}>
+                    <div className={showUser ? "create-user-container relative " : "hidden"}>
                         {/* OTP Validated */}
                         <div className={showOTPValidated ? "otp-alert mb-20" : "hidden"}>
                             <div className="flex otp-validated justify-between space-x-1 pt-3">
@@ -1225,7 +1225,7 @@ const Register = () => {
                     {/*End */}
 
                     {/*PIN Section */}
-                    <div className={showPin ? "create-pin-container" : "create-pin-container hidden"}>
+                    <div className={showPin ? "create-pin-container" : "hidden"}>
                         <div className={showPasswordValidated ? "otp-alert mb-20" : "hidden"}>
                             <div className="flex justify-between space-x-1 pt-3">
                                 <div className="flex">
@@ -1313,7 +1313,7 @@ const Register = () => {
                     </div>
                     {/*End */}
 
-                    <div className={showSuccess ? "success-container" : "success-container hidden"}>
+                    <div className={showSuccess ? "success-container" : "hidden"}>
                         <div className="ml-8 mr-auto w-80 h-64 relative">
                             <img src={SuccessIcon} alt="success icon" className="w-96" />
                             <div className="bg-white p-3 w-full -bottom-10 absolute"></div>
@@ -1327,12 +1327,12 @@ const Register = () => {
                     </div>
                 </div>
 
-                <div className="invest-text pl-11">
-                    <div className="text-lg">
+                <div className="invest-text top-4 relative pl-5 md:pl-24 md:pt-7 md:top-full">
+                    <div className="font-gotham-black-regular font-bold text-2xl md:text-4xl">
                         <strong>Investing is for everyone</strong>
                     </div>
-                    <div>
-                        <ul>
+                    <div className='h-44'>
+                        <ul className='list-disc-important'>
                             <li>Build wealth plans</li>
                             <li>Transparent historical returns</li>
                             <li>Portfolio dashboard view</li>
@@ -1343,7 +1343,7 @@ const Register = () => {
                 <input type="file" id="selfie" className='opacity-0' onChange={changeImgAvatar} value=""/>
 
                 {/*Why we need your bvn section */}
-                <div className={openBVNModal ? "bvninfo-modal" : "bvninfo-modal hidden"}>  
+                <div className={openBVNModal ? "bvninfo-modal" : "hidden"}>  
                     <div className='flex justify-between'>
                         <div className='font-bold text-blue-800 text-lg font-gotham-black-regular  mb-10'>Why we need your BVN</div>
 
