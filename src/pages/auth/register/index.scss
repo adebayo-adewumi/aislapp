@@ -10,72 +10,55 @@
 
 .selfie-container {
   padding: 30px;
-  position: absolute;
   left: 800px;
   top: -140px;
-  width: 500px;
   background: #FCFCFC;
   box-shadow: 0px 8px 24px -6px rgba(0, 0, 0, 0.16), 0px 0px 1px rgba(0, 0, 0, 0.4);
-  border-radius: 9px;
   z-index: 90;
 }
 
 .confirm-bvn-container {
   padding: 30px;
-  position: absolute;
   left: 800px;
   top: -140px;
-  width: 450px;
   background: #FCFCFC;
   box-shadow: 0px 8px 24px -6px rgba(0, 0, 0, 0.16), 0px 0px 1px rgba(0, 0, 0, 0.4);
-  border-radius: 9px;
   z-index: 90;
 }
 
 .confirm-otp-container {
   padding: 30px;
-  position: absolute;
   left: 800px;
   top: -140px;
-  width: 500px;
   background: #FCFCFC;
   box-shadow: 0px 8px 24px -6px rgba(0, 0, 0, 0.16), 0px 0px 1px rgba(0, 0, 0, 0.4);
-  border-radius: 9px;
+  z-index: 90;
 }
 
 .create-user-container {
   padding: 30px;
-  position: absolute;
   left: 800px;
   top: -140px;
-  width: 550px;
   background: #FCFCFC;
   box-shadow: 0px 8px 24px -6px rgba(0, 0, 0, 0.16), 0px 0px 1px rgba(0, 0, 0, 0.4);
-  border-radius: 9px;
   z-index: 90;
 }
 
 .create-pin-container {
   padding: 30px;
-  position: absolute;
   left: 800px;
   top: -140px;
-  width: 450px;
   background: #FCFCFC;
   box-shadow: 0px 8px 24px -6px rgba(0, 0, 0, 0.16), 0px 0px 1px rgba(0, 0, 0, 0.4);
-  border-radius: 9px;
   z-index: 90;
 }
 
 .success-container {
   padding: 30px;
-  position: absolute;
   left: 800px;
   top: -140px;
-  width: 500px;
   background: #FCFCFC;
   box-shadow: 0px 8px 24px -6px rgba(0, 0, 0, 0.16), 0px 0px 1px rgba(0, 0, 0, 0.4);
-  border-radius: 9px;
   z-index: 90;
 }
 
@@ -96,7 +79,7 @@
 
 .short-input{
   padding: 12px 16px;
-  width: 59px;
+  // width: 59px;
   height: 48px;
   background: #FFFFFF;
   border: 3px solid #EBEBEB;

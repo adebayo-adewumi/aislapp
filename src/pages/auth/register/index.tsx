@@ -4,7 +4,7 @@ import GenericHeader from '../../../components/Headers/GenericHeader';
 import './index.scss';
 import BulbIcon from '../../../assets/images/bulb.svg';
 import PictureIcon from '../../../assets/images/picture-icon.svg';
-import SuccessIcon from '../../../assets/images/success.gif';
+import SuccessCheckIcon from '../../../assets/images/success-check.svg';
 import ComputerIcon from '../../../assets/images/computer.svg';
 import { Link } from "react-router-dom";
 import Calendar from 'react-calendar';
@@ -658,6 +658,7 @@ const Register = () => {
                     <div className="smiling-lady hidden md:block"></div>
                     <div className="candle-stick hidden md:block"></div>
 
+                    {/* BVN-DOB Section */}
                     <div className={showSignup ? "signup-container md:rounded-lg mx-auto md:mx-0 w-full md:w-4/12 md:absolute" : "hidden"}>
 
                         {/* BVN Validated Error */}
@@ -832,9 +833,10 @@ const Register = () => {
                             </div>
                         </form>
                     </div>
+                    {/* End */}
 
                     {/* Selfie Section */}
-                    <div className={showSelfie ? "selfie-container " : "hidden"}>
+                    <div className={showSelfie ? "selfie-container md:rounded-lg mx-auto md:mx-0 w-full md:w-4/12 md:absolute" : "hidden"}>
                         <div className="mb-30 flex justify-between text-sm">
                             <div className='font-bold cursor-pointer' onClick={displaySignup}>
                                 <img width="20" src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
@@ -859,7 +861,7 @@ const Register = () => {
 
                         <div className="text-lg font-bold mb-30 text-color">Upload a Passport Photograph</div>
 
-                        <div className="flex space-x-2 tips-border p-3 mb-20">
+                        <div className="flex space-x-2 tips-border items-center p-3 mb-20">
                             <div>
                                 <img src={BulbIcon} alt="bulb icon" />
                             </div>
@@ -872,18 +874,18 @@ const Register = () => {
                                 <img src={PictureIcon} alt="bulb icon" width="70" />
                             </div>
 
-                            <div className={showSelfieAvatar ? "absolute top-0 left-28" : "absolute top-0 left-28 hidden"}>
+                            <div className={showSelfieAvatar ? "absolute md:top-0 top-3  md:left-28 left-11" : "hidden"}>
                                 <img src={"data:image/png;base64,"+hashedSelfieImg} alt="" width="230" height='220' />
                             </div>
 
-                            <div className="text-sm text-center">File format: JPG, PNG, GIF, PDF</div>
+                            <div className="text-sm text-center">File format: JPEG, JPG, PNG, GIF</div>
                         </div>
 
                         <div className="mb-20 font-bold text-sm text-red-500 hidden">Remove</div>
 
                         <div className="border-1 mb-20"></div>
 
-                        <div className="flex justify-end space-x-10 mb-20 items-center">
+                        <div className="flex md:justify-end justify-between md:space-x-5 mb-20 items-center">
                             <div className="text-sm font-bold">
                                 <button onClick={displaySignup} type="button" className="font-bold cursor-pointer no-underline text-black border-0 px-5 py-3 bg-gray-100 rounded-lg">Cancel</button>
                             </div>
@@ -901,7 +903,7 @@ const Register = () => {
                     {/*End */}
 
                     {/* User Details From BVN Section */}
-                    <div className={showBVN ? "confirm-bvn-container " : "hidden"}>
+                    <div className={showBVN ? "confirm-bvn-container md:rounded-lg mx-auto md:mx-0 w-full md:w-4/12 md:absolute" : "hidden"}>
                         <div className="mb-30 flex justify-between text-sm" onClick={displaySelfie}>
                             <div className='font-bold cursor-pointer'>
                                 <img width="20" src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
@@ -935,14 +937,14 @@ const Register = () => {
 
                             <div className="mb-20">
                                 <div className="relative">
-                                    <div className="mb-5 text-sm">Date of Birth</div>
+                                    <div className="mb-5 text-sm ">Date of Birth</div>
                                     <input className="border-1-d6 p-3 input text-sm bg-gray-200" type="text" value={dob} />
                                 </div>
                             </div>
 
                             <div className="border-1 mb-30"></div>
 
-                            <div className="flex justify-end space-x-10 mb-30">
+                            <div className="flex md:justify-end justify-between md:space-x-5 mb-20 items-center">
                                 <div className="text-sm font-bold ">
                                     <button onClick={displaySelfie} type="button" className="no-underline bg-gray-100 font-bold px-5 py-3 rounded-lg text-black border-0 cursor-pointer">Cancel</button>
                                 </div>
@@ -959,7 +961,7 @@ const Register = () => {
                     {/*End */}
 
                     {/*OTP Section */}
-                    <div className={showOTP ? "confirm-otp-container " : "hidden"}>
+                    <div className={showOTP ? "confirm-otp-container md:rounded-lg mx-auto md:mx-0 w-full md:w-4/12 md:absolute" : "hidden"}>
                         <div className="mb-30 flex justify-between text-sm" onClick={confirmBVN}>
                             <div className='font-bold cursor-pointer'>
                                 <img width="20" src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
@@ -978,17 +980,17 @@ const Register = () => {
                             <div>
                                 <div className="font-bold mb-5">Enter OTP</div>
                                 <div className="flex space-x-2 mb-10">
-                                    <input value={otpbox1} onChange={e => setOTPBox1(e.target.value)} type="password" className="short-input text-center otpBox" maxLength={1} />
+                                    <input value={otpbox1} onChange={e => setOTPBox1(e.target.value)} type="password" className="short-input text-center otpBox w-12" maxLength={1} />
 
-                                    <input value={otpbox2} onChange={e => setOTPBox2(e.target.value)} id='otpBox2' type="password" className="short-input text-center otpBox" maxLength={1} />
+                                    <input value={otpbox2} onChange={e => setOTPBox2(e.target.value)} id='otpBox2' type="password" className="short-input text-center otpBox w-12" maxLength={1} />
 
-                                    <input value={otpbox3} onChange={e => setOTPBox3(e.target.value)} id='otpBox3' type="password" className="short-input text-center otpBox" maxLength={1} />
+                                    <input value={otpbox3} onChange={e => setOTPBox3(e.target.value)} id='otpBox3' type="password" className="short-input text-center otpBox w-12" maxLength={1} />
 
-                                    <input value={otpbox4} onChange={e => setOTPBox4(e.target.value)} id='otpBox4' type="password" className="short-input text-center otpBox" maxLength={1} />
+                                    <input value={otpbox4} onChange={e => setOTPBox4(e.target.value)} id='otpBox4' type="password" className="short-input text-center otpBox w-12" maxLength={1} />
 
-                                    <input value={otpbox5} onChange={e => setOTPBox5(e.target.value)} id='otpBox5' type="password" className="short-input text-center otpBox" maxLength={1} />
+                                    <input value={otpbox5} onChange={e => setOTPBox5(e.target.value)} id='otpBox5' type="password" className="short-input text-center otpBox w-12" maxLength={1} />
 
-                                    <input value={otpbox6} onChange={e => setOTPBox6(e.target.value)} id='otpBox6' type="password" className="short-input text-center otpBox" maxLength={1} />
+                                    <input value={otpbox6} onChange={e => setOTPBox6(e.target.value)} id='otpBox6' type="password" className="short-input text-center otpBox w-12" maxLength={1} />
                                 </div>
                             </div>
 
@@ -998,7 +1000,7 @@ const Register = () => {
                                 </button>
                             </div>
 
-                            <div className="flex justify-end space-x-10">
+                            <div className="flex md:justify-end justify-between md:space-x-5 mb-20 items-center">
                                 <div className="text-sm ">
                                     <button onClick={confirmBVN} type="button" className="no-underline bg-gray-100 font-bold px-5 py-3 rounded-lg text-black border-0 cursor-pointer">Cancel</button>
                                 </div>
@@ -1015,7 +1017,7 @@ const Register = () => {
                     {/*End */}
 
                     {/*User Email & Password Section*/}
-                    <div className={showUser ? "create-user-container relative " : "hidden"}>
+                    <div className={showUser ? "create-user-container md:rounded-lg mx-auto md:mx-0 w-full md:w-4/12 md:absolute" : "hidden"}>
                         {/* OTP Validated */}
                         <div className={showOTPValidated ? "otp-alert mb-20" : "hidden"}>
                             <div className="flex otp-validated justify-between space-x-1 pt-3">
@@ -1042,27 +1044,6 @@ const Register = () => {
                         <div className="mb-30 flex justify-between text-sm" onClick={confirmOTP}>
                             <div className='font-bold cursor-pointer'>
                                 <img width="20" src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
-                            </div>
-                        </div>
-
-                        <div className={showOTPValidated ? "otp-alert hidden" : "hidden"}>
-                            <div className="flex otp-validated justify-between space-x-1 pt-3">
-                                <div className="flex">
-                                    <div>
-                                        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062" />
-                                            <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062" />
-                                        </svg>
-                                    </div>
-
-                                    <div className="pt-1 text-sm text-color-1">OTP successfully validated</div>
-                                </div>
-
-                                <div className="cursor-pointer" onClick={closeOTPValidated}>
-                                    <svg className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50" />
-                                    </svg>
-                                </div>
                             </div>
                         </div>
 
@@ -1207,7 +1188,7 @@ const Register = () => {
                             {/* End */}
 
                             {/* Proceed Button section */}
-                            <div className="flex justify-end space-x-10 mb-20 items-center">
+                            <div className="flex md:justify-end justify-between md:space-x-5 mb-20 items-center">
                                 <div className="text-sm">
                                     <button type="button" className="no-underline bg-gray-100 font-bold px-5 py-3 rounded-lg text-black border-0 cursor-pointer">Cancel</button>
                                 </div>
@@ -1225,7 +1206,7 @@ const Register = () => {
                     {/*End */}
 
                     {/*PIN Section */}
-                    <div className={showPin ? "create-pin-container" : "hidden"}>
+                    <div className={showPin ? "create-pin-container md:rounded-lg mx-auto md:mx-0 w-full md:w-4/12 md:absolute" : "hidden"}>
                         <div className={showPasswordValidated ? "otp-alert mb-20" : "hidden"}>
                             <div className="flex justify-between space-x-1 pt-3">
                                 <div className="flex">
@@ -1270,26 +1251,26 @@ const Register = () => {
                             <div className="mb-20">
                                 <div className="font-bold mb-5">PIN</div>
                                 <div className="flex space-x-2">
-                                    <input value={ob1} onChange={e => setOB1(e.target.value)} type="password" className="short-input text-center pinBox" maxLength={1} />
+                                    <input value={ob1} onChange={e => setOB1(e.target.value)} type="password" className="short-input text-center pinBox w-12" maxLength={1} />
 
-                                    <input value={ob2} onChange={e => setOB2(e.target.value)} type="password" className="short-input text-center pinBox" maxLength={1} />
+                                    <input value={ob2} onChange={e => setOB2(e.target.value)} type="password" className="short-input text-center pinBox w-12" maxLength={1} />
 
-                                    <input value={ob3} onChange={e => setOB3(e.target.value)} type="password" className="short-input text-center pinBox" maxLength={1} />
+                                    <input value={ob3} onChange={e => setOB3(e.target.value)} type="password" className="short-input text-center pinBox w-12" maxLength={1} />
 
-                                    <input value={ob4} onChange={e => setOB4(e.target.value)} type="password" className="short-input text-center pinBox" maxLength={1} />
+                                    <input value={ob4} onChange={e => setOB4(e.target.value)} type="password" className="short-input text-center pinBox w-12" maxLength={1} />
                                 </div>
                             </div>
 
                             <div className="mb-20">
                                 <div className="font-bold mb-5">Confirm PIN</div>
                                 <div className="flex space-x-2">
-                                    <input value={cob1} onChange={e => setCOB1(e.target.value)} type="password" className="short-input text-center cpinBox" maxLength={1} />
+                                    <input value={cob1} onChange={e => setCOB1(e.target.value)} type="password" className="short-input text-center cpinBox w-12" maxLength={1} />
 
-                                    <input value={cob2} onChange={e => setCOB2(e.target.value)} type="password" className="short-input text-center cpinBox" maxLength={1} />
+                                    <input value={cob2} onChange={e => setCOB2(e.target.value)} type="password" className="short-input text-center cpinBox w-12" maxLength={1} />
 
-                                    <input value={cob3} onChange={e => setCOB3(e.target.value)} type="password" className="short-input text-center cpinBox" maxLength={1} />
+                                    <input value={cob3} onChange={e => setCOB3(e.target.value)} type="password" className="short-input text-center cpinBox w-12" maxLength={1} />
 
-                                    <input value={cob4} onChange={e => setCOB4(e.target.value)} type="password" className="short-input text-center cpinBox" maxLength={1} />
+                                    <input value={cob4} onChange={e => setCOB4(e.target.value)} type="password" className="short-input text-center cpinBox w-12" maxLength={1} />
                                 </div>
                             </div>
 
@@ -1297,7 +1278,7 @@ const Register = () => {
 
                             <div className="border-1 mb-20"></div>
 
-                            <div className="flex justify-end space-x-10">
+                            <div className="flex md:justify-end justify-between md:space-x-5 mb-20 items-center">
                                 <div className="text-sm">
                                     <button type="button" className="no-underline bg-gray-100 font-bold px-5 py-3 rounded-lg text-black border-0 cursor-pointer">Cancel</button>
                                 </div>
@@ -1313,18 +1294,24 @@ const Register = () => {
                     </div>
                     {/*End */}
 
-                    <div className={showSuccess ? "success-container" : "hidden"}>
-                        <div className="ml-8 mr-auto w-80 h-64 relative">
-                            <img src={SuccessIcon} alt="success icon" className="w-96" />
-                            <div className="bg-white p-3 w-full -bottom-10 absolute"></div>
+                    {/*Success Section */}
+                    <div className={showSuccess ? "success-container md:rounded-lg mx-auto md:mx-0 w-full md:w-4/12 md:absolute" : "hidden"}>
+
+                        <div className="mx-auto md:w-1/2 w-56 mb-6 mt-12 md:mt-0">
+                            <img src={SuccessCheckIcon} alt="success icon" className="w-52" />
                         </div>
 
-                        <div className="relative z-10 text-color-1 font-gotham-black-regular text-xl text-center mb-20">Successful</div>
-                        <div className="text-color-4 text-sm text-center mb-14">Your registration was successful</div>
-                        <div className="mb-30 text-center">
-                            <Link to="/"> <button className="bgcolor-1 w-96 rounded-lg border-0 cursor-pointer text-white p-5 font-bold">Proceed to Login</button></Link>
+                        <div className="text-green-900 mx-auto w-1/2 font-gotham-black-regular text-xl text-center mb-20">Successful</div>
+
+                        <div className="text-gray-600 text-sm text-center mb-14">Your registration was successful</div>
+
+                        <div className="md:mb-6 mb-20 text-center">
+                            <Link to="/"> 
+                                <button className="bg-green-900 md:w-96 w-56 rounded-lg border-0 cursor-pointer text-white p-5 font-bold">Proceed to Login</button>
+                            </Link>
                         </div>
                     </div>
+                    {/* End */}
                 </div>
 
                 <div className="invest-text top-4 relative pl-5 md:pl-24 md:pt-7 md:top-full">
