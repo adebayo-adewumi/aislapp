@@ -24,6 +24,19 @@ const UserAreaHeader = () => {
         }
     }
 
+    function showHideSidebar() {
+        let showSidebar = localStorage.getItem("aislToggleSidebar");
+
+        if (showSidebar === 'show') {
+            localStorage.setItem("aislToggleSidebar","hide");            
+        }
+        else {
+            localStorage.setItem("aislToggleSidebar","show");
+        }
+
+        //console.log(localStorage.getItem("aislToggleSidebar"));
+    }
+
     const doLogout = () => {
         localStorage.clear();
     }
@@ -32,13 +45,22 @@ const UserAreaHeader = () => {
         <div className="relative">
             <div className="topbar py-3 pl-4 pr-20 z-10">
                 <div className="flex justify-between">
-                    <div>
-                        <div className="logo-container">
-                            <img className="user-area-logo" src={logo} alt="Anchoria Logo" width="120" />
+                    <div>                
+
+                        <div className="logo-container flex w-96 items-center space-x-2">
+                            <div className='pt-6 lg:hidden block'>
+                                <button className="border-0 bg-transparent text-gray-600 hover:text-gray-700 cursor-pointer" onClick={showHideSidebar}>
+                                    <svg viewBox="0 0 24 24" fill="#888" className="h-6 w-6">
+                                        <path d="M3 6a1 1 0 011-1h16a1 1 0 110 2H4a1 1 0 01-1-1zM3 12a1 1 0 011-1h16a1 1 0 110 2H4a1 1 0 01-1-1zM4 17a1 1 0 100 2h7a1 1 0 100-2H4z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div><img src={logo} alt="Anchoria Logo" width="120" /></div>
                         </div>
                     </div>
 
-                    <div>
+                    <div className='md:block hidden'>
                         <div className="flex space-x-8">
                             <Link to="/profile?type=notification">
                                 <div className="pt-2">

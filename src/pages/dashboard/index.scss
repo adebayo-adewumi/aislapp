@@ -6,10 +6,10 @@
     background: #FFFFFF;
     border-bottom: 1px solid #D6DDE0;
     box-sizing: border-box;
+    height: 80px;
 }
 
 .main-content{
-    margin-left: 253px;
     margin-top: 65px;
 }
 
@@ -72,5 +72,15 @@
 .updatekyc-bg{
     background-image: url("../../assets/images/updatekyc-bg.jpg");
     background-repeat: no-repeat;
-    background-position: right 0%;
+    //background-position: right 0%;
+}
+
+@media(max-width:768px){
+    .updatekyc-bg{
+        background-position: left 270%;
+    }
+
+    .news-width{
+        width: 50%;
+    }
 }

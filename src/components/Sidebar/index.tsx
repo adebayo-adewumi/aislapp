@@ -16,9 +16,10 @@ import LearnIcon from '../../assets/images/learn.svg';
 import LearnActiveIcon from '../../assets/images/learn-active.svg';
 import '../../components/Sidebar/index.scss'
 
-const Sidebar = () => {    
+const Sidebar = (props :any) => {    
 
     const [urlPath, setURLPath] = useState('/dashboard');
+    const [showSidebar, setShowSidebar] = useState('hide');
 
     let routePath = useLocation().pathname;
 
@@ -34,8 +35,20 @@ const Sidebar = () => {
         getURLPath();
     });
 
+    useEffect(()=>{
+
+        function toggleSidebar(){ 
+            setInterval(()=>{
+                setShowSidebar(localStorage.getItem("aislToggleSidebar") as string);
+            },100);
+        }
+
+        toggleSidebar();
+    });
+
+
     return (
-        <div className="sidebar">
+        <div className={showSidebar === 'show' ? "sidebar block md:block  lg:inset-auto lg:static lg:translate-x-0 translate-x-0 ease-out transition-medium":"sidebar hidden md:block lg:inset-auto lg:static lg:translate-x-0 -translate-x-full ease-in transition-medium"}>
             <ul>
                 <li className="space-x-5">
                     <Link to='/dashboard' className={ urlPath === '/dashboard' || urlPath === "/news" ? "items-center active w-full no-underline flex text-color-1" : "w-full no-underline flex text-gray-700 items-center"}> 
