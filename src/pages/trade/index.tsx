@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import '../portfolio/index.scss';
 import StarIcon from '../../assets/images/star.svg';
-import AtlasIcon from '../../assets/images/atlas.svg';
 import GreenQuestionmarkIcon from '../../assets/images/green-questionmark.svg';
 import SearchIcon from '../../assets/images/search.svg';
 import UserAreaHeader from '../../components/Headers/UserAreaHeader';
