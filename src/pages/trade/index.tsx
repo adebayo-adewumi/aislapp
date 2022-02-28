@@ -190,16 +190,16 @@ const Trade = () => {
                                     {stocksList.map((elm: any) =>
                                         elm.map((el: any) =>
                                             <div className="card-15px mb-20">
-                                                <div className="flex justify-between items-center">
-                                                    <div> <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt=""/></div>
+                                                <div className="md:flex md:justify-between md:items-center">
+                                                    <div className='md:mb-0 mb-3'> <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt=""/></div>
 
-                                                    <div className="font-bold text-color-2">{el.symbol}</div>
+                                                    <div className="font-bold text-color-2 md:mb-0 mb-3">{el.symbol}</div>
 
-                                                    <div className="text-ellipsis overflow-hidden ...">{el.name}</div>
+                                                    <div className="md:mb-0 mb-3 text-ellipsis overflow-hidden ...">{el.name}</div>
 
-                                                    <div className="font-bold text-color-2 text-right">₦ {formatCurrencyWithDecimal(el.close).replace("-","")}</div>
+                                                    <div className="md:mb-0 mb-3 font-bold text-color-2 md:text-right">₦ {formatCurrencyWithDecimal(el.close).replace("-","")}</div>
 
-                                                    <div className={el.sign === "+" ? "text-green-500 font-bold" : "text-red-500 font-bold"}> {formatCurrencyWithDecimal(el.change).replace("-","")}%  </div>
+                                                    <div className={el.sign === "+" ? "text-green-500 font-bold md:mb-0 mb-3" : "text-red-500 font-bold md:mb-0 mb-3"}> {formatCurrencyWithDecimal(el.change).replace("-","")}%  </div>
 
                                                     <div className='flex justify-between space-x-2'>
                                                         <button onClick={displayAddToWatchlistModal} type='button' className="rounded-lg bg-gray-200 py-2 px-5 border-0 font-bold cursor-pointer" data-symbol={el.symbol} >
@@ -218,16 +218,16 @@ const Trade = () => {
                                 <div className={showFilteredStocks ? '' : 'hidden'}>
                                     {stockFilter.map((el: any) =>
                                         <div className="card-15px mb-20">
-                                            <div className="flex justify-between items-center">
-                                                <div> <img src={AtlasIcon} alt="" /></div>
+                                            <div className="md:flex md:justify-between md:items-center">
+                                                <div className='md:mb-0 mb-3'> <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt=""/></div>
 
-                                                <div className="font-bold text-color-2">{el.symbol}</div>
+                                                <div className="font-bold text-color-2 md:mb-0 mb-3">{el.symbol}</div>
 
-                                                <div className="text-ellipsis overflow-hidden ...">{el.name}</div>
+                                                <div className="md:mb-0 mb-3 text-ellipsis overflow-hidden ...">{el.name}</div>
 
-                                                <div className="font-bold text-color-2 text-right">₦ {formatCurrencyWithDecimal(el.close)}</div>
+                                                <div className="md:mb-0 mb-3 font-bold text-color-2 md:text-right">₦ {formatCurrencyWithDecimal(el.close)}</div>
 
-                                                <div className={el.sign === "+" ? "text-green-500 font-bold" : "text-red-500 font-bold"}> {formatCurrencyWithDecimal(el.change)}%  </div>
+                                                <div className={el.sign === "+" ? "md:mb-0 mb-3 text-green-500 font-bold" : "md:mb-0 mb-3 text-red-500 font-bold"}> {formatCurrencyWithDecimal(el.change)}%  </div>
 
                                                 <div className='flex justify-between space-x-2'>
                                                     <button onClick={displayAddToWatchlistModal} type='button' className="rounded-lg bg-gray-200 py-2 px-5 border-0 font-bold cursor-pointer" data-symbol={el.symbol} >
