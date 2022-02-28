@@ -105,7 +105,7 @@ const Register = () => {
 
     useEffect(() => {
 
-        async function checkIfBVNIsNullOrEmpty() {
+        function checkIfBVNIsNullOrEmpty() {
             let num = 11;
             let digits = /[0-9]+/g;
 
@@ -122,7 +122,7 @@ const Register = () => {
             checkIfBVNPhoneDobIsNullOrEmpty();
         }
 
-        async function checkIfPhoneIsNullOrEmpty() {
+        function checkIfPhoneIsNullOrEmpty() {
             let digits = /[0-9]+/g;
 
             if (phone.length > 0) {
@@ -138,7 +138,7 @@ const Register = () => {
             checkIfBVNPhoneDobIsNullOrEmpty();
         }
 
-        async function checkIfDateIsNullOrEmpty() {
+        function checkIfDateIsNullOrEmpty() {
             let dateFormat = /^([0-9]{2})\/([0-9]{2})\/([0-9]{4})$/;
 
             if (dob.length > 0) {
@@ -156,7 +156,7 @@ const Register = () => {
             checkIfBVNPhoneDobIsNullOrEmpty();
         }
 
-        async function checkIfOTPBoxIsNullOrEmpty() {
+        function checkIfOTPBoxIsNullOrEmpty() {
             if (otpbox1 === '' || otpbox2 === '' || otpbox3 === '' || otpbox4 === '' || otpbox5 === '' || otpbox6 === '') {
                 setIsInvalidOTP(true);
             }
@@ -165,7 +165,7 @@ const Register = () => {
             }
         }
 
-        async function checkIfOBIsNullOrEmpty() {
+        function checkIfOBIsNullOrEmpty() {
             if (ob1 === '' || ob2 === '' || ob3 === '' || ob4 === '') {
                 setIsInvalidPIN(true);
             }
@@ -186,7 +186,7 @@ const Register = () => {
             }
         }
 
-        async function checkIfEmailIsNullOrEmpty() {
+        function checkIfEmailIsNullOrEmpty() {
 
             checkIfEmailPasswordConfirmPasswordIsNullOrEmpty();
 
@@ -195,18 +195,28 @@ const Register = () => {
             }
         }
 
-        async function checkIfPasswordIsNullOrEmpty() {
+        function checkIfPasswordIsNullOrEmpty() {
             validatePassword();
             checkIfEmailPasswordConfirmPasswordIsNullOrEmpty();
         }
 
-        async function checkIfConfirmPasswordIsNullOrEmpty() {
+        function checkIfConfirmPasswordIsNullOrEmpty() {
             if (password !== confirmPassword) {
                 setIsPasswordMatch(false);
             }
             else {
                 setIsPasswordMatch(true);
             }
+        }
+
+        function getUserIpAddress(){
+            getAxios(axios).get("https://myexternalip.com/raw")
+                .then(function (response) {
+                    localStorage.setItem("aislUserIPAddress", response.data)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         }
 
         HelperFunctions.progressToNextTextBox("pinBox");
@@ -221,6 +231,7 @@ const Register = () => {
         checkIfPasswordIsNullOrEmpty();
         checkIfConfirmPasswordIsNullOrEmpty();
         checkIfOBIsNullOrEmpty();
+        getUserIpAddress();
     });
 
     function verifyBVNAndDOB() {
@@ -311,7 +322,7 @@ const Register = () => {
             "firstName": firstname,
             "lastName": lastname,
             "nationality": bvnDetails.nationality,
-            "otherNames": othername,
+            "otherNames": "sdsdhjjh",//othername,
             "password": password,
             "phoneNumber": phoneCode.concat(phone),
             "pin": ob1 + '' + ob2 + '' + ob3 + '' + ob4,
@@ -320,7 +331,7 @@ const Register = () => {
             "sex": bvnDetails.gender.toUpperCase(),
             "termsFlag": "Y",
             "title": bvnDetails.title,
-            "deviceId": "2e1a65c3-abe8-49cc-99cc-afb2afba085c",
+            "deviceId": localStorage.getItem("aislUserIPAddress"),
             "osType": "Android",
             "permanentAddress": bvnDetails.residentialAddress,
             'shA': showImgAvatar
@@ -338,18 +349,22 @@ const Register = () => {
         if (localStorage.getItem('genericCypher')) {
             setShowSpinner(true);
             getAxios(axios).post(authOnboardingServiceBaseUrl.concat('/customer/add?workflowReferenceValue=') + localStorage.getItem('aislUserWorkflowReference'),
-                {
-                    "text": localStorage.getItem('genericCypher')
-                })
-                .then(function (response:any) {
-                    setShowSpinner(false);
-                    confirmSuccess();
-                    console.log(response.data.data);
-                })
-                .catch(function (error:any) {
-                    console.log(error);
-                    setShowSpinner(false);
-                });
+            {
+                "text": localStorage.getItem('genericCypher')
+            })
+            .then(function (response:any) {
+                setShowSpinner(false);
+                //setShowPasswordValidated(false)
+                confirmSuccess();
+
+                if(response.data.statusCode !== 200){
+                    setErrorMsg(response.data.message);
+                }
+            })
+            .catch(function (error:any) {
+                setErrorMsg(error.response.data.message);
+                setShowSpinner(false);
+            });
         }
     }
 
@@ -571,6 +586,10 @@ const Register = () => {
         setShowUser(false);
         setShowPin(true);
         setShowSuccess(false);
+
+        setTimeout(()=>{
+            setShowPasswordValidated(false);
+        }, 2000);
     }
 
     function confirmSuccess() {
@@ -1209,6 +1228,7 @@ const Register = () => {
 
                             {/*PIN Section */}
                             <div className={showPin ? "create-pin-container md:rounded-lg mx-auto md:mx-0 w-full md:w-4/12 md:absolute" : "hidden"}>
+                                {/* Password Validated */}
                                 <div className={showPasswordValidated ? "otp-alert mb-20" : "hidden"}>
                                     <div className="flex justify-between space-x-1 pt-3">
                                         <div className="flex">
@@ -1229,6 +1249,23 @@ const Register = () => {
                                         </div>
                                     </div>
                                 </div>
+                                {/* End */}
+
+                                {/* Register Error */}
+                                <div className={errorMsg !== '' ? "error-alert mb-20" : "hidden"}>
+                                    <div className="flex justify-between space-x-1 pt-3">
+                                        <div className="flex">
+                                            <div>
+                                                <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
+                                                </svg>
+                                            </div>
+
+                                            <div className="text-sm">{errorMsg}</div>
+                                        </div>                                        
+                                    </div>
+                                </div>
+                                {/* End */}
 
                                 <div className="mb-30 flex justify-between text-sm" onClick={createUser}>
                                     <div className='font-bold cursor-pointer'>
