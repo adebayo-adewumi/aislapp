@@ -231,180 +231,186 @@ const Portfolio = () => {
                 <UserAreaHeader />
 
                 <div>
-                    <div className="flex">
+                    <div className="h-screen flex">
                         <Sidebar />
 
-                        <div className="main-content w-full p-10">
-                            <div className="text-28 mb-20">
-                                <span className="font-bold text-color-1">Portfolio</span>
-                            </div>
-
-                            <div className="text-16 font-bold text-color-2 mb-30">
-                                Overview of portfolio performance
-                            </div>
-
-                            <div className="flex mt-10 space-x-10 mb-30">
-                                <div className="card-50">
-                                    <div className="mb-10 py-3">
-                                        <div className="flex justify-between w-full">
-                                            <div>
-                                                <div className="mb-10">Total Portfolio Value</div>
-
-                                                <div className="font-bold text-25 font-gotham-black-regular">
-                                                    ₦ {formatCurrencyWithDecimal(totalPortfolioValue)}
-                                                </div>
-                                            </div>
-
-                                            <div>
-                                                <div className="mb-10">Investment Amount</div>
-
-                                                <div className="font-bold text-25 font-gotham-black-regular">
-                                                    ₦ {formatCurrencyWithDecimal(investmentAmount)}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <div className="mt-20 flex-1 min-w-0 flex flex-col">
+                            <div className='p-10 flex-1 bg-gray-100 overflow-y-auto'>
+                                <div className="text-3xl mb-6">
+                                    <span className="font-bold text-green-900">Portfolio</span>
                                 </div>
 
-                                <div className="card-50">
-                                    <div className="w-full mb-10 py-3">
-                                        <div className="flex justify-between w-full">
-                                            <div>
-                                                <div className="mb-10">Net Portfolio Returns</div>
+                                <div className="text-sm font-bold text-color-2 mb-11">
+                                    Overview of portfolio performance
+                                </div>
+
+                                <div className="md:flex md:space-x-10 mb-11 md:items-center">
+                                    <div className="card p-5 w-full md:mb-0 mb-6">
+                                        <div className="py-3">
+                                            <div className="flex justify-between w-full">
                                                 <div>
-                                                    <img src={netPortfolioReturns >= 0 ? ArrowUpIcon : ArrowDownIcon} alt="" width="20" className="align-middle" />
-                                                    <span className={netPortfolioReturns >= 0 ? "text-green-500 font-bold font-gotham-black-regular mx-2" : "text-red-500 font-bold font-gotham-black-regular mx-2"}>{netPortfolioReturns >= 0 ? '+' + formatCurrencyWithDecimal(netPortfolioReturns).replace("-","") : formatCurrencyWithDecimal(netPortfolioReturns).replace("-","")} | {formatCurrencyWithDecimal(netPortfolioReturnsPercentage).replace("-","")}%</span>
+                                                    <div className="mb-10 text-sm font-bold">Total Portfolio Value</div>
+
+                                                    <div className="font-bold text-xl font-gotham-black-regular">
+                                                        ₦ {formatCurrencyWithDecimal(totalPortfolioValue)}
+                                                    </div>
                                                 </div>
 
-                                                <div className="hidden font-bold text-28 font-gotham-black-regular">
-                                                    {netPortfolioReturns}
+                                                <div>
+                                                    <div className="mb-10 text-sm font-bold">Investment Amount</div>
+
+                                                    <div className="font-bold text-xl font-gotham-black-regular">
+                                                        ₦ {formatCurrencyWithDecimal(investmentAmount)}
+                                                    </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
 
-                                            <div>
-                                                <div className="mb-10">Number of Portfolio</div>
+                                    <div className="card p-5 w-full">
+                                        <div className="w-full py-3">
+                                            <div className="flex justify-between w-full">
+                                                <div>
+                                                    <div className="mb-10 text-sm font-bold">Net Portfolio Returns</div>
+                                                    <div>
+                                                        <img src={netPortfolioReturns >= 0 ? ArrowUpIcon : ArrowDownIcon} alt="" width="20" className="align-middle" />
+                                                        <span className={netPortfolioReturns >= 0 ? "text-green-500 font-bold font-gotham-black-regular mx-2" : "text-red-500 font-bold font-gotham-black-regular mx-2"}>{netPortfolioReturns >= 0 ? '+' + formatCurrencyWithDecimal(netPortfolioReturns).replace("-","") : formatCurrencyWithDecimal(netPortfolioReturns).replace("-","")} | {formatCurrencyWithDecimal(netPortfolioReturnsPercentage).replace("-","")}%</span>
+                                                    </div>
 
-                                                <div className="font-bold text-28 font-gotham-black-regular">
-                                                    {portfolioCount}
+                                                    <div className="hidden font-bold text-3xl font-gotham-black-regular">
+                                                        {netPortfolioReturns}
+                                                    </div>
+                                                </div>
+
+                                                <div>
+                                                    <div className="mb-10 text-sm font-bold">Number of Portfolio</div>
+
+                                                    <div className="font-bold text-xl font-gotham-black-regular">
+                                                        {portfolioCount}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div className='hidden'>
-                                        <img src={ArrowUpIcon} alt="" width="20" className="align-middle" />
-                                        <span className="text-green-500 font-bold font-gotham-black-regular mx-2">+500 | 5.55%</span>  7days
+                                        <div className='hidden'>
+                                            <img src={ArrowUpIcon} alt="" width="20" className="align-middle" />
+                                            <span className="text-green-500 font-bold font-gotham-black-regular mx-2">+500 | 5.55%</span>  7days
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div className='mb-16'>
-                                <div className='card mx-auto' style={{ width: '95%' }}>
-                                    <div className='mb-30'>
-                                        <div className='flex justify-between items-center'>
-                                            <div className='font-gotham-black-regular font-bold text-color-1 text-xl'>Total Portfolio Performance</div>
-                                            <div className='w-1/2 flex bg-gray-300 p-1 rounded justify-between'>
-                                                <button className='bg-gray-300 hover:text-white py-3 px-5 rounded border-0 hover:bg-green-900 cursor-pointer text-gray-500 font-bold' type='button'>1D</button>
+                                <div className='mb-16'>
+                                    <div className='card p-6'>
+                                        <div className='mb-30'>
+                                            <div className='md:flex md:justify-between md:items-center '>
+                                                <div className='md:mb-0 mb-6'>
+                                                    <div className='font-gotham-black-regular font-bold text-green-900 text-xl'>Total Portfolio Performance</div>
 
-                                                <button className='bg-gray-300 hover:text-white py-3 px-5 rounded border-0 hover:bg-green-900 cursor-pointer text-gray-500 font-bold' type='button'>1W</button>
+                                                    <div className='text-lg'>Total Portfolio Value</div>
 
-                                                <button className='bg-gray-300 hover:text-white py-3 px-5 rounded border-0 hover:bg-green-900 cursor-pointer text-gray-500 font-bold' type='button'>1M</button>
+                                                    <div className='font-gotham-black-regular font-bold text-green-900 text-xl'>₦ {formatCurrencyWithDecimal(totalPortfolioValue)}</div>
+                                                </div>
 
-                                                <button className='bg-gray-300 hover:text-white py-3 px-5 rounded border-0 hover:bg-green-900 cursor-pointer text-gray-500 font-bold' type='button'>3M</button>
+                                                <div className='md:w-1/2 w-full flex bg-gray-300 p-1 rounded justify-between'>
+                                                    <button className='bg-gray-300 hover:text-white md:py-3 md:px-5 rounded border-0 hover:bg-green-900 cursor-pointer text-gray-500 font-bold py-2 px-2' type='button'>1D</button>
 
-                                                <button className='bg-gray-300 hover:text-white py-3 px-5 rounded border-0 hover:bg-green-900 cursor-pointer text-gray-500 font-bold' type='button'>6M</button>
+                                                    <button className='bg-gray-300 hover:text-white md:py-3 md:px-5 rounded border-0 hover:bg-green-900 cursor-pointer text-gray-500 font-bold py-2 px-2' type='button'>1W</button>
 
-                                                <button className='bg-gray-300 hover:text-white py-3 px-5 rounded border-0 hover:bg-green-900 cursor-pointer text-gray-500 font-bold' type='button'>1Y</button>
-                                            </div>
+                                                    <button className='bg-gray-300 hover:text-white md:py-3 md:px-5 rounded border-0 hover:bg-green-900 cursor-pointer text-gray-500 font-bold py-2 px-2' type='button'>1M</button>
+
+                                                    <button className='bg-gray-300 hover:text-white md:py-3 md:px-5 rounded border-0 hover:bg-green-900 cursor-pointer text-gray-500 font-bold py-2 px-2' type='button'>3M</button>
+
+                                                    <button className='bg-gray-300 hover:text-white md:py-3 md:px-5 rounded border-0 hover:bg-green-900 cursor-pointer text-gray-500 font-bold py-2 px-2' type='button'>6M</button>
+
+                                                    <button className='bg-gray-300 hover:text-white md:py-3 md:px-5 py-2 px-2 rounded border-0 hover:bg-green-900 cursor-pointer text-gray-500 font-bold' type='button'>1Y</button>
+                                                </div>
+                                            </div>                                            
                                         </div>
 
-                                        <div className='text-lg'>Total Portfolio Value</div>
-                                        <div className='font-gotham-black-regular font-bold text-color-1 text-xl'>₦ {formatCurrencyWithDecimal(totalPortfolioValue)}</div>
-                                    </div>
-
-                                    <div>
-                                        {/* <Line options={options} data={data} id='canvas'/> */}
-                                        <Chart options={options} series={series} type="area" height='490' />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="mb-10">
-                                <div className="flex justify-between items-center">
-                                    <div className="text-lg font-gotham-black-regular">My Portfolio List</div>
-                                    <div>
-                                        <button onClick={showCreatePorfolioModal} className="cursor-pointer bgcolor-1 rounded-lg text-white border-0 py-3 px-5 font-bold focus:shadow-outline" type='button'>
-                                            Create new portfolio
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="mb-30">
-                                <div className="grid grid-cols-2 gap-4">
-                                    {portfolioList === '' ? 'You have not created any portfolio.' : portfolioList}
-                                </div>
-                            </div>
-
-                            <div className={showCreatePortfolio ? "create-portfolio-modal" : "create-portfolio-modal hidden"}>
-                                <div className="mb-20 flex justify-between">
-                                    <div className="font-bold text-25 opacity-0">Top Losers</div>
-
-                                    <div onClick={closeModal}>
-                                        <img src={CloseIcon} alt="" className="cursor-pointer" />
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <div className="text-28 font-bold mb-30">Create New Portfolio</div>
-
-                                    <form>
                                         <div>
-                                            <div className="mb-10">Name</div>
-                                            <div className="mb-30">
-                                                <input value={portfolioName} onChange={e => setPortfolioName(e.target.value)} type="text" className="text-xl outline-white input-xsm p-3" />
-                                            </div>
-
-                                            <div className="flex space-x-5">
-                                                <button onClick={closeModal} type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer">Cancel</button>
-
-                                                <button disabled={showSpinner} onClick={createPortfolio} className={portfolioIsNullOrEmpty
-                                                    ? "py-4 w-full font-bold bg-green-900 text-white rounded-lg border-0 cursor-pointer" : "py-4 w-full font-bold bg-green-900 text-white rounded-lg border-0 cursor-pointer"} type='button'>
-                                                    <span className={showSpinner ? "hidden" : ""}>Add</span>
-                                                    <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="30" />
-                                                </button>
-                                            </div>
+                                            {/* <Line options={options} data={data} id='canvas'/> */}
+                                            <Chart options={options} series={series} type="area" height='490' />
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
+
+                                <div className="md:mb-10 mb-6">
+                                    <div className="flex justify-between items-center">
+                                        <div className="text-lg font-gotham-black-regular">My Portfolio List</div>
+                                        <div>
+                                            <button onClick={showCreatePorfolioModal} className="cursor-pointer bg-green-900 rounded-lg text-white border-0 py-3 px-5 font-bold focus:shadow-outline" type='button'>
+                                                Create new portfolio
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="mb-30">
+                                    <div className="md:grid md:grid-cols-2 md:gap-4">
+                                        {portfolioList === '' ? 'You have not created any portfolio.' : portfolioList}
+                                    </div>
+                                </div>
+
+                                <div className={showCreatePortfolio ? "create-portfolio-modal" : "create-portfolio-modal hidden"}>
+                                    <div className="mb-20 flex justify-between">
+                                        <div className="font-bold text-25 opacity-0">Top Losers</div>
+
+                                        <div onClick={closeModal}>
+                                            <img src={CloseIcon} alt="" className="cursor-pointer" />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div className="text-3xl font-bold mb-30">Create New Portfolio</div>
+
+                                        <form>
+                                            <div>
+                                                <div className="mb-10">Name</div>
+                                                <div className="mb-30">
+                                                    <input value={portfolioName} onChange={e => setPortfolioName(e.target.value)} type="text" className="text-xl outline-white input-xsm p-3" />
+                                                </div>
+
+                                                <div className="flex space-x-5">
+                                                    <button onClick={closeModal} type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer">Cancel</button>
+
+                                                    <button disabled={showSpinner} onClick={createPortfolio} className={portfolioIsNullOrEmpty
+                                                        ? "py-4 w-full font-bold bg-green-900 text-white rounded-lg border-0 cursor-pointer" : "py-4 w-full font-bold bg-green-900 text-white rounded-lg border-0 cursor-pointer"} type='button'>
+                                                        <span className={showSpinner ? "hidden" : ""}>Add</span>
+                                                        <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="30" />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div className={showSuccess ? "success-modal" : "success-modal hidden"}>
+                                    <div className="mx-auto h-64 relative">
+                                        <img src={SuccessIcon} alt="success icon" className="w-96" />
+                                        <div className="bg-white p-3 w-full -bottom-10 absolute"></div>
+                                    </div>
+
+                                    <div className="relative z-10 text-green-900 font-gotham-black-regular text-3xl text-center mb-20">Successful</div>
+
+                                    <div className="text-color-4 text-sm text-center mb-14">Your portfolio has been successfully created</div>
+
+                                    <div className="flex space-x-5 mb-30">
+                                        <button onClick={closeModal} type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer">Close</button>
+
+                                        <button onClick={closeModal} type="button" className="py-4 w-full font-bold bg-green-900 text-white rounded-lg border-0 cursor-pointer">Okay</button>
+                                    </div>
+                                </div>
+
+                                <div className={showModalBG ? "modal-backdrop opacity-40" : "modal-backdrop opacity-40 hidden"}>
+                                </div>
+
+                                {/* <div className={showPageLoader ? "page-loader-backdrop opacity-90" : "hidden"}>
+                                    <div className='w-96 relative lg:ml-72'>
+                                        <div className='absolute top-44pc left-46pt5pc'><img src={AnchoriaIcon} alt="" /></div>
+                                        <div className='text-center'><img src={AnchoriaSpinner} alt="" /></div>
+                                    </div>
+                                </div> */}
                             </div>
-
-                            <div className={showSuccess ? "success-modal" : "success-modal hidden"}>
-                                <div className="mx-auto h-64 relative">
-                                    <img src={SuccessIcon} alt="success icon" className="w-96" />
-                                    <div className="bg-white p-3 w-full -bottom-10 absolute"></div>
-                                </div>
-
-                                <div className="relative z-10 text-color-1 font-gotham-black-regular text-28 text-center mb-20">Successful</div>
-
-                                <div className="text-color-4 text-16 text-center mb-14">Your portfolio has been successfully created</div>
-
-                                <div className="flex space-x-5 mb-30">
-                                    <button onClick={closeModal} type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer">Close</button>
-
-                                    <button onClick={closeModal} type="button" className="py-4 w-full font-bold bg-green-900 text-white rounded-lg border-0 cursor-pointer">Okay</button>
-                                </div>
-                            </div>
-
-                            <div className={showModalBG ? "modal-backdrop opacity-40" : "modal-backdrop opacity-40 hidden"}>
-                            </div>
-
-                            {/* <div className={showPageLoader ? "page-loader-backdrop opacity-90" : "hidden"}>
-                                <div className='ml-custom w-96 my-custom relative'>
-                                    <div className='absolute top-44pc left-46pt5pc'><img src={AnchoriaIcon} alt="" /></div>
-                                    <div className='text-center'><img src={AnchoriaSpinner} alt="" /></div>
-                                </div>
-                            </div> */}
 
                         </div>
                     </div>

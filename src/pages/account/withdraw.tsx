@@ -176,12 +176,12 @@ const WithdrawFund = () => {
                             {/*Withdraw Funds Header */}
                             <div className={showWithdraw ? "flex justify-between" : 'hidden'} style={{ width: '35rem' }}>
                                 <div>
-                                    <div className="text-28 text-color-1 font-gotham-black-regular font-bold mb-10">Withdraw Funds</div>
+                                    <div className="text-3xl text-green-900 font-gotham-black-regular font-bold mb-10">Withdraw Funds</div>
                                     <div className="font-bold mb-30">Confirm bank and amount below</div>
                                 </div>
 
                                 <div className='font-bold'>
-                                    <Link to='/account' className='no-underline text-color-1'>
+                                    <Link to='/account' className='no-underline text-green-900'>
                                         <img src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
                                     </Link>
                                 </div>
@@ -191,11 +191,11 @@ const WithdrawFund = () => {
                             {/*Withdraw Summary Header */}
                             <div className={showWithdrawSummary ? "flex justify-between mb-30" : "hidden"} style={{ width: '35rem' }}>
                                 <div>
-                                    <div className="text-28 text-color-1 font-gotham-black-regular font-bold mb-10">Withdrawal Summary</div>
+                                    <div className="text-3xl text-green-900 font-gotham-black-regular font-bold mb-10">Withdrawal Summary</div>
                                 </div>
 
                                 <div className='font-bold'>
-                                    <Link to='/account' className='no-underline text-color-1'>
+                                    <Link to='/account' className='no-underline text-green-900'>
                                         <img src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
                                     </Link>
                                 </div>
@@ -210,13 +210,13 @@ const WithdrawFund = () => {
                                     <div>
                                         <div className="wallet-balance-card mb-30">
                                             <div className="italic text-green-500 mb-5">Available Balance</div>
-                                            <div className="font-bold text-28 text-white mb-5">
+                                            <div className="font-bold text-3xl text-white mb-5">
                                                 <svg width="21" height="22" viewBox="0 0 21 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M20.1787 6.06096C20.6317 6.06096 20.9989 5.67627 20.9989 5.20171V4.2995C20.9989 1.92875 19.1578 0 16.8948 0C16.8948 0 4.03797 0.00201923 4.00627 0.00592881C2.92406 0.0455401 1.88451 0.532046 1.13519 1.3546C0.36712 2.1977 -0.0332975 3.29427 0.00439032 4.44802C0.00283195 4.46989 0.00201176 16.8412 0.00201176 16.8412C0.00201176 19.6858 2.21103 22 4.92627 22H16.8948C19.1578 22 20.9989 20.0712 20.9989 17.7005V11.1767C20.9989 8.806 19.1578 6.87724 16.8948 6.87724H4.10292C2.78607 6.87724 1.70645 5.79898 1.64506 4.42246C1.61385 3.72252 1.85421 3.05437 2.3218 2.54105C2.79616 2.02035 3.46236 1.72176 4.14951 1.72176C4.17375 1.72176 16.8947 1.71849 16.8947 1.71849C18.2532 1.71849 19.3584 2.87633 19.3584 4.2995V5.20171C19.3585 5.67627 19.7257 6.06096 20.1787 6.06096ZM4.10292 8.59574H16.8948C18.2533 8.59574 19.3585 9.75358 19.3585 11.1767V17.7005C19.3585 19.1237 18.2533 20.2815 16.8948 20.2815H4.92627C3.11554 20.2815 1.64239 18.7382 1.64239 16.8412V7.73997C2.3284 8.27829 3.18078 8.59574 4.10292 8.59574ZM17.7181 14.4386C17.7181 15.0318 17.2591 15.5127 16.6929 15.5127C15.3329 15.4561 15.3333 13.4209 16.6929 13.3646C17.2591 13.3646 17.7181 13.8454 17.7181 14.4386ZM17.7181 4.2995C17.7181 3.82494 17.3509 3.44025 16.8979 3.44025H4.10297C3.01474 3.48562 3.01556 5.11377 4.10297 5.15875H16.8979C17.3509 5.15875 17.7181 4.77406 17.7181 4.2995Z" fill="white" />
                                                 </svg>
                                                 <span className="ml-2">₦ {HelperFunctions.formatCurrencyWithDecimal(walletBalance)}</span>
                                             </div>
-                                            <div className="text-gray-300 text-13 leading-5">Cash available in your wallet for trading or immediate withdrawal</div>
+                                            <div className="text-gray-300 text-sm leading-5">Cash available in your wallet for trading or immediate withdrawal</div>
                                         </div>
 
                                         <div className='text-lg mb-10'>Amount</div>
@@ -256,7 +256,7 @@ const WithdrawFund = () => {
                                         </div>
 
                                         <div>
-                                            <button onClick={withdrawFundFromWallet} type='button' className={isWithdrawDetailsFilled ? 'w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer':'w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer opacity-50'} disabled={!isWithdrawDetailsFilled}>
+                                            <button onClick={withdrawFundFromWallet} type='button' className={isWithdrawDetailsFilled ? 'w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer':'w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer opacity-50'} disabled={!isWithdrawDetailsFilled}>
                                                 <span className={showSpinner ? "hidden" : ""}>Proceed</span>
                                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                             </button>
@@ -271,7 +271,7 @@ const WithdrawFund = () => {
 
                                         <div className='text-lg mb-5 font-bold'>Amount</div>
 
-                                        <div className='mb-30 font-gotham-black-regular font-bold text-4xl text-color-1'>₦ {showAmount}</div>
+                                        <div className='mb-30 font-gotham-black-regular font-bold text-4xl text-green-900'>₦ {showAmount}</div>
 
                                         <div className='hidden'>
                                             <div className='mb-20 flex justify-between'>
@@ -291,7 +291,7 @@ const WithdrawFund = () => {
                                                     <div>Bank Account</div>
                                                 </div>
 
-                                                <div className='font-bold text-color-1'>{selectedBankDetails === '' ? '': JSON.parse(selectedBankDetails).accountName} | {selectedBankDetails === '' ? '': JSON.parse(selectedBankDetails).bankName} | {selectedBankDetails === '' ? '': JSON.parse(selectedBankDetails).accountNumber}</div>
+                                                <div className='font-bold text-green-900'>{selectedBankDetails === '' ? '': JSON.parse(selectedBankDetails).accountName} | {selectedBankDetails === '' ? '': JSON.parse(selectedBankDetails).bankName} | {selectedBankDetails === '' ? '': JSON.parse(selectedBankDetails).accountNumber}</div>
                                             </div>
                                         
 
@@ -308,7 +308,7 @@ const WithdrawFund = () => {
                                                         </svg>
                                                     </div>
 
-                                                    <div className="pt-1 text-14 text-color-1">{apiResponseSuccessMsg}</div>
+                                                    <div className="pt-1 text-sm text-green-900">{apiResponseSuccessMsg}</div>
                                                 </div>
 
                                                 <div className="cursor-pointer">
@@ -330,7 +330,7 @@ const WithdrawFund = () => {
                                                         </svg>
                                                     </div>
 
-                                                    <div className="pt-1 text-14">{apiResponseSuccessMsg}</div>
+                                                    <div className="pt-1 text-sm">{apiResponseSuccessMsg}</div>
                                                 </div>
 
                                                 <div className="cursor-pointer">
@@ -343,7 +343,7 @@ const WithdrawFund = () => {
                                         {/* End */}
 
 
-                                        <div className='font-bold text-color-1 text-lg mb-30 hidden'>Confirm Transaction PIN</div>
+                                        <div className='font-bold text-green-900 text-lg mb-30 hidden'>Confirm Transaction PIN</div>
 
                                         <form className='hidden'>
                                             <div className="mb-20">
@@ -361,12 +361,12 @@ const WithdrawFund = () => {
                                         </form>
 
                                         <div>
-                                            {/* <button onClick={validatePin} type='button' className={isPinValid === 'false' || isPinValid === '' ? 'w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' : 'hidden'} >
+                                            {/* <button onClick={validatePin} type='button' className={isPinValid === 'false' || isPinValid === '' ? 'w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' : 'hidden'} >
                                                 <span className={showSpinner ? "hidden" : ""}>Validate</span>
                                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                             </button> */}
 
-                                            <button onClick={withdrawFundFromWallet} type='button' className='w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>
+                                            <button onClick={withdrawFundFromWallet} type='button' className='w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>
                                                 <span className={showSpinner ? "hidden" : ""}>Proceed</span>
                                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                             </button>
@@ -382,10 +382,10 @@ const WithdrawFund = () => {
                                         <div className="bg-white p-3 w-full -bottom-10 absolute"></div>
                                     </div>
 
-                                    <div className="relative z-10 text-color-1 font-gotham-black-regular text-28 text-center mb-20">Successful</div>
-                                    <div className="text-color-4 text-16 text-center mb-14">Your withdralwal of <strong>₦ {showAmount}</strong> was successfully recieved and will be processed shortly</div>
+                                    <div className="relative z-10 text-green-900 font-gotham-black-regular text-3xl text-center mb-20">Successful</div>
+                                    <div className="text-color-4 text-sm text-center mb-14">Your withdralwal of <strong>₦ {showAmount}</strong> was successfully recieved and will be processed shortly</div>
                                     <div className="mb-30 text-center">
-                                        <button type='button' onClick={closeSuccess} className="bgcolor-1 w-96 rounded-lg border-0 cursor-pointer text-white p-5 font-bold">Close</button>
+                                        <button type='button' onClick={closeSuccess} className="bg-green-900 w-96 rounded-lg border-0 cursor-pointer text-white p-5 font-bold">Close</button>
                                     </div>
                                 </div>
                                 {/* End */}

@@ -144,19 +144,19 @@ const Reset = () => {
 
             <div className={showResetPasswordCard ? "mx-auto reset-container mt-32":"mx-auto reset-container mt-32 hidden"}>
 
-                <div className="mb-10 text-28 font-gotham-black-regular text-color-1">Reset your password</div>
+                <div className="mb-10 text-3xl font-gotham-black-regular text-green-900">Reset your password</div>
                 
-                <div className="mb-30 text-16 text-color-1 font-bold">Please type a new password</div>
+                <div className="mb-30 text-sm text-green-900 font-bold">Please type a new password</div>
 
                 <form className="form">
 
                     {/* Password section */}
                     <div className="mb-20">
                         <div className="relative">
-                            <div className="mb-10 text-16">Create a new password</div>
+                            <div className="mb-10 text-sm">Create a new password</div>
                             <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
                                 <div className='w-full'>
-                                    <input value={password} onChange={e => setPassword(e.target.value)} type={isShowPassword ? 'text' : 'password'} className="outline-white input border-0 text-14 p-3" placeholder="Enter password" name="password"/>
+                                    <input value={password} onChange={e => setPassword(e.target.value)} type={isShowPassword ? 'text' : 'password'} className="outline-white input border-0 text-sm p-3" placeholder="Enter password" name="password"/>
                                 </div>
 
                                 <div className='px-2 pt-1'>
@@ -178,7 +178,7 @@ const Reset = () => {
                     {/* Password Policy section */}
                     <div>
                         <div className="flex space-x-5 mb-10">
-                            <div className="flex text-13 space-x-1 text-color-3">
+                            <div className="flex text-sm space-x-1 text-color-3">
                                 <div>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasMinAndMaxCharacter ? '#2AD062' : '#999CA0'}/>
@@ -189,7 +189,7 @@ const Reset = () => {
                                 <div className={hasMinAndMaxCharacter ? "pt-20 text-color-2a font-bold": "pt-20"}>At least 8 characters strong</div>
                             </div>
 
-                            <div className="flex text-13 space-x-1 text-color-3">
+                            <div className="flex text-sm space-x-1 text-color-3">
                                 <div>
                                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasLowerCaseCharacter ? "#2AD062":"#999CA0"}/>
@@ -202,7 +202,7 @@ const Reset = () => {
                         </div>
 
                         <div className="flex space-x-3 mb-10">
-                            <div className="flex text-13 space-x-1 text-color-3">
+                            <div className="flex text-sm space-x-1 text-color-3">
                                 <div>
                                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasUpperCaseCharacter ? "#2AD062":"#999CA0"}/>
@@ -213,7 +213,7 @@ const Reset = () => {
                                 <div className={hasUpperCaseCharacter ? "pt-20 font-bold text-color-2a":"pt-20"}>One or more upper case character</div>
                             </div>
 
-                            <div className="flex text-13 space-x-1 text-color-3">
+                            <div className="flex text-sm space-x-1 text-color-3">
                                 <div>
                                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasNumericCharacter ? "#2AD062":"#999CA0"}/>
@@ -227,7 +227,7 @@ const Reset = () => {
                         
                         <div className="flex space-x-3 mb-30">
 
-                            <div className="flex text-13 space-x-1 text-color-3">
+                            <div className="flex text-sm space-x-1 text-color-3">
                                 <div>
                                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasSpecialCharacter ? "#2AD062":"#999CA0"}/>
@@ -244,10 +244,10 @@ const Reset = () => {
                     {/* Confirm Password section */}
                     <div className="mb-20">
                         <div className="relative">
-                            <div className="mb-10 text-16">Confirm Password</div>
+                            <div className="mb-10 text-sm">Confirm Password</div>
                             <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
                                 <div className='w-full'>
-                                    <input value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="outline-white input border-0 text-14 p-3" placeholder="Type your password again" name="password" type={isShowConfirmPassword ? 'text' : 'password'}/>
+                                    <input value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="outline-white input border-0 text-sm p-3" placeholder="Type your password again" name="password" type={isShowConfirmPassword ? 'text' : 'password'}/>
                                 </div>
 
                                 <div className='px-2 pt-1'>
@@ -269,7 +269,7 @@ const Reset = () => {
                     {/* Proceed Button section */}
                     <div className="mb-20">
                         <div>
-                            <button onClick={resetPassword} className={passwordOrConfirmPasswordIsNullOrEmpty ? "w-full rounded-lg bgcolor-1 border-0 text-white opacity-50 px-20 py-3 font-bold text-16":"w-full rounded-lg bgcolor-1 border-0 text-white px-20 py-3 font-bold text-16 cursor-pointer"} type='button' disabled={passwordOrConfirmPasswordIsNullOrEmpty}>
+                            <button onClick={resetPassword} className={passwordOrConfirmPasswordIsNullOrEmpty ? "w-full rounded-lg bg-green-900 border-0 text-white opacity-50 px-20 py-3 font-bold text-sm":"w-full rounded-lg bg-green-900 border-0 text-white px-20 py-3 font-bold text-sm cursor-pointer"} type='button' disabled={passwordOrConfirmPasswordIsNullOrEmpty}>
                                 <span className={ showSpinner ? "hidden" : ""}>Reset</span>
                                 <img src={SpinnerIcon} alt="spinner icon" className={ showSpinner ? "" : "hidden"} width="30"/>
                             </button>
@@ -278,7 +278,7 @@ const Reset = () => {
                     {/* End */}
 
                     <div className="text-right">
-                        <Link to="/" className="no-underline text-color-1">Take me back to <span className="font-bold">Login </span></Link>
+                        <Link to="/" className="no-underline text-green-900">Take me back to <span className="font-bold">Login </span></Link>
                     </div>
                 </form>
             </div>
@@ -289,9 +289,9 @@ const Reset = () => {
                     <div className="bg-white p-3 w-full -bottom-10 absolute"></div>
                 </div>
 
-                <div className="relative z-10 text-color-1 font-gotham-black-regular text-28 text-center mb-20">Successful</div>
+                <div className="relative z-10 text-green-900 font-gotham-black-regular text-3xl text-center mb-20">Successful</div>
 
-                <div className="text-color-4 text-16 text-center mb-14">Your password has been successfully updated</div>
+                <div className="text-color-4 text-sm text-center mb-14">Your password has been successfully updated</div>
 
                 <div className="mb-30">
                     <Link to="/">

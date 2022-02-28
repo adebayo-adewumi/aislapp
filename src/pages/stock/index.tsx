@@ -279,9 +279,9 @@ const Stock = () => {
                         <div key={index}>
                             <div className='mb-20'><img src={item.imageUrl} alt='' /></div>
                             <div className='w-22rem'>
-                                <div className='font-bold mb-10 text-14 w-6/6'>{item.title}</div>
-                                <div className='mb-10 text-13 tracking-wider leading-5'>{item.snippet}</div>
-                                <div className='font-bold text-13'>&middot; {moment(item.date).format("MMM Do YYYY, hh:ss a")}</div>
+                                <div className='font-bold mb-10 text-sm w-6/6'>{item.title}</div>
+                                <div className='mb-10 text-sm tracking-wider leading-5'>{item.snippet}</div>
+                                <div className='font-bold text-sm'>&middot; {moment(item.date).format("MMM Do YYYY, hh:ss a")}</div>
                             </div>
                         </div>
                     ) as unknown as string;
@@ -991,12 +991,12 @@ const Stock = () => {
                 <div className="flex">
                     <Sidebar />
 
-                    <div className="main-content w-full p-10 mb-30">
+                    <div className="main-content md:ml-64 w-full p-10 mb-30 lg:max-w-7xl">
                         <div className="mb-10 pb-5">
                             <div className="flex justify-between items-center">
-                                <div className="text-28 font-bold text-color-1 font-gotham-black-regular">Stock Details</div>
+                                <div className="text-2xl font-bold text-green-900 font-gotham-black-regular">Stock Details</div>
                                 <div className="font-bold">
-                                    <Link to="/trade" className='no-underline text-color-1'>
+                                    <Link to="/trade" className='no-underline text-green-900'>
                                         <img src={ArrowBackIcon} alt="" className="align-middle" /> Back
                                     </Link>
                                 </div>
@@ -1011,19 +1011,19 @@ const Stock = () => {
                                 
                                     <div>
                                         <img src={AtlasIcon} alt="" className="align-middle" />
-                                        <span className="font-bold font-gotham-black-regular mx-3 text-xl">{params.get('symbol')}</span> |
-                                        <span className="font-bold mx-3">{params.get('name')}</span> |
-                                        <span className="bg-yellow-500 py-2 px-3 rounded-2xl mx-3 text-14">{stockInfo === '' ? '' : JSON.parse(stockInfo).sector}</span>
+                                        <span className="font-bold font-gotham-black-regular mx-3 text-xl lg:text-sm">{params.get('symbol')}</span> |
+                                        <span className="font-bold mx-3 lg:text-xs">{params.get('name')}</span> |
+                                        <span className="bg-yellow-500 py-2 px-3 rounded-2xl mx-3 text-sm lg:text-xs">{stockInfo === '' ? '' : JSON.parse(stockInfo).sector}</span>
                                     </div>
                                 
 
                                 <div>
-                                    <button onClick={displayAddToWatchListModal} className="cursor-pointer focus:shadow-outline rounded-lg bg-gray-300 py-3 px-5 border-0 font-bold" type='button'>
+                                    <button onClick={displayAddToWatchListModal} className="cursor-pointer focus:shadow-outline rounded-lg bg-gray-300 py-3 px-5 border-0 font-bold lg:text-sm" type='button'>
                                         <img src={StarIcon} alt="" className="align-bottom mr-2" width="20" />
                                         Add to watchlist
                                     </button>
 
-                                    <button onClick={displayBuyStockModal} className={params.get("tradeAction") === 'buy' ? "cursor-pointer focus:shadow-outline text-white rounded-lg bg-green-800 pb-3 pt-4 px-7 border-0 font-bold ml-3" : "cursor-pointer focus:shadow-outline text-white rounded-lg bg-red-500 pb-3 pt-4 px-7 border-0 font-bold ml-3"} type='button'>
+                                    <button onClick={displayBuyStockModal} className={params.get("tradeAction") === 'buy' ? "cursor-pointer focus:shadow-outline text-white rounded-lg bg-green-800 pb-3 pt-4 px-7 lg:pt-3 lg:px-5 border-0 font-bold ml-3 lg:text-sm" : "cursor-pointer focus:shadow-outline text-white rounded-lg bg-red-500 pb-3 pt-4 px-7 border-0 font-bold ml-3 lg:text-sm"} type='button'>
                                         {params.get("tradeAction") === 'buy' ? 'Buy' : 'Sell'}
                                     </button>
                                 </div>
@@ -1037,7 +1037,7 @@ const Stock = () => {
                                         <div className="font-bold flex ">
                                             <div className='mr-3'>Enable price alerts</div>
 
-                                            <div onClick={toggleEnablePriceAlert} className={enablePriceAlert ? 'flex rounded-3xl p-1 bgcolor-1 ease-in-out transition delay-75 duration-75' : 'flex knob-container rounded-3xl p-1 hover:bg-gray-200 ease-in-out transition delay-75 duration-75'}>
+                                            <div onClick={toggleEnablePriceAlert} className={enablePriceAlert ? 'flex rounded-3xl p-1 bg-green-900 ease-in-out transition delay-75 duration-75' : 'flex knob-container rounded-3xl p-1 hover:bg-gray-200 ease-in-out transition delay-75 duration-75'}>
                                                 <button className={enablePriceAlert ? "rounded-3xl knob border-0 cursor-pointer opacity-0" : "rounded-3xl knob border-0 cursor-pointer ease-in-out transition delay-75 duration-75"} type="button"></button>
 
                                                 <button className={enablePriceAlert ? "ml-0.5 p-1.5 rounded-3xl knob items-center border-0 cursor-pointer ease-in-out transition delay-75 duration-75" : "ml-0.5 p-1.5 rounded-3xl knob items-center border-0 cursor-pointer opacity-0 ease-in-out transition delay-75 duration-75"} type="button"></button>
@@ -1045,7 +1045,7 @@ const Stock = () => {
                                         </div>
                                     </div>
 
-                                    <div className={params.get('tradeAction') === 'buy' ? "card-stock flex justify-between space-x-2 w-96 h-24 text-14 hidden" : "card-stock flex justify-between space-x-2 w-96 h-24 text-14"}>
+                                    <div className={params.get('tradeAction') === 'buy' ? "card-stock flex justify-between space-x-2 w-96 h-24 text-sm hidden" : "card-stock flex justify-between space-x-2 w-96 h-24 text-sm"}>
                                         <div className=''>
                                             <div className="mb-5">Units Owned: </div>
                                             <div className="font-gotham-black-regular">{params.get('units')} </div>
@@ -1058,7 +1058,7 @@ const Stock = () => {
                                                 <div className="mb-5">Total Value</div>
                                                 <div className="font-bold font-gotham-black-regular mb-5">₦ {(stockInfo === ''? '':JSON.parse(stockInfo).price) * parseInt(params.get("units") as string)}</div>
 
-                                                <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-14" : "font-bold text-red-500 text-14"}>{stockInfo === '' ? '' : JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === '' ? '' : JSON.parse(stockInfo).percentageChange.replace('-','')}%  </div>
+                                                <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-sm" : "font-bold text-red-500 text-sm"}>{stockInfo === '' ? '' : JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === '' ? '' : JSON.parse(stockInfo).percentageChange.replace('-','')}%  </div>
                                             </div>
                                         
                                     </div>
@@ -1077,36 +1077,38 @@ const Stock = () => {
 
                         {/* Summary Section */}
                         <div className={showSummary ? 'mb-30 about-section' : 'mb-30 summary-section hidden'}>
-                            <div className="flex justify-between">
+                            <div className="flex justify-between lg:space-x-5">
                                 <div className='w-4/6'>
                                     <div className='mb-30'>
-                                        <div className='card'>
+                                        <div className='card p-5'>
                                             <div className='mb-30'>
                                                 <div className='flex justify-between items-center'>
-                                                    <div className='font-bold text-color-1 text-xl'>Current Price</div>
-                                                    <div className='w-1/2 flex bg-gray-300 p-1 rounded justify-between'>
-                                                        <button onClick={filterGraph} className='py-3 px-5 rounded border-0 cursor-pointer font-bold filter-btn active hover:bg-green-900 hover:text-white' type='button' data-filter="1D">1D</button>
+                                                    <div className='w-1/3'>
+                                                        <div className='text-lg font-bold'>Current Price</div>
+                                                        <div>
+                                                            <div className='font-gotham-black-regular font-bold text-green-900 text-xl'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
 
-                                                        <button onClick={filterGraph} className='py-3 px-5 rounded border-0  cursor-pointer font-bold filter-btn inactive' type='button' data-filter="1W">1W</button>
-
-                                                        <button onClick={filterGraph} className='py-3 px-5 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="1M">1M</button>
-
-                                                        <button onClick={filterGraph} className='py-3 px-5 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="3M">3M</button>
-
-                                                        <button onClick={filterGraph} className='py-3 px-5 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="6M">6M</button>
-
-                                                        <button onClick={filterGraph} className='py-3 px-5 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="1Y">1Y</button>
+                                                            <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-sm" : "font-bold text-red-500 text-sm"}>
+                                                                {stockInfo === '' ? '' : JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === '' ? '' : JSON.parse(stockInfo).percentageChange.replace('-','')}%
+                                                                </div>
+                                                        </div>
                                                     </div>
-                                                </div>
 
-                                                
-                                                    <div>
-                                                        <div className='font-gotham-black-regular font-bold text-color-1 text-xl mb-10'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
+                                                    <div className='w-2/3 flex bg-gray-300 p-1 rounded justify-between'>
+                                                        <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn active hover:bg-green-900 hover:text-white' type='button' data-filter="1D">1D</button>
 
-                                                        <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-14" : "font-bold text-red-500 text-14"}>
-                                                            {stockInfo === '' ? '' : JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === '' ? '' : JSON.parse(stockInfo).percentageChange.replace('-','')}%
-                                                         </div>
+                                                        <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0  cursor-pointer font-bold filter-btn inactive' type='button' data-filter="1W">1W</button>
+
+                                                        <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="1M">1M</button>
+
+                                                        <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="3M">3M</button>
+
+                                                        <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="6M">6M</button>
+
+                                                        <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="1Y">1Y</button>
                                                     </div>
+                                                </div>                                                
+                                               
                                             </div>
 
                                             <div>
@@ -1120,14 +1122,14 @@ const Stock = () => {
                                         <div className='card-unpadded'>
                                             <div className='flex justify-between px-6 py-4 border-bottom-e'>
                                                 <div className='font-bold'>Bids</div>
-                                                <div className='text-color-1 font-bold'>View all</div>
+                                                <div className='text-green-900 font-bold'>View all</div>
                                             </div>
 
                                             <div className={bidsList === '' ? 'text-sm':'hidden'}>
                                                 <div className='py-5 text-gray-500 px-6'>Nothing to display</div>
                                             </div>
 
-                                            <div className='px-6 bid-offer text-13'>
+                                            <div className='px-6 bid-offer text-sm'>
                                                 {bidsList }
                                             </div>
                                         </div>
@@ -1135,14 +1137,14 @@ const Stock = () => {
                                         <div className='card-unpadded'>
                                             <div className='flex justify-between px-6 py-4 border-bottom-e'>
                                                 <div className='font-bold'>Offers</div>
-                                                <div className='text-color-1 font-bold'>View all</div>
+                                                <div className='text-green-900 font-bold'>View all</div>
                                             </div>
 
                                             <div className={offersList === '' ? 'text-sm':'hidden'}>
                                                 <div className='py-5 text-gray-500 px-6'>Nothing to display</div>
                                             </div>
 
-                                            <div className='px-6 offers text-13'>
+                                            <div className='px-6 offers text-sm'>
                                                 <div>{offersList}</div>
                                             </div>
                                         </div>
@@ -1150,12 +1152,12 @@ const Stock = () => {
                                 </div>
 
                                 <div>
-                                    <div className='card-stock w-stock'>
+                                    <div className='card p-5'>
                                         <div className='font-bold font-gotham-black-regular mb-20 pt-5'>Statistics Overview</div>
 
                                         <div >
                                             <div className='py-3'>
-                                                <div className='flex space-x-10 text-14 pb-6'>
+                                                <div className='flex space-x-10 text-sm pb-6'>
                                                     <div className='w-1/2'>
                                                         <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Earnings per share</div>
                                                         <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).earningsPerShare)}</div>
@@ -1169,7 +1171,7 @@ const Stock = () => {
                                             </div>
 
                                             <div className='py-3'>
-                                                <div className='flex space-x-10 text-14 pb-6'>
+                                                <div className='flex space-x-10 text-sm pb-6'>
                                                     <div className='w-1/2'>
                                                         <div className='text-sm font-bold mb-20 font-gotham-black-regular'>High</div>
                                                         <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).high)}</div>
@@ -1183,7 +1185,7 @@ const Stock = () => {
                                             </div>
 
                                             <div className='py-3'>
-                                                <div className='flex space-x-10 text-14 pb-6'>
+                                                <div className='flex space-x-10 text-sm pb-6'>
                                                     <div className='w-1/2'>
                                                         <div className='text-sm font-bold mb-20 font-gotham-black-regular'>52 Week High</div>
                                                         <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).weekHigh52)}</div>
@@ -1197,7 +1199,7 @@ const Stock = () => {
                                             </div>
 
                                             <div className='py-3'>
-                                                <div className='flex space-x-10 text-14 pb-6'>
+                                                <div className='flex space-x-10 text-sm pb-6'>
                                                     <div className='w-1/2'>
                                                         <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Volume</div>
                                                         <div>{stockInfo === ''?'':JSON.parse(stockInfo).volume}</div>
@@ -1211,7 +1213,7 @@ const Stock = () => {
                                             </div>
 
                                             <div className='py-3'>
-                                                <div className='flex space-x-10 text-14 pb-6'>
+                                                <div className='flex space-x-10 text-sm pb-6'>
                                                     <div className='w-1/2'>
                                                         <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Sector</div>
                                                         <div>{stockInfo === ''?'':JSON.parse(stockInfo).sector}</div>
@@ -1225,7 +1227,7 @@ const Stock = () => {
                                             </div>
 
                                             <div className='py-3'>
-                                                <div className='flex space-x-10 text-14 pb-6'>
+                                                <div className='flex space-x-10 text-sm pb-6'>
                                                     <div className='w-1/2'>
                                                         <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Dividend Yield</div>
                                                         <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).dividendYield)}</div>
@@ -1239,7 +1241,7 @@ const Stock = () => {
                                             </div>
 
                                             <div className='py-3'>
-                                                <div className='flex space-x-10 text-14 pb-6'>
+                                                <div className='flex space-x-10 text-sm pb-6'>
                                                     <div className='w-1/2'>
                                                         <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Nominal Value</div>
                                                         <div>{stockInfo === ''?'':JSON.parse(stockInfo).norminalValue}</div>
@@ -1253,7 +1255,7 @@ const Stock = () => {
                                             </div>
 
                                             <div className='py-3'>
-                                                <div className='flex space-x-10 text-14 pb-6'>
+                                                <div className='flex space-x-10 text-sm pb-6'>
                                                     <div>
                                                         <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Value of Trades</div>
                                                         <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).valueOfTrades)}</div>
@@ -1274,18 +1276,18 @@ const Stock = () => {
                                 <div className='flex'>
                                     <div className='w-full'>
                                         <p className='font-bold mb-20 font-gotham-black-regular'>About</p>
-                                        <div className='tracking-widest text-14 leading-8 pr-10 mb-30'>{companyInfo}</div>
+                                        <div className='tracking-widest text-sm leading-8 pr-10 mb-30'>{companyInfo}</div>
                                     </div>
 
                                     <div className='px-10 h-44 border-left-1 hidden'>
                                         <div className='mb-30'>
                                             <p className='font-gotham-black-regular mb-10'>Group Managing Director</p>
-                                            <p className='text-14'></p>
+                                            <p className='text-sm'></p>
                                         </div>
 
                                         <div>
                                             <p className='font-gotham-black-regular mb-10'>Founded</p>
-                                            <p className='text-14'></p>
+                                            <p className='text-sm'></p>
                                         </div>
                                     </div>
                                 </div>
@@ -1299,22 +1301,22 @@ const Stock = () => {
                                     
                                     <div className='flex justify-between mb-20'>
                                         <div>
-                                            <div className='font-gotham-black-regular text-14 mb-10'>Shares Outstanding</div>
-                                            <div className='text-13'>{HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).sharesOutstanding)}</div>
+                                            <div className='font-gotham-black-regular text-sm mb-10'>Shares Outstanding</div>
+                                            <div className='text-sm'>{HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).sharesOutstanding)}</div>
                                         </div>
 
                                         <div className='border-left-1'></div>
 
                                         <div>
-                                            <div className='font-gotham-black-regular text-14 mb-10'>Registrar</div>
-                                            <div className='text-13'>{stockInfo === ''?'':JSON.parse(stockInfo).registrar}</div>
+                                            <div className='font-gotham-black-regular text-sm mb-10'>Registrar</div>
+                                            <div className='text-sm'>{stockInfo === ''?'':JSON.parse(stockInfo).registrar}</div>
                                         </div>
 
                                         <div className='border-left-1'></div>
 
                                         <div className='w-72'>
-                                            <div className='font-gotham-black-regular text-14 mb-10'>Institutional Owership</div>
-                                            <div className='text-13'>{stockInfo === ''?'':JSON.parse(stockInfo).institutionalOwnerShip}</div>
+                                            <div className='font-gotham-black-regular text-sm mb-10'>Institutional Owership</div>
+                                            <div className='text-sm'>{stockInfo === ''?'':JSON.parse(stockInfo).institutionalOwnerShip}</div>
                                         </div>
                                     </div>
                                     
@@ -1335,7 +1337,7 @@ const Stock = () => {
 
                         {/* Page Loader Section */}
                         <div className={showPageLoader ? "page-loader-backdrop opacity-90" : "hidden"}>
-                            <div className='ml-custom w-96 my-custom relative'>
+                            <div className='w-96 relative lg:ml-72'>
                                 <div className='absolute top-44pc left-46pt5pc'><img src={AnchoriaIcon} alt="" /></div>
                                 <div className='text-center'><img src={AnchoriaSpinner} alt="" /></div>
                             </div>
@@ -1347,7 +1349,7 @@ const Stock = () => {
 
             <div className={showSetPriceAlertModal ? "set-price-alert-modal rounded-lg" : "hidden"}>
                 <div className="mb-10 flex justify-between">
-                    <div className="font-bold text-28 text-color-1 font-gotham-black-regular">Set Price Alerts</div>
+                    <div className="font-bold text-3xl text-green-900 font-gotham-black-regular">Set Price Alerts</div>
 
                     <div onClick={closeModal}>
                         <img src={CloseIcon} alt="" className="cursor-pointer" />
@@ -1364,17 +1366,17 @@ const Stock = () => {
                             <span className="font-bold mx-3">{params.get('name')}</span>
                         </div>
 
-                        <div className="mb-20 w-32 bg-yellow-400 py-2 px-3 rounded-2xl text-14">Manufacturing</div>
+                        <div className="mb-20 w-32 bg-yellow-400 py-2 px-3 rounded-2xl text-sm">Manufacturing</div>
 
-                        <div className="leading-6 text-14 mb-20">{companyInfo.length > 250 ? companyInfo.substring(0, 250) + "..." : companyInfo}</div>
+                        <div className="leading-6 text-sm mb-20">{companyInfo.length > 250 ? companyInfo.substring(0, 250) + "..." : companyInfo}</div>
 
                         <div className='mb-20'>
                             <div className='mb-10 font-bold'>Current Price</div>
-                            <div className='font-gotham-black-regular text-color-1 text-28'>₦ {HelperFunctions.formatCurrencyWithDecimal(parseFloat(params.get('close') as string))}</div>
+                            <div className='font-gotham-black-regular text-green-900 text-3xl'>₦ {HelperFunctions.formatCurrencyWithDecimal(parseFloat(params.get('close') as string))}</div>
                         </div>
 
                         <div className='mb-20'>
-                            <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-14" : "font-bold text-red-500 text-14"}>{HelperFunctions.formatCurrencyWithDecimal(parseFloat(params.get('change') as string))} | {HelperFunctions.formatCurrencyWithDecimal(parseFloat(params.get('change') as string))}%  </div>
+                            <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-sm" : "font-bold text-red-500 text-sm"}>{HelperFunctions.formatCurrencyWithDecimal(parseFloat(params.get('change') as string))} | {HelperFunctions.formatCurrencyWithDecimal(parseFloat(params.get('change') as string))}%  </div>
                         </div>
 
                         <div className='mb-30 flex space-x-5'>
@@ -1404,7 +1406,7 @@ const Stock = () => {
 
             <div className={showAddToWatchListModal ? "add-to-watchlist-modal rounded-lg" : "add-to-watchlist-modal rounded-lg hidden"}>
                 <div className="mb-10 flex justify-between">
-                    <div className="font-bold text-28 text-color-1 font-gotham-black-regular">Add To Watchlist</div>
+                    <div className="font-bold text-3xl text-green-900 font-gotham-black-regular">Add To Watchlist</div>
 
                     <div onClick={closeModal}>
                         <img src={CloseIcon} alt="" className="cursor-pointer" />
@@ -1424,21 +1426,21 @@ const Stock = () => {
                                 </div>
 
                                 <div className="mb-20 py-1">
-                                    <span className='bg-yellow-400 py-2 px-3 rounded-2xl text-14'>{stockInfo === ''?'':JSON.parse(stockInfo).sector}</span>
+                                    <span className='bg-yellow-400 py-2 px-3 rounded-2xl text-sm'>{stockInfo === ''?'':JSON.parse(stockInfo).sector}</span>
                                 </div>
 
-                                <div className="leading-6 text-14 mb-20">{companyInfo.length > 250 ? companyInfo.substring(0, 250) + "..." : companyInfo}</div>
+                                <div className="leading-6 text-sm mb-20">{companyInfo.length > 250 ? companyInfo.substring(0, 250) + "..." : companyInfo}</div>
 
 
 
                                 <div className='mb-20' >
                                     <div className='mb-10 font-bold'>Current Price</div>
-                                    <div className='font-gotham-black-regular text-color-1 text-28'>₦ {stockInfo === ''?'':JSON.parse(stockInfo).price}</div>
+                                    <div className='font-gotham-black-regular text-green-900 text-3xl'>₦ {stockInfo === ''?'':JSON.parse(stockInfo).price}</div>
                                 </div>
 
 
                                 <div className='mb-20'>
-                                    <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-14" : "font-bold text-red-500 text-14"}>{stockInfo === ''?'':JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === ''?'':JSON.parse(stockInfo).percentageChange.replace('-','')}%  </div>
+                                    <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-sm" : "font-bold text-red-500 text-sm"}>{stockInfo === ''?'':JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === ''?'':JSON.parse(stockInfo).percentageChange.replace('-','')}%  </div>
                                 </div>
                             </div>
                         
@@ -1486,7 +1488,7 @@ const Stock = () => {
                                         </svg>
                                     </div>
 
-                                    <div className="pt-1 text-14">{priceEstimateError}</div>
+                                    <div className="pt-1 text-sm">{priceEstimateError}</div>
                                 </div>
 
                                 <div className="cursor-pointer" onClick={closeAlert}>
@@ -1500,8 +1502,8 @@ const Stock = () => {
 
                         <div className="mb-20 flex justify-between">
                             <div>
-                                <div className="font-bold text-28 text-color-1 mb-10 font-gotham-black-regular">{params.get("tradeAction") === 'buy' ? 'Buy Stock' : 'Sell Stock'}</div>
-                                <div className='font-bold text-color-1'>Provide the details below</div>
+                                <div className="font-bold text-3xl text-green-900 mb-10 font-gotham-black-regular">{params.get("tradeAction") === 'buy' ? 'Buy Stock' : 'Sell Stock'}</div>
+                                <div className='font-bold text-green-900'>Provide the details below</div>
                             </div>
 
                             <div onClick={closeModal} className='cursor-pointer'>
@@ -1512,7 +1514,7 @@ const Stock = () => {
                         <div className='mb-20'>
                             <div className="stock-balance-card">
                                 <div className="italic text-green-500 mb-5">Available Balance</div>
-                                <div className="font-bold text-28 font-gotham-black-regular text-white">
+                                <div className="font-bold text-3xl font-gotham-black-regular text-white">
                                     <svg width="21" height="22" viewBox="0 0 21 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M20.1787 6.06096C20.6317 6.06096 20.9989 5.67627 20.9989 5.20171V4.2995C20.9989 1.92875 19.1578 0 16.8948 0C16.8948 0 4.03797 0.00201923 4.00627 0.00592881C2.92406 0.0455401 1.88451 0.532046 1.13519 1.3546C0.36712 2.1977 -0.0332975 3.29427 0.00439032 4.44802C0.00283195 4.46989 0.00201176 16.8412 0.00201176 16.8412C0.00201176 19.6858 2.21103 22 4.92627 22H16.8948C19.1578 22 20.9989 20.0712 20.9989 17.7005V11.1767C20.9989 8.806 19.1578 6.87724 16.8948 6.87724H4.10292C2.78607 6.87724 1.70645 5.79898 1.64506 4.42246C1.61385 3.72252 1.85421 3.05437 2.3218 2.54105C2.79616 2.02035 3.46236 1.72176 4.14951 1.72176C4.17375 1.72176 16.8947 1.71849 16.8947 1.71849C18.2532 1.71849 19.3584 2.87633 19.3584 4.2995V5.20171C19.3585 5.67627 19.7257 6.06096 20.1787 6.06096ZM4.10292 8.59574H16.8948C18.2533 8.59574 19.3585 9.75358 19.3585 11.1767V17.7005C19.3585 19.1237 18.2533 20.2815 16.8948 20.2815H4.92627C3.11554 20.2815 1.64239 18.7382 1.64239 16.8412V7.73997C2.3284 8.27829 3.18078 8.59574 4.10292 8.59574ZM17.7181 14.4386C17.7181 15.0318 17.2591 15.5127 16.6929 15.5127C15.3329 15.4561 15.3333 13.4209 16.6929 13.3646C17.2591 13.3646 17.7181 13.8454 17.7181 14.4386ZM17.7181 4.2995C17.7181 3.82494 17.3509 3.44025 16.8979 3.44025H4.10297C3.01474 3.48562 3.01556 5.11377 4.10297 5.15875H16.8979C17.3509 5.15875 17.7181 4.77406 17.7181 4.2995Z" fill="white" />
                                     </svg>
@@ -1532,7 +1534,7 @@ const Stock = () => {
                         
                             <div className='mb-20' >
                                 <div className='mb-10 font-bold'>Current Price /Per Share</div>
-                                <div className='font-gotham-black-regular text-28 font-bold text-color-1'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
+                                <div className='font-gotham-black-regular text-3xl font-bold text-green-900'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
                             </div>
                         
 
@@ -1562,7 +1564,7 @@ const Stock = () => {
                                 </div>
 
                                 <div className={showOrderTypeDropdown ? 'generic-dropdown-card left-0 rounded-lg w-1/2' : 'hidden'}>
-                                    <div className='font-gotham-black-regular text-lg text-color-1 mb-10'>Order Type</div>
+                                    <div className='font-gotham-black-regular text-lg text-green-900 mb-10'>Order Type</div>
 
                                     <ul className='list-none m-0 p-0'>
                                         <li className='order-type-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'>
@@ -1613,7 +1615,7 @@ const Stock = () => {
 
                                 {/*Duration Dropdown */}
                                 <div className={showLimitDurationDropdown ? 'generic-dropdown-card right-0 rounded-lg w-1/2' : 'hidden'}>
-                                    <div className='font-gotham-black-regular text-lg text-color-1 mb-10'>Duration</div>
+                                    <div className='font-gotham-black-regular text-lg text-green-900 mb-10'>Duration</div>
 
                                     <ul className='list-none m-0 p-0'>
                                         <li className='duration-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'>
@@ -1669,7 +1671,7 @@ const Stock = () => {
                                 </div>
 
                                 <div className={showStopLossDurationDropdown ? 'generic-dropdown-card right-0 rounded-lg w-1/2' : 'hidden'}>
-                                    <div className='font-gotham-black-regular text-lg text-color-1 mb-10'>Duration</div>
+                                    <div className='font-gotham-black-regular text-lg text-green-900 mb-10'>Duration</div>
 
                                     <ul className='list-none m-0 p-0'>
                                         <li className='duration-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'>
@@ -1722,7 +1724,7 @@ const Stock = () => {
                                         </div>
 
                                         <div className={showStopLimitDurationDropdown ? 'generic-dropdown-card right-0 rounded-lg w-1/2' : 'hidden'}>
-                                            <div className='font-gotham-black-regular text-lg text-color-1 mb-10'>Duration</div>
+                                            <div className='font-gotham-black-regular text-lg text-green-900 mb-10'>Duration</div>
 
                                             <ul className='list-none m-0 p-0'>
                                                 <li className='duration-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'>
@@ -1758,7 +1760,7 @@ const Stock = () => {
                                             <div className="mb-10">Enter Date</div>
                                             <div className='flex justify-between items-center border-1-d6 rounded-lg'>
                                                 <div className='w-full'>
-                                                    <input type="text" className="font-bold outline-white border-0 p-3 input text-14" placeholder="Enter end date for your order" defaultValue={showDate} />
+                                                    <input type="text" className="font-bold outline-white border-0 p-3 input text-sm" placeholder="Enter end date for your order" defaultValue={showDate} />
                                                 </div>
                                                 <div className='p-3 cursor-pointer' onClick={e => displayCalendar()}>
                                                     <img src={CalendarIcon} alt="" width="20" />
@@ -1771,7 +1773,7 @@ const Stock = () => {
                                 </div>
 
                                 <div className={showStopLossDurationDropdown ? 'generic-dropdown-card right-0 rounded-lg w-1/2' : 'hidden'}>
-                                    <div className='font-gotham-black-regular text-lg text-color-1 mb-10'>Duration</div>
+                                    <div className='font-gotham-black-regular text-lg text-green-900 mb-10'>Duration</div>
 
                                     <ul className='list-none m-0 p-0'>
                                         <li className='duration-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'>
@@ -1808,16 +1810,16 @@ const Stock = () => {
 
                         <div className='mb-20'>
                             <div className='mb-10'>Estimated cost</div>
-                            <div className='font-gotham-black-regular font-bold text-color-1 text-28'>{HelperFunctions.formatCurrencyWithDecimal(estimatedCost)}</div>
+                            <div className='font-gotham-black-regular font-bold text-green-900 text-3xl'>{HelperFunctions.formatCurrencyWithDecimal(estimatedCost)}</div>
                         </div>
 
                         <div>
-                            <button onClick={calculateStockOrderEstimate} className={estimatedCost === 0 ? 'w-full bgcolor-1 rounded-lg text-white p-4 font-bold text-lg border-0 focus:shadow-outline cursor-pointer' : 'hidden'}>
+                            <button onClick={calculateStockOrderEstimate} className={estimatedCost === 0 ? 'w-full bg-green-900 rounded-lg text-white p-4 font-bold text-lg border-0 focus:shadow-outline cursor-pointer' : 'hidden'}>
                                 <span className={showSpinner ? "hidden" : ""}>Get Estimated Cost</span>
                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="30" />
                             </button>
 
-                            <button onClick={displayStockOrderSummaryModal} className={estimatedCost !== 0 ? 'w-full bgcolor-1 rounded-lg text-white p-4 font-bold text-lg border-0 focus:shadow-outline cursor-pointer' : 'hidden'}>
+                            <button onClick={displayStockOrderSummaryModal} className={estimatedCost !== 0 ? 'w-full bg-green-900 rounded-lg text-white p-4 font-bold text-lg border-0 focus:shadow-outline cursor-pointer' : 'hidden'}>
                                 <span className={showSpinner ? "hidden" : ""}>Continue</span>
                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="30" />
                             </button>
@@ -1849,8 +1851,8 @@ const Stock = () => {
 
                         <div className="mb-20 flex justify-between">
                             <div>
-                                <div className="font-bold text-28 text-color-1 mb-10 font-gotham-black-regular">Order Summary</div>
-                                <div className='font-bold text-color-1'>Preview your investment</div>
+                                <div className="font-bold text-3xl text-green-900 mb-10 font-gotham-black-regular">Order Summary</div>
+                                <div className='font-bold text-green-900'>Preview your investment</div>
                             </div>
 
                             <div onClick={closeModal} className='cursor-pointer'>
@@ -1869,7 +1871,7 @@ const Stock = () => {
                         
                             <div className='mb-20' >
                                 <div className='mb-10 font-bold'>Current Price /Per Share</div>
-                                <div className='font-gotham-black-regular text-28 font-bold text-color-1'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
+                                <div className='font-gotham-black-regular text-3xl font-bold text-green-900'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
                             </div>
                         
 
@@ -1974,7 +1976,7 @@ const Stock = () => {
                         <div className='flex space-x-5 mb-10'>
                             <button type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer" onClick={closeModal}>Cancel</button>
 
-                            <button onClick={tradeStock} className='w-full bgcolor-1 rounded-lg text-white p-4 font-bold text-lg border-0 focus:shadow-outline cursor-pointer'>
+                            <button onClick={tradeStock} className='w-full bg-green-900 rounded-lg text-white p-4 font-bold text-lg border-0 focus:shadow-outline cursor-pointer'>
                                 <span className={showSpinner ? "hidden" : ""}>Confirm Order</span>
                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="30" />
                             </button>
@@ -1990,9 +1992,9 @@ const Stock = () => {
                     <div className="bg-white p-3 w-96 -bottom-10 absolute"></div>
                 </div>
 
-                <div className="relative z-10 text-color-1 font-gotham-black-regular text-28 text-center mb-10">Successful</div>
+                <div className="relative z-10 text-green-900 font-gotham-black-regular text-3xl text-center mb-10">Successful</div>
 
-                <div className="text-color-4 text-16 text-center mb-14 leading-5">{apiResponseSuccessMsg}</div>
+                <div className="text-color-4 text-sm text-center mb-14 leading-5">{apiResponseSuccessMsg}</div>
 
                 <div className="mb-10">
 
@@ -2007,7 +2009,7 @@ const Stock = () => {
                 <div className='generic-modal-dialog'>
                     <div className="validate-pin-modal">
                         <div className="p-5 flex justify-between pb-5" style={{ borderBottom: '1px solid #dee2e6' }}>
-                            <div className="font-bold text-xl text-color-1">Validate PIN</div>
+                            <div className="font-bold text-xl text-green-900">Validate PIN</div>
 
                             <div onClick={closeModal} className='hidden'>
                                 <img src={CloseIcon} alt="" className="cursor-pointer" />
@@ -2027,7 +2029,7 @@ const Stock = () => {
                                             </svg>
                                         </div>
 
-                                        <div className="pt-1 text-14 text-color-1">{apiResponseSuccessMsg}</div>
+                                        <div className="pt-1 text-sm text-green-900">{apiResponseSuccessMsg}</div>
                                     </div>
 
                                     <div className="cursor-pointer" onClick={closeModal}>
@@ -2049,7 +2051,7 @@ const Stock = () => {
                                             </svg>
                                         </div>
 
-                                        <div className="pt-1 text-14">{apiResponseSuccessMsg}</div>
+                                        <div className="pt-1 text-sm">{apiResponseSuccessMsg}</div>
                                     </div>
 
                                     <div className="cursor-pointer">
@@ -2065,7 +2067,7 @@ const Stock = () => {
 
                             <div className='mb-30'><input maxLength={4} type="password" className="w-full rounded-lg p-5 border border-gray-100 outline-white" onChange={e => setPin(e.target.value)} /> </div>
 
-                            <div><button type='button' className='px-16 py-3 bgcolor-1 text-white rounded-lg font-bold border-0 w-full cursor-pointer' onClick={validatePin}>
+                            <div><button type='button' className='px-16 py-3 bg-green-900 text-white rounded-lg font-bold border-0 w-full cursor-pointer' onClick={validatePin}>
                                 <span className={showSpinner ? "hidden" : ""}>Validate</span>
                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                             </button></div>

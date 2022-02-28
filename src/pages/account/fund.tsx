@@ -361,7 +361,7 @@ const FundAccount = () => {
                         <div className='m-auto w-1/2 pt-5'>
                             <div className="flex justify-between" style={{ width: '35rem' }}>
                                 <div>
-                                    <div className="text-28 text-color-1 font-gotham-black-regular font-bold mb-30">Fund Account</div>
+                                    <div className="text-3xl text-green-900 font-gotham-black-regular font-bold mb-30">Fund Account</div>
                                     <div className="hidden font-bold mb-30">Provide the details below</div>
                                     <span className='hidden'>{showAmount}</span>
                                 </div>
@@ -376,20 +376,20 @@ const FundAccount = () => {
                             <div className='mb-30 rounded-lg border-1-d6 bg-white p-10' style={{ width: '35rem' }}>
                                 {/*Switch Section */}
                                 <div>
-                                    <div className='mb-10 font-bold text-color-1 text-xl hidden'>How much would like to fund</div>
+                                    <div className='mb-10 font-bold text-green-900 text-xl hidden'>How much would like to fund</div>
 
                                     <div className='mb-30'>
                                         <div className="border_1 flex rounded-lg p-02rem" style={{ width: '390px' }}>
                                             <div>
-                                                <button onClick={performSwitchToDebit} type='button' className={switchToDebit ? "rounded-lg bgcolor-1 text-white border-0 py-3 px-5 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-5 font-bold border-0 bgcolor-f"}>Debit Card</button>
+                                                <button onClick={performSwitchToDebit} type='button' className={switchToDebit ? "rounded-lg bg-green-900 text-white border-0 py-3 px-5 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-5 font-bold border-0 bgcolor-f"}>Debit Card</button>
                                             </div>
 
                                             <div>
-                                                <button onClick={performSwitchToBank} type='button' className={switchToBank ? "rounded-lg bgcolor-1 text-white border-0 py-3 px-5 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-5 font-bold border-0 bgcolor-f"}>Bank Transfer</button>
+                                                <button onClick={performSwitchToBank} type='button' className={switchToBank ? "rounded-lg bg-green-900 text-white border-0 py-3 px-5 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-5 font-bold border-0 bgcolor-f"}>Bank Transfer</button>
                                             </div>
 
                                             <div>
-                                                <button onClick={performSwitchToFundingHistory} type='button' className={switchToFundingHistory ? "rounded-lg bgcolor-1 text-white border-0 py-3 px-5 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-5 font-bold border-0 bgcolor-f"}>Funding History</button>
+                                                <button onClick={performSwitchToFundingHistory} type='button' className={switchToFundingHistory ? "rounded-lg bg-green-900 text-white border-0 py-3 px-5 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-5 font-bold border-0 bgcolor-f"}>Funding History</button>
                                             </div>
                                         </div>
                                     </div>
@@ -428,7 +428,7 @@ const FundAccount = () => {
                                         </div>
 
                                         <div>
-                                            <button onClick={displayCardSection} type='button' className={showAmount !== '' ? 'w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' : 'w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 opacity-50'} disabled={!showAmount}>Continue</button>
+                                            <button onClick={displayCardSection} type='button' className={showAmount !== '' ? 'w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' : 'w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 opacity-50'} disabled={!showAmount}>Continue</button>
                                         </div>
                                     </div>
                                 </div>
@@ -439,14 +439,14 @@ const FundAccount = () => {
                                     <div>
                                         <div className='text-lg font-bold'>Amount</div>
 
-                                        <div className='mb-20 font-gotham-black-regular text-color-1 text-4xl'>₦ {showAmount}</div>
+                                        <div className='mb-20 font-gotham-black-regular text-green-900 text-4xl'>₦ {showAmount}</div>
 
                                         <div className='border-bottom-1d mb-10'></div>
 
-                                        <div className='my-6 text-color-1 text-xl font-bold'>Enter your card details</div>
+                                        <div className='my-6 text-green-900 text-xl font-bold'>Enter your card details</div>
 
                                         <div className='mb-20'>
-                                            <div className='text-14 mb-5 font-bold'>Card Number</div>
+                                            <div className='text-sm mb-5 font-bold'>Card Number</div>
 
                                             <div className='relative'>
                                                 <input value={cardNumber} onKeyDown={handleCreditCardNumberInputSelection} onChange={maskCreditCardNumberInput} placeholder='Enter your 16 digits card number' type='text' className='cc-number-input input p-5 border-1-d6 outline-white font-bold text-lg text-gray-600' maxLength={19} />
@@ -463,7 +463,7 @@ const FundAccount = () => {
                                         <div className='mb-20'>
                                             <div className='flex justify-between space-x-5'>
                                                 <div className='w-1/2'>
-                                                    <div className='text-lg mb-5 text-14 font-bold'>Validity</div>
+                                                    <div className='text-lg mb-5 text-sm font-bold'>Validity</div>
 
                                                     <div>
                                                         <input value={cardExpiry} onChange={maskCreditCardExpiryInput} onKeyDown={handleCreditCardExpiryInputSelection} placeholder='MM / YY' type='text' className='input p-5 cc-expiry-input border-1-d6 outline-white font-bold text-lg text-gray-600' maxLength={5} />
@@ -471,7 +471,7 @@ const FundAccount = () => {
                                                 </div>
 
                                                 <div className='w-1/2'>
-                                                    <div className='text-lg mb-5 text-14 font-bold'>CVV</div>
+                                                    <div className='text-lg mb-5 text-sm font-bold'>CVV</div>
 
                                                     <div>
                                                         <input value={cardCVV} onChange={maskCreditCardCVVInput} onKeyDown={handleCreditCardCVVInputSelection} placeholder='CVV' type='text' className='input p-5 cc-cvv-input border-1-d6 outline-white font-bold text-lg text-gray-600' maxLength={3} />
@@ -481,7 +481,7 @@ const FundAccount = () => {
                                         </div>
 
                                         <div className='mb-20'>
-                                            <div className='text-lg mb-5 text-14 font-bold'>PIN</div>
+                                            <div className='text-lg mb-5 text-sm font-bold'>PIN</div>
 
                                             <div className='mb-30'>
                                                 <input value={cardPIN} onChange={e => setCardPIN(e.target.value)} type='password' className='input p-4 border-1-d6 text-2xl outline-white' maxLength={4} />
@@ -494,9 +494,9 @@ const FundAccount = () => {
                                         </div>
 
                                         <div>
-                                            <button type='button' className={isCardDetailsFilled ? 'hidden' : 'w-full font-bold text-lg border-0 bgcolor-1 text-white hidden rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer opacity-50'}>Proceed</button>
+                                            <button type='button' className={isCardDetailsFilled ? 'hidden' : 'w-full font-bold text-lg border-0 bg-green-900 text-white hidden rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer opacity-50'}>Proceed</button>
 
-                                            <button onClick={fundAccountWithCard} type='button' className='w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>
+                                            <button onClick={fundAccountWithCard} type='button' className='w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>
                                                 <span className={showSpinner ? "hidden" : ""}>Proceed</span>
                                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                             </button>
@@ -510,11 +510,11 @@ const FundAccount = () => {
                                     <div>
                                         <div className='text-lg font-bold'>Amount</div>
 
-                                        <div className='mb-20 font-gotham-black-regular text-color-1 text-4xl'>₦ {showAmount}</div>
+                                        <div className='mb-20 font-gotham-black-regular text-green-900 text-4xl'>₦ {showAmount}</div>
 
                                         <div className='border-bottom-1d mb-10'></div>
 
-                                        <div className='mt-6 mb-10 text-color-1 text-xl font-bold'>Enter OTP</div>
+                                        <div className='mt-6 mb-10 text-green-900 text-xl font-bold'>Enter OTP</div>
 
                                         <div className='mb-20'>
                                             <div>
@@ -523,9 +523,9 @@ const FundAccount = () => {
                                         </div>
 
                                         <div>
-                                            <button type='button' className={isCardOTPFilled ? 'hidden' : 'w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer opacity-50 hidden'}>Proceed</button>
+                                            <button type='button' className={isCardOTPFilled ? 'hidden' : 'w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer opacity-50 hidden'}>Proceed</button>
 
-                                            <button onClick={validateFundWithCardOTP} type='button' className='w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>
+                                            <button onClick={validateFundWithCardOTP} type='button' className='w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>
                                                 <span className={showSpinner ? "hidden" : ""}>Proceed</span>
                                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                             </button>
@@ -548,7 +548,7 @@ const FundAccount = () => {
                                                         </svg>
                                                     </div>
 
-                                                    <div className="pt-1 text-14 text-color-1">{apiResponseSuccessMsg}</div>
+                                                    <div className="pt-1 text-sm text-green-900">{apiResponseSuccessMsg}</div>
                                                 </div>
 
                                                 <div className="cursor-pointer">
@@ -570,7 +570,7 @@ const FundAccount = () => {
                                                         </svg>
                                                     </div>
 
-                                                    <div className="pt-1 text-14">{apiResponseErrorMsg}</div>
+                                                    <div className="pt-1 text-sm">{apiResponseErrorMsg}</div>
                                                 </div>
 
                                                 <div className="cursor-pointer">
@@ -584,7 +584,7 @@ const FundAccount = () => {
 
                                         <div className='text-lg font-bold'>Amount</div>
 
-                                        <div className='mb-30 font-gotham-black-regular text-color-1 text-3xl'>₦ {showAmount}</div>
+                                        <div className='mb-30 font-gotham-black-regular text-green-900 text-3xl'>₦ {showAmount}</div>
 
                                         {cardFundingDetails.map((item :any, index :any) =>
                                         <div className='' key={index}>
@@ -595,7 +595,7 @@ const FundAccount = () => {
 
                                             <div className='flex justify-between mb-30'>
                                                 <div>Beneficiary Account Number</div>
-                                                <div className='font-bold text-color-1 font-bold'>{item.beneficiaryAccountNumber}</div>
+                                                <div className='font-bold text-green-900 font-bold'>{item.beneficiaryAccountNumber}</div>
                                             </div>
 
                                             <div className='flex justify-between mb-30'>
@@ -606,7 +606,7 @@ const FundAccount = () => {
                                         )}
 
                                         <div>
-                                            <button onClick={verifyCardFunding} type='button' className= 'w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' >
+                                            <button onClick={verifyCardFunding} type='button' className= 'w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' >
                                                 <span className={showSpinner ? "hidden" : ""}>Proceed</span>
                                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                             </button>
@@ -623,7 +623,7 @@ const FundAccount = () => {
                                             <div className="bg-white p-2 w-full -bottom-5 absolute"></div>
                                         </div>
 
-                                        <div className='text-xl font-bold text-color-1 text-center mb-20'>Transaction Successful</div>
+                                        <div className='text-xl font-bold text-green-900 text-center mb-20'>Transaction Successful</div>
 
                                         <div className='border-bottom-1d'></div>
 
@@ -641,17 +641,17 @@ const FundAccount = () => {
 
                                             <div className='flex justify-between py-5 border-bottom-1d text-sm'>
                                                 <div>Date</div>
-                                                <div className='font-bold text-color-1 font-bold'>{moment(item.updatedOn).format("DD MMMM YYYY | hh:mm A")}</div>
+                                                <div className='font-bold text-green-900 font-bold'>{moment(item.updatedOn).format("DD MMMM YYYY | hh:mm A")}</div>
                                             </div>
 
                                             <div className='flex justify-between py-5 border-bottom-1d text-sm'>
                                                 <div>Beneficiary Account Number</div>
-                                                <div className='font-bold text-color-1 font-bold'>{item.beneficiaryAccountNumber}</div>
+                                                <div className='font-bold text-green-900 font-bold'>{item.beneficiaryAccountNumber}</div>
                                             </div>
 
                                             <div className='flex justify-between py-5 border-bottom-1d text-sm'>
                                                 <div>Reference</div>
-                                                <div className='font-bold text-color-1 font-bold'>{item.flwRef}</div>
+                                                <div className='font-bold text-green-900 font-bold'>{item.flwRef}</div>
                                             </div>
 
                                             
@@ -662,7 +662,7 @@ const FundAccount = () => {
                                             <button type='button' className='w-2/5 font-bold border-0 opacity-0 rounded-lg focus:shadow-outline px-5 py-2 bg-gray-200 cursor-pointer'>Share</button>
 
                                             
-                                            <button onClick={performSwitchToDebit} type='button' className='w-3/5 font-bold border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' >Close</button>
+                                            <button onClick={performSwitchToDebit} type='button' className='w-3/5 font-bold border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' >Close</button>
                                             
                                         </div>
                                     </div>
@@ -674,10 +674,10 @@ const FundAccount = () => {
                                     <div>
                                         <div className="wallet-id-card mb-30">
                                             <div className="font-bold text-green-500 mb-10">Wallet ID</div>
-                                            <div className="font-bold text-white mb-10 text-14">{customer.firstName + " " + customer.lastName + " " + customer.otherNames}</div>
+                                            <div className="font-bold text-white mb-10 text-sm">{customer.firstName + " " + customer.lastName + " " + customer.otherNames}</div>
 
                                             <div className="font-bold flex space-x-5 items-middle cursor-pointer  mb-5">
-                                                <span className='text-28 text-white'>{customer.walletAccountNumber}</span>
+                                                <span className='text-3xl text-white'>{customer.walletAccountNumber}</span>
                                                 <CopyToClipboard text={customer.walletAccountNumber}>
                                                     <div className='poptip' style={{ marginTop: '8px' }}>
                                                         <img src={CopyIcon} onClick={changePopTipTextToCopied} alt="" />
@@ -704,7 +704,7 @@ const FundAccount = () => {
                                         </div>
 
                                         <div className='flex space-x-3 hidden'>
-                                            <button type='button' className='w-full font-bold border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-4 cursor-pointer' >Close</button>
+                                            <button type='button' className='w-full font-bold border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-4 cursor-pointer' >Close</button>
                                         </div>
                                     </div>
                                 </div>

@@ -79,21 +79,21 @@ const PortfolioInfoCard: FunctionComponent<Props> = ({
             {showFailure && <FailureAlert message={errorMessage} showFailure={showFailure} closeModal ={closeModal}/>}
             {showModalBG && <ModalBackground showModalBG={showModalBG}/>}
             
-            <div className="card-custom p-5 flex justify-between cursor-pointer">
+            <div className="card-custom p-5 flex justify-between cursor-pointer md:mb-0 mb-6">
                 <div className="flex space-x-4">
                     <div><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" /></div>
 
-                    <div className="text-14">
+                    <div className="text-sm">
                         <div className="mb-10 font-bold text-color-2">{item.name}</div>
                         <div className={item.hasOwnProperty("listOfStocks") ? 'text-black':'hidden'}>Count: {item.hasOwnProperty("listOfStocks") ? item.listOfStocks.length : 0}</div>
                     </div>
                 </div>
 
-                <div className="text-14">
+                <div className="text-sm">
                     <div className="flex mb-10 justify-between">
-                        <div className="text-color-1 font-bold">{title}</div>
+                        <div className="text-green-900 font-bold">{title}</div>
                     </div>
-                    <div className="font-gotham-black-regular text-color-1 text-24 mb-10">₦ {formatCurrencyWithDecimal(item.currentValue)}</div>
+                    <div className="font-gotham-black-regular text-green-900 text-24 mb-10">₦ {formatCurrencyWithDecimal(item.currentValue)}</div>
                     <div className={item.hasOwnProperty("uuid") ? '':'hidden'}>
                         <span className={(item.portfolioReturn) >= 0 ? "text-green-500 text-24 font-bold" : "text-red-500 text-24 font-bold"}>
                             <span>{formatCurrencyWithDecimal(defaultToZeroIfNullOrUndefined(item.portfolioReturn)).replace("-","")}</span> |

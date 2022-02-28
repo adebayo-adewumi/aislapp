@@ -127,7 +127,7 @@ const Login = () => {
                                         </svg>
                                     </div>
 
-                                    <div className="pt-1 text-14">Invalid login details</div>
+                                    <div className="pt-1 text-sm">Invalid login details</div>
                                 </div>
 
                                 <div className="cursor-pointer" onClick={closeLoginHasError}>
@@ -139,29 +139,29 @@ const Login = () => {
                         </div>
                         {/* End */}
 
-                        <div className="mb-20 signup-text text-14">
+                        <div className="mb-20 signup-text text-sm">
                             <span>Don’t have an account?</span>
-                            <Link to="/register" className="no-underline text-color-1">
+                            <Link to="/register" className="no-underline text-green-900">
                                 <span><strong>Sign Up</strong> </span>
                             </Link>
                         </div>
 
-                        <div className="mb-20 font-gotham-black-regular text-28 text-color-1"><strong>Login</strong></div>
-                        <div className="mb-30 text-16 text-color-4">Provide the details below to login</div>
+                        <div className="mb-20 font-gotham-black-regular text-3xl text-green-900"><strong>Login</strong></div>
+                        <div className="mb-30 text-sm text-color-4">Provide the details below to login</div>
 
                         <form className="form">
                             <div className="mb-20">
-                                <div className="mb-10 text-16">Email</div>
-                                <input onChange={e => setEmail(e.target.value)} className="outline-white p-3 text-14 border border-gray-500 input" placeholder="Enter your email" />
+                                <div className="mb-10 text-sm">Email</div>
+                                <input onChange={e => setEmail(e.target.value)} className="outline-white p-3 text-sm border border-gray-500 input" placeholder="Enter your email" />
                                 <div className={isInvalidEmail ? 'text-red-500 text-sm mt-2' : 'text-red-500 text-sm mt-2 hidden'}>Please enter a valid email address</div>
                             </div>
 
                             <div className="mb-20 relative">
-                                <div className="mb-10 text-16">Password</div>
+                                <div className="mb-10 text-sm">Password</div>
 
                                 <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
                                     <div className='w-full'>
-                                        <input onChange={e => setPassword(e.target.value)} className="outline-white p-3 input border-0 text-14" placeholder="Enter password" type={isShowPassword ? 'text' : 'password'} name="password" />
+                                        <input onChange={e => setPassword(e.target.value)} className="outline-white p-3 input border-0 text-sm" placeholder="Enter password" type={isShowPassword ? 'text' : 'password'} name="password" />
                                     </div>
 
                                     <div className='px-2 pt-1'>
@@ -177,22 +177,22 @@ const Login = () => {
                             </div>
 
                             <div className="mb-20 text-right">
-                                <Link to="/forgot" className="no-underline"><strong className="text-14 font-bold text-color-1 mr-2">Forgot Password</strong></Link>
+                                <Link to="/forgot" className="no-underline"><strong className="text-sm font-bold text-green-900 mr-2">Forgot Password</strong></Link>
                             </div>
 
                             <div className="mb-20">
-                                <button onClick={loginUser} className={emailOrPasswordIsNullOrEmpty ? "w-full rounded-lg bgcolor-1 text-white border-0 py-4 px-4 font-bold text-sm opacity-50 cursor-pointer" : "w-full hover:bg-green-700 rounded-lg bgcolor-1 text-white border-0 py-4 px-4 font-bold text-sm cursor-pointer focus:shadow-outline"} disabled={emailOrPasswordIsNullOrEmpty} type='button'>
+                                <button onClick={loginUser} className={emailOrPasswordIsNullOrEmpty ? "w-full rounded-lg bg-green-900 text-white border-0 py-4 px-4 font-bold text-sm opacity-50 cursor-pointer" : "w-full hover:bg-green-700 rounded-lg bg-green-900 text-white border-0 py-4 px-4 font-bold text-sm cursor-pointer focus:shadow-outline"} disabled={emailOrPasswordIsNullOrEmpty} type='button'>
                                     <span className={showSpinner ? "hidden" : ""}>Login</span>
                                     <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="30" />
                                 </button>
                             </div>
 
                             <div className="text-center">
-                                <div className="mb-5 text-13">By creating an account, you agree to Anchoria </div>
-                                <div className="text-13">
-                                    <a href="https://anchoriaonline.com/terms-and-conditions-of-use/" target="_blank" rel='noreferrer'><button type="button" className="no-underline border-0 bg-transparent text-color-1 cursor-pointer"><strong>Terms & Conditions</strong></button></a> and
+                                <div className="mb-5 text-sm">By creating an account, you agree to Anchoria </div>
+                                <div className="text-sm">
+                                    <a href="https://anchoriaonline.com/terms-and-conditions-of-use/" target="_blank" rel='noreferrer'><button type="button" className="no-underline border-0 bg-transparent text-green-900 cursor-pointer"><strong>Terms & Conditions</strong></button></a> and
 
-                                    <a href="https://anchoriaonline.com/anchoria-privacy-policy/" target="_blank" rel='noreferrer'><button type="button" className="no-underline border-0 bg-transparent text-color-1 cursor-pointer"><strong> Privacy Policy</strong></button></a>
+                                    <a href="https://anchoriaonline.com/anchoria-privacy-policy/" target="_blank" rel='noreferrer'><button type="button" className="no-underline border-0 bg-transparent text-green-900 cursor-pointer"><strong> Privacy Policy</strong></button></a>
                                 </div>
                             </div>
                         </form>

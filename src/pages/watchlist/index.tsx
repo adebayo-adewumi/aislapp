@@ -206,114 +206,116 @@ const Watchlist = () => {
             <UserAreaHeader />
 
             <div>
-                <div className="flex">
+                <div className="h-screen flex">
                     <Sidebar />
 
-                    <div className="main-content w-full p-10">
-                        <div className='flex justify-between items-center'>
-                            <div>
-                                <div className="text-28 mb-10">
-                                    <span className="font-bold text-color-1">My Watchlist</span>
+                    <div className="mt-20 flex-1 min-w-0 flex flex-col">
+                        <div className='p-10 flex-1 bg-gray-100 overflow-y-auto'>
+                            <div className='flex justify-between items-center'>
+                                <div>
+                                    <div className="text-3xl mb-10">
+                                        <span className="font-bold text-green-900">My Watchlist</span>
+                                    </div>
+
+                                    <div className="text-sm font-bold text-color-2 mb-30">Overview of your favourite stocks</div>
                                 </div>
 
-                                <div className="text-16 font-bold text-color-2 mb-30">Overview of your favourite stocks</div>
-                            </div>
-
-                            <div>
-                                <button type='button' onClick={displayCreateWatchlistModal} className='hidden focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 cursor-pointer rounded bgcolor-1 text-white font-bold px-10 py-3 border-0'>Create Watchlist</button>
-                            </div>
-                        </div>
-
-                        {/*Quick Search*/}
-                        <div className="mb-20">
-                            <div className="flex justify-between">
                                 <div>
-                                    <div className="border_1 flex rounded-lg p-02rem">
-                                        <div>
-                                            <button onClick={performSwitchToAll} type='button' className={switchToAll ? "rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>All</button>
-                                        </div>
+                                    <button type='button' onClick={displayCreateWatchlistModal} className='hidden focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 cursor-pointer rounded bg-green-900 text-white font-bold px-10 py-3 border-0'>Create Watchlist</button>
+                                </div>
+                            </div>
 
-                                        <div className='hidden'>
-                                            <button onClick={performSwitchToAlert} type='button' className={switchToAlert ? "rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Alerts</button>
+                            {/*Quick Search*/}
+                            <div className="mb-20">
+                                <div className="flex justify-between">
+                                    <div>
+                                        <div className="border_1 flex rounded-lg p-02rem">
+                                            <div className='hidden'>
+                                                <button onClick={performSwitchToAll} type='button' className={switchToAll ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>All</button>
+                                            </div>
+
+                                            <div className='hidden'>
+                                                <button onClick={performSwitchToAlert} type='button' className={switchToAlert ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Alerts</button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div className='hidden'>
-                                    <div className="flex space-x-3">
-                                        <div>
-                                            <Link to="/trade" className='no-underline text-color-1'>
-                                                <button type="button" className="border-0 rounded-lg py-2 px-3 button-filter  cursor-pointer">
-                                                    <img src={SlidersIcon} alt="" />
-                                                </button>
-                                            </Link>
-                                        </div>
+                                    <div className='hidden'>
+                                        <div className="flex space-x-3">
+                                            <div>
+                                                <Link to="/trade" className='no-underline text-green-900'>
+                                                    <button type="button" className="border-0 rounded-lg py-2 px-3 button-filter  cursor-pointer">
+                                                        <img src={SlidersIcon} alt="" />
+                                                    </button>
+                                                </Link>
+                                            </div>
 
-                                        <div className="w-80 right-0 flex border_1 rounded-lg pr-3 bg-white">
-                                            <div className="pl-3 py-2"><img src={SearchIcon} alt="" /></div>
+                                            <div className="w-80 right-0 flex border_1 rounded-lg pr-3 bg-white">
+                                                <div className="pl-3 py-2"><img src={SearchIcon} alt="" /></div>
 
-                                            <div className='w-full'>
-                                                <input type="text" className="outline-white p-2 input border-0" placeholder="Quick search" />
+                                                <div className='w-full'>
+                                                    <input type="text" className="outline-white p-2 input border-0" placeholder="Quick search" />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        {/*End*/}
+                            {/*End*/}
 
-                        {/*Card section*/}
-                        <div>
-                            {watchListStocks.length === 0 ? 'No stocks in your watchlist.' : watchListStocks.map((item: any, index: number) =>
-                                <div className="card-15px mb-20" key={index}>
-                                    <div className="flex justify-between items-center">
-                                        <div><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" /></div>
+                            {/*Card section*/}
+                            <div>
+                                {watchListStocks.length === 0 ? 'No stocks in your watchlist.' : watchListStocks.map((item: any, index: number) =>
+                                    <div className="card-15px mb-20" key={index}>
+                                        <div className="flex justify-between items-center">
+                                            <div><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" /></div>
 
-                                        <div className="font-bold text-color-2">{item.name}</div>
+                                            <div className="font-bold text-color-2">{item.name}</div>
 
-                                        <div className="text-ellipsis overflow-hidden ...">{item.name}</div>
+                                            <div className="text-ellipsis overflow-hidden ...">{item.name}</div>
 
-                                        <div className="font-bold text-color-2 text-right">₦ {HelperFunctions.formatCurrencyWithDecimal(item.currentPrice)}</div>
+                                            <div className="font-bold text-color-2 text-right">₦ {HelperFunctions.formatCurrencyWithDecimal(item.currentPrice)}</div>
 
-                                        <div className="text-green-500 font-bold"> {HelperFunctions.formatCurrencyWithDecimal(item.percentageChangeSinceAdded)}%  </div>
+                                            <div className="text-green-500 font-bold"> {HelperFunctions.formatCurrencyWithDecimal(item.percentageChangeSinceAdded)}%  </div>
 
-                                        <div className='flex justify-between space-x-2'>
+                                            <div className='flex justify-between space-x-2'>
 
-                                            <button onClick={displayRemoveStockModal} type='button' className="py-3 px-5 border-0 font-bold text-red-500 cursor-pointer bg-transparent" data-symbol={item.name}>Remove</button>
+                                                <button onClick={displayRemoveStockModal} type='button' className="py-3 px-5 border-0 font-bold text-red-500 cursor-pointer bg-transparent" data-symbol={item.name}>Remove</button>
 
-                                            <Link to={"/stock?name=" + item.name + "&symbol=" + item.name + "&sign=" + (item.sign === '+' ? 'positive' : 'negative') + "&currentPrice=" + item.currentPrice + "&tradeAction=buy"}>
-                                                <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
+                                                <Link to={"/stock?name=" + item.name + "&symbol=" + item.name + "&sign=" + (item.sign === '+' ? 'positive' : 'negative') + "&currentPrice=" + item.currentPrice + "&tradeAction=buy"}>
+                                                    <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
+                                            </div>
                                         </div>
                                     </div>
+                                )}
+                            </div>
+                            {/*End*/}
+
+                            {/*Pagination section*/}
+                            <div className='hidden'>
+                                <div>
+                                    <ul className='pagination list-none font-bold flex space-x-2 justify-end cursor-pointer text-sm'>
+                                        <li className='font-bold text-green-900 rounded-lg'>Previous</li>
+                                        <li className='text-color-9 rounded-lg'>1</li>
+                                        <li className='text-color-9 rounded-lg'>2</li>
+                                        <li className='text-color-9 rounded-lg active'>3</li>
+                                        <li className='text-color-9 rounded-lg'>4</li>
+                                        <li className='text-color-9 rounded-lg'>5</li>
+                                        <li className='font-bold text-green-900 rounded-lg'>Next</li>
+                                    </ul>
                                 </div>
-                            )}
-                        </div>
-                        {/*End*/}
-
-                        {/*Pagination section*/}
-                        <div className='hidden'>
-                            <div>
-                                <ul className='pagination list-none font-bold flex space-x-2 justify-end cursor-pointer text-13'>
-                                    <li className='font-bold text-color-1 rounded-lg'>Previous</li>
-                                    <li className='text-color-9 rounded-lg'>1</li>
-                                    <li className='text-color-9 rounded-lg'>2</li>
-                                    <li className='text-color-9 rounded-lg active'>3</li>
-                                    <li className='text-color-9 rounded-lg'>4</li>
-                                    <li className='text-color-9 rounded-lg'>5</li>
-                                    <li className='font-bold text-color-1 rounded-lg'>Next</li>
-                                </ul>
                             </div>
-                        </div>
-                        {/*End*/}
+                            {/*End*/}
 
-                        {/* Page Loader Section */}
-                        <div className={showPageLoader ? "page-loader-backdrop opacity-90" : "hidden"}>
-                            <div className='ml-custom w-96 my-custom relative'>
-                                <div className='absolute top-44pc left-46pt5pc'><img src={AnchoriaIcon} alt="" /></div>
-                                <div className='text-center'><img src={AnchoriaSpinner} alt="" /></div>
+                            {/* Page Loader Section */}
+                            <div className={showPageLoader ? "page-loader-backdrop opacity-90" : "hidden"}>
+                                <div className='w-96 relative lg:ml-72'>
+                                    <div className='absolute top-44pc left-46pt5pc'><img src={AnchoriaIcon} alt="" /></div>
+                                    <div className='text-center'><img src={AnchoriaSpinner} alt="" /></div>
+                                </div>
                             </div>
+                            {/* End */}
                         </div>
-                        {/* End */}
                     </div>
                 </div>
             </div>
@@ -329,7 +331,7 @@ const Watchlist = () => {
                 </div>
 
                 <div>
-                    <div className="text-28 font-bold mb-30">Create New Watchlist</div>
+                    <div className="text-3xl font-bold mb-30">Create New Watchlist</div>
 
                     <form>
                         <div>
@@ -354,15 +356,15 @@ const Watchlist = () => {
 
             <div className={showRemoveStockModal ? "removeStock-modal" : "removeStock-modal hidden"}>
                 <div className='text-center mb-10'><img src={RemoveStockIcon} alt="" /></div>
-                <div className='text-center text-28 font-gotham-black-regular mb-10'>Remove Stocks</div>
-                <div className='text-center mb-30 text-14 leading-5'>
+                <div className='text-center text-3xl font-gotham-black-regular mb-10'>Remove Stocks</div>
+                <div className='text-center mb-30 text-sm leading-5'>
                     Are you sure you want to remove this stocks from your watchlist?
                 </div>
 
                 <div className='flex space-x-3'>
                     <button onClick={closeModal} type='button' className='cursor-pointer w-40 rounded-lg border-0 bg-gray-300 text-24 p-3 font-bold'>Cancel</button>
 
-                    <button onClick={removeStockFromWatchlist} type='button' className='cursor-pointer rounded-lg border-0 bgcolor-1 text-white text-24 p-3 font-bold w-96'>
+                    <button onClick={removeStockFromWatchlist} type='button' className='cursor-pointer rounded-lg border-0 bg-green-900 text-white text-24 p-3 font-bold w-96'>
                         <span className={showSpinner ? "hidden" : ""}>Confirm</span>
                         <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="30" />
                     </button>
@@ -375,9 +377,9 @@ const Watchlist = () => {
                     <div className="bg-white p-3 w-full -bottom-10 absolute"></div>
                 </div>
 
-                <div className="relative z-10 text-color-1 font-gotham-black-regular text-28 text-center mb-20">Successful</div>
+                <div className="relative z-10 text-green-900 font-gotham-black-regular text-3xl text-center mb-20">Successful</div>
 
-                <div className="text-color-4 text-16 text-center mb-14">{apiSuccessMsg}</div>
+                <div className="text-color-4 text-sm text-center mb-14">{apiSuccessMsg}</div>
 
                 <div className="flex space-x-5 mb-30">
                     <button onClick={closeModal} type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer">Close</button>

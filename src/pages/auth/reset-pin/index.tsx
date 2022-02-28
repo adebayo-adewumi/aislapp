@@ -144,19 +144,19 @@ const ResetPin = () => {
 
             <div className={showResetPinCard ? "mx-auto reset-container mt-32":"mx-auto reset-container mt-32 hidden"}>
 
-                <div className="mb-10 text-28 font-gotham-black-regular text-color-1">Reset your pin</div>
+                <div className="mb-10 text-3xl font-gotham-black-regular text-green-900">Reset your pin</div>
                 
-                <div className="mb-30 text-16 text-color-1 font-bold">Please type a new pin</div>
+                <div className="mb-30 text-sm text-green-900 font-bold">Please type a new pin</div>
 
                 <form className="form">
 
                     {/* Pin section */}
                     <div className="mb-20">
                         <div className="relative">
-                            <div className="mb-10 text-16">Create a new pin</div>
+                            <div className="mb-10 text-sm">Create a new pin</div>
                             <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
                                 <div className='w-full'>
-                                    <input value={pin} onChange={e => setPin(e.target.value)} type={isShowPin ? 'text' : 'password'} className="outline-white input border-0 text-14 p-3" placeholder="Enter pin" name="pin" maxLength={4}/>
+                                    <input value={pin} onChange={e => setPin(e.target.value)} type={isShowPin ? 'text' : 'password'} className="outline-white input border-0 text-sm p-3" placeholder="Enter pin" name="pin" maxLength={4}/>
                                 </div>
 
                                 <div className='px-2 pt-1'>
@@ -176,10 +176,10 @@ const ResetPin = () => {
                     {/* Confirm Pin section */}
                     <div className="mb-20">
                         <div className="relative">
-                            <div className="mb-10 text-16">Confirm Pin</div>
+                            <div className="mb-10 text-sm">Confirm Pin</div>
                             <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
                                 <div className='w-full'>
-                                    <input value={confirmPin} onChange={e => setConfirmPin(e.target.value)} className="outline-white input border-0 text-14 p-3" placeholder="Type your pin again" name="pin" type={isShowConfirmPin ? 'text' : 'password'} maxLength={4}/>
+                                    <input value={confirmPin} onChange={e => setConfirmPin(e.target.value)} className="outline-white input border-0 text-sm p-3" placeholder="Type your pin again" name="pin" type={isShowConfirmPin ? 'text' : 'password'} maxLength={4}/>
                                 </div>
 
                                 <div className='px-2 pt-1'>
@@ -201,7 +201,7 @@ const ResetPin = () => {
                     {/* Proceed Button section */}
                     <div className="mb-20">
                         <div>
-                            <button onClick={resetPin} className={pinOrConfirmPinIsNullOrEmpty ? "w-full rounded-lg bgcolor-1 border-0 text-white opacity-50 px-20 py-3 font-bold text-16":"w-full rounded-lg bgcolor-1 border-0 text-white px-20 py-3 font-bold text-16 cursor-pointer"} type='button' disabled={pinOrConfirmPinIsNullOrEmpty}>
+                            <button onClick={resetPin} className={pinOrConfirmPinIsNullOrEmpty ? "w-full rounded-lg bg-green-900 border-0 text-white opacity-50 px-20 py-3 font-bold text-sm":"w-full rounded-lg bg-green-900 border-0 text-white px-20 py-3 font-bold text-sm cursor-pointer"} type='button' disabled={pinOrConfirmPinIsNullOrEmpty}>
                                 <span className={ showSpinner ? "hidden" : ""}>Reset</span>
                                 <img src={SpinnerIcon} alt="spinner icon" className={ showSpinner ? "" : "hidden"} width="30"/>
                             </button>
@@ -210,7 +210,7 @@ const ResetPin = () => {
                     {/* End */}
 
                     <div className="text-right">
-                        <Link to="/" className="no-underline text-color-1">Take me back to <span className="font-bold">Login </span></Link>
+                        <Link to="/" className="no-underline text-green-900">Take me back to <span className="font-bold">Login </span></Link>
                     </div>
                 </form>
             </div>
@@ -221,9 +221,9 @@ const ResetPin = () => {
                     <div className="bg-white p-3 w-full -bottom-10 absolute"></div>
                 </div>
 
-                <div className="relative z-10 text-color-1 font-gotham-black-regular text-28 text-center mb-20">Successful</div>
+                <div className="relative z-10 text-green-900 font-gotham-black-regular text-3xl text-center mb-20">Successful</div>
 
-                <div className="text-color-4 text-16 text-center mb-14">Your pin has been successfully updated</div>
+                <div className="text-color-4 text-sm text-center mb-14">Your pin has been successfully updated</div>
 
                 <div className="mb-30">
                     <Link to="/">

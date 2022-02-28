@@ -13,9 +13,9 @@ const FailureAlert = ({ showFailure,
                 <div className="bg-white p-3 w-full -bottom-10 absolute"></div>
             </div>
 
-            <div className="relative z-10 text-color-1 font-gotham-black-regular text-28 text-center mb-20">{title}</div>
+            <div className="relative z-10 text-green-900 font-gotham-black-regular text-3xl text-center mb-20">{title}</div>
 
-            <div className="text-color-4 text-16 text-center mb-14">{message}</div>
+            <div className="text-color-4 text-sm text-center mb-14">{message}</div>
 
             <div className="flex space-x-5 mb-30">
                 <button onClick={closeModal} type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer">Close</button>

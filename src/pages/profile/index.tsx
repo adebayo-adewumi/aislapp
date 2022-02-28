@@ -301,23 +301,23 @@ const Profile = () => {
             { headers })
             .then(function (response) {
                 let logs = response.data.data.map((item :any, index :any) =>
-                <div className={item.readFlag ? 'p-5 space-x-20  justify-between items-center flex border-bottom-1d cursor-pointer':'p-5 cursor-pointer space-x-20  justify-between flex border-bottom-1d bg-gray-100 items-center'} key={index} data-id={item.id}>
-                    <div className='rounded-full bg-B9F1B4 px-3 shadow-sm py-3' data-id={item.id}>
+                <div className={item.readFlag ? 'p-5 md:space-x-20  md:justify-between md:items-center md:flex border-bottom-1d cursor-pointer':'p-5 cursor-pointer md:space-x-20  md:justify-between md:flex border-bottom-1d bg-gray-100 md:items-center'} key={index} data-id={item.id}>
+                    <div className='rounded-full bg-B9F1B4 px-3 shadow-sm py-3 md:mb-0 mb-3 md:w-fit w-12' data-id={item.id}>
                         <img src={BellIcon}  alt="" data-id={item.id}/>
                     </div>
 
-                    <div className='relative flex-1' data-id={item.id}>
+                    <div className='relative flex-1 text-sm md:mb-0 mb-3' data-id={item.id}>
                         <div className={item.readFlag ? '':'font-bold'} data-id={item.id}>{item.content}</div>
                     </div>
 
-                    <div className='relative flex-1' data-id={item.id}>
+                    <div className='relative flex-1 md:mb-0 mb-3' data-id={item.id}>
                         <div data-id={item.id}>
-                            <button className='rounded-lg border-0 py-2 px-3' style={{backgroundColor: '#B9F1B4'}} data-id={item.id}>
+                            <button className='rounded-lg border-0 py-2 px-3 text-sm' style={{backgroundColor: '#B9F1B4'}} data-id={item.id}>
                             {item.subject}</button> 
                         </div>
                     </div>
                     
-                    <div className={item.readFlag ? '':'font-bold'} data-id={item.id}>{moment(item.createdOn).format("MMM Do, YYYY hh:mm A")}</div>
+                    <div className={item.readFlag ? '':'font-bold text-sm'} data-id={item.id}>{moment(item.createdOn).format("MMM Do, YYYY hh:mm A")}</div>
 
                     <div data-id={item.id}>
                         <button onClick={displayNotificationDetailModal} type="button" className='cursor-pointer px-5 py-3 text-green-700 font-bold rounded-lg hover:bg-gray-300 border-0 hidden' data-id={item.id}>View</button>
@@ -579,13 +579,6 @@ const Profile = () => {
         setSwitchToBankDetails(false);
     }
 
-    function performSwitchToBankDetails(){
-        setSwitchToKYC(false);
-        setSwitchToSecurity(false);
-        setSwitchToNotification(false);
-        setSwitchToBankDetails(true);
-    }
-
     function sendPersonalDetails(){
 
         let customer = HelperFunctions.getCustomerInfo();
@@ -621,21 +614,9 @@ const Profile = () => {
             "text" : localStorage.getItem('genericCypher')
         },{headers})
         .then(function (response) {
-            setApiResponseMessage(response.data.description);
             setIsPersonalDetailsSuccessful(true);
-
-            setTimeout(()=>{
-                setIsPersonalDetailsSuccessful(false);
-                setIsEmployeeDetailsSuccessful(false);
-                setIsNokSuccessful(false);
-
-                setIsPinChangeSuccessful(false);
-                setIsPasswordChangeSuccessful('false');
-
-                setShowPersonalSpinner(false);
-
-                setIsPinValid('');
-            },1000)
+            setApiResponseMessage(response.data.description);
+            setShowPersonalSpinner(false);
         })
         .catch(function (error) {
             setErrorMsg(error.response.data.message);
@@ -1089,310 +1070,333 @@ const Profile = () => {
             <UserAreaHeader />
 
             <div>
-                <div className="flex">
+                <div className="h-screen flex">
                     <Sidebar />
 
-                    <div className="main-content w-full p-10">
-                        <div className="text-28 mb-10">
-                            <span className="font-bold text-color-1">Profile</span>
-                        </div>
-
-                        <div className="text-16 font-bold text-color-2 mb-30">Manage your information</div>
-
-                        {/*Switch */}
-                        <div>
-                            <div className='mb-30 flex justify-between items-center'>
-                                <div className="border_1 flex rounded-lg p-02rem">
-                                    <div>
-                                        <button onClick={performSwitchToKYC} type='button' className={switchToKYC ? "rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer":"cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>KYC Details</button>
-                                    </div>
-
-                                    <div>
-                                        <button onClick={performSwitchToSecurity} type='button' className={switchToSecurity ? "rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer":"cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Security</button>
-                                    </div>
-
-                                    <div>
-                                        <button onClick={performSwitchToNotification}  type='button' className={switchToNotification ? "rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer":"cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Notification</button>
-                                    </div>
-
-                                    <div className='hidden'>
-                                        <button onClick={performSwitchToBankDetails}  type='button' className={switchToBankDetails ? "rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer":"cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Bank Details</button>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <div>
-                                        <button type='button' className={switchToKYC ? "rounded-lg bgcolor-1 text-white border-0 py-3 px-12 cursor-pointer":"hidden"}>KYC Category: {customer.kycStatus}</button>
-                                    </div>
-
-                                    <div>
-                                        <button type='button' onClick={displayAddBankModal} className={switchToBankDetails ?"rounded-lg bgcolor-1 text-white border-0 py-3 px-12 cursor-pointer font-bold":"hidden"}>Add New Bank</button>
-                                    </div>
-                                </div>
-                                
+                    <div className="mt-20 flex-1 min-w-0 flex flex-col">
+                        <div className='p-10 flex-1 bg-gray-100 overflow-y-auto'>
+                            <div className="text-xl mb-10">
+                                <span className="text-lg sm:text-4xl md:text-2xl leading-snug font-semibold tracking-tight text-green-900 py-4">Profile</span>
                             </div>
-                        </div>
-                        {/*End */}
 
-                        {/*KYC section */}
-                        <div className={switchToKYC ? '':'hidden'}>
+                            <div className="text-sm font-bold text-green-900 mb-30">Manage your information</div>
 
-                            {/*Personal details card */}
-                            <div className='mb-30'>
-                                <div className='card'>
-
-                                    {/* Personal Deatils Success */}
-                                    <div className={isPersonalDetailsSuccessful ? "otp-alert mb-20":"hidden"}>
-                                        <div className="flex otp-validated justify-between space-x-1 pt-3">
-                                            <div className="flex">
-                                                <div>
-                                                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062"/>
-                                                        <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062"/>
-                                                    </svg>
-                                                </div>
-
-                                                <div className="pt-1 text-14 text-color-1">{apiResponseMessage}</div>
-                                            </div>
-                                            
-                                            <div className="cursor-pointer" onClick={closeModal}>
-                                                <svg  className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50"/>
-                                                </svg>
-                                            </div>
+                            {/*Switch */}
+                            <div>
+                                <div className='mb-30 md:flex md:justify-between md:items-center'>
+                                    <div className="border border-gray-500 md:flex rounded-lg p-1 md:w-1/2 w-full md:mb-0 mb-6">
+                                        <div className='w-full'>
+                                            <button onClick={performSwitchToKYC} type='button' className={switchToKYC ? "rounded-lg bg-green-900 text-white border-0 px-5 py-3 font-bold cursor-pointer lg:text-xs w-full":"cursor-pointer rounded-lg py-3 px-5 font-bold border-0 bg-transparent lg:text-xs w-full"}>KYC Details</button>
                                         </div>
-                                    </div>
-                                    {/* End */}
 
-                                    <div className='font-gotham-black-regular text-color-1 mb-30'>Personal Details</div>
+                                        <div className='w-full'>
+                                            <button onClick={performSwitchToSecurity} type='button' className={switchToSecurity ? "rounded-lg bg-green-900 text-white border-0 py-3 px-5 font-bold cursor-pointer lg:text-xs w-full":"cursor-pointer rounded-lg py-3 px-5 font-bold border-0 bg-transparent lg:text-xs w-full"}>Security</button>
+                                        </div>
 
-                                    <div className='flex mb-30'>
-                                        <div className='flex w-1/2 justify-between'>
-                                            <div>
-                                                <div className='font-bold font-gotham-black-regular text-gray-700 mb-4'>Firstname</div>
-                                                <div>{customer.firstName}</div>
-                                            </div>
-
-                                            <div>
-                                                <div className='font-bold font-gotham-black-regular text-gray-700 mb-4'>Surname</div>
-                                                <div>{customer.lastName}</div>
-                                            </div>
-
-                                            <div>
-                                                <div className='font-bold font-gotham-black-regular text-gray-700 mb-4'>Email address</div>
-                                                <div>{customer.email}</div>
-                                            </div>
+                                        <div className='w-full'>
+                                            <button onClick={performSwitchToNotification}  type='button' className={switchToNotification ? "rounded-lg bg-green-900 text-white border-0 py-3 px-5 font-bold cursor-pointer w-full":"cursor-pointer rounded-lg py-3 px-5 font-bold border-0 bg-transparent lg:text-xs w-full"}>Notification</button>
                                         </div>
                                     </div>
 
-                                    <div className='flex mb-30'>
-                                        <div className='flex w-3/4 space-x-6'>
-                                            <div className='w-1/2'>
-                                                <div className='font-bold font-gotham-black-regular text-gray-700 mb-4'>Address</div>
-                                                <div><input defaultValue={customer.permanentAddress} onChange={e => setAddress(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
-                                            </div>
-
-                                            <div className='w-1/2'>
-                                                <div className='font-bold font-gotham-black-regular text-gray-700 mb-4'>City</div>
-                                                <div><input type='text' value={city} onChange={e => setCity(e.target.value)} className='border border-gray-300 px-3 py-2 text-lg outline-white rounded-lg w-full'/></div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className='flex mb-12'>
-                                        <div className='flex w-3/4 space-x-6'>
-                                            <div className='w-1/2'>
-                                                <div className='font-bold font-gotham-black-regular text-gray-700 mb-4'>State</div>
-                                                <div>
-                                                    <select onChange={e => setState(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
-                                                        <option value="">Select a state</option>
-                                                        <option value="Abuja">Abuja</option>
-                                                        <option value="Abia">Abia</option>
-                                                        <option value="Adamawa">Adamawa</option>
-                                                        <option value="Akwa Ibom">Akwa Ibom</option>
-                                                        <option value="Anambra">Anambra</option>
-                                                        <option value="Bauchi">Bauchi</option>
-                                                        <option value="Bayelsa">Bayelsa</option>
-                                                        <option value="Benue">Benue</option>
-                                                        <option value="Borno">Borno</option>
-                                                        <option value="Cross River">Cross River</option>
-                                                        <option value="Delta">Delta</option>
-                                                        <option value="Ebonyi">Ebonyi</option>
-                                                        <option value="Edo">Edo</option>
-                                                        <option value="Ekiti">Ekiti</option>
-                                                        <option value="Enugu">Enugu</option>
-                                                        <option value="Gombe">Gombe</option>
-                                                        <option value="Imo">Imo</option>
-                                                        <option value="Jigawa">Jigawa</option>
-                                                        <option value="Kaduna">Kaduna</option>
-                                                        <option value="Kano">Kano</option>
-                                                        <option value="Katsina">Katsina</option>
-                                                        <option value="Kebbi">Kebbi</option>
-                                                        <option value="Kogi">Kogi</option>
-                                                        <option value="Kwara">Kwara</option>
-                                                        <option value="Lagos">Lagos</option>
-                                                        <option value="Niger">Niger</option>
-                                                        <option value="Ogun">Ogun</option>
-                                                        <option value="Ondo">Ondo</option>
-                                                        <option value="Osun">Osun</option>
-                                                        <option value="Oyo">Oyo</option>
-                                                        <option value="Plateau">Plateau</option>
-                                                        <option value="Rivers">Rivers</option>
-                                                        <option value="Sokoto">Sokoto</option>
-                                                        <option value="Taraba">Taraba</option>
-                                                        <option value="Yobe">Yobe</option>
-                                                        <option value="Zamfara">Zamfara</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div className='w-1/2'>
-                                                <div className='font-bold font-gotham-black-regular text-gray-700 mb-4'>Country</div>
-                                                <div>
-                                                    <select onChange={e => setCountry(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
-                                                        <option value=''>Select a country</option>
-                                                        <option selected value={customer.nationality}>{customer.nationality}</option>
-                                                        <option value='Ghana'>Ghana</option>
-                                                        <option value='Ghana'>Nigeria</option>
-                                                        <option value='South Africa'>South Africa</option>
-                                                        <option value='US'>US</option>
-                                                        <option value='UK'>UK</option>
-                                                        <option value='China'>China</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className='font-gotham-black-regular text-color-1 mb-30'>Uploads</div>
-                                    <div className='font-bold mb-20'>Valid identification</div>
-
-                                    <div className='flex w-2/4 justify-between mb-30'>
-                                        <div className='flex items-center'>
-                                            <div className='text-gray-900 mr-2'>Drivers License</div>
-                                            <Form.Check type="radio" name="idtype" value="Drivers License" className='portfoliolist-checkbox' checked={idType === 'Drivers License'} onChange={e => setIdType(e.target.value)} /> 
-                                        </div>
-
-                                        <div className='flex items-center'>
-                                            <div className='text-gray-900 mr-2'>Int'l Passport</div>
-                                            <Form.Check type="radio" name="idtype" value="International Passport" className='portfoliolist-checkbox' checked={idType === "International Passport"} onChange={e => setIdType(e.target.value)}/> 
-                                        </div>
-
-                                        <div className='flex items-center'>
-                                            <div className='text-gray-900 mr-2'>NIN</div>
-                                            <Form.Check type="radio" name="idtype" value="NIN" className='portfoliolist-checkbox' checked={idType === "NIN"} onChange={e => setIdType(e.target.value)}/> 
-                                        </div>
-
-                                        <div className='flex items-center'>
-                                            <div className='text-gray-900 mr-2'>Voters Card</div>
-                                            <Form.Check type="radio"  name="idtype" value="Voters Card" className='portfoliolist-checkbox' checked={idType === "Voters Card"} onChange={e => setIdType(e.target.value)}/> 
-                                        </div>
-                                    </div>
-
-                                    <div className='font-bold mb-10'>Upload a selected ID type </div>
-
-                                    <div className='flex w-3/4 justify-between mb-30'>
-                                        <div className='flex items-center'>
-                                            <img className={idFile === '' ? 'cursor-pointer':'hidden'} src={BrowseFile} alt="" onClick={triggerIdUpload}/>
-
-                                            <div className={idFile === '' ? 'hidden':'flex space-x-3 items-center p-5 w-96 bg-gray-100 border rounded-lg'}>
-                                                <div><img src={FileIcon} alt=""/></div>
-                                                <div className='font-bold flex-1'>{idFile}</div>
-                                                <div><img className='cursor-pointer' src={DeleteIcon} onClick={deleteIdFile} alt=""/></div>
-                                            </div>
-                                        </div>
-
-                                        <div className='w-1/2'>
-                                            <div className='text-gray-900 mr-2 mb-10'>ID Number</div>
-                                            <input type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full' value={idNumber} onChange={e => setIdNumber(e.target.value)}/>
-                                        </div>
-                                    </div>
-
-                                    <div className='flex justify-between items-center mb-20'>
+                                    <div className='md:text-right'>
                                         <div>
-                                            <div className='font-bold mb-10'>Upload a Valid Utility Bill (3 months old)</div>
-
-                                            <img className={utilityBillFile === '' ? 'cursor-pointer':'hidden'} src={BrowseFile} alt="" onClick={triggerUtilityBillUpload} />
-
-                                            <div className={utilityBillFile === '' ? 'hidden':'flex space-x-3 items-center p-5 w-96 bg-gray-100 border rounded-lg'}>
-                                                <div><img src={FileIcon} alt=""/></div>
-                                                <div className='font-bold flex-1'>{utilityBillFile}</div>
-                                                <div><img className='cursor-pointer' src={DeleteIcon} onClick={deleteUtilityBillFile} alt=""/></div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div>
-                                            <div className='font-bold mb-10'>Upload Signature </div>
-                                            <img className={signatureFile === '' ? 'cursor-pointer':'hidden'} src={BrowseFile} alt="" onClick={triggerSignatureUpload} />
-
-                                            <div className={signatureFile === '' ? 'hidden':'flex space-x-3 items-center p-5 w-96 bg-gray-100 border rounded-lg'}>
-                                                <div><img src={FileIcon} alt=""/></div>
-                                                <div className='font-bold flex-1'>{signatureFile}</div>
-                                                <div><img className='cursor-pointer' src={DeleteIcon} onClick={deleteSignatureFile} alt=""/></div>
-                                            </div>
+                                            <button type='button' className={switchToKYC ? "rounded-lg bg-green-900 text-white border-0 py-3 px-5 cursor-pointer lg:text-xs w-full":"hidden"}>KYC Category: {customer.kycStatus}</button>
                                         </div>
 
                                         <div>
-
-                                            <button onClick={sendPersonalDetails} type='button' className={isPersonalDetailsFilled ? "mt-9 rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer":"mt-9 rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer opacity-50"} disabled={!isPersonalDetailsFilled}>
-                                                <span className={ showPersonalSpinner ? "hidden" : ""}>Update</span>
-                                                <img src={SpinnerIcon} alt="spinner icon" className={ showPersonalSpinner ? "" : "hidden"} width="15"/>
-                                            </button>
+                                            <button type='button' onClick={displayAddBankModal} className={switchToBankDetails ?"rounded-lg bg-green-900 text-white border-0 py-3 px-12 lg:py-2 lg:px-10 cursor-pointer font-bold lg:text-xs":"hidden"}>Add New Bank</button>
                                         </div>
                                     </div>
+                                    
                                 </div>
-                                
                             </div>
                             {/*End */}
 
-                            {/*Employment details card */}
-                            <div className='mb-30'>
-                                <div className='card'>
-                                    {/* Employee Deatils Success */}
-                                    <div className={isEmployeeDetailsSuccessful ? "otp-alert mb-20":"hidden"}>
-                                        <div className="flex otp-validated justify-between space-x-1 pt-3">
-                                            <div className="flex">
-                                                <div>
-                                                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062"/>
-                                                        <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062"/>
+                            {/*KYC section */}
+                            <div className={switchToKYC ? '':'hidden'}>
+
+                                {/*Personal details card */}
+                                <div className='mb-11'>
+                                    <div className='card p-10'>
+
+                                        {/* Personal Deatils Success */}
+                                        <div className={isPersonalDetailsSuccessful ? "otp-alert mb-20":"hidden"}>
+                                            <div className="flex otp-validated justify-between space-x-1 pt-3">
+                                                <div className="flex">
+                                                    <div>
+                                                        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062"/>
+                                                            <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062"/>
+                                                        </svg>
+                                                    </div>
+
+                                                    <div className="pt-1 text-sm text-green-900">{apiResponseMessage}</div>
+                                                </div>
+                                                
+                                                <div className="cursor-pointer" onClick={closeModal}>
+                                                    <svg  className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50"/>
                                                     </svg>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        {/* End */}
 
-                                                <div className="pt-1 text-14 text-color-1">{apiResponseMessage}</div>
+                                        <div className='font-gotham-black-regular text-green-900 text-xl mb-30'>Personal Details</div>
+
+                                        <div className='mb-11'>
+                                            <div className='md:flex md:justify-between'>
+                                                <div className='md:mb-0 mb-11'>
+                                                    <div className='font-bold  text-gray-700 mb-3 text-sm'>Firstname</div>
+                                                    <div>{customer.firstName}</div>
+                                                </div>
+
+                                                <div className='md:mb-0 mb-11'>
+                                                    <div className='font-bold text-gray-700 mb-3 text-sm'>Surname</div>
+                                                    <div>{customer.lastName}</div>
+                                                </div>
+
+                                                <div className='md:mb-0'>
+                                                    <div className='font-bold text-gray-700 mb-3 text-sm'>Email address</div>
+                                                    <div>{customer.email}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className='mb-11'>
+                                            <div className='md:flex md:justify-between md:space-x-20'>
+                                                <div className='md:w-1/2 w-full md:mb-0 mb-11'>
+                                                    <div className='font-bold text-gray-700 mb-3 text-sm'>Address</div>
+                                                    <div><input defaultValue={customer.permanentAddress} onChange={e => setAddress(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
+                                                </div>
+
+                                                <div className='md:w-1/2 w-full'>
+                                                    <div className='font-bold text-gray-700 mb-3 text-sm'>City</div>
+                                                    <div><input type='text' value={city} onChange={e => setCity(e.target.value)} className='border border-gray-300 px-3 py-2 text-lg outline-white rounded-lg w-full'/></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className='mb-11'>
+                                            <div className='md:flex md:space-x-20'>
+                                                <div className='md:w-1/2 w-full md:mb-0 mb-11'>
+                                                    <div className='font-bold  text-gray-700 mb-3 text-sm'>State</div>
+                                                    <div>
+                                                        <select onChange={e => setState(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
+                                                            <option value="">Select a state</option>
+                                                            <option value="Abuja">Abuja</option>
+                                                            <option value="Abia">Abia</option>
+                                                            <option value="Adamawa">Adamawa</option>
+                                                            <option value="Akwa Ibom">Akwa Ibom</option>
+                                                            <option value="Anambra">Anambra</option>
+                                                            <option value="Bauchi">Bauchi</option>
+                                                            <option value="Bayelsa">Bayelsa</option>
+                                                            <option value="Benue">Benue</option>
+                                                            <option value="Borno">Borno</option>
+                                                            <option value="Cross River">Cross River</option>
+                                                            <option value="Delta">Delta</option>
+                                                            <option value="Ebonyi">Ebonyi</option>
+                                                            <option value="Edo">Edo</option>
+                                                            <option value="Ekiti">Ekiti</option>
+                                                            <option value="Enugu">Enugu</option>
+                                                            <option value="Gombe">Gombe</option>
+                                                            <option value="Imo">Imo</option>
+                                                            <option value="Jigawa">Jigawa</option>
+                                                            <option value="Kaduna">Kaduna</option>
+                                                            <option value="Kano">Kano</option>
+                                                            <option value="Katsina">Katsina</option>
+                                                            <option value="Kebbi">Kebbi</option>
+                                                            <option value="Kogi">Kogi</option>
+                                                            <option value="Kwara">Kwara</option>
+                                                            <option value="Lagos">Lagos</option>
+                                                            <option value="Niger">Niger</option>
+                                                            <option value="Ogun">Ogun</option>
+                                                            <option value="Ondo">Ondo</option>
+                                                            <option value="Osun">Osun</option>
+                                                            <option value="Oyo">Oyo</option>
+                                                            <option value="Plateau">Plateau</option>
+                                                            <option value="Rivers">Rivers</option>
+                                                            <option value="Sokoto">Sokoto</option>
+                                                            <option value="Taraba">Taraba</option>
+                                                            <option value="Yobe">Yobe</option>
+                                                            <option value="Zamfara">Zamfara</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div className='md:w-1/2 w-full'>
+                                                    <div className='font-bold  text-gray-700 mb-3 text-sm'>Country</div>
+                                                    <div>
+                                                        <select onChange={e => setCountry(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
+                                                            <option value=''>Select a country</option>
+                                                            <option selected value={customer.nationality}>{customer.nationality}</option>
+                                                            <option value='Ghana'>Ghana</option>
+                                                            <option value='Ghana'>Nigeria</option>
+                                                            <option value='South Africa'>South Africa</option>
+                                                            <option value='US'>US</option>
+                                                            <option value='UK'>UK</option>
+                                                            <option value='China'>China</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className='border mb-11 opacity-40'></div>
+
+                                        <div className=' text-green-900 mb-6 text-xl font-gotham-black-regular'>Uploads</div>
+                                        <div className='font-bold mb-3'>Valid identification</div>
+
+                                        <div className='md:flex md:justify-between mb-11 text-sm'>
+                                            <div className='flex  space-x-1 items-end w-full md:mb-0 mb-3'>                                                
+                                                <Form.Check type="radio" name="idtype" value="Drivers License" className='portfoliolist-checkbox' checked={idType === 'Drivers License'} onChange={e => setIdType(e.target.value)} /> 
+                                                <div className='text-gray-900'>Drivers License</div>
+                                            </div>
+
+                                            <div className='flex space-x-1 items-end w-full md:mb-0 mb-3'>                                                
+                                                <Form.Check type="radio" name="idtype" value="International Passport" className='portfoliolist-checkbox' checked={idType === "International Passport"} onChange={e => setIdType(e.target.value)}/> 
+                                                <div className='text-gray-900'>Int'l Passport</div>
+                                            </div>
+
+                                            <div className='flex space-x-1 items-end w-full md:mb-0 mb-3'>                                                
+                                                <Form.Check type="radio" name="idtype" value="NIN" className='portfoliolist-checkbox' checked={idType === "NIN"} onChange={e => setIdType(e.target.value)}/> 
+                                                <div className='text-gray-900'>NIN</div>
+                                            </div>
+
+                                            <div className='flex items-end space-x-1 w-full md:mb-0 mb-3'>                                                
+                                                <Form.Check type="radio"  name="idtype" value="Voters Card" className='portfoliolist-checkbox' checked={idType === "Voters Card"} onChange={e => setIdType(e.target.value)}/> 
+                                                <div className='text-gray-900'>Voters Card</div>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <div className='font-bold mb-3 text-sm'>Upload a selected ID type </div>
+
+                                            <div className='md:flex md:justify-between md:items-end md:space-x-10 mb-11'>
+                                                <div className='md:w-1/2 md:flex md:items-center md:mb-0 mb-11'>
+                                                    <img className={idFile === '' ? 'cursor-pointer w-full':'hidden'} src={BrowseFile} alt="" onClick={triggerIdUpload}/>
+
+                                                    <div className={idFile === '' ? 'hidden':'flex space-x-3 items-center p-5 w-96 bg-gray-100 border rounded-lg w-full'}>
+                                                        <div><img src={FileIcon} alt=""/></div>
+                                                        <div className='font-bold flex-1'>{idFile}</div>
+                                                        <div><img className='cursor-pointer' src={DeleteIcon} onClick={deleteIdFile} alt=""/></div>
+                                                    </div>
+                                                </div>
+
+                                                <div className='md:w-1/2 pb-0.5'>
+                                                    <div className='text-gray-900 mb-3 text-sm font-bold'>ID Number</div>
+                                                    <input type='number' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full' value={idNumber} onChange={e => setIdNumber(e.target.value)}/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className='md:flex md:justify-between md:space-x-5 md:items-end mb-6'>
+                                            <div className='md:w-1/2 w-full md:mb-0 mb-11'>
+                                                <div className='font-bold mb-3 text-sm'>Upload a Valid Utility Bill (3 months old)</div>
+
+                                                <img className={utilityBillFile === '' ? 'cursor-pointer w-full':'hidden'} src={BrowseFile} alt="" onClick={triggerUtilityBillUpload} />
+
+                                                <div className={utilityBillFile === '' ? 'hidden':'flex space-x-3 items-center p-5 w-96 bg-gray-100 border rounded-lg w-full'}>
+                                                    <div><img src={FileIcon} alt=""/></div>
+                                                    <div className='font-bold flex-1'>{utilityBillFile}</div>
+                                                    <div><img className='cursor-pointer' src={DeleteIcon} onClick={deleteUtilityBillFile} alt=""/></div>
+                                                </div>
                                             </div>
                                             
-                                            <div className="cursor-pointer" onClick={closeModal}>
-                                                <svg  className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50"/>
-                                                </svg>
+                                            <div className='md:w-1/2 w-full md:mb-0'>
+                                                <div className='font-bold mb-3 text-sm'>Upload Signature </div>
+                                                <img className={signatureFile === '' ? 'cursor-pointer w-full':'hidden'} src={BrowseFile} alt="" onClick={triggerSignatureUpload} />
+
+                                                <div className={signatureFile === '' ? 'hidden':'flex space-x-3 items-center p-5 w-96 bg-gray-100 border rounded-lg w-full'}>
+                                                    <div><img src={FileIcon} alt=""/></div>
+                                                    <div className='font-bold flex-1'>{signatureFile}</div>
+                                                    <div><img className='cursor-pointer' src={DeleteIcon} onClick={deleteSignatureFile} alt=""/></div>
+                                                </div>
+                                            </div>
+
+                                            <div className='md:w-1/2 w-full pb-1'>
+
+                                                <button onClick={sendPersonalDetails} type='button' className={isPersonalDetailsFilled ? "mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full":"mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer opacity-50  w-full"} disabled={!isPersonalDetailsFilled}>
+                                                    <span className={ showPersonalSpinner ? "hidden" : ""}>Update</span>
+                                                    <img src={SpinnerIcon} alt="spinner icon" className={ showPersonalSpinner ? "" : "hidden"} width="15"/>
+                                                </button>
                                             </div>
                                         </div>
-                                    </div>
-                                    {/* End */}
 
-                                    <div className='font-gotham-black-regular text-color-1 mb-30'>Employment Details</div>
+                                        {/* Personal Deatils Success */}
+                                        <div className={isPersonalDetailsSuccessful ? "otp-alert mb-20":"hidden"}>
+                                            <div className="flex otp-validated justify-between space-x-1 pt-3">
+                                                <div className="flex">
+                                                    <div>
+                                                        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062"/>
+                                                            <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062"/>
+                                                        </svg>
+                                                    </div>
 
-
-                                    <div className='flex mb-30'>
-                                        <div className='flex w-3/4 space-x-6'>
-                                            <div className='w-1/2'>
-                                                <div className='text-gray-700 mb-4'>Name of employer</div>
-                                                <div><input defaultValue={employmentDetails === '' ? '' : JSON.parse(employmentDetails).employer} onChange={e => setEmployer(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
-                                            </div>
-
-                                            <div className='w-1/2'>
-                                                <div className='text-gray-700 mb-4'>Profession</div>
-                                                <div><input defaultValue={employmentDetails === '' ? '' : JSON.parse(employmentDetails).profession} onChange={e => setProfession(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg outline-white rounded-lg w-full'/></div>
+                                                    <div className="pt-1 text-sm text-green-900">{apiResponseMessage}</div>
+                                                </div>
+                                                
+                                                <div className="cursor-pointer" onClick={closeModal}>
+                                                    <svg  className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50"/>
+                                                    </svg>
+                                                </div>
                                             </div>
                                         </div>
+                                        {/* End */}
                                     </div>
+                                    
+                                </div>
+                                {/*End */}
 
-                                    <div>
-                                        <div className='flex justify-between'>
-                                            <div className='flex justify-between space-x-6 w-3/4'>
-                                                <div className='w-1/2'>
-                                                    <div className='text-gray-700 mb-4'>Annual Salary Range</div>
+                                {/*Employment details card */}
+                                <div className='mb-11'>
+                                    <div className='card p-10'>
+                                        {/* Employee Deatils Success */}
+                                        <div className={isEmployeeDetailsSuccessful ? "otp-alert mb-20":"hidden"}>
+                                            <div className="flex otp-validated justify-between space-x-1 pt-3">
+                                                <div className="flex">
+                                                    <div>
+                                                        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062"/>
+                                                            <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062"/>
+                                                        </svg>
+                                                    </div>
+
+                                                    <div className="pt-1 text-sm text-green-900">{apiResponseMessage}</div>
+                                                </div>
+                                                
+                                                <div className="cursor-pointer" onClick={closeModal}>
+                                                    <svg  className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50"/>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {/* End */}
+
+                                        <div className='font-gotham-black-regular text-green-900 text-xl mb-30'>Employment Details</div>
+
+
+                                        <div className='mb-11'>
+                                            <div className='md:flex md:justify-between md:space-x-10'>
+                                                <div className='md:w-1/2 w-full md:mb-0 mb-11'>
+                                                    <div className='text-gray-700 font-bold mb-3 text-sm'>Name of employer</div>
+                                                    <div><input defaultValue={employmentDetails === '' ? '' : JSON.parse(employmentDetails).employer} onChange={e => setEmployer(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
+                                                </div>
+
+                                                <div className='md:w-1/2 w-full'>
+                                                    <div className='text-gray-700 font-bold  mb-3 text-sm'>Profession</div>
+                                                    <div><input defaultValue={employmentDetails === '' ? '' : JSON.parse(employmentDetails).profession} onChange={e => setProfession(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg outline-white rounded-lg w-full'/></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <div className='md:flex md:justify-between md:space-x-10'>
+                                                <div className='md:w-1/3 w-full md:mb-0 mb-11'>
+                                                    <div className='text-gray-700 mb-3 text-sm font-bold'>Annual Salary Range</div>
                                                     <div>
                                                         <select onChange={e => setSalary(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
                                                             <option value=''>Select a salary</option>
@@ -1407,8 +1411,8 @@ const Profile = () => {
                                                     </div>
                                                 </div>
 
-                                                <div className='w-1/2'>
-                                                    <div className='text-gray-700 mb-4'>Are you a politically exposed person?</div>
+                                                <div className='md:w-1/3 w-full'>
+                                                    <div className='text-gray-700 mb-3 text-sm font-bold'>Are you a politically exposed person?</div>
                                                     <div>
                                                         <select onChange={e => setPolitical(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
                                                             <option value=''>...</option>
@@ -1417,28 +1421,228 @@ const Profile = () => {
                                                         </select>
                                                     </div>
                                                 </div>
+
+                                                <div className='md:w-1/3 w-full'>
+                                                    <button onClick={sendEmployeeDetails} type='button' className={isEmploymentDetailsFilled ? "mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full":"mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer opacity-50 w-full"} disabled={!isEmploymentDetailsFilled}>
+                                                        <span className={ showEmploymentSpinner ? "hidden" : ""}>Update</span>
+                                                        <img src={SpinnerIcon} alt="spinner icon" className={ showEmploymentSpinner ? "" : "hidden"} width="15"/>
+                                                    </button>
+                                                </div>
                                             </div>
+                                        </div>
 
+                                    </div>
+                                    
+                                </div>
+                                {/*End */}
+
+                                {/*Next of Kin card */}
+                                <div className='mb-11'>
+                                    <div className='card p-10'>
+                                        {/* NOK Success */}
+                                        <div className={isNokSuccessful ? "otp-alert mb-20":"hidden"}>
+                                            <div className="flex otp-validated justify-between space-x-1 pt-3">
+                                                <div className="flex">
+                                                    <div>
+                                                        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062"/>
+                                                            <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062"/>
+                                                        </svg>
+                                                    </div>
+
+                                                    <div className="pt-1 text-sm text-green-900">{apiResponseMessage}</div>
+                                                </div>
+                                                
+                                                <div className="cursor-pointer" onClick={closeModal}>
+                                                    <svg  className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50"/>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {/* End */}
+
+                                        <div className='font-gotham-black-regular text-green-900 text-xl mb-30'>Next of KIN Details</div>
+
+
+                                        <div className='mb-11'>
+                                            <div className='md:flex md:justify-between md:space-x-10'>
+                                                <div className='md:w-1/2 w-full md:mb-0 mb-11'>
+                                                    <div className='text-gray-700 mb-3 text-sm font-bold'>Firstname</div>
+                                                    <div><input value={nokFirstname} onChange={e => setNokFirstname(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
+                                                </div>
+
+                                                <div className='md:w-1/2 w-full'>
+                                                    <div className='text-gray-700 mb-3 text-sm font-bold'>Lastname</div>
+                                                    <div><input value={nokLastname} onChange={e => setNokLastname(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
+                                                </div>                                            
+                                            </div>
+                                        </div>
+
+                                        <div className='mb-11'>
+                                            <div className='md:flex md:justify-between md:space-x-10'>
+                                                <div className='md:w-1/3 w-full md:mb-0 mb-11'>
+                                                    <div className='text-gray-700 mb-3 text-sm font-bold'>Email Address</div>
+                                                    <div><input value={nokEmail} onChange={e => setNokEmail(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
+                                                </div>
+
+                                                <div className='md:w-1/3 w-full md:mb-0 mb-11'>
+                                                    <div className='text-gray-700 mb-3 text-sm font-bold'>Phone number</div>
+
+                                                    <div className='flex border-1-d6 rounded-lg p-2'>
+                                                        <select onChange={e => setNokPhoneCode(e.target.value)} className='border-0 font-gotham outline-white text-sm'>
+                                                            <option value="234">+234</option>
+                                                            <option value="1">+1</option>
+                                                            <option value="44">+44</option>
+                                                            <option value="213">+213</option>
+                                                            <option value="376">+376</option>
+                                                            <option value="244">+244</option>
+                                                            <option value="1264">+1264</option>
+                                                            <option value="1268">+1268</option>
+                                                            <option value="54">+54</option>
+                                                            <option value="374">+374</option>
+                                                            <option value="297">+297</option>
+                                                            <option value="61">+61</option>
+                                                            <option value="43">+43</option>
+                                                            <option value="994">+994</option>
+                                                            <option value="1242">+1242</option>
+                                                            <option value="973">+973</option>
+                                                            <option value="880">+880</option>
+                                                            <option value="1246">+1246</option>
+                                                            <option value="375">+375</option>
+                                                            <option value="32">+32</option>
+                                                            <option value="501">+501</option>
+                                                            <option value="229">+229</option>
+                                                            <option value="1441">+1441</option>
+                                                            <option value="975">+975</option>
+                                                            <option value="591">+591</option>
+                                                            <option  value="387">+387</option>
+                                                            <option  value="267">+267</option>
+                                                            <option  value="55">+55</option>
+                                                            <option  value="673">+673</option>
+                                                            <option  value="359">+359</option>
+                                                            <option  value="226">+226</option>
+                                                            <option  value="257">+257</option>
+                                                            <option  value="855">+855</option>
+                                                            <option  value="237">+237</option>
+                                                            <option  value="1">+1</option>
+                                                            <option  value="238">+238</option>
+                                                            <option  value="1345">+1345</option>
+                                                            <option  value="236">+236</option>
+                                                            <option  value="56">+56</option>
+                                                            <option  value="86">+86</option>
+                                                            <option  value="57">+57</option>
+                                                            <option  value="269">+269</option>
+                                                            <option  value="242">+242</option>
+                                                            <option  value="682">+682</option>
+                                                            <option  value="506">+506</option>
+                                                            <option  value="385">+385</option>
+                                                            <option  value="53">+53</option>
+                                                            <option  value="599">+599</option>
+                                                            <option  value="90392">+90392</option>
+                                                            <option  value="357">+357</option>
+                                                            <option  value="420">+420</option>
+                                                            <option  value="45">+45</option>
+                                                            <option  value="253">+253</option>
+                                                            <option  value="1809">+1809</option>
+                                                            <option  value="1809">+1809</option>
+                                                            
+                                                        </select>
+
+                                                        <input value={nokPhone} onChange={e => setNokPhone(e.target.value)} className="px-2 py-1 border-0 input text-lg outline-white" placeholder="ex: 813 000 1111 OR 0813 000 1111" type="text" />
+                                                    </div>                                                
+                                                </div>
+
+                                                <div className='md:w-1/3 w-full'>
+                                                    <div className='text-gray-700 mb-3 text-sm font-bold'>Relationship</div>
+                                                    <div>
+                                                        <select value={nokRelationship} onChange={e => setNokRelationship(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
+                                                            <option value="">Select relationship</option>
+                                                            <option value="Father">Father</option>
+                                                            <option value="Mother">Mother</option>
+                                                            <option value="Sister">Sister</option>
+                                                            <option value="Brother">Brother</option>
+                                                            <option value="Other">Other</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className={nokRelationshipSelected === 'Other' ? 'w-full mb-11':'hidden'}>
                                             <div>
+                                                <div className='text-gray-700 mb-3 text-sm font-bold'>Other relationship type</div>
+                                                
+                                                <div>
+                                                    <input defaultValue={nokRelationshipOtherValue} onChange={e => setNokRelationshipOtherValue(e.target.value)}  type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                                <button onClick={sendEmployeeDetails} type='button' className={isEmploymentDetailsFilled ? "mt-9 rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer":"mt-9 rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer opacity-50"} disabled={!isEmploymentDetailsFilled}>
-                                                    <span className={ showEmploymentSpinner ? "hidden" : ""}>Update</span>
-                                                    <img src={SpinnerIcon} alt="spinner icon" className={ showEmploymentSpinner ? "" : "hidden"} width="15"/>
+                                        <div>
+                                            <div className='md:flex md:justify-between md:space-x-10'>
+                                                <div className='md:w-1/2 w-full md:mb-0 md-11'>
+                                                    <div className='text-gray-700 mb-3 text-sm font-bold'>Next of Kin Address</div>
+                                                    <div><input value={nokAddress} onChange={e => setNokAddress(e.target.value)}  type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
+                                                </div>
+
+                                                <div className='md:w-1/2 w-full'>
+                                                    <button onClick={sendNextOfKin} type='button' className={isNOKDetailsFilled ? "mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full":"mt-9 rounded-lg bg text-white border-0 py-3 px-12 font-bold bg-green-900 cursor-pointer opacity-50 w-full"} disabled={!isNOKDetailsFilled}>
+                                                        <span className={ showNokSpinner ? "hidden" : ""}>Update</span>
+                                                        <img src={SpinnerIcon} alt="spinner icon" className={ showNokSpinner ? "" : "hidden"} width="15"/>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>                                
+                                </div>
+                                {/*End */}
+
+                                {/*Bank Details */}
+                                <div>
+                                    <div className='card p-10'>
+                                        <div className='text-xl font-gotham-black-regular text-green-900'>Bank Details</div>
+                                        <div className='font-bold text-green-900 mb-6 text-sm'>Proceeds from your stock sales would be deposited into this account</div>
+
+                                        <div>
+                                            <div>
+                                                <div className='text-gray-700 mb-3 text-sm font-bold'>Primary Bank Details</div>
+
+                                                <div>
+                                                    <select className='font-bold input px-5 py-3 border-1-d6 outline-white font-bold text-lg' id='bankList' >
+                                                        {
+                                                            bankDetails.map((item :any, index: any) =>
+                                                            <option value={item.bankCode} key={index}>{item.accountName} | {item.bankName} | {item.accountNumber}</option>
+                                                            )
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>                                         
+                                        </div>
+
+                                        <div>
+                                            <div>
+                                                <button onClick={addBankDetails} type='button' className="rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer hidden">
+                                                    <span className={ showSpinner ? "hidden" : ""}>Update</span>
+                                                    <img src={SpinnerIcon} alt="spinner icon" className={ showSpinner ? "" : "hidden"} width="15"/>
                                                 </button>
                                             </div>
                                         </div>
-                                    </div>
 
+                                    </div>                                
                                 </div>
-                                
+                                {/*End */}
                             </div>
                             {/*End */}
 
-                            {/*Next of Kin card */}
-                            <div className='mb-30'>
-                                <div className='card'>
-                                    {/* NOK Success */}
-                                    <div className={isNokSuccessful ? "otp-alert mb-20":"hidden"}>
+                            {/*Security section */}
+                            <div className={switchToSecurity ? 'mb-30':'hidden'}>
+
+                                {/*Change Password */}
+                                <div className='card p-10 mb-11'>
+                                    {/* Change Password Success */}
+                                    <div className={isPasswordChangeSuccessful === 'true' ? "otp-alert mb-20":"hidden"}>
                                         <div className="flex otp-validated justify-between space-x-1 pt-3">
                                             <div className="flex">
                                                 <div>
@@ -1448,7 +1652,7 @@ const Profile = () => {
                                                     </svg>
                                                 </div>
 
-                                                <div className="pt-1 text-14 text-color-1">{apiResponseMessage}</div>
+                                                <div className="pt-1 text-sm text-green-900">{apiResponseMessage}</div>
                                             </div>
                                             
                                             <div className="cursor-pointer" onClick={closeModal}>
@@ -1460,400 +1664,198 @@ const Profile = () => {
                                     </div>
                                     {/* End */}
 
-                                    <div className='font-gotham-black-regular text-color-1 mb-30'>Next of KIN Details</div>
-
-
-                                    <div className='flex mb-30'>
-                                        <div className='flex w-3/4 space-x-6'>
-                                            <div className='w-1/2'>
-                                                <div className='text-gray-700 mb-4'>Firstname</div>
-                                                <div><input value={nokFirstname} onChange={e => setNokFirstname(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
-                                            </div>
-
-                                            <div className='w-1/2'>
-                                                <div className='text-gray-700 mb-4'>Lastname</div>
-                                                <div><input value={nokLastname} onChange={e => setNokLastname(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
-                                            </div>                                            
-                                        </div>
-                                    </div>
-
-                                    <div className='flex mb-30'>
-                                        <div className='flex w-3/4 space-x-6'>
-                                            <div className='w-1/3'>
-                                                <div className='text-gray-700 mb-4'>Email Address</div>
-                                                <div><input value={nokEmail} onChange={e => setNokEmail(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
-                                            </div>
-
-                                            <div className='w-1/3'>
-                                                <div className='text-gray-700 mb-3'>Phone number</div>
-
-                                                <div className='flex border-1-d6 rounded-lg p-2'>
-                                                    <select onChange={e => setNokPhoneCode(e.target.value)} className='border-0 font-gotham outline-white text-sm'>
-                                                        <option value="234">+234</option>
-                                                        <option value="1">+1</option>
-                                                        <option value="44">+44</option>
-                                                        <option value="213">+213</option>
-                                                        <option value="376">+376</option>
-                                                        <option value="244">+244</option>
-                                                        <option value="1264">+1264</option>
-                                                        <option value="1268">+1268</option>
-                                                        <option value="54">+54</option>
-                                                        <option value="374">+374</option>
-                                                        <option value="297">+297</option>
-                                                        <option value="61">+61</option>
-                                                        <option value="43">+43</option>
-                                                        <option value="994">+994</option>
-                                                        <option value="1242">+1242</option>
-                                                        <option value="973">+973</option>
-                                                        <option value="880">+880</option>
-                                                        <option value="1246">+1246</option>
-                                                        <option value="375">+375</option>
-                                                        <option value="32">+32</option>
-                                                        <option value="501">+501</option>
-                                                        <option value="229">+229</option>
-                                                        <option value="1441">+1441</option>
-                                                        <option value="975">+975</option>
-                                                        <option value="591">+591</option>
-                                                        <option  value="387">+387</option>
-                                                        <option  value="267">+267</option>
-                                                        <option  value="55">+55</option>
-                                                        <option  value="673">+673</option>
-                                                        <option  value="359">+359</option>
-                                                        <option  value="226">+226</option>
-                                                        <option  value="257">+257</option>
-                                                        <option  value="855">+855</option>
-                                                        <option  value="237">+237</option>
-                                                        <option  value="1">+1</option>
-                                                        <option  value="238">+238</option>
-                                                        <option  value="1345">+1345</option>
-                                                        <option  value="236">+236</option>
-                                                        <option  value="56">+56</option>
-                                                        <option  value="86">+86</option>
-                                                        <option  value="57">+57</option>
-                                                        <option  value="269">+269</option>
-                                                        <option  value="242">+242</option>
-                                                        <option  value="682">+682</option>
-                                                        <option  value="506">+506</option>
-                                                        <option  value="385">+385</option>
-                                                        <option  value="53">+53</option>
-                                                        <option  value="599">+599</option>
-                                                        <option  value="90392">+90392</option>
-                                                        <option  value="357">+357</option>
-                                                        <option  value="420">+420</option>
-                                                        <option  value="45">+45</option>
-                                                        <option  value="253">+253</option>
-                                                        <option  value="1809">+1809</option>
-                                                        <option  value="1809">+1809</option>
-                                                        
-                                                    </select>
-
-                                                    <input value={nokPhone} onChange={e => setNokPhone(e.target.value)} className="px-2 py-1 border-0 input text-lg outline-white" placeholder="ex: 813 000 1111 OR 0813 000 1111" type="text" />
-                                                </div>                                                
-                                            </div>
-
-                                            <div className='w-1/3'>
-                                                <div className='text-gray-700 mb-3'>Relationship</div>
-                                                <div>
-                                                    <select value={nokRelationship} onChange={e => setNokRelationship(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
-                                                        <option value="">Select relationship</option>
-                                                        <option value="Father">Father</option>
-                                                        <option value="Mother">Mother</option>
-                                                        <option value="Sister">Sister</option>
-                                                        <option value="Brother">Brother</option>
-                                                        <option value="Other">Other</option>
-                                                    </select>
+                                    {/* Login Error */}
+                                    <div className={isPasswordChangeSuccessful === 'false' ? "error-alert mb-20":"hidden" }>
+                                        <div className="flex justify-between space-x-1">
+                                            <div className="flex items-center">
+                                                <div className='pt-2'>
+                                                    <svg width="20" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
+                                                    </svg>
                                                 </div>
+
+                                                <div className="text-sm">{apiResponseMessage}</div>
                                             </div>
                                         </div>
                                     </div>
+                                    {/* End */}
 
-                                    <div className={nokRelationshipSelected === 'Other' ? '':'hidden'}>
-                                        <div className='flex justify-between space-x-5 mb-30'>
-                                            <div className='flex-1'>
-                                                <div className='text-gray-700 mb-4'>Other relationship type</div>
-                                                <div><input defaultValue={nokRelationshipOtherValue} onChange={e => setNokRelationshipOtherValue(e.target.value)}  type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <div className='font-gotham-black-regular text-green-900 text-xl mb-30'>Change Password</div>
 
-                                    <div>
-                                        <div className='flex justify-between space-x-5'>
-                                            <div className='flex-1'>
-                                                <div className='text-gray-700 mb-4'>Next of Kin Address</div>
-                                                <div><input value={nokAddress} onChange={e => setNokAddress(e.target.value)}  type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
-                                            </div>
-
-                                            <div>
-
-                                                <button onClick={sendNextOfKin} type='button' className={isNOKDetailsFilled ? "mt-9 rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer":"mt-9 rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer opacity-50"} disabled={!isNOKDetailsFilled}>
-                                                    <span className={ showNokSpinner ? "hidden" : ""}>Update</span>
-                                                    <img src={SpinnerIcon} alt="spinner icon" className={ showNokSpinner ? "" : "hidden"} width="15"/>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>                                
-                            </div>
-                            {/*End */}
-
-                            {/*Bank Details */}
-                            <div className='mb-30'>
-                                <div className='card'>
-                                    <div className='font-gotham-black-regular text-color-1 mb-10'>Bank Details</div>
-                                    <div className='font-bold text-color-1 mb-30'>Proceeds from your stock sales would be deposited into this account</div>
-
-                                    <div className='mb-20'>
+                                    <div className='mb-11'>
                                         <div>
-                                            <div className='text-gray-700 mb-4'>Primary Bank Details</div>
+                                            <div className='text-gray-700 mb-3 text-sm font-bold'>Old Password</div>
 
                                             <div>
-                                                <select className='font-bold input px-5 py-3 border-1-d6 outline-white font-bold text-lg' id='bankList' >
-                                                    {
-                                                        bankDetails.map((item :any, index: any) =>
-                                                        <option value={item.bankCode} key={index}>{item.accountName} | {item.bankName} | {item.accountNumber}</option>
-                                                        )
-                                                    }
-                                                </select>
+                                                <input onChange={e => setOldPassword(e.target.value)} type='password' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/>
                                             </div>
-                                        </div>                                         
-                                    </div>
-
-                                    <div>
-                                        <div>
-                                            <button onClick={addBankDetails} type='button' className="rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer hidden">
-                                                <span className={ showSpinner ? "hidden" : ""}>Update</span>
-                                                <img src={SpinnerIcon} alt="spinner icon" className={ showSpinner ? "" : "hidden"} width="15"/>
-                                            </button>
                                         </div>
                                     </div>
 
-                                </div>                                
-                            </div>
-                            {/*End */}
-                        </div>
-                        {/*End */}
+                                    <div className='mb-11'>
+                                        <div className='md:flex md:justify-between md:space-x-10'>
+                                            <div className="md:w-1/2 w-full md:mb-0 mb-11 relative">
+                                                <div className="mb-3 text-sm font-bold">New Password</div>
+                                                
+                                                <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
+                                                    <div className='w-full'>
+                                                        <input value={password} onChange={e => setPassword(e.target.value)} className="outline-white p-3 input border-0 text-sm"  type={isShowPassword ? 'text' : 'password'} name="password"/>
+                                                    </div>
 
-                        {/*Security section */}
-                        <div className={switchToSecurity ? 'mb-30':'hidden'}>
+                                                    <div className='px-2 pt-1'>
+                                                        <svg onClick={e => setIsShowPassword(true)} className={isShowPassword ? 'bg-white cursor-pointer hidden' : 'bg-white cursor-pointer'} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fillRule="evenodd" clipRule="evenodd" d="M5.63604 5.56529L10.6072 10.5356C10.9673 10.1877 11.4585 9.97347 12 9.97347C13.1046 9.97347 14 10.8649 14 11.9646C14 12.5071 13.7821 12.9989 13.4287 13.3581L18.364 18.2932C18.7545 18.6837 18.7545 19.3169 18.364 19.7074C17.9734 20.0979 17.3403 20.0979 16.9497 19.7074L16.0498 18.8084C14.7649 19.5525 13.4151 19.9292 12 19.9292C8.41439 19.9292 5.2486 17.5106 2.49391 12.8261L2.28282 12.4613L2 11.9646L2.28282 11.4679C3.12423 9.99032 4.00457 8.72699 4.92408 7.68241L4.22183 6.9795C3.8313 6.58897 3.8313 5.95581 4.22183 5.56529C4.61235 5.17476 5.24551 5.17476 5.63604 5.56529ZM4.54572 11.569L4.30532 11.9646L4.51336 12.3079C6.87517 16.1384 9.37415 17.9381 12 17.9381C12.8728 17.9381 13.7313 17.7396 14.575 17.3343L10.7964 13.555C10.6453 13.4414 10.5108 13.307 10.3974 13.1561L6.33749 9.09402C5.73183 9.79538 5.13452 10.6192 4.54572 11.569ZM12 4C15.5856 4 18.7514 6.41863 21.5061 11.1031L21.7172 11.4679L22 11.9646L21.5113 12.8173C20.7425 14.1258 19.9416 15.2576 19.1086 16.2096L17.6965 14.7975C18.3734 14.0081 19.0396 13.0654 19.6948 11.9648C17.2718 7.89826 14.7031 5.99116 12 5.99116C11.1437 5.99116 10.3009 6.18253 9.47198 6.5733L7.99438 5.09542C9.26603 4.36816 10.6011 4 12 4Z" fill="#353F50"/>
+                                                        </svg>
 
-                            {/*Change Password */}
-                            <div className='card mb-30'>
-                                {/* Change Password Success */}
-                                <div className={isPasswordChangeSuccessful === 'true' ? "otp-alert mb-20":"hidden"}>
-                                    <div className="flex otp-validated justify-between space-x-1 pt-3">
-                                        <div className="flex">
-                                            <div>
-                                                <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062"/>
-                                                    <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062"/>
-                                                </svg>
+                                                        <svg onClick={e => setIsShowPassword(false)} className={isShowPassword ? 'bg-white cursor-pointer' : 'bg-white cursor-pointer hidden'} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fillRule="evenodd" clipRule="evenodd" d="M12 4C15.5878 4 18.7554 6.43241 21.5113 11.1435L21.7172 11.5011L22 12L21.5113 12.8565C18.7554 17.5676 15.5878 20 12 20C8.41215 20 5.24464 17.5676 2.48874 12.8565L2.28282 12.4989L2 12L2.28282 11.5011C5.08652 6.55556 8.32245 4 12 4ZM12 6C9.29692 6 6.72829 7.91554 4.30532 12C6.72829 16.0845 9.29692 18 12 18C14.6297 18 17.1289 16.1901 19.487 12.3447L19.6948 12.0001L19.4867 11.6553C17.1249 7.80768 14.6259 6 12 6ZM12 9C13.6569 9 15 10.3431 15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9Z" fill="#353F50"/>
+                                                        </svg>
+                                                    </div>
+                                                </div>                                
                                             </div>
 
-                                            <div className="pt-1 text-14 text-color-1">{apiResponseMessage}</div>
-                                        </div>
-                                        
-                                        <div className="cursor-pointer" onClick={closeModal}>
-                                            <svg  className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50"/>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* End */}
+                                            <div className="md:w-1/2 w-full md:mb-0 mb-11 relative">
+                                                <div className="mb-10 text-sm font-bold">Confirm New Password</div>
+                                                
+                                                <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
+                                                    <div className='w-full'>
+                                                        <input value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="outline-white p-3 input border-0 text-sm"  type={isShowConfirmPassword ? 'text' : 'password'} name="password"/>
+                                                    </div>
 
-                                {/* Login Error */}
-                                <div className={isPasswordChangeSuccessful === 'false' ? "error-alert mb-20":"hidden" }>
-                                    <div className="flex justify-between space-x-1">
-                                        <div className="flex items-center">
-                                            <div className='pt-2'>
-                                                <svg width="20" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
-                                                </svg>
-                                            </div>
+                                                    <div className='px-2 pt-1'>
+                                                        <svg onClick={e => setIsShowConfirmPassword(true)} className={isShowConfirmPassword ? 'bg-white cursor-pointer hidden' : 'bg-white cursor-pointer'} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fillRule="evenodd" clipRule="evenodd" d="M5.63604 5.56529L10.6072 10.5356C10.9673 10.1877 11.4585 9.97347 12 9.97347C13.1046 9.97347 14 10.8649 14 11.9646C14 12.5071 13.7821 12.9989 13.4287 13.3581L18.364 18.2932C18.7545 18.6837 18.7545 19.3169 18.364 19.7074C17.9734 20.0979 17.3403 20.0979 16.9497 19.7074L16.0498 18.8084C14.7649 19.5525 13.4151 19.9292 12 19.9292C8.41439 19.9292 5.2486 17.5106 2.49391 12.8261L2.28282 12.4613L2 11.9646L2.28282 11.4679C3.12423 9.99032 4.00457 8.72699 4.92408 7.68241L4.22183 6.9795C3.8313 6.58897 3.8313 5.95581 4.22183 5.56529C4.61235 5.17476 5.24551 5.17476 5.63604 5.56529ZM4.54572 11.569L4.30532 11.9646L4.51336 12.3079C6.87517 16.1384 9.37415 17.9381 12 17.9381C12.8728 17.9381 13.7313 17.7396 14.575 17.3343L10.7964 13.555C10.6453 13.4414 10.5108 13.307 10.3974 13.1561L6.33749 9.09402C5.73183 9.79538 5.13452 10.6192 4.54572 11.569ZM12 4C15.5856 4 18.7514 6.41863 21.5061 11.1031L21.7172 11.4679L22 11.9646L21.5113 12.8173C20.7425 14.1258 19.9416 15.2576 19.1086 16.2096L17.6965 14.7975C18.3734 14.0081 19.0396 13.0654 19.6948 11.9648C17.2718 7.89826 14.7031 5.99116 12 5.99116C11.1437 5.99116 10.3009 6.18253 9.47198 6.5733L7.99438 5.09542C9.26603 4.36816 10.6011 4 12 4Z" fill="#353F50"/>
+                                                        </svg>
 
-                                            <div className="text-sm">{apiResponseMessage}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* End */}
+                                                        <svg onClick={e => setIsShowConfirmPassword(false)} className={isShowConfirmPassword ? 'bg-white cursor-pointer' : 'bg-white cursor-pointer hidden'} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fillRule="evenodd" clipRule="evenodd" d="M12 4C15.5878 4 18.7554 6.43241 21.5113 11.1435L21.7172 11.5011L22 12L21.5113 12.8565C18.7554 17.5676 15.5878 20 12 20C8.41215 20 5.24464 17.5676 2.48874 12.8565L2.28282 12.4989L2 12L2.28282 11.5011C5.08652 6.55556 8.32245 4 12 4ZM12 6C9.29692 6 6.72829 7.91554 4.30532 12C6.72829 16.0845 9.29692 18 12 18C14.6297 18 17.1289 16.1901 19.487 12.3447L19.6948 12.0001L19.4867 11.6553C17.1249 7.80768 14.6259 6 12 6ZM12 9C13.6569 9 15 10.3431 15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9Z" fill="#353F50"/>
+                                                        </svg>
+                                                    </div>                                                
+                                                </div> 
 
-                                <div className='font-gotham-black-regular text-color-1 mb-30'>Change Password</div>
-
-                                <div className='mb-30'>
-                                    <div className='flex justify-between space-x-5'>
-                                        <div className='w-3/4'>
-                                            <div className='text-gray-700 mb-4'>Old Password</div>
-                                            <div><input onChange={e => setOldPassword(e.target.value)} type='password' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className='flex justify-between'>
-                                    <div className='flex w-3/4 space-x-6'>
-                                        <div className="w-1/2 mb-20 relative">
-                                            <div className="mb-10 text-16">New Password</div>
-                                            
-                                            <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
-                                                <div className='w-full'>
-                                                    <input value={password} onChange={e => setPassword(e.target.value)} className="outline-white p-3 input border-0 text-14"  type={isShowPassword ? 'text' : 'password'} name="password"/>
-                                                </div>
-
-                                                <div className='px-2 pt-1'>
-                                                    <svg onClick={e => setIsShowPassword(true)} className={isShowPassword ? 'bg-white cursor-pointer hidden' : 'bg-white cursor-pointer'} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path fillRule="evenodd" clipRule="evenodd" d="M5.63604 5.56529L10.6072 10.5356C10.9673 10.1877 11.4585 9.97347 12 9.97347C13.1046 9.97347 14 10.8649 14 11.9646C14 12.5071 13.7821 12.9989 13.4287 13.3581L18.364 18.2932C18.7545 18.6837 18.7545 19.3169 18.364 19.7074C17.9734 20.0979 17.3403 20.0979 16.9497 19.7074L16.0498 18.8084C14.7649 19.5525 13.4151 19.9292 12 19.9292C8.41439 19.9292 5.2486 17.5106 2.49391 12.8261L2.28282 12.4613L2 11.9646L2.28282 11.4679C3.12423 9.99032 4.00457 8.72699 4.92408 7.68241L4.22183 6.9795C3.8313 6.58897 3.8313 5.95581 4.22183 5.56529C4.61235 5.17476 5.24551 5.17476 5.63604 5.56529ZM4.54572 11.569L4.30532 11.9646L4.51336 12.3079C6.87517 16.1384 9.37415 17.9381 12 17.9381C12.8728 17.9381 13.7313 17.7396 14.575 17.3343L10.7964 13.555C10.6453 13.4414 10.5108 13.307 10.3974 13.1561L6.33749 9.09402C5.73183 9.79538 5.13452 10.6192 4.54572 11.569ZM12 4C15.5856 4 18.7514 6.41863 21.5061 11.1031L21.7172 11.4679L22 11.9646L21.5113 12.8173C20.7425 14.1258 19.9416 15.2576 19.1086 16.2096L17.6965 14.7975C18.3734 14.0081 19.0396 13.0654 19.6948 11.9648C17.2718 7.89826 14.7031 5.99116 12 5.99116C11.1437 5.99116 10.3009 6.18253 9.47198 6.5733L7.99438 5.09542C9.26603 4.36816 10.6011 4 12 4Z" fill="#353F50"/>
-                                                    </svg>
-
-                                                    <svg onClick={e => setIsShowPassword(false)} className={isShowPassword ? 'bg-white cursor-pointer' : 'bg-white cursor-pointer hidden'} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path fillRule="evenodd" clipRule="evenodd" d="M12 4C15.5878 4 18.7554 6.43241 21.5113 11.1435L21.7172 11.5011L22 12L21.5113 12.8565C18.7554 17.5676 15.5878 20 12 20C8.41215 20 5.24464 17.5676 2.48874 12.8565L2.28282 12.4989L2 12L2.28282 11.5011C5.08652 6.55556 8.32245 4 12 4ZM12 6C9.29692 6 6.72829 7.91554 4.30532 12C6.72829 16.0845 9.29692 18 12 18C14.6297 18 17.1289 16.1901 19.487 12.3447L19.6948 12.0001L19.4867 11.6553C17.1249 7.80768 14.6259 6 12 6ZM12 9C13.6569 9 15 10.3431 15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9Z" fill="#353F50"/>
-                                                    </svg>
-                                                </div>
-                                            </div>                                
-                                        </div>
-
-                                        <div className="w-1/2 mb-20 relative">
-                                            <div className="mb-10 text-16">Confirm New Password</div>
-                                            
-                                            <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
-                                                <div className='w-full'>
-                                                    <input value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="outline-white p-3 input border-0 text-14"  type={isShowConfirmPassword ? 'text' : 'password'} name="password"/>
-                                                </div>
-
-                                                <div className='px-2 pt-1'>
-                                                    <svg onClick={e => setIsShowConfirmPassword(true)} className={isShowConfirmPassword ? 'bg-white cursor-pointer hidden' : 'bg-white cursor-pointer'} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path fillRule="evenodd" clipRule="evenodd" d="M5.63604 5.56529L10.6072 10.5356C10.9673 10.1877 11.4585 9.97347 12 9.97347C13.1046 9.97347 14 10.8649 14 11.9646C14 12.5071 13.7821 12.9989 13.4287 13.3581L18.364 18.2932C18.7545 18.6837 18.7545 19.3169 18.364 19.7074C17.9734 20.0979 17.3403 20.0979 16.9497 19.7074L16.0498 18.8084C14.7649 19.5525 13.4151 19.9292 12 19.9292C8.41439 19.9292 5.2486 17.5106 2.49391 12.8261L2.28282 12.4613L2 11.9646L2.28282 11.4679C3.12423 9.99032 4.00457 8.72699 4.92408 7.68241L4.22183 6.9795C3.8313 6.58897 3.8313 5.95581 4.22183 5.56529C4.61235 5.17476 5.24551 5.17476 5.63604 5.56529ZM4.54572 11.569L4.30532 11.9646L4.51336 12.3079C6.87517 16.1384 9.37415 17.9381 12 17.9381C12.8728 17.9381 13.7313 17.7396 14.575 17.3343L10.7964 13.555C10.6453 13.4414 10.5108 13.307 10.3974 13.1561L6.33749 9.09402C5.73183 9.79538 5.13452 10.6192 4.54572 11.569ZM12 4C15.5856 4 18.7514 6.41863 21.5061 11.1031L21.7172 11.4679L22 11.9646L21.5113 12.8173C20.7425 14.1258 19.9416 15.2576 19.1086 16.2096L17.6965 14.7975C18.3734 14.0081 19.0396 13.0654 19.6948 11.9648C17.2718 7.89826 14.7031 5.99116 12 5.99116C11.1437 5.99116 10.3009 6.18253 9.47198 6.5733L7.99438 5.09542C9.26603 4.36816 10.6011 4 12 4Z" fill="#353F50"/>
-                                                    </svg>
-
-                                                    <svg onClick={e => setIsShowConfirmPassword(false)} className={isShowConfirmPassword ? 'bg-white cursor-pointer' : 'bg-white cursor-pointer hidden'} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path fillRule="evenodd" clipRule="evenodd" d="M12 4C15.5878 4 18.7554 6.43241 21.5113 11.1435L21.7172 11.5011L22 12L21.5113 12.8565C18.7554 17.5676 15.5878 20 12 20C8.41215 20 5.24464 17.5676 2.48874 12.8565L2.28282 12.4989L2 12L2.28282 11.5011C5.08652 6.55556 8.32245 4 12 4ZM12 6C9.29692 6 6.72829 7.91554 4.30532 12C6.72829 16.0845 9.29692 18 12 18C14.6297 18 17.1289 16.1901 19.487 12.3447L19.6948 12.0001L19.4867 11.6553C17.1249 7.80768 14.6259 6 12 6ZM12 9C13.6569 9 15 10.3431 15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9Z" fill="#353F50"/>
-                                                    </svg>
-                                                </div>                                                
+                                                <div className={isPasswordMatch ? "text-red-500 text-sm mt-2 hidden":"text-red-500 text-sm mt-2 "}>Passwords did not match</div>                               
                                             </div> 
 
-                                            <div className={isPasswordMatch ? "text-red-500 text-sm mt-2 hidden":"text-red-500 text-sm mt-2 "}>Passwords did not match</div>                               
+                                            <div className='md:w-1/2 w-full'>
+                                                <button onClick={changePassword} type='button' className={passwordOrConfirmPasswordIsNullOrEmpty ? "mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer opacity-50 w-full":"mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full"} disabled={passwordOrConfirmPasswordIsNullOrEmpty}>
+                                                    <span className={ showPasswordSpinner ? "hidden" : ""}>Update</span>
+                                                    <img src={SpinnerIcon} alt="spinner icon" className={ showPasswordSpinner ? "" : "hidden"} width="15"/>
+                                                </button>
+                                            </div>                                       
                                         </div>                                        
                                     </div>
 
+                                    {/* Password Policy section */}
                                     <div>
-                                        <button onClick={changePassword} type='button' className={passwordOrConfirmPasswordIsNullOrEmpty ? "mt-9 rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer opacity-50":"mt-9 rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer"} disabled={passwordOrConfirmPasswordIsNullOrEmpty}>
-                                            <span className={ showPasswordSpinner ? "hidden" : ""}>Update</span>
-                                            <img src={SpinnerIcon} alt="spinner icon" className={ showPasswordSpinner ? "" : "hidden"} width="15"/>
-                                        </button>
-                                    </div>
-                                </div>
+                                        <div className="md:flex md:space-x-5 md:mb-5 mb-1">
+                                            <div className="flex text-sm space-x-1 text-gray-600">
+                                                <div>
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasMinAndMaxCharacter ? '#2AD062' : '#999CA0'}/>
+                                                        <path fillRule="evenodd" clipRule="evenodd" d="M11.3804 8.41699C11.2234 8.41699 11.0832 8.47868 10.9822 8.57961L8.57655 10.9909L7.2924 9.70114C7.19146 9.6002 7.05127 9.53852 6.89426 9.53852C6.58584 9.53852 6.3335 9.79086 6.3335 10.0993C6.3335 10.2563 6.39518 10.3965 6.49612 10.4974L8.17841 12.1797C8.27935 12.2807 8.41954 12.3423 8.57655 12.3423C8.73357 12.3423 8.87376 12.2807 8.97469 12.1797L11.7785 9.3759C11.8795 9.27496 11.9411 9.13477 11.9411 8.97776C11.9411 8.66934 11.6888 8.41699 11.3804 8.41699Z" fill={hasMinAndMaxCharacter ? '#2AD062' : '#999CA0'}/>
+                                                    </svg>
+                                                </div>
 
-                                {/* Password Policy section */}
-                                <div>
-                                    <div className="flex space-x-5 mb-10">
-                                        <div className="flex text-13 space-x-1 text-color-3">
-                                            <div>
-                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasMinAndMaxCharacter ? '#2AD062' : '#999CA0'}/>
-                                                    <path fillRule="evenodd" clipRule="evenodd" d="M11.3804 8.41699C11.2234 8.41699 11.0832 8.47868 10.9822 8.57961L8.57655 10.9909L7.2924 9.70114C7.19146 9.6002 7.05127 9.53852 6.89426 9.53852C6.58584 9.53852 6.3335 9.79086 6.3335 10.0993C6.3335 10.2563 6.39518 10.3965 6.49612 10.4974L8.17841 12.1797C8.27935 12.2807 8.41954 12.3423 8.57655 12.3423C8.73357 12.3423 8.87376 12.2807 8.97469 12.1797L11.7785 9.3759C11.8795 9.27496 11.9411 9.13477 11.9411 8.97776C11.9411 8.66934 11.6888 8.41699 11.3804 8.41699Z" fill={hasMinAndMaxCharacter ? '#2AD062' : '#999CA0'}/>
-                                                </svg>
+                                                <div className={hasMinAndMaxCharacter ? "pt-20 text-color-2a font-bold": "pt-20"}>At least 8 characters strong</div>
                                             </div>
 
-                                            <div className={hasMinAndMaxCharacter ? "pt-20 text-color-2a font-bold": "pt-20"}>At least 8 characters strong</div>
+                                            <div className="flex text-sm space-x-1 text-gray-600">
+                                                <div>
+                                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasLowerCaseCharacter ? "#2AD062":"#999CA0"}/>
+                                                        <path fillRule="evenodd" clipRule="evenodd" d="M11.3804 8.41699C11.2234 8.41699 11.0832 8.47868 10.9822 8.57961L8.57655 10.9909L7.2924 9.70114C7.19146 9.6002 7.05127 9.53852 6.89426 9.53852C6.58584 9.53852 6.3335 9.79086 6.3335 10.0993C6.3335 10.2563 6.39518 10.3965 6.49612 10.4974L8.17841 12.1797C8.27935 12.2807 8.41954 12.3423 8.57655 12.3423C8.73357 12.3423 8.87376 12.2807 8.97469 12.1797L11.7785 9.3759C11.8795 9.27496 11.9411 9.13477 11.9411 8.97776C11.9411 8.66934 11.6888 8.41699 11.3804 8.41699Z" fill={hasLowerCaseCharacter ? "#2AD062":"#999CA0"}/>
+                                                    </svg>
+                                                </div>
+
+                                                <div className={hasLowerCaseCharacter ? "pt-20 font-bold text-color-2a":"pt-20"}>One or more lower case character</div>
+                                            </div>
                                         </div>
 
-                                        <div className="flex text-13 space-x-1 text-color-3">
-                                            <div>
-                                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasLowerCaseCharacter ? "#2AD062":"#999CA0"}/>
-                                                    <path fillRule="evenodd" clipRule="evenodd" d="M11.3804 8.41699C11.2234 8.41699 11.0832 8.47868 10.9822 8.57961L8.57655 10.9909L7.2924 9.70114C7.19146 9.6002 7.05127 9.53852 6.89426 9.53852C6.58584 9.53852 6.3335 9.79086 6.3335 10.0993C6.3335 10.2563 6.39518 10.3965 6.49612 10.4974L8.17841 12.1797C8.27935 12.2807 8.41954 12.3423 8.57655 12.3423C8.73357 12.3423 8.87376 12.2807 8.97469 12.1797L11.7785 9.3759C11.8795 9.27496 11.9411 9.13477 11.9411 8.97776C11.9411 8.66934 11.6888 8.41699 11.3804 8.41699Z" fill={hasLowerCaseCharacter ? "#2AD062":"#999CA0"}/>
-                                                </svg>
+                                        <div className="md:flex md:space-x-5 md:mb-5 mb-1">
+                                            <div className="flex text-sm space-x-1 text-gray-600">
+                                                <div>
+                                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasUpperCaseCharacter ? "#2AD062":"#999CA0"}/>
+                                                        <path fillRule="evenodd" clipRule="evenodd" d="M11.3804 8.41699C11.2234 8.41699 11.0832 8.47868 10.9822 8.57961L8.57655 10.9909L7.2924 9.70114C7.19146 9.6002 7.05127 9.53852 6.89426 9.53852C6.58584 9.53852 6.3335 9.79086 6.3335 10.0993C6.3335 10.2563 6.39518 10.3965 6.49612 10.4974L8.17841 12.1797C8.27935 12.2807 8.41954 12.3423 8.57655 12.3423C8.73357 12.3423 8.87376 12.2807 8.97469 12.1797L11.7785 9.3759C11.8795 9.27496 11.9411 9.13477 11.9411 8.97776C11.9411 8.66934 11.6888 8.41699 11.3804 8.41699Z" fill={hasUpperCaseCharacter ? "#2AD062":"#999CA0"}/>
+                                                    </svg>
+                                                </div>
+
+                                                <div className={hasUpperCaseCharacter ? "pt-20 font-bold text-color-2a":"pt-20"}>One or more upper case character</div>
                                             </div>
 
-                                            <div className={hasLowerCaseCharacter ? "pt-20 font-bold text-color-2a":"pt-20"}>One or more lower case character</div>
-                                        </div>
-                                    </div>
+                                            <div className="flex text-sm space-x-1 text-gray-600">
+                                                <div>
+                                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasNumericCharacter ? "#2AD062":"#999CA0"}/>
+                                                        <path fillRule="evenodd" clipRule="evenodd" d="M11.3804 8.41699C11.2234 8.41699 11.0832 8.47868 10.9822 8.57961L8.57655 10.9909L7.2924 9.70114C7.19146 9.6002 7.05127 9.53852 6.89426 9.53852C6.58584 9.53852 6.3335 9.79086 6.3335 10.0993C6.3335 10.2563 6.39518 10.3965 6.49612 10.4974L8.17841 12.1797C8.27935 12.2807 8.41954 12.3423 8.57655 12.3423C8.73357 12.3423 8.87376 12.2807 8.97469 12.1797L11.7785 9.3759C11.8795 9.27496 11.9411 9.13477 11.9411 8.97776C11.9411 8.66934 11.6888 8.41699 11.3804 8.41699Z" fill={hasNumericCharacter ? "#2AD062":"#999CA0"}/>
+                                                    </svg>
+                                                </div>
 
-                                    <div className="flex space-x-3 mb-10">
-                                        <div className="flex text-13 space-x-1 text-color-3">
-                                            <div>
-                                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasUpperCaseCharacter ? "#2AD062":"#999CA0"}/>
-                                                    <path fillRule="evenodd" clipRule="evenodd" d="M11.3804 8.41699C11.2234 8.41699 11.0832 8.47868 10.9822 8.57961L8.57655 10.9909L7.2924 9.70114C7.19146 9.6002 7.05127 9.53852 6.89426 9.53852C6.58584 9.53852 6.3335 9.79086 6.3335 10.0993C6.3335 10.2563 6.39518 10.3965 6.49612 10.4974L8.17841 12.1797C8.27935 12.2807 8.41954 12.3423 8.57655 12.3423C8.73357 12.3423 8.87376 12.2807 8.97469 12.1797L11.7785 9.3759C11.8795 9.27496 11.9411 9.13477 11.9411 8.97776C11.9411 8.66934 11.6888 8.41699 11.3804 8.41699Z" fill={hasUpperCaseCharacter ? "#2AD062":"#999CA0"}/>
-                                                </svg>
+                                                <div className={hasNumericCharacter ? "pt-20 font-bold text-color-2a":"pt-20"}>One or more numeric character</div>
                                             </div>
-
-                                            <div className={hasUpperCaseCharacter ? "pt-20 font-bold text-color-2a":"pt-20"}>One or more upper case character</div>
-                                        </div>
-
-                                        <div className="flex text-13 space-x-1 text-color-3">
-                                            <div>
-                                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasNumericCharacter ? "#2AD062":"#999CA0"}/>
-                                                    <path fillRule="evenodd" clipRule="evenodd" d="M11.3804 8.41699C11.2234 8.41699 11.0832 8.47868 10.9822 8.57961L8.57655 10.9909L7.2924 9.70114C7.19146 9.6002 7.05127 9.53852 6.89426 9.53852C6.58584 9.53852 6.3335 9.79086 6.3335 10.0993C6.3335 10.2563 6.39518 10.3965 6.49612 10.4974L8.17841 12.1797C8.27935 12.2807 8.41954 12.3423 8.57655 12.3423C8.73357 12.3423 8.87376 12.2807 8.97469 12.1797L11.7785 9.3759C11.8795 9.27496 11.9411 9.13477 11.9411 8.97776C11.9411 8.66934 11.6888 8.41699 11.3804 8.41699Z" fill={hasNumericCharacter ? "#2AD062":"#999CA0"}/>
-                                                </svg>
-                                            </div>
-
-                                            <div className={hasNumericCharacter ? "pt-20 font-bold text-color-2a":"pt-20"}>One or more numeric character</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex space-x-3 mb-30">
-
-                                        <div className="flex text-13 space-x-1 text-color-3">
-                                            <div>
-                                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasSpecialCharacter ? "#2AD062":"#999CA0"}/>
-                                                    <path fillRule="evenodd" clipRule="evenodd" d="M11.3804 8.41699C11.2234 8.41699 11.0832 8.47868 10.9822 8.57961L8.57655 10.9909L7.2924 9.70114C7.19146 9.6002 7.05127 9.53852 6.89426 9.53852C6.58584 9.53852 6.3335 9.79086 6.3335 10.0993C6.3335 10.2563 6.39518 10.3965 6.49612 10.4974L8.17841 12.1797C8.27935 12.2807 8.41954 12.3423 8.57655 12.3423C8.73357 12.3423 8.87376 12.2807 8.97469 12.1797L11.7785 9.3759C11.8795 9.27496 11.9411 9.13477 11.9411 8.97776C11.9411 8.66934 11.6888 8.41699 11.3804 8.41699Z" fill={hasSpecialCharacter ? "#2AD062":"#999CA0"}/>
-                                                </svg>
-                                            </div>
-
-                                            <div className={hasSpecialCharacter ? "pt-20 font-bold text-color-2a":"pt-20"}>A symbol or special character</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* End */}
-                            </div>
-                            {/*End */}
-
-                            {/*Change Pin */}
-                            <div className='card mb-30'>
-                                {/* Change Pin Success */}
-                                <div className={isPinChangeSuccessful ? "otp-alert mb-20":"hidden"}>
-                                    <div className="flex otp-validated justify-between space-x-1 pt-3">
-                                        <div className="flex">
-                                            <div>
-                                                <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062"/>
-                                                    <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062"/>
-                                                </svg>
-                                            </div>
-
-                                            <div className="pt-1 text-14 text-color-1">{apiResponseMessage}</div>
                                         </div>
                                         
-                                        <div className="cursor-pointer" onClick={closeModal}>
-                                            <svg  className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50"/>
-                                            </svg>
+                                        <div className="md:flex md:space-x-5">
+                                            <div className="flex text-sm space-x-1 text-gray-600">
+                                                <div>
+                                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasSpecialCharacter ? "#2AD062":"#999CA0"}/>
+                                                        <path fillRule="evenodd" clipRule="evenodd" d="M11.3804 8.41699C11.2234 8.41699 11.0832 8.47868 10.9822 8.57961L8.57655 10.9909L7.2924 9.70114C7.19146 9.6002 7.05127 9.53852 6.89426 9.53852C6.58584 9.53852 6.3335 9.79086 6.3335 10.0993C6.3335 10.2563 6.39518 10.3965 6.49612 10.4974L8.17841 12.1797C8.27935 12.2807 8.41954 12.3423 8.57655 12.3423C8.73357 12.3423 8.87376 12.2807 8.97469 12.1797L11.7785 9.3759C11.8795 9.27496 11.9411 9.13477 11.9411 8.97776C11.9411 8.66934 11.6888 8.41699 11.3804 8.41699Z" fill={hasSpecialCharacter ? "#2AD062":"#999CA0"}/>
+                                                    </svg>
+                                                </div>
+
+                                                <div className={hasSpecialCharacter ? "pt-20 font-bold text-color-2a":"pt-20"}>A symbol or special character</div>
+                                            </div>
                                         </div>
                                     </div>
+                                    {/* End */}
                                 </div>
-                                {/* End */}
+                                {/*End */}
 
-                                <div className='font-gotham-black-regular text-color-1 mb-30'>Change Pin</div>
+                                {/*Change Pin */}
+                                <div className='card p-10'>
+                                    {/* Change Pin Success */}
+                                    <div className={isPinChangeSuccessful ? "otp-alert mb-20":"hidden"}>
+                                        <div className="flex otp-validated justify-between space-x-1 pt-3">
+                                            <div className="flex">
+                                                <div>
+                                                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062"/>
+                                                        <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062"/>
+                                                    </svg>
+                                                </div>
 
-                                <div className='mb-30'>
-                                    <div className='flex justify-between space-x-5'>
-                                        <div className='w-3/4'>
-                                            <div className='text-gray-700 mb-4'>Old Pin</div>
-                                            <div><input value={oldPin} onChange={e => setOldPin(e.target.value)} type='password' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full' maxLength={4}/></div>
+                                                <div className="pt-1 text-sm text-green-900">{apiResponseMessage}</div>
+                                            </div>
+                                            
+                                            <div className="cursor-pointer" onClick={closeModal}>
+                                                <svg  className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50"/>
+                                                </svg>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                    {/* End */}
 
-                                <div className='flex justify-between'>
-                                    <div className='flex w-3/4 space-x-6'>
-                                        <div className="w-1/2 mb-20 relative">
-                                            <div className="mb-10 text-16">New Pin</div>
+                                    <div className='font-gotham-black-regular text-green-900 mb-30'>Change Pin</div>
+
+                                    <div className='mb-11'>
+                                        <div>
+                                            <div className='text-gray-700 mb-3 font-bold text-sm'>Old Pin</div>
+
+                                            <div>
+                                                <input value={oldPin} onChange={e => setOldPin(e.target.value)} type='password' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full' maxLength={4}/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className='md:flex md:justify-between md:space-x-10'>
+                                        <div className="md:w-1/3 w-full  md:mb-0 mb-11 relative">
+                                            <div className="mb-3 text-sm font-bold">New Pin</div>
                                             
                                             <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
                                                 <div className='w-full'>
-                                                    <input value={pin} onChange={e => setPin(e.target.value)} className="outline-white p-3 input border-0 text-14" type={isShowPin ? 'text' : 'password'} name="password" maxLength={4}/>
+                                                    <input value={pin} onChange={e => setPin(e.target.value)} className="outline-white p-3 input border-0 text-sm" type={isShowPin ? 'text' : 'password'} name="password" maxLength={4}/>
                                                 </div>
 
                                                 <div className='px-2 pt-1'>
@@ -1868,12 +1870,12 @@ const Profile = () => {
                                             </div>                                
                                         </div>
 
-                                        <div className="w-1/2 mb-20 relative">
-                                            <div className="mb-10 text-16">Confirm New Pin</div>
+                                        <div className="md:w-1/3 w-full relative">
+                                            <div className="mb-3 text-sm font-bold">Confirm New Pin</div>
                                             
                                             <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
                                                 <div className='w-full'>
-                                                    <input value={confirmPin} onChange={e => setConfirmPin(e.target.value)} className="outline-white p-3 input border-0 text-14"  type={isShowConfirmPin ? 'text' : 'password'} name="password" maxLength={4}/>
+                                                    <input value={confirmPin} onChange={e => setConfirmPin(e.target.value)} className="outline-white p-3 input border-0 text-sm"  type={isShowConfirmPin ? 'text' : 'password'} name="password" maxLength={4}/>
                                                 </div>
 
                                                 <div className='px-2 pt-1'>
@@ -1888,77 +1890,76 @@ const Profile = () => {
                                             </div> 
 
                                             <div className={isPinMatch ? "text-red-500 text-sm mt-2 hidden":"text-red-500 text-sm mt-2 "}>Pins did not match</div>                                
-                                        </div>                                        
+                                        </div>
+
+                                        <div className='md:w-1/3 w-full'>
+                                            <button onClick={changePin} type='button' className={pinOrConfirmPinIsNullOrEmpty ? "mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer opacity-50 w-full":"mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full"} disabled={pinOrConfirmPinIsNullOrEmpty}>
+                                                <span className={ showPinSpinner ? "hidden" : ""}>Update</span>
+                                                <img src={SpinnerIcon} alt="spinner icon" className={ showPinSpinner ? "" : "hidden"} width="15"/>
+                                            </button>
+                                        </div>                                    
+                                    </div>
+                                </div>
+                                {/*End */}
+
+                                {/*2FA Auth */}
+                                <div className='card' style={{display: 'none'}}>
+                                    <div className='font-gotham-black-regular text-green-900 mb-20'>2 Factor Authentication</div>
+
+
+                                    <div className='flex justify-between'>                                
+                                        <div>
+                                            <button type='button' className="rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer">Enable 2FA</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                {/*End */}
+                            </div>
+                            {/*End */}
+
+                            {/*Notification section */}
+                            <div className={switchToNotification ? '':'hidden'}>
+                                <div className='flex justify-between bg-white font-bold border border-gray-500 rounded-t-lg p-5 text-green-900'>
+                                    <div>
+                                        <div className='text-xl mb-3'>My Notifications</div>
+                                        <div className='text-sm'>Manage your notifications</div>
                                     </div>
 
                                     <div>
-                                        <button onClick={changePin} type='button' className={pinOrConfirmPinIsNullOrEmpty ? "mt-9 rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer opacity-50":"mt-9 rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer"} disabled={pinOrConfirmPinIsNullOrEmpty}>
-                                            <span className={ showPinSpinner ? "hidden" : ""}>Update</span>
-                                            <img src={SpinnerIcon} alt="spinner icon" className={ showPinSpinner ? "" : "hidden"} width="15"/>
-                                        </button>
+                                        <button type="button" className='cursor-pointer px-5 py-3 bg-red-500 text-white font-bold rounded-lg border border-red-800 hidden'>Mark all read</button>
                                     </div>
+                                </div>
+
+                                <div className='bg-white border border-gray-500 rounded-b-lg mb-30'>
+                                    {notificationLogs}
                                 </div>
                             </div>
                             {/*End */}
 
-                            {/*2FA Auth */}
-                            <div className='card' style={{display: 'none'}}>
-                                <div className='font-gotham-black-regular text-color-1 mb-20'>2 Factor Authentication</div>
+                            {/*Bank Details section */}
+                            <div className={switchToBankDetails ? '':'hidden'}>
 
+                                <div className='bg-white border border-gray-500 p-5 rounded-lg mb-30'>
+                                    <div className={bankDetailsList.length > 0 ? 'hidden':'w-full'}>You have not added a bank account. Click <strong>Add New Bank</strong> button above to begin.</div>
 
-                                <div className='flex justify-between'>                                
-                                    <div>
-                                        <button type='button' className="rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer">Enable 2FA</button>
-                                    </div>
-                                </div>
-                            </div>
-                            {/*End */}
-                        </div>
-                        {/*End */}
-
-                        {/*Notification section */}
-                        <div className={switchToNotification ? '':'hidden'}>
-                            <div className='flex justify-between bg-white font-bold border border-gray-500 rounded-t-lg p-5 text-color-1'>
-                                <div>
-                                    <div className='text-xl mb-10'>My Notifications</div>
-                                    <div className='text-sm'>Manage your notifications</div>
-                                </div>
-
-                                <div>
-                                    <button type="button" className='cursor-pointer px-5 py-3 bg-red-500 text-white font-bold rounded-lg border border-red-800 hidden'>Mark all read</button>
-                                </div>
-                            </div>
-
-                            <div className='bg-white border border-gray-500 rounded-b-lg mb-30'>
-                                {notificationLogs}
-                            </div>
-                        </div>
-                        {/*End */}
-
-                        {/*Bank Details section */}
-                        <div className={switchToBankDetails ? '':'hidden'}>
-
-                            <div className='bg-white border border-gray-500 p-5 rounded-lg mb-30'>
-                                <div className={bankDetailsList.length > 0 ? 'hidden':'w-full'}>You have not added a bank account. Click <strong>Add New Bank</strong> button above to begin.</div>
-
-                                <div className='grid grid-cols-3 gap-4'>
-                                    {
-                                    bankDetailsList.map((item :any, index :any) =>
-                                        <div onClick={selectBankDetails} key={index} data-bank={item.id}>
-                                            <div className='bgcolor-2 rounded-xl p-0 relative cursor-pointer' data-bank={item.id}>
-                                                <img src={MaskGroupImg} alt='' data-bank={item.id} className="w-full"/>
-                                                <div className='absolute bottom-0 px-7 py-6' data-bank={item.id}>
-                                                    <div className='text-white text-sm mb-20' data-bank={item.id}>{item.accountName}</div>
-                                                    <div className='text-white font-bold' data-bank={item.id}>{item.bankName} ({item.accountNumber})</div>
+                                    <div className='grid grid-cols-3 gap-4'>
+                                        {
+                                        bankDetailsList.map((item :any, index :any) =>
+                                            <div onClick={selectBankDetails} key={index} data-bank={item.id}>
+                                                <div className='bgcolor-2 rounded-xl p-0 relative cursor-pointer' data-bank={item.id}>
+                                                    <img src={MaskGroupImg} alt='' data-bank={item.id} className="w-full"/>
+                                                    <div className='absolute bottom-0 px-7 py-6' data-bank={item.id}>
+                                                        <div className='text-white text-sm mb-20' data-bank={item.id}>{item.accountName}</div>
+                                                        <div className='text-white font-bold' data-bank={item.id}>{item.bankName} ({item.accountNumber})</div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>  
-                                    )}
-                                </div>      
+                                            </div>  
+                                        )}
+                                    </div>      
+                                </div>
                             </div>
+                            {/*End */}
                         </div>
-                        {/*End */}
-                        
                     </div>                    
                 </div>
             </div>
@@ -1974,7 +1975,7 @@ const Profile = () => {
                 <div className='generic-modal-dialog'>
                     <div className="validate-pin-modal">
                         <div className="px-5 py-3 flex justify-between items-center" style={{borderBottom: '1px solid #ddd'}}>
-                            <div className="font-bold text-lg text-color-1">Notification</div>
+                            <div className="font-bold text-lg text-green-900">Notification</div>
 
                             <div onClick={closeModal} className=''>
                                 <img src={CloseIcon} alt="" className="cursor-pointer" width='20'/>
@@ -1992,7 +1993,7 @@ const Profile = () => {
                 <div className='generic-modal-dialog'>
                     <div className="validate-pin-modal">
                         <div className="px-5 py-4 flex justify-between" style={{borderBottom : '1px solid #dee2e6'}}>
-                            <div className="font-bold text-xl text-color-1">Add New Bank</div>
+                            <div className="font-bold text-xl text-green-900">Add New Bank</div>
 
                             <div onClick={closeModal} className=''>
                                 <img src={CloseIcon} alt="" className="cursor-pointer" />
@@ -2010,7 +2011,7 @@ const Profile = () => {
                                             </svg>
                                         </div>
 
-                                        <div className="pt-1 text-14">{bankDetailsError}</div>
+                                        <div className="pt-1 text-sm">{bankDetailsError}</div>
                                     </div>
                                     
                                     <div className="cursor-pointer">
@@ -2033,7 +2034,7 @@ const Profile = () => {
                                             </svg>
                                         </div>
 
-                                        <div className="pt-1 text-14 text-color-1">{apiResponseSuccessMsg}</div>
+                                        <div className="pt-1 text-sm text-green-900">{apiResponseSuccessMsg}</div>
                                     </div>
                                     
                                     <div className="cursor-pointer">
@@ -2046,11 +2047,11 @@ const Profile = () => {
                             {/* End */}
 
                             
-                            <div className='mb-5 text-color-1 text-xl font-bold'>Enter your bank details below</div>
-                            <div className='mb-30 text-color-1 text-md'>We pay your withdrawal into your bank account </div>
+                            <div className='mb-5 text-green-900 text-xl font-bold'>Enter your bank details below</div>
+                            <div className='mb-30 text-green-900 text-md'>We pay your withdrawal into your bank account </div>
 
                             <div className='mb-30'>
-                                <div className='text-14 mb-10 font-bold'>Select Bank</div>
+                                <div className='text-sm mb-10 font-bold'>Select Bank</div>
 
                                 <div>
                                     <select onChange={checkNameEnquiryOnBankDetails} className='input px-5 py-3 border-1-d6 outline-white font-bold text-lg' id='bankList' >
@@ -2065,7 +2066,7 @@ const Profile = () => {
                             </div>
 
                             <div className='mb-30'>
-                                <div className='text-14 mb-10 font-bold'>Account Number</div>
+                                <div className='text-sm mb-10 font-bold'>Account Number</div>
 
                                 <div>
                                     <input id="accountNumber" type='text' className='input p-3 border-1-d6 outline-white font-bold text-lg' value={accountNumber} onKeyDown={validateAccountNumberOnKeyDown} onChange={validateAccountNumber} maxLength={10}/>
@@ -2073,7 +2074,7 @@ const Profile = () => {
                             </div>                                        
 
                             <div className='mb-30'>
-                                <div className='text-14 mb-10 font-bold'>Account Name</div>
+                                <div className='text-sm mb-10 font-bold'>Account Name</div>
 
                                 <div>
                                     <input readOnly type='text' className='input p-3 border-1-d6 outline-white font-bold text-lg' value={accountName}/>
@@ -2081,7 +2082,7 @@ const Profile = () => {
                             </div>
 
                             <div>
-                                <button onClick={addBankDetails} type='button' className='w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' >
+                                <button onClick={addBankDetails} type='button' className='w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' >
                                     <span className={ showSpinner ? "hidden" : ""}>Proceed</span>
                                     <img src={SpinnerIcon} alt="spinner icon" className={ showSpinner ? "" : "hidden"} width="15"/>
                                 </button>
@@ -2096,7 +2097,7 @@ const Profile = () => {
                 <div className='generic-modal-dialog'>
                     <div className='validate-pin-modal'>
                         <div className="px-5 py-4 flex justify-between" style={{borderBottom : '1px solid #dee2e6'}}>
-                            <div className="font-bold text-xl text-color-1">Manage Bank Details</div>
+                            <div className="font-bold text-xl text-green-900">Manage Bank Details</div>
 
                             <div onClick={closeModal} className=''>
                                 <img src={CloseIcon} alt="" className="cursor-pointer" />
@@ -2124,7 +2125,7 @@ const Profile = () => {
                             <div className="font-bold flex mb-30 hidden">
                                 <div className='mr-3'>Default bank account </div>
                                 
-                                <div  className='flex rounded-3xl p-1 bgcolor-1 ease-in-out transition delay-75 duration-75'>
+                                <div  className='flex rounded-3xl p-1 bg-green-900 ease-in-out transition delay-75 duration-75'>
                                     <button className="rounded-3xl knob border-0 cursor-pointer ease-in-out transition delay-75 duration-75" type="button"></button>
 
                                     <button className="ml-0.5 p-1.5 rounded-3xl knob items-center border-0 cursor-pointer opacity-0 ease-in-out transition delay-75 duration-75" type="button"></button>
@@ -2140,7 +2141,7 @@ const Profile = () => {
 
                                 <div className='mb-30 flex justify-between py-5 border-top-1'>
                                     <div>Date Added</div>
-                                    <div className='font-bold text-color-1 font-bold'>{moment(item.updatedOn).format("MMMM Do, YYYY")}</div>
+                                    <div className='font-bold text-green-900 font-bold'>{moment(item.updatedOn).format("MMMM Do, YYYY")}</div>
                                 </div>
                             </div>
                             )}
@@ -2160,7 +2161,7 @@ const Profile = () => {
                 <div className='generic-modal-dialog'>
                     <div className="validate-pin-modal">
                         <div className="p-5 flex justify-between pb-5" style={{borderBottom : '1px solid #dee2e6'}}>
-                            <div className="font-bold text-xl text-color-1">Validate PIN</div>
+                            <div className="font-bold text-xl text-green-900">Validate PIN</div>
 
                             <div onClick={closeModal} className='hidden'>
                                 <img src={CloseIcon} alt="" className="cursor-pointer" />
@@ -2180,7 +2181,7 @@ const Profile = () => {
                                             </svg>
                                         </div>
 
-                                        <div className="pt-1 text-14 text-color-1">{apiResponseMessage}</div>
+                                        <div className="pt-1 text-sm text-green-900">{apiResponseMessage}</div>
                                     </div>
                                     
                                     <div className="cursor-pointer" onClick={closeModal}>
@@ -2202,7 +2203,7 @@ const Profile = () => {
                                             </svg>
                                         </div>
 
-                                        <div className="pt-1 text-14">{apiResponseMessage}</div>
+                                        <div className="pt-1 text-sm">{apiResponseMessage}</div>
                                     </div>
                                     
                                     <div className="cursor-pointer">
@@ -2218,7 +2219,7 @@ const Profile = () => {
 
                             <div className='mb-30'><input maxLength={4} type="password" className="w-full rounded-lg p-5 border border-gray-100 outline-white" onChange={e => setPin(e.target.value)} /> </div>
 
-                            <div><button type='button' className='px-16 py-3 bgcolor-1 text-white rounded-lg font-bold border-0 w-full cursor-pointer' onClick={validatePin}>
+                            <div><button type='button' className='px-16 py-3 bg-green-900 text-white rounded-lg font-bold border-0 w-full cursor-pointer' onClick={validatePin}>
                                 <span className={ showSpinner ? "hidden" : ""}>Validate</span>
                                 <img src={SpinnerIcon} alt="spinner icon" className={ showSpinner ? "" : "hidden"} width="15"/>
                             </button></div>
@@ -2229,7 +2230,7 @@ const Profile = () => {
 
             <div className={showDeleteModal ? "set-price-alert-modal rounded-lg" : "hidden"}>
                 <div className="mb-10 flex justify-between">
-                    <div className="font-bold text-28 text-color-1 font-gotham-black-regular"></div>
+                    <div className="font-bold text-3xl text-green-900 font-gotham-black-regular"></div>
 
                     <div onClick={closeModal}>
                         <img src={CloseIcon} alt="" className="cursor-pointer" />
@@ -2248,7 +2249,7 @@ const Profile = () => {
                                     </svg>
                                 </div>
 
-                                <div className="pt-1 text-14 text-color-1">{apiResponseSuccessMsg}</div>
+                                <div className="pt-1 text-sm text-green-900">{apiResponseSuccessMsg}</div>
                             </div>
                             
                             <div className="cursor-pointer">

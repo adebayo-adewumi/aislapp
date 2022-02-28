@@ -48,52 +48,52 @@ const Sidebar = (props :any) => {
 
 
     return (
-        <div className={showSidebar === 'show' ? "sidebar block md:block  lg:inset-auto lg:static lg:translate-x-0 translate-x-0 ease-out transition-medium":"sidebar hidden md:block lg:inset-auto lg:static lg:translate-x-0 -translate-x-full ease-in transition-medium"}>
+        <div className={showSidebar === 'show' ? "sidebar fixed block md:block h-full lg:inset-auto lg:static lg:translate-x-0 translate-x-0 ease-out transition-medium":"sidebar fixed h-full hidden md:block lg:inset-auto lg:static lg:translate-x-0 -translate-x-full ease-in transition-medium"}>
             <ul>
                 <li className="space-x-5">
-                    <Link to='/dashboard' className={ urlPath === '/dashboard' || urlPath === "/news" ? "items-center active w-full no-underline flex text-color-1" : "w-full no-underline flex text-gray-700 items-center"}> 
+                    <Link to='/dashboard' className={ urlPath === '/dashboard' || urlPath === "/news" ? "items-center active w-full no-underline flex text-green-900" : "w-full no-underline flex text-gray-700 items-center"}> 
                         <div><img src={urlPath === '/dashboard' || urlPath === "/news" ? PageActiveIcon : PageIcon} alt="" /></div>
                         <div className="pl-5">Home</div>
                     </Link>
                 </li>
 
                 <li className="space-x-5">
-                    <Link to="/trade" className={ urlPath === '/trade' ? "items-center active w-full no-underline flex text-color-1" : "w-full no-underline flex text-gray-700 items-center"}>
+                    <Link to="/trade" className={ urlPath === '/trade' ? "items-center active w-full no-underline flex text-green-900" : "w-full no-underline flex text-gray-700 items-center"}>
                         <div><img src={urlPath === '/trade' ? TradeActiveIcon : TradeIcon} alt="" /></div>
                         <div className="pl-5">Trade</div>
                     </Link>
                 </li>
 
                 <li className="space-x-5">
-                    <Link to="/portfolio" className={ urlPath === '/portfolio' ? "items-center active w-full no-underline flex text-color-1" : "w-full no-underline flex text-gray-700 items-center"}>
+                    <Link to="/portfolio" className={ urlPath === '/portfolio' ? "items-center active w-full no-underline flex text-green-900" : "w-full no-underline flex text-gray-700 items-center"}>
                         <div><img src={urlPath === '/portfolio' ? PortfolioActiveIcon : PortfolioIcon} alt="" /></div>
                         <div className="pl-5">Portfolio</div>
                     </Link>
                 </li>
 
                 <li className="space-x-5">
-                    <Link to="/watchlist" className={ urlPath === '/watchlist' ? "items-center active w-full no-underline flex text-color-1" : "w-full no-underline flex text-gray-700 items-center"}>
+                    <Link to="/watchlist" className={ urlPath === '/watchlist' ? "items-center active w-full no-underline flex text-green-900" : "w-full no-underline flex text-gray-700 items-center"}>
                         <div><img src={urlPath === '/watchlist' ? StarGrayActiveIcon : StarGrayIcon} alt="" /></div>
                         <div className="pl-5">Watchlist</div>
                     </Link>
                 </li>
 
                 <li className="space-x-5">
-                    <Link to="/account" className={ regex.test(urlPath) ? "items-center active w-full no-underline flex text-color-1" : "w-full no-underline flex text-gray-700 items-center"}>
+                    <Link to="/account" className={ regex.test(urlPath) ? "items-center active w-full no-underline flex text-green-900" : "w-full no-underline flex text-gray-700 items-center"}>
                         <div><img src={regex.test(urlPath) ? AccountActiveIcon : AccountIcon} alt="" /></div>
                         <div className="pl-5">Account</div>
                     </Link>
                 </li>
 
                 <li className="space-x-5">
-                    <Link to="/profile" className={ urlPath === '/profile' ? "items-center active w-full no-underline flex text-color-1" : "w-full no-underline flex text-gray-700 items-center"}>
+                    <Link to="/profile" className={ urlPath === '/profile' ? "items-center active w-full no-underline flex text-green-900" : "w-full no-underline flex text-gray-700 items-center"}>
                         <div><img src={urlPath === '/profile' ? ProfileActiveIcon : ProfileIcon} alt="" /></div>
                         <div className="pl-5">Profile</div>
                     </Link>
                 </li>
 
                 <li className="space-x-5">
-                    <Link to="/learn" className={ urlPath === '/learn' ? "items-center active w-full no-underline flex text-color-1" : "w-full no-underline flex text-gray-700 items-center"}>
+                    <Link to="/learn" className={ urlPath === '/learn' ? "items-center active w-full no-underline flex text-green-900" : "w-full no-underline flex text-gray-700 items-center"}>
                         <div><img src={urlPath === '/learn' ? LearnActiveIcon : LearnIcon} alt="" /></div>
                         <div className="pl-5">Learn</div>
                     </Link>

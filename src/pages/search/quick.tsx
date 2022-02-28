@@ -71,11 +71,11 @@ const QuickSearch = () => {
                     <Sidebar />   
 
                     <div className="main-content w-full p-10">
-                        <div className="text-28 mb-20">
-                            <span className="font-bold text-color-1">Quick search</span>
+                        <div className="text-3xl mb-20">
+                            <span className="font-bold text-green-900">Quick search</span>
                         </div>
 
-                        <div className="text-16 font-bold text-color-2 mb-30">
+                        <div className="text-sm font-bold text-color-2 mb-30">
                         Find a stock
                         </div>
 
@@ -127,13 +127,13 @@ const QuickSearch = () => {
                                                 <img src={CadburyIcon} alt="" />
                                             </div>
 
-                                            <div className="flex w-full justify-between space-x-5 mb-10 text-14">
+                                            <div className="flex w-full justify-between space-x-5 mb-10 text-sm">
                                                 <div className="font-bold text-gray-900">Cadbury</div>
                                                 <div className="font-bold">₦23.5 </div>
                                             </div>
 
                                             <div>
-                                                <div className="text-green-500 text-13">(10.55%) 1 day</div>
+                                                <div className="text-green-500 text-sm">(10.55%) 1 day</div>
                                             </div>
                                         </Link>
                                     </div>
@@ -143,13 +143,13 @@ const QuickSearch = () => {
                                                 <img src={CadburyIcon} alt="" />
                                             </div>
 
-                                            <div className="flex w-full justify-between space-x-5 mb-10 text-14">
+                                            <div className="flex w-full justify-between space-x-5 mb-10 text-sm">
                                                 <div className="font-bold text-gray-900">Cadbury</div>
                                                 <div className="font-bold">₦23.5 </div>
                                             </div>
 
                                             <div>
-                                                <div className="text-green-500 text-13">(10.55%) 1 day</div>
+                                                <div className="text-green-500 text-sm">(10.55%) 1 day</div>
                                             </div>
                                         </Link>
                                     </div>
@@ -159,13 +159,13 @@ const QuickSearch = () => {
                                                 <img src={CadburyIcon} alt="" />
                                             </div>
 
-                                            <div className="flex w-full justify-between space-x-5 mb-10 text-14">
+                                            <div className="flex w-full justify-between space-x-5 mb-10 text-sm">
                                                 <div className="font-bold text-gray-900">Cadbury</div>
                                                 <div className="font-bold">₦23.5 </div>
                                             </div>
 
                                             <div>
-                                                <div className="text-green-500 text-13">(10.55%) 1 day</div>
+                                                <div className="text-green-500 text-sm">(10.55%) 1 day</div>
                                             </div>
                                         </Link>
                                     </div>
@@ -175,13 +175,13 @@ const QuickSearch = () => {
                                                 <img src={CadburyIcon} alt="" />
                                             </div>
 
-                                            <div className="flex w-full justify-between space-x-5 mb-10 text-14">
+                                            <div className="flex w-full justify-between space-x-5 mb-10 text-sm">
                                                 <div className="font-bold text-gray-900">Cadbury</div>
                                                 <div className="font-bold">₦23.5 </div>
                                             </div>
 
                                             <div>
-                                                <div className="text-green-500 text-13">(10.55%) 1 day</div>
+                                                <div className="text-green-500 text-sm">(10.55%) 1 day</div>
                                             </div>
                                         </Link>
                                     </div>
@@ -191,13 +191,13 @@ const QuickSearch = () => {
                                                 <img src={CadburyIcon} alt="" />
                                             </div>
 
-                                            <div className="flex w-full justify-between space-x-5 mb-10 text-14">
+                                            <div className="flex w-full justify-between space-x-5 mb-10 text-sm">
                                                 <div className="font-bold text-gray-900">Cadbury</div>
                                                 <div className="font-bold">₦23.5 </div>
                                             </div>
 
                                             <div>
-                                                <div className="text-green-500 text-13">(10.55%) 1 day</div>
+                                                <div className="text-green-500 text-sm">(10.55%) 1 day</div>
                                             </div>
                                         </Link>
                                     </div>
@@ -207,13 +207,13 @@ const QuickSearch = () => {
                                                 <img src={CadburyIcon} alt="" />
                                             </div>
 
-                                            <div className="flex w-full justify-between space-x-5 mb-10 text-14">
+                                            <div className="flex w-full justify-between space-x-5 mb-10 text-sm">
                                                 <div className="font-bold text-gray-900">Cadbury</div>
                                                 <div className="font-bold">₦23.5 </div>
                                             </div>
 
                                             <div>
-                                                <div className="text-green-500 text-13">(10.55%) 1 day</div>
+                                                <div className="text-green-500 text-sm">(10.55%) 1 day</div>
                                             </div>
                                         </Link>
                                     </div>

@@ -529,7 +529,7 @@ const BankCard = () => {
                             {/*Card Header */}
                             <div className={showDebitCards ? "flex justify-between" : 'hidden'} style={{ width: '35rem' }}>
                                 <div>
-                                    <div className="text-28 text-color-1 font-gotham-black-regular font-bold mb-30">Bank and Cards</div>
+                                    <div className="text-3xl text-green-900 font-gotham-black-regular font-bold mb-30">Bank and Cards</div>
                                     
                                 </div>
 
@@ -543,7 +543,7 @@ const BankCard = () => {
                             {/*Bank Header */}
                             <div className={showBankHeader ? "flex justify-between" : 'hidden'} style={{ width: '35rem' }}>
                                 <div>
-                                    <div className="text-28 text-color-1 font-gotham-black-regular font-bold mb-30">Bank and Cards</div>
+                                    <div className="text-3xl text-green-900 font-gotham-black-regular font-bold mb-30">Bank and Cards</div>
                                     <div className="font-bold mb-30 hidden">Request for investment statements</div>
                                 </div>
 
@@ -557,7 +557,7 @@ const BankCard = () => {
                             {/*Add Card Header */}
                             <div className={showAddCardHeader ? "flex justify-between mb-30" : "hidden"} style={{ width: '35rem' }}>
                                 <div>
-                                    <div className="text-28 text-color-1 font-gotham-black-regular font-bold mb-10">Add New Card</div>
+                                    <div className="text-3xl text-green-900 font-gotham-black-regular font-bold mb-10">Add New Card</div>
                                 </div>
 
                                 <div className='font-bold' onClick={performSwitchToDebit}>
@@ -570,7 +570,7 @@ const BankCard = () => {
                             {/*Add Bank Header */}
                             <div className={showAddBankHeader ? "flex justify-between mb-30" : "hidden"}>
                                 <div>
-                                    <div className="text-28 text-color-1 font-gotham-black-regular font-bold mb-10">Add New Bank</div>
+                                    <div className="text-3xl text-green-900 font-gotham-black-regular font-bold mb-10">Add New Bank</div>
                                 </div>
 
                                 <div className='font-bold' onClick={performSwitchToDebit}>
@@ -583,7 +583,7 @@ const BankCard = () => {
                             {/*Manage Card Header */}
                             <div className={showManageCard ? "flex justify-between mb-30" : "hidden"}>
                                 <div>
-                                    <div className="text-28 text-color-1 font-gotham-black-regular font-bold mb-10">Manage Card</div>
+                                    <div className="text-3xl text-green-900 font-gotham-black-regular font-bold mb-10">Manage Card</div>
                                 </div>
 
                                 <div className='font-bold' onClick={performSwitchToDebit}>
@@ -596,11 +596,11 @@ const BankCard = () => {
                             {/*Manage Bank Header */}
                             <div style={{ width: '35rem' }} className={showManageBank ? "flex justify-between mb-30" : "hidden"}>
                                 <div>
-                                    <div className="text-28 text-color-1 font-gotham-black-regular font-bold mb-10">Manage Bank</div>
+                                    <div className="text-3xl text-green-900 font-gotham-black-regular font-bold mb-10">Manage Bank</div>
                                 </div>
 
                                 <div className='font-bold' onClick={performSwitchToBank}>
-                                    <div className='no-underline text-color-1'>
+                                    <div className='no-underline text-green-900'>
                                         <img src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
                                     </div>
                                 </div>
@@ -615,11 +615,11 @@ const BankCard = () => {
                                         <div className='mb-30'>
                                             <div className="border_1 flex justify-between rounded-lg p-02rem w-22-4rem">
                                                 <div className='w-1/2'>
-                                                    <button onClick={performSwitchToDebit} type='button' className={switchToDebit ? "rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Debit Cards</button>
+                                                    <button onClick={performSwitchToDebit} type='button' className={switchToDebit ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Debit Cards</button>
                                                 </div>
 
                                                 <div className='w-1/2'>
-                                                    <button onClick={performSwitchToBank} type='button' className={switchToBank ? "w-full rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "w-full cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Bank</button>
+                                                    <button onClick={performSwitchToBank} type='button' className={switchToBank ? "w-full rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "w-full cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Bank</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -640,7 +640,7 @@ const BankCard = () => {
                                         )}
 
                                         <div>
-                                            <button onClick={displayAddCard} type='button' className='w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>Add New Card</button>
+                                            <button onClick={displayAddCard} type='button' className='w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>Add New Card</button>
                                         </div>
                                     </div>
                                 </div>
@@ -652,11 +652,11 @@ const BankCard = () => {
                                         <div className='mb-30'>
                                             <div className="border_1 flex justify-between rounded-lg p-02rem w-22-4rem">
                                                 <div className='w-1/2'>
-                                                    <button onClick={performSwitchToDebit} type='button' className={switchToDebit ? "rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Debit Cards</button>
+                                                    <button onClick={performSwitchToDebit} type='button' className={switchToDebit ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Debit Cards</button>
                                                 </div>
 
                                                 <div className='w-1/2'>
-                                                    <button onClick={performSwitchToBank} type='button' className={switchToBank ? "w-full rounded-lg bgcolor-1 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "w-full cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Bank</button>
+                                                    <button onClick={performSwitchToBank} type='button' className={switchToBank ? "w-full rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "w-full cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Bank</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -677,7 +677,7 @@ const BankCard = () => {
                                             )}
 
                                         <div>
-                                            <button onClick={displayAddBank} type='button' className='w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>Add New Bank</button>
+                                            <button onClick={displayAddBank} type='button' className='w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>Add New Bank</button>
                                         </div>
                                     </div>
                                 </div>
@@ -689,16 +689,16 @@ const BankCard = () => {
                                         {/* Default message */}
                                         <div className="otp-alert mb-20">
                                             <div className='py-2'>
-                                                <div className="text-14 text-green-600 font-bold">{defaultNewCardDebitMsg}</div>
+                                                <div className="text-sm text-green-600 font-bold">{defaultNewCardDebitMsg}</div>
                                             </div>
                                         </div>
                                         {/* End */}
 
 
-                                        <div className='mb-20 text-color-1 text-xl font-bold'>Enter your card details below</div>
+                                        <div className='mb-20 text-green-900 text-xl font-bold'>Enter your card details below</div>
 
                                         <div className='mb-20'>
-                                            <div className='text-14 mb-5 font-bold'>Card Number</div>
+                                            <div className='text-sm mb-5 font-bold'>Card Number</div>
 
                                             <div className='relative'>
                                                 <input value={cardNumber} onKeyDown={handleCreditCardNumberInputSelection} onChange={maskCreditCardNumberInput} placeholder='Enter your 16 digits card number' type='text' className='cc-number-input input p-5 border-1-d6 outline-white font-bold text-lg text-gray-600' maxLength={19} />
@@ -715,7 +715,7 @@ const BankCard = () => {
                                         <div className='mb-20'>
                                             <div className='flex justify-between space-x-5'>
                                                 <div className='w-1/2'>
-                                                    <div className='text-lg mb-5 text-14 font-bold'>Validity</div>
+                                                    <div className='text-lg mb-5 text-sm font-bold'>Validity</div>
 
                                                     <div>
                                                         <input value={cardExpiry} onChange={maskCreditCardExpiryInput} onKeyDown={handleCreditCardExpiryInputSelection} placeholder='MM / YY' type='text' className='input p-5 cc-expiry-input border-1-d6 outline-white font-bold text-lg text-gray-600' maxLength={5} />
@@ -723,7 +723,7 @@ const BankCard = () => {
                                                 </div>
 
                                                 <div className='w-1/2'>
-                                                    <div className='text-lg mb-5 text-14 font-bold'>CVV</div>
+                                                    <div className='text-lg mb-5 text-sm font-bold'>CVV</div>
 
                                                     <div>
                                                         <input value={cardCVV} onChange={maskCreditCardCVVInput} onKeyDown={handleCreditCardCVVInputSelection} placeholder='CVV' type='text' className='input p-5 cc-cvv-input border-1-d6 outline-white font-bold text-lg text-gray-600' maxLength={3} />
@@ -733,7 +733,7 @@ const BankCard = () => {
                                         </div>
 
                                         <div className='mb-20'>
-                                            <div className='text-lg mb-5 text-14 font-bold'>PIN</div>
+                                            <div className='text-lg mb-5 text-sm font-bold'>PIN</div>
 
                                             <div className='mb-30'>
                                                 <input value={cardPIN} onChange={e => setCardPIN(e.target.value)} type='password' className='input p-4 border-1-d6 text-2xl outline-white' maxLength={4} />
@@ -746,7 +746,7 @@ const BankCard = () => {
                                         </div>
 
                                         <div>
-                                            <button onClick={addCard} type='button' className='w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>
+                                            <button onClick={addCard} type='button' className='w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>
                                                 <span className={showSpinner ? "hidden" : ""}>Save Card</span>
                                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                             </button>
@@ -760,7 +760,7 @@ const BankCard = () => {
                                     <div className='otp-section'>
                                         <div>
 
-                                            <div className='mt-6 mb-10 text-color-1 text-xl font-bold'>Enter OTP</div>
+                                            <div className='mt-6 mb-10 text-green-900 text-xl font-bold'>Enter OTP</div>
 
                                             <div className='mb-20'>
                                                 <div>
@@ -770,7 +770,7 @@ const BankCard = () => {
 
                                             <div>
 
-                                                <button type='button' onClick={validateFundWithCardOTP} className='w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>
+                                                <button type='button' onClick={validateFundWithCardOTP} className='w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>
                                                     <span className={showSpinner ? "hidden" : ""}>Proceed</span>
                                                     <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                                 </button>
@@ -794,7 +794,7 @@ const BankCard = () => {
                                                         </svg>
                                                     </div>
 
-                                                    <div className="pt-1 text-14 text-color-1">{apiResponseSuccessMsg}</div>
+                                                    <div className="pt-1 text-sm text-green-900">{apiResponseSuccessMsg}</div>
                                                 </div>
 
                                                 <div className="cursor-pointer">
@@ -816,7 +816,7 @@ const BankCard = () => {
                                                         </svg>
                                                     </div>
 
-                                                    <div className="pt-1 text-14"></div>
+                                                    <div className="pt-1 text-sm"></div>
                                                 </div>
 
                                                 <div className="cursor-pointer">
@@ -830,7 +830,7 @@ const BankCard = () => {
 
                                         <div className='text-lg font-bold'>Verify Card Details</div>
 
-                                        <div className='mb-30 font-gotham-black-regular text-color-1 text-3xl'>₦ {cardFundingDetails === '' ? '' : JSON.parse(cardFundingDetails).amount}</div>
+                                        <div className='mb-30 font-gotham-black-regular text-green-900 text-3xl'>₦ {cardFundingDetails === '' ? '' : JSON.parse(cardFundingDetails).amount}</div>
 
                                         
                                         <div className=''>
@@ -841,7 +841,7 @@ const BankCard = () => {
 
                                             <div className='flex justify-between mb-30'>
                                                 <div>Beneficiary Account Number</div>
-                                                <div className='font-bold text-color-1 font-bold'>{cardFundingDetails === '' ? '' : JSON.parse(cardFundingDetails).beneficiaryAccountNumber}</div>
+                                                <div className='font-bold text-green-900 font-bold'>{cardFundingDetails === '' ? '' : JSON.parse(cardFundingDetails).beneficiaryAccountNumber}</div>
                                             </div>
 
                                             <div className='flex justify-between mb-30'>
@@ -852,7 +852,7 @@ const BankCard = () => {
                                         
 
                                         <div>
-                                            <button onClick={verifyCardFunding} type='button' className= 'w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' >
+                                            <button onClick={verifyCardFunding} type='button' className= 'w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' >
                                                 <span className={showSpinner ? "hidden" : ""}>Proceed</span>
                                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                             </button>
@@ -874,7 +874,7 @@ const BankCard = () => {
                                                         </svg>
                                                     </div>
 
-                                                    <div className="pt-1 text-14">{bankDetailsError}</div>
+                                                    <div className="pt-1 text-sm">{bankDetailsError}</div>
                                                 </div>
 
                                                
@@ -893,7 +893,7 @@ const BankCard = () => {
                                                         </svg>
                                                     </div>
 
-                                                    <div className="pt-1 text-14 text-color-1">{apiResponseSuccessMsg}</div>
+                                                    <div className="pt-1 text-sm text-green-900">{apiResponseSuccessMsg}</div>
                                                 </div>
 
                                                 <div className="cursor-pointer">
@@ -906,11 +906,11 @@ const BankCard = () => {
                                         {/* End */}
 
 
-                                        <div className='mb-5 text-color-1 text-xl font-bold'>Enter your bank details below</div>
-                                        <div className='mb-30 text-color-1 text-md'>We pay your withdrawal into your bank account </div>                                        
+                                        <div className='mb-5 text-green-900 text-xl font-bold'>Enter your bank details below</div>
+                                        <div className='mb-30 text-green-900 text-md'>We pay your withdrawal into your bank account </div>                                        
 
                                         <div className='mb-30'>
-                                            <div className='text-14 mb-10 font-bold'>Select Bank</div>
+                                            <div className='text-sm mb-10 font-bold'>Select Bank</div>
 
                                             <div>
                                                 <select onChange={e => setBankCode(e.target.value)} className='input px-5 py-3 border-1-d6 outline-white font-bold text-lg' id='bankList' >
@@ -925,7 +925,7 @@ const BankCard = () => {
                                         </div>
 
                                         <div className='mb-30'>
-                                            <div className='text-14 mb-10 font-bold'>Account Number</div>
+                                            <div className='text-sm mb-10 font-bold'>Account Number</div>
 
                                             <div>
                                                 <input id="accountNumber" type='text' className='input p-3 border-1-d6 outline-white font-bold text-lg' onChange={e => setAccountNumber(e.target.value)} maxLength={10} />
@@ -933,7 +933,7 @@ const BankCard = () => {
                                         </div>
 
                                         <div className='mb-30'>
-                                            <div className='text-14 mb-10 font-bold'>Account Name</div>
+                                            <div className='text-sm mb-10 font-bold'>Account Name</div>
 
                                             <div>
                                                 <input readOnly type='text' className='input p-3 border-1-d6 outline-white font-bold text-lg' value={accountName} />
@@ -941,7 +941,7 @@ const BankCard = () => {
                                         </div>
 
                                         <div>
-                                            <button onClick={addBankDetails} type='button' className={isBankDetailsFilled ? 'w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer':'w-full font-bold text-lg border-0 bgcolor-1 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer opacity-50'} disabled={!isBankDetailsFilled}>
+                                            <button onClick={addBankDetails} type='button' className={isBankDetailsFilled ? 'w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer':'w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer opacity-50'} disabled={!isBankDetailsFilled}>
                                                 <span className={showSpinner ? "hidden" : ""}>Proceed</span>
                                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                             </button>
@@ -973,7 +973,7 @@ const BankCard = () => {
                                         <div className="font-bold flex mb-30 hidden">
                                             <div className='mr-3'>Default debit card</div>
 
-                                            <div className='flex rounded-3xl p-1 bgcolor-1 ease-in-out transition delay-75 duration-75'>
+                                            <div className='flex rounded-3xl p-1 bg-green-900 ease-in-out transition delay-75 duration-75'>
                                                 <button className="rounded-3xl knob border-0 cursor-pointer ease-in-out transition delay-75 duration-75" type="button"></button>
 
                                                 <button className="ml-0.5 p-1.5 rounded-3xl knob items-center border-0 cursor-pointer opacity-0 ease-in-out transition delay-75 duration-75" type="button"></button>
@@ -1014,7 +1014,7 @@ const BankCard = () => {
                                         <div className="font-bold flex mb-30 hidden">
                                             <div className='mr-3'>Default bank account </div>
 
-                                            <div className='flex rounded-3xl p-1 bgcolor-1 ease-in-out transition delay-75 duration-75'>
+                                            <div className='flex rounded-3xl p-1 bg-green-900 ease-in-out transition delay-75 duration-75'>
                                                 <button className="rounded-3xl knob border-0 cursor-pointer ease-in-out transition delay-75 duration-75" type="button"></button>
 
                                                 <button className="ml-0.5 p-1.5 rounded-3xl knob items-center border-0 cursor-pointer opacity-0 ease-in-out transition delay-75 duration-75" type="button"></button>
@@ -1030,7 +1030,7 @@ const BankCard = () => {
 
                                                 <div className='hidden mb-30 flex justify-between py-5 border-top-1'>
                                                     <div>Date Added</div>
-                                                    <div className='font-bold text-color-1 font-bold'>{moment(item.updatedOn).format("MMMM Do, YYYY")}</div>
+                                                    <div className='font-bold text-green-900 font-bold'>{moment(item.updatedOn).format("MMMM Do, YYYY")}</div>
                                                 </div>
                                             </div>
                                         )}
@@ -1049,14 +1049,14 @@ const BankCard = () => {
                                         <div className="bg-white p-3 w-full -bottom-10 absolute"></div>
                                     </div>
 
-                                    <div className="relative z-10 text-color-1 font-gotham-black-regular text-28 text-center mb-20">Successful</div>
+                                    <div className="relative z-10 text-green-900 font-gotham-black-regular text-3xl text-center mb-20">Successful</div>
 
-                                    <div className={showBankSuccessMsg ? 'hidden' : "px-20 pb-14 text-color-4 text-16 text-center"}>Your card details with card number endin <strong>****3990</strong> has been successfully saved</div>
+                                    <div className={showBankSuccessMsg ? 'hidden' : "px-20 pb-14 text-color-4 text-sm text-center"}>Your card details with card number endin <strong>****3990</strong> has been successfully saved</div>
 
-                                    <div className={showBankSuccessMsg ? "px-20 pb-14 text-color-4 text-16 text-center" : 'hidden'}>Your <strong>VFD Microfinance bank</strong> details with has been successfully saved</div>
+                                    <div className={showBankSuccessMsg ? "px-20 pb-14 text-color-4 text-sm text-center" : 'hidden'}>Your <strong>VFD Microfinance bank</strong> details with has been successfully saved</div>
 
                                     <div className="mb-30 text-center">
-                                        <button className="bgcolor-1 w-96 rounded-lg border-0 cursor-pointer text-white p-5 font-bold">Close</button>
+                                        <button className="bg-green-900 w-96 rounded-lg border-0 cursor-pointer text-white p-5 font-bold">Close</button>
                                     </div>
                                 </div>
                                 {/* End */}
@@ -1069,7 +1069,7 @@ const BankCard = () => {
 
             <div className={showDeleteModal ? "set-price-alert-modal rounded-lg" : "hidden"}>
                 <div className="mb-10 flex justify-between">
-                    <div className="font-bold text-28 text-color-1 font-gotham-black-regular"></div>
+                    <div className="font-bold text-3xl text-green-900 font-gotham-black-regular"></div>
 
                     <div onClick={closeModal}>
                         <img src={CloseIcon} alt="" className="cursor-pointer" />
@@ -1088,7 +1088,7 @@ const BankCard = () => {
                                     </svg>
                                 </div>
 
-                                <div className="pt-1 text-14 text-color-1">{apiResponseSuccessMsg}</div>
+                                <div className="pt-1 text-sm text-green-900">{apiResponseSuccessMsg}</div>
                             </div>
 
                             <div className="cursor-pointer">

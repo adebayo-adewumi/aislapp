@@ -24,9 +24,9 @@ const NewsDetails = () => {
                     <div className="main-content w-full p-10 mb-30">
                         <div className="mb-10 pb-5">
                             <div className="flex justify-between items-center">
-                                <div className="text-28 font-bold text-color-1 font-gotham-black-regular">News Details</div>
+                                <div className="text-3xl font-bold text-green-900 font-gotham-black-regular">News Details</div>
                                 <div className="font-bold">
-                                    <Link to="/news" className='no-underline text-color-1'>
+                                    <Link to="/news" className='no-underline text-green-900'>
                                         <img src={ArrowBackIcon} alt="" className="align-middle" /> Go to News
                                     </Link>
                                 </div>
@@ -57,18 +57,18 @@ const NewsDetails = () => {
                                         <div>
                                             <div className='mb-20'><img src={CementFactory} alt=''/></div>
                                             <div className='w-22rem'>
-                                                <div className='font-bold mb-10 text-14 w-6/6'>Dangote Cement posts nine months’ impressive sales volume</div>
-                                                <div className='mb-10 text-13 tracking-wider leading-5'>Dangote Cement has announced a 6.6 percent increase in Group sales volume which rose from 18.02 million tonnes in 2019 to 19.21 million tonnes in the nine months.</div>
-                                                <div className='font-bold text-13'>&middot; 27 Aug, 2020</div>
+                                                <div className='font-bold mb-10 text-sm w-6/6'>Dangote Cement posts nine months’ impressive sales volume</div>
+                                                <div className='mb-10 text-sm tracking-wider leading-5'>Dangote Cement has announced a 6.6 percent increase in Group sales volume which rose from 18.02 million tonnes in 2019 to 19.21 million tonnes in the nine months.</div>
+                                                <div className='font-bold text-sm'>&middot; 27 Aug, 2020</div>
                                             </div>
                                         </div>
 
                                         <div>
                                             <div className='mb-20'><img src={Refinery} alt=''/></div>
                                             <div className='w-22rem'>
-                                                <div className='font-bold mb-10 text-14 w-6/6'>Dangote Cement posts nine months’ impressive sales volume</div>
-                                                <div className='mb-10 text-13 tracking-wider leading-5'>Dangote Cement has announced a 6.6 percent increase in Group sales volume which rose from 18.02 million tonnes in 2019 to 19.21 million tonnes in the nine months.</div>
-                                                <div className='font-bold text-13'>&middot; 27 Aug, 2020</div>
+                                                <div className='font-bold mb-10 text-sm w-6/6'>Dangote Cement posts nine months’ impressive sales volume</div>
+                                                <div className='mb-10 text-sm tracking-wider leading-5'>Dangote Cement has announced a 6.6 percent increase in Group sales volume which rose from 18.02 million tonnes in 2019 to 19.21 million tonnes in the nine months.</div>
+                                                <div className='font-bold text-sm'>&middot; 27 Aug, 2020</div>
                                             </div>
                                         </div>
                                     </div>

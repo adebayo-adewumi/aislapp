@@ -77,7 +77,7 @@ const UserAreaHeader = () => {
                                         </div>
                                     </div>
 
-                                    <div className="font-bold text-color-1 pt-4">{authCustomerFullname}</div>
+                                    <div className="font-bold text-green-900 pt-4">{authCustomerFullname}</div>
 
                                     <div className="pt-4">
                                         <img src={chevronDown} alt="" />

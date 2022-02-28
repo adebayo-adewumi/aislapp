@@ -690,11 +690,11 @@ const Register = () => {
 
                             <div>
                                 <span>Already have an account?</span>
-                                <Link to="/" className="no-underline text-color-1"><span><strong> Login</strong> </span></Link>
+                                <Link to="/" className="no-underline text-green-900"><span><strong> Login</strong> </span></Link>
                             </div>
                         </div>
 
-                        <div className="mb-10 text-xl text-color-1 font-gotham-black-regular"><strong>Signup</strong></div>
+                        <div className="mb-10 text-xl text-green-900 font-gotham-black-regular"><strong>Signup</strong></div>
                         <div className="mb-30 text-sm">Provide the details below to get started</div>
 
                         <form className="form">
@@ -816,7 +816,7 @@ const Register = () => {
                                 </div>
 
                                 <div className='w-full'>
-                                    <button onClick={verifyBVNAndDOB} className={bVNPhoneDobIsNullOrEmpty ? "bgcolor-1 px-20 py-3 font-bold text-white rounded-lg border-0 focus:shadow-outline opacity-50" : "bgcolor-1 px-20 py-3 font-bold text-white rounded-lg border-0 focus:shadow-outline cursor-pointer"} type='button' disabled={bVNPhoneDobIsNullOrEmpty}>
+                                    <button onClick={verifyBVNAndDOB} className={bVNPhoneDobIsNullOrEmpty ? "bg-green-900 px-20 py-3 font-bold text-white rounded-lg border-0 focus:shadow-outline opacity-50" : "bg-green-900 px-20 py-3 font-bold text-white rounded-lg border-0 focus:shadow-outline cursor-pointer"} type='button' disabled={bVNPhoneDobIsNullOrEmpty}>
                                         <span className={showSpinner ? "hidden" : ""}>Proceed</span>
                                         <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                     </button>
@@ -826,9 +826,9 @@ const Register = () => {
                             <div className="text-center">
                                 <div className="mb-5 text-sm">By creating an account, you agree to Anchoria </div>
                                 <div className="text-sm">
-                                    <a href="https://anchoriaonline.com/terms-and-conditions-of-use/" target="_blank" rel='noreferrer'><button type="button" className="no-underline border-0 bg-transparent text-color-1 cursor-pointer"><strong>Terms & Conditions</strong></button></a> and
+                                    <a href="https://anchoriaonline.com/terms-and-conditions-of-use/" target="_blank" rel='noreferrer'><button type="button" className="no-underline border-0 bg-transparent text-green-900 cursor-pointer"><strong>Terms & Conditions</strong></button></a> and
 
-                                    <a href="https://anchoriaonline.com/anchoria-privacy-policy/" target="_blank" rel='noreferrer'><button type="button" className="no-underline border-0 bg-transparent text-color-1 cursor-pointer"><strong> Privacy Policy</strong></button></a>
+                                    <a href="https://anchoriaonline.com/anchoria-privacy-policy/" target="_blank" rel='noreferrer'><button type="button" className="no-underline border-0 bg-transparent text-green-900 cursor-pointer"><strong> Privacy Policy</strong></button></a>
                                 </div>
                             </div>
                         </form>
@@ -890,10 +890,10 @@ const Register = () => {
                                 <button onClick={displaySignup} type="button" className="font-bold cursor-pointer no-underline text-black border-0 px-5 py-3 bg-gray-100 rounded-lg">Cancel</button>
                             </div>
 
-                            {/* <div><button onClick={confirmBVN} className=" bgcolor-1 rounded-lg text-white border-0 px-20 py-3 font-bold cursor-pointer" type='button'>Continue</button></div> */}
+                            {/* <div><button onClick={confirmBVN} className=" bg-green-900 rounded-lg text-white border-0 px-20 py-3 font-bold cursor-pointer" type='button'>Continue</button></div> */}
 
                             <div>
-                                <button onClick={verifyBVNImageAndSelfie} className=" bgcolor-1 rounded-lg text-white border-0 px-20 py-3 font-bold cursor-pointer" type='button'>
+                                <button onClick={verifyBVNImageAndSelfie} className=" bg-green-900 rounded-lg text-white border-0 px-20 py-3 font-bold cursor-pointer" type='button'>
                                     <span className={showSpinner ? "hidden" : ""}>Continue</span>
                                     <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                 </button>
@@ -950,7 +950,7 @@ const Register = () => {
                                 </div>
 
                                 <div>
-                                    <button onClick={generateOTPForPhone} className="border-0 rounded-lg bgcolor-1 text-white px-20 py-3 font-bold cursor-pointer" type='button'>
+                                    <button onClick={generateOTPForPhone} className="border-0 rounded-lg bg-green-900 text-white px-20 py-3 font-bold cursor-pointer" type='button'>
                                         <span className={showSpinner ? "hidden" : ""}>Proceed</span>
                                         <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                     </button>
@@ -972,7 +972,7 @@ const Register = () => {
                             <img src={ComputerIcon} alt="computer icon" />
                         </div>
 
-                        <div className="font-gotham-black-regular text-xl text-color-1 mb-20">Confirm your account</div>
+                        <div className="font-gotham-black-regular text-xl text-green-900 mb-20">Confirm your account</div>
 
                         <div className="text-sm text-color-4 mb-20">Enter the 6 digits OTP sent to your phone number</div>
 
@@ -1006,7 +1006,7 @@ const Register = () => {
                                 </div>
 
                                 <div>
-                                    <button onClick={validateOTPForPhone} className={isInValidOTP ? "bgcolor-1 rounded-lg text-white border-0 cursor-pointer px-20 py-3 font-bold opacity-50" : "bgcolor-1 rounded-lg text-white border-0 cursor-pointer px-20 py-3 font-bold"} type='button' disabled={isInValidOTP}>
+                                    <button onClick={validateOTPForPhone} className={isInValidOTP ? "bg-green-900 rounded-lg text-white border-0 cursor-pointer px-20 py-3 font-bold opacity-50" : "bg-green-900 rounded-lg text-white border-0 cursor-pointer px-20 py-3 font-bold"} type='button' disabled={isInValidOTP}>
                                         <span className={showSpinner ? "hidden" : ""}>Proceed</span>
                                         <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                     </button>
@@ -1029,7 +1029,7 @@ const Register = () => {
                                         </svg>
                                     </div>
 
-                                    <div className="pt-1 text-sm text-color-1">OTP successfully validated</div>
+                                    <div className="pt-1 text-sm text-green-900">OTP successfully validated</div>
                                 </div>
 
                                 <div className="cursor-pointer" onClick={closeOTPValidated}>
@@ -1047,7 +1047,7 @@ const Register = () => {
                             </div>
                         </div>
 
-                        <div className="mb-20 text-xl font-gotham-black-regular text-color-1">Create user details</div>
+                        <div className="mb-20 text-xl font-gotham-black-regular text-green-900">Create user details</div>
 
                         <div className="mb-20 text-sm text-color-4">Create a new username and password</div>
 
@@ -1194,7 +1194,7 @@ const Register = () => {
                                 </div>
 
                                 <div>
-                                    <button onClick={confirmPin} className={emailPasswordConfirmPasswordIsNullOrEmpty ? "w-full rounded-lg bgcolor-1 border-0 text-white opacity-50 px-20 py-3 font-bold text-sm" : "w-full rounded-lg bgcolor-1 border-0 text-white px-20 py-3 font-bold text-sm cursor-pointer"} type='button' disabled={emailPasswordConfirmPasswordIsNullOrEmpty}>
+                                    <button onClick={confirmPin} className={emailPasswordConfirmPasswordIsNullOrEmpty ? "w-full rounded-lg bg-green-900 border-0 text-white opacity-50 px-20 py-3 font-bold text-sm" : "w-full rounded-lg bg-green-900 border-0 text-white px-20 py-3 font-bold text-sm cursor-pointer"} type='button' disabled={emailPasswordConfirmPasswordIsNullOrEmpty}>
                                         Proceed
                                         <img src={SpinnerIcon} alt="spinner icon" className="hidden" width="15" />
                                     </button>
@@ -1217,7 +1217,7 @@ const Register = () => {
                                         </svg>
                                     </div>
 
-                                    <div className="pt-1 text-sm text-color-1">Password successfully updated</div>
+                                    <div className="pt-1 text-sm text-green-900">Password successfully updated</div>
                                 </div>
 
                                 <div className="cursor-pointer" onClick={closePasswordValidated}>
@@ -1236,14 +1236,14 @@ const Register = () => {
 
                         <div className="mb-20 text-color-2 flex justify-end space-x-2 text-sm">
                             <span>Already have an account?</span>
-                            <Link to="/" className="no-underline text-color-1"><span><strong> Login</strong> </span></Link>
+                            <Link to="/" className="no-underline text-green-900"><span><strong> Login</strong> </span></Link>
                         </div>
 
                         <div className="mb-20">
                             <img src={ComputerIcon} alt="computer icon" />
                         </div>
 
-                        <div className="font-gotham-black-regular text-xl text-color-1 mb-20">Protect your account</div>
+                        <div className="font-gotham-black-regular text-xl text-green-900 mb-20">Protect your account</div>
 
                         <div className="text-sm text-color-4 mb-20">Enter a 4 Digits transaction PIN</div>
 
@@ -1284,7 +1284,7 @@ const Register = () => {
                                 </div>
 
                                 <div>
-                                    <button onClick={registerUser} className={isInValidPIN ? "bgcolor-1 rounded-lg text-white cursor-pointer px-20 py-3 font-bold border-0 opacity-50" : "bgcolor-1 rounded-lg text-white cursor-pointer px-20 py-3 font-bold border-0"} type='button' disabled={isInValidPIN}>
+                                    <button onClick={registerUser} className={isInValidPIN ? "bg-green-900 rounded-lg text-white cursor-pointer px-20 py-3 font-bold border-0 opacity-50" : "bg-green-900 rounded-lg text-white cursor-pointer px-20 py-3 font-bold border-0"} type='button' disabled={isInValidPIN}>
                                         <span className={showSpinner ? "hidden" : ""}>Proceed</span>
                                         <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                     </button>

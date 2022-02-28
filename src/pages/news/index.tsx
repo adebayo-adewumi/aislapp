@@ -31,9 +31,9 @@ const News = () => {
                                     <img src={item.imageUrl} alt='' style={{width:'75px', height:'75px'}}/>
                                 </div>
                                 <div className='w-22rem'>
-                                    <div className='font-bold mb-10 text-14 w-6/6 text-black'>{item.title}</div>
-                                    <div className='mb-10 text-13 tracking-wider leading-5 text-color-5'>{item.snippet}</div>
-                                    <div className='font-bold text-13 text-black'>&middot; {moment(item.date).format("MMM Do YYYY, hh:ss a")}</div>
+                                    <div className='font-bold mb-10 text-sm w-6/6 text-black'>{item.title}</div>
+                                    <div className='mb-10 text-sm tracking-wider leading-5 text-color-5'>{item.snippet}</div>
+                                    <div className='font-bold text-sm text-black'>&middot; {moment(item.date).format("MMM Do YYYY, hh:ss a")}</div>
                                 </div>
                             </div>
                         </a>
@@ -63,11 +63,11 @@ const News = () => {
                     <Sidebar />
 
                     <div className="main-content w-full p-10">
-                        <div className="text-28 mb-20">
-                            <span className="font-bold text-color-1">News and Insights</span>
+                        <div className="text-3xl mb-20">
+                            <span className="font-bold text-green-900">News and Insights</span>
                         </div>
 
-                        <div className="text-16 font-bold text-color-2 mb-30">
+                        <div className="text-sm font-bold text-color-2 mb-30">
                             Lastest news on stocks and the stock market
                         </div>
 
@@ -82,7 +82,7 @@ const News = () => {
 
                         {/* Page Loader Section */}
                         <div className={showPageLoader ? "page-loader-backdrop opacity-90" : "hidden"}>
-                            <div className='ml-custom w-96 my-custom relative'>
+                            <div className='w-96 relative lg:ml-72'>
                                 <div className='absolute top-44pc left-46pt5pc'><img src={AnchoriaIcon} alt="" /></div>
                                 <div className='text-center'><img src={AnchoriaSpinner} alt="" /></div>
                             </div>
