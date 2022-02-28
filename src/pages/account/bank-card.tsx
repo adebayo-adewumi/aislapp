@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import UserAreaHeader from '../../components/Headers/UserAreaHeader';
 import ArrowBackIcon from '../../assets/images/arrow-back.svg';
-import SuccessIcon from '../../assets/images/success.gif';
+import SuccessCheckIcon from '../../assets/images/success-check.svg';
 import MaskGroupImg from '../../assets/images/mask-group.svg';
 import LockIcon from '../../assets/images/lock.svg';
 import DeleteCardIcon from '../../assets/images/delete-card.svg';
@@ -78,6 +78,9 @@ const BankCard = () => {
     const [isBankDetailsFilled, setIsBankDetailsFilled] = useState<boolean>(false);
 
     const [cardFundingDetails, setCardFundingDetails] = useState('');
+
+    const [addCardError, setAddCardError] = useState('');
+    const [verifyCardError, setVerifyCardError] = useState('');
 
     useEffect(() => {
         function getBankList() {
@@ -162,11 +165,20 @@ const BankCard = () => {
         setSwitchToDebit(true);
         setSwitchToBank(false);
 
-        setShowDebitCards(true);
+        
         setShowBank(false);
-        setShowBankHeader(false);
-        setShowAddBankHeader(false)
+        setShowBankHeader(false);        
+        setShowAddBankHeader(false);
         setShowAddBank(false);
+
+        setShowAddCardHeader(false);
+        setShowAddCard(false);
+        setShowVerifyCardSection(false);
+        setShowDebitCards(true);
+
+        setShowOTPSection(false);
+        setShowSpinner(false);
+        
     }
 
     function performSwitchToBank() {
@@ -427,18 +439,25 @@ const BankCard = () => {
             },
             { headers })
             .then(function (response) {
-                setShowOTPSection(true);
-                setShowAddCard(false);
-                setShowSpinner(false);
-                setShowAddCardHeader(true);
 
-                setShowVerifyCardSection(true);
+                if(response.data.statusCode !== 200){
+                    setAddCardError(response.data.message)
+                }
+                else{
+                    setShowOTPSection(true);
+                    setShowAddCard(false);
+                    setShowSpinner(false);
+                    setShowAddCardHeader(true);
 
-                setCardFundingDetails(JSON.stringify(response.data.data));
+                    setShowVerifyCardSection(false);
+
+                    setCardFundingDetails(JSON.stringify(response.data.data));
+                }
             })
             .catch(function (error) {
                 console.log(error)
                 setShowSpinner(false);
+                setAddCardError(error.response.data.message)
             });
     }
 
@@ -469,6 +488,7 @@ const BankCard = () => {
             .then(function (response) {
                 setShowSpinner(false);
                 setShowOTPSection(false);
+                setShowVerifyCardSection(true);
                 setCardFundingDetails(JSON.stringify(response.data.data));
             })
             .catch(function (error) {
@@ -498,20 +518,27 @@ const BankCard = () => {
         }
 
         getAxios(axios).post(walletAndAccountServiceBaseUrl + '/wallet-api/fw/transaction/verify',
-            {
-                "text": localStorage.getItem('genericCypher')
-            },{headers})
-            .then(function (response) {
-                setShowSpinner(false);
-                setShowOTPSection(false);
-                setCardFundingDetails([response.data.data] as any);
+        {
+            "text": localStorage.getItem('genericCypher')
+        },{headers})
+        .then(function (response) {
+            setShowSpinner(false);
+            
 
+            if(response.data.statusCode !== 200){
+                setVerifyCardError(response.data.message);  
+            }
+            else{
+                setShowOTPSection(false);
+                setCardFundingDetails(JSON.stringify(response.data.data));
                 setApiResponseSuccessMsg('');
-            })
-            .catch(function (error) {
-                
-                setShowSpinner(false);
-            });
+                setVerifyCardError('');
+            }
+        })
+        .catch(function (error) {     
+            setVerifyCardError(error.response.data.message);           
+            setShowSpinner(false);
+        });
     }
 
 
@@ -563,8 +590,7 @@ const BankCard = () => {
                                     </div>
 
                                     <div className='font-bold' onClick={performSwitchToDebit}>
-                                            <img src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
-                                        
+                                        <img src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back                                        
                                     </div>
                                 </div>
                                 {/*End*/}
@@ -688,6 +714,22 @@ const BankCard = () => {
                                     {/* Add Card Section */}
                                     <div className={showAddCard ? 'card-section' : 'hidden'}>
                                         <div>
+                                            {/* Add Card Error */}
+                                            <div className={addCardError !== '' ? "error-alert mb-20" : "hidden"}>
+                                                <div className="flex justify-between space-x-1 pt-3">
+                                                    <div className="flex">
+                                                        <div>
+                                                            <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
+                                                            </svg>
+                                                        </div>
+
+                                                        <div className="text-sm">{addCardError}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {/* End */}
+
                                             {/* Default message */}
                                             <div className="otp-alert mb-20">
                                                 <div className='py-2'>
@@ -747,12 +789,28 @@ const BankCard = () => {
                                                 <div className='px-5 pb-5 mt-1 mx-2 text-gray-900 text-center'>Your card details are secured and protected by our PCI-DSS compliant payment partners</div>
                                             </div>
 
-                                            <div>
+                                            <div className='mb-3'>
                                                 <button onClick={addCard} type='button' className='w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>
                                                     <span className={showSpinner ? "hidden" : ""}>Save Card</span>
                                                     <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                                 </button>
                                             </div>
+
+                                            {/* Add Card Error */}
+                                            <div className={addCardError !== '' ? "error-alert" : "hidden"}>
+                                                <div className="flex justify-between space-x-1 pt-3">
+                                                    <div className="flex">
+                                                        <div>
+                                                            <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
+                                                            </svg>
+                                                        </div>
+
+                                                        <div className="text-sm">{addCardError}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {/* End */}
                                         </div>
                                     </div>
                                     {/* End */}
@@ -809,7 +867,7 @@ const BankCard = () => {
                                             {/* End */}
 
                                             {/* verify Error */}
-                                            <div className={apiResponseSuccessMsg !== '' ? "error-alert mb-20":"hidden"}>
+                                            <div className={verifyCardError !== '' ? "error-alert mb-20":"hidden"}>
                                                 <div className="flex justify-between space-x-1 pt-3">
                                                     <div className="flex">
                                                         <div>
@@ -818,13 +876,7 @@ const BankCard = () => {
                                                             </svg>
                                                         </div>
 
-                                                        <div className="pt-1 text-sm"></div>
-                                                    </div>
-
-                                                    <div className="cursor-pointer">
-                                                        <svg className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50" />
-                                                        </svg>
+                                                        <div className="text-sm">{verifyCardError}</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -832,22 +884,22 @@ const BankCard = () => {
 
                                             <div className='text-lg font-bold'>Verify Card Details</div>
 
-                                            <div className='mb-30 font-gotham-black-regular text-green-900 text-3xl'>₦ {cardFundingDetails === '' ? '' : JSON.parse(cardFundingDetails).amount}</div>
+                                            <div className='mb-30 font-gotham-black-regular text-green-900 text-2xl'>₦ {cardFundingDetails === '' ? '' : HelperFunctions.formatCurrencyWithDecimal(JSON.parse(cardFundingDetails).amount)}</div>
 
                                             
                                             <div className=''>
                                                 <div className='flex justify-between mb-30'>
-                                                    <div>Card</div>
+                                                    <div className='text-sm font-bold'>Card</div>
                                                     <div>{cardFundingDetails === '' ? '' : JSON.parse(cardFundingDetails).cardNumber}</div>
                                                 </div>
 
                                                 <div className='flex justify-between mb-30'>
-                                                    <div>Beneficiary Account Number</div>
+                                                    <div className='text-sm font-bold'>Beneficiary Account Number</div>
                                                     <div className='font-bold text-green-900 font-bold'>{cardFundingDetails === '' ? '' : JSON.parse(cardFundingDetails).beneficiaryAccountNumber}</div>
                                                 </div>
 
                                                 <div className='flex justify-between mb-30'>
-                                                    <div>Currency</div>
+                                                    <div className='text-sm font-bold'>Currency</div>
                                                     <div className='font-bold text-gray-500'>{cardFundingDetails === '' ? '' : JSON.parse(cardFundingDetails).currency}</div>
                                                 </div>
                                             </div>
@@ -1046,14 +1098,13 @@ const BankCard = () => {
 
                                     {/* Success Section */}
                                     <div className={showSuccess ? 'amount-section' : 'hidden'}>
-                                        <div className="mx-auto w-2/3 h-64 relative">
-                                            <img src={SuccessIcon} alt="success icon" className="w-96" />
-                                            <div className="bg-white p-3 w-full -bottom-10 absolute"></div>
+                                        <div className="mx-auto w-1/2 relative mb-6">
+                                            <img src={SuccessCheckIcon} alt="success icon" className="w-full" />
                                         </div>
 
                                         <div className="relative z-10 text-green-900 font-gotham-black-regular text-3xl text-center mb-20">Successful</div>
 
-                                        <div className={showBankSuccessMsg ? 'hidden' : "px-20 pb-14 text-color-4 text-sm text-center"}>Your card details with card number endin <strong>****3990</strong> has been successfully saved</div>
+                                        <div className={showBankSuccessMsg ? 'hidden' : "px-20 pb-14 text-color-4 text-sm text-center"}>Your card details with card number ending with <strong>****3990</strong> has been successfully saved</div>
 
                                         <div className={showBankSuccessMsg ? "px-20 pb-14 text-color-4 text-sm text-center" : 'hidden'}>Your <strong>VFD Microfinance bank</strong> details with has been successfully saved</div>
 
