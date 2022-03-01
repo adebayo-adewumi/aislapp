@@ -368,15 +368,15 @@ const Profile = () => {
         function getEmploymentDetails() {
 
             getAxios(axios).get(authOnboardingServiceBaseUrl + '/customer/kyc/employment-details')
-                .then(function (response) { 
-                    setEmploymentDetails(JSON.stringify(response.data.data));
-                    setEmployer(employmentDetails === '' ? '': response.data.data.employer );                 
-                    setSalary(employmentDetails === '' ? '': response.data.data.salary );                 
-                    setProfession(employmentDetails === '' ? '': response.data.data.profession );                 
-                })
-                .catch(function (error) {});
-        }
+            .then(function (response) { 
+                setEmploymentDetails(response.data.hasOwnProperty("data") ? JSON.stringify(response.data.data) : '');
 
+                setEmployer(employmentDetails === '' ? '': response.data.data.employer );                 
+                setSalary(employmentDetails === '' ? '': response.data.data.salary );                 
+                setProfession(employmentDetails === '' ? '': response.data.data.profession );                 
+            })
+            .catch(function (error) {});
+        }
         
 
         getEmploymentDetails();
