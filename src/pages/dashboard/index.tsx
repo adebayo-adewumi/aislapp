@@ -99,8 +99,8 @@ const Dashboard = () => {
                                 </div>
 
                                 <div className="flex w-full justify-between space-x-5 md:mb-0 md:text-sm text-xs">
-                                    <div className="font-bold text-gray-900 md:text-sm text-xs">{el.stockCode.substring(0, 5)}...</div>
-                                    <div className="font-bold text-black md:text-sm text-xs">₦ {HelperFunctions.formatCurrencyWithDecimal(el.price)} </div>
+                                    <div className="font-bold text-gray-900 md:text-xs text-xs">{el.stockCode.substring(0, 5)}...</div>
+                                    <div className="font-bold text-black md:text-xs text-xs">₦ {HelperFunctions.formatCurrencyWithDecimal(el.price)} </div>
                                 </div>
 
                                 <div className='hidden'>
