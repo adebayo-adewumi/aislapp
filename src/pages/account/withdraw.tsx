@@ -33,6 +33,8 @@ const WithdrawFund = () => {
 
     const [isWithdrawDetailsFilled, setIsWithdrawDetailsFilled] = useState<boolean>(false);
 
+    const [transactionPin, setTransactionPIN] = useState('');
+
     useEffect(() => {
         function getWalletBalance() {
 
@@ -66,7 +68,7 @@ const WithdrawFund = () => {
 
     useEffect(()=>{
         function checkIfAmountAndSelectedBankAccountAreFilled(){
-            if(showAmount === '' || selectedBankId === ''){
+            if(showAmount === '' || selectedBankId === '' || transactionPin === ''){
                 setIsWithdrawDetailsFilled(false);
             }
             else{
@@ -75,7 +77,7 @@ const WithdrawFund = () => {
         }
 
         checkIfAmountAndSelectedBankAccountAreFilled();
-    },[showAmount, selectedBankId]);
+    },[showAmount, selectedBankId, transactionPin]);
 
 
     function selectAmount(event: any) {
@@ -167,7 +169,7 @@ const WithdrawFund = () => {
             <UserAreaHeader />
 
             <div>
-                <div className="flex">
+                <div className="h-screen flex">
                     <Sidebar />
 
                     {/* Main Content section */}
@@ -254,6 +256,14 @@ const WithdrawFund = () => {
                                                         <option key={index} className='font-bold' value={item.id}>{item.accountName} | {item.bankName} | {item.accountNumber}</option>
                                                     )}
                                                 </select>
+                                            </div>
+
+                                            <div className='mb-30'>
+                                                <div className='text-sm mb-10 font-bold'>Enter Transaction PIN</div>
+
+                                                <div>
+                                                    <input type='password' className='input p-3 border-1-d6 outline-white font-bold text-lg' onChange={e => setTransactionPIN(e.target.value)} maxLength={4}/>
+                                                </div>
                                             </div>
 
                                             <div>

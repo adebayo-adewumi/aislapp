@@ -9,7 +9,9 @@ import ArrowBidirectionalIcon from '../../assets/images/arrow-bidirectional.svg'
 import ArrowUpWhiteIcon from '../../assets/images/arrowup-white.svg';
 import LearnWhiteIcon from '../../assets/images/learn-white.svg';
 import CommerceIcon from '../../assets/images/commerce.svg';
-import AtlasIcon from '../../assets/images/atlas.svg';
+import GreenBoxIcon from '../../assets/images/green-box.svg';
+import RedBoxIcon from '../../assets/images/red-box.svg';
+import BlueBoxIcon from '../../assets/images/blue-box.svg';
 import SearchIcon from '../../assets/images/search.svg';
 import CloseIcon from '../../assets/images/close.svg';
 import Sidebar from '../../components/Sidebar';
@@ -93,9 +95,9 @@ const Dashboard = () => {
                 .then(function (response) {
                     const topmovers = response.data.data.map((el: any, index :any) =>
                         <div className="card md:w-2/5 w-full md:p-5 px-3 py-3 md:mb-0 mb-6">
-                            <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.stockCode + "&sign=" + (el.sign === '+' ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose} className='no-underline' key={index}>
+                            <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.stockCode + "&sign=" + (el.sign === '+' ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose+"&tradeAction=buy"} className='no-underline' key={index}>
                                 <div className="mb-10">
-                                    <img src={AtlasIcon} alt=""/>
+                                    <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt=""/>
                                 </div>
 
                                 <div className="flex w-full justify-between space-x-5 md:mb-0 md:text-sm text-xs">
@@ -141,28 +143,26 @@ const Dashboard = () => {
 
         function getTopGainers() {
 
-
-
             getAxios(axios).get(getTopGainersEndpoint)
                 .then(function (response) {
                     const fullGainersList = response.data.data;
                     const takeGainers = [response.data.data[0], response.data.data[1], response.data.data[2]];
 
                     const listTopGainers = takeGainers.map((el: any, index :any) =>
-                        <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.stockCode + "&sign=" + (el.sign === '+' ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose} className='no-underline' key={index}>
+                        <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.stockCode + "&sign=" + (el.sign === '+' ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose+"&tradeAction=buy"} className='no-underline' key={index}>
                             <div className="card mb-30 md:px-3 px-3 py-3">
                                 <div className="flex justify-between w-full">
                                     <div className="flex md:space-x-5 space-x-3">
                                         <div>
-                                            <img src={AtlasIcon} alt="" />
+                                            <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt=""/>
                                         </div>
 
                                         <div className="mt-1">
                                             <div className="font-bold mb-5 text-black md:text-sm text-xs">{el.stockCode}</div>
 
-                                            <div className="md:mt-3 md:text-sm text-xs text-gray-500 md:block hidden">{el.name}</div>
+                                            <div className="md:mt-3 md:text-sm text-xs text-gray-500 md:block hidden">{el.name.substring(0,15)}...</div>
 
-                                            <div className="md:mt-3 md:text-sm text-xs text-gray-500 md:hidden block">{el.name.substring(0,15)}..</div>
+                                            <div className="md:mt-3 md:text-sm text-xs text-gray-500 md:hidden block">{el.name.substring(0,15)}...</div>
                                         </div>
                                     </div>
 
@@ -188,26 +188,24 @@ const Dashboard = () => {
 
         function getTopLosers() {
 
-
-
             getAxios(axios).get(getTopLosersEndpoint)
                 .then(function (response) {
                     const fullLosersList = response.data.data;
                     const takeLosers = [response.data.data[0], response.data.data[1], response.data.data[2]];
 
                     const listTopLosers = takeLosers.map((item: any, index :any) =>
-                        <Link to={"/stock?name=" + item.name + "&sector=" + item.sector + "&symbol=" + item.stockCode + "&sign=" + (item.sign === '+' ? 'positive' : 'negative') + "&change=" + item.change + "&close=" + item.close + "&open=" + item.open + "&high=" + item.high + "&low=" + item.low + "&wkhigh=" + item.weekHigh52 + "&wklow=" + item.weekLow52 + "&volume=" + item.volume + "&mktsegment=" + item.mktSegment + "&pclose=" + item.pclose} className='no-underline' key={index}>
+                        <Link to={"/stock?name=" + item.name + "&sector=" + item.sector + "&symbol=" + item.stockCode + "&sign=" + (item.sign === '+' ? 'positive' : 'negative') + "&change=" + item.change + "&close=" + item.close + "&open=" + item.open + "&high=" + item.high + "&low=" + item.low + "&wkhigh=" + item.weekHigh52 + "&wklow=" + item.weekLow52 + "&volume=" + item.volume + "&mktsegment=" + item.mktSegment + "&pclose=" + item.pclose+"&tradeAction=buy"} className='no-underline' key={index}>
                             <div className="card mb-30 md:px-3 px-3 py-3">
                                 <div className="flex justify-between w-full">
                                     <div className="flex md:space-x-5 space-x-3">
                                         <div>
-                                            <img src={AtlasIcon} alt="" />
+                                            <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" />
                                         </div>
 
                                         <div className="mt-1">
                                             <div className="font-bold text-black md:text-sm text-xs mb-5">{item.stockCode}</div>
 
-                                            <div className="md:mt-3 text-gray-500 md:text-sm text-xs md:block hidden">{item.name}</div>
+                                            <div className="md:mt-3 text-gray-500 md:text-sm text-xs md:block hidden">{item.name.substring(0,15)}...</div>
 
                                             <div className="md:mt-3 text-gray-500 md:text-sm text-xs md:hidden block">{item.name.substring(0,15)}...</div>
                                         </div>
@@ -290,7 +288,7 @@ const Dashboard = () => {
         // function testApiForGet() {
         //     //let customer = HelperFunctions.getCustomerInfo();
 
-        //     getAxios(axios).get(walletAndAccountServiceBaseUrl + '/wallet-api/bank-details')
+        //     getAxios(axios).get(authOnboardingServiceBaseUrl + '/customer/kyc/status')
         //         .then(function (response) { 
         //             console.log(response.data);
         //         })
@@ -364,9 +362,9 @@ const Dashboard = () => {
 
                 const topmovers = response.data.data.map((el: any, index :any) =>
                     <div className="card md:w-2/5 w-full md:p-5 px-3 py-3 md:mb-0 mb-6" key={index}>
-                        <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.stockCode + "&sign=" + (el.sign === '+' ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose} className='no-underline' >
+                        <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.stockCode + "&sign=" + (el.sign === '+' ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose+"&tradeAction=buy"} className='no-underline' >
                             <div className="mb-10">
-                                <img src={AtlasIcon} alt="" />
+                            <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" />
                             </div>
 
                             <div className="flex w-full justify-between space-x-5 mb:mb-10 md:text-sm text-xs">
@@ -756,7 +754,7 @@ const Dashboard = () => {
                                         <div className="flex justify-between w-full">
                                             <div className="flex space-x-5">
                                                 <div>
-                                                    <img src={AtlasIcon} alt="" />
+                                                <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" />
                                                 </div>
 
                                                 <div className="mt-1">
@@ -800,7 +798,7 @@ const Dashboard = () => {
                                         <div className="flex justify-between w-full">
                                             <div className="flex space-x-5">
                                                 <div>
-                                                    <img src={AtlasIcon} alt="" />
+                                                <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" />
                                                 </div>
 
                                                 <div className="mt-1">

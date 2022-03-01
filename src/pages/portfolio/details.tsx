@@ -141,13 +141,13 @@ const PortfolioDetails = () => {
                 const listOfStocks = response.data.data.listOfStocks.map((item: any) =>
                     <div>
                         <Link to={"/stock?name=" + item.name + "&symbol=" + item.symbol + "&sign=" + (item.sign === '+' ? 'positive' : 'negative') + "&currentPrice=" + item.currentPrice + "&tradeAction=sell&units=" + item.units} className='no-underline'>
-                            <div className="card mb-30" key={item.id}>
+                            <div className="card mb-30 p-3" key={item.id}>
                                 <div className="flex justify-between items-center">
                                     <div> <img src={AtlasIcon} alt="" /></div>
 
                                     <div className="text-color-2">
-                                        <div className='font-bold mb-10'>{item.symbol}</div>
-                                        <div>{item.name}</div>
+                                        <div className='font-bold mb-10 text-sm'>{item.symbol}</div>
+                                        <div className='text-sm'>{item.name.substring(0,10)}...</div>
                                     </div>
 
                                     <div className="text-color-2 hidden">
@@ -156,24 +156,24 @@ const PortfolioDetails = () => {
                                     </div>
 
                                     <div className="text-color-2">
-                                        <div className='mb-10'>Current Price</div>
-                                        <div className='font-bold '>₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
+                                        <div className='mb-10 text-sm'>Current Price</div>
+                                        <div className='font-bold text-sm'>₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
                                     </div>
 
                                     <div className="text-color-2">
-                                        <div className='mb-10'>Units</div>
-                                        <div className='font-bold '>{HelperFunctions.formatCurrencyWithDecimal(item.units)}</div>
+                                        <div className='mb-10 text-sm'>Units</div>
+                                        <div className='font-bold text-sm'>{HelperFunctions.formatCurrencyWithDecimal(item.units)}</div>
                                     </div>
 
                                     <div className="text-color-2">
-                                        <div className='mb-10'>Returns</div>
-                                        <div className='font-bold '>
+                                        <div className='mb-10 text-sm'>Returns</div>
+                                        <div className='font-bold text-sm'>
                                             <span className='mr-3'>₦ {HelperFunctions.formatCurrencyWithDecimal(item.estimatedValue)}</span>
                                         </div>
                                     </div>
 
                                     <div>
-                                        <button className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button>
+                                        <button className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer text-sm">View</button>
                                     </div>
                                 </div>
                             </div>
@@ -228,6 +228,7 @@ const PortfolioDetails = () => {
         getWatchlist();
         getPortfolioList();
         getStocks(); 
+
     },[portfolioId]);
 
     function displayAddNewStockModal() {
@@ -362,26 +363,26 @@ const PortfolioDetails = () => {
                             <div className='mb-12'>
                                 <div className='card-black w-1/2 flex justify-between'>
                                     <div className='text-white'>
-                                        <div className='mb-10'>Total Portfolio Value</div>
-                                        <div className='font-bold text-3xl'>₦ {formatCurrencyWithDecimal(parseFloat(portfolioDetails.currentValue as string))}</div>
+                                        <div className='mb-10 font-bold'>Total Portfolio Value</div>
+                                        <div className='font-bold text-xl'>₦ {formatCurrencyWithDecimal(parseFloat(portfolioDetails.currentValue as string))}</div>
                                     </div>
 
                                     <div className='text-white'>
-                                        <div className='mb-10'>Portfolio Returns</div>
-                                        <div className='font-bold text-3xl mb-10'>
+                                        <div className='mb-10 font-bold'>Portfolio Returns</div>
+                                        <div className='font-bold text-xl mb-10'>
                                             <img src={portfolioDetails.portfolioReturn >= 0 ? ArrowUpIcon : ArrowDownIcon} alt="" width="30" className="align-middle mr-3" />
 
                                             <span>₦ {formatCurrencyWithDecimal(portfolioDetails.portfolioReturn)}</span>
                                         </div>
                                         <div>
-                                            <span className={String(portfolioDetails.portfolioPercentageReturn).concat("%") ? 'text-green-500' : 'text-red-500'}>{String(HelperFunctions.formatCurrencyWithDecimal(portfolioDetails.portfolioPercentageReturn)).concat("%")}</span>
+                                            <span className={String(portfolioDetails.portfolioPercentageReturn).concat("%") ? 'text-green-500 text-sm' : 'text-red-500 text-sm'}>{String(HelperFunctions.formatCurrencyWithDecimal(portfolioDetails.portfolioPercentageReturn)).concat("%")}</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div className='mb-30'>
-                                <div className='card'>
+                                <div className='card p-10'>
                                     <div className='mb-30'>
                                         <div className='flex justify-between items-center'>
                                             <div className='font-gotham-black-regular font-bold text-green-900 text-xl'>Portfolio Performance</div>
@@ -423,7 +424,7 @@ const PortfolioDetails = () => {
                                             Add New Stocks
                                         </button>
 
-                                        <select className='rounded-lg border-gray-300 font-bold p-3'>
+                                        <select className='rounded-lg border-gray-300 font-bold p-3 hidden'>
                                             <option>Filter by: 30 Days</option>
                                         </select>
                                     </div>
@@ -503,7 +504,7 @@ const PortfolioDetails = () => {
 
                                 <div>
                                     {watchListStocks.length === 0 ? 'No stocks in your watchlist.' : watchListStocks.map((item: any, index: number) =>
-                                        <div className="card-15px mb-20" key={index}>
+                                        <div className="card mb-20" key={index}>
                                             <div className="flex justify-between items-center">
                                                 <div><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" width="25"/></div>
 
@@ -542,7 +543,7 @@ const PortfolioDetails = () => {
                                 <div style={{overflowY:'scroll', maxHeight: '20rem'}}>
                                     {stocksList.map((el: any, ind: number) =>
                                         el.map((item: any, index: any) =>
-                                            <div className="card-15px mb-20" key={index}>
+                                            <div className="card mb-20 p-5" key={index}>
                                                 <div className="flex justify-between items-center">
                                                     <div><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" width="25"/></div>
 

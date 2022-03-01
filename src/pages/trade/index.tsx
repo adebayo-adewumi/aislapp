@@ -233,7 +233,7 @@ const Trade = () => {
                                                         <img src={StarIcon} width='20' alt='' />
                                                     </button>
 
-                                                    <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.symbol + "&sign=" + (el.sign === '+' ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose}>
+                                                    <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.symbol + "&sign=" + (el.sign === '+' ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose+"&tradeAction=buy"}>
                                                         <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
                                                 </div>
                                             </div>

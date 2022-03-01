@@ -82,6 +82,8 @@ const BankCard = () => {
     const [addCardError, setAddCardError] = useState('');
     const [verifyCardError, setVerifyCardError] = useState('');
 
+    const [transactionPin, setTransactionPIN] = useState('');
+
     useEffect(() => {
         function getBankList() {
             getAxios(axios).get(walletAndAccountServiceBaseUrl + '/wallet-api/get-banks')
@@ -130,7 +132,11 @@ const BankCard = () => {
     useEffect(()=>{
         function checkNameEnquiryOnBankDetails() {
             if (accountNumber === '' || bankCode === '') {
-                setBankDetailsError('Kindly provide your bank name and account number.');
+                setBankDetailsError('All fields are required.');
+                setIsBankDetailsFilled(false);
+            }
+            else if(transactionPin === '') {
+                setBankDetailsError('All fields are required.');
                 setIsBankDetailsFilled(false);
             }
             else {    
@@ -159,7 +165,9 @@ const BankCard = () => {
         }
 
         checkNameEnquiryOnBankDetails();
-    },[accountNumber, bankCode])
+    },[accountNumber, bankCode, transactionPin]);
+
+    
 
     function performSwitchToDebit() {
         setSwitchToDebit(true);
@@ -237,12 +245,15 @@ const BankCard = () => {
         setShowSpinner(true);
 
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
+
+        let pinCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), transactionPin);
+
         localStorage.setItem('genericCypher', genericCypher);
 
         let headers = {
             'Authorization': 'Bearer ' + localStorage.getItem('aislUserToken'),
             'x-firebase-token': '12222',
-            'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
+            'x-transaction-pin': JSON.stringify({ text : pinCypher})
         }
 
         getAxios(axios).post(walletAndAccountServiceBaseUrl + '/wallet-api/bank-details/add?nameEnquirySessionId=12233333',
@@ -991,6 +1002,14 @@ const BankCard = () => {
 
                                                 <div>
                                                     <input readOnly type='text' className='input p-3 border-1-d6 outline-white font-bold text-lg' value={accountName} />
+                                                </div>
+                                            </div>
+
+                                            <div className='mb-30'>
+                                                <div className='text-sm mb-10 font-bold'>PIN</div>
+
+                                                <div>
+                                                    <input type='password' className='input p-3 border-1-d6 outline-white font-bold text-lg' onChange={e => setTransactionPIN(e.target.value)} maxLength={4}/>
                                                 </div>
                                             </div>
 

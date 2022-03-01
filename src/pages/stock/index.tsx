@@ -120,6 +120,8 @@ const Stock = () => {
     const [graph1YYAxis, setGraph1YYAxis] = useState<string[]>([]);
     const [graph1YXAxis, setGraph1YXAxis] = useState<string[]>([]);
 
+    const [showSellStockModal, setShowSellStockModal] = useState<boolean>(false);
+
 
     let options = {
         chart: {
@@ -568,7 +570,7 @@ const Stock = () => {
         let requestData = {
             "clientUniqueRef": customer.clientUniqueRef,
             "currency": "NGN",
-            "custAid": customer.custAid,
+            "custAid": customer.customerAid,
             "customerId": customer.id,
             "orderType": orderTypeValue[orderTypeIndex],
             "stockCode": params.get("symbol"),
@@ -697,6 +699,17 @@ const Stock = () => {
         HelperFunctions.addOverflowAndPaddingToModalBody();
     }
 
+    function displaySellStockModal() {
+        setShowModalBG(true);
+        setShowAddToWatchListModal(false);
+        setShowTradeStockModal(false);
+        setShowSuccessModal(false);
+        setShowSetPriceAlertModal(false);
+        setShowSellStockModal(true);
+
+        HelperFunctions.addOverflowAndPaddingToModalBody();
+    }
+
     function displaySetPriceAlertModal() {
         setShowModalBG(true);
         setShowAddToWatchListModal(false);
@@ -734,6 +747,7 @@ const Stock = () => {
         setShowSetPriceAlertModal(false);
         setShowSuccessModal(false);
         setShowOrderSummaryModal(false);
+        setShowSellStockModal(false);
 
         setStockUnit('');
         setActualCost(0);
@@ -1036,7 +1050,7 @@ const Stock = () => {
                                             Buy
                                         </button>
 
-                                        <button onClick={displayBuyStockModal} className={params.get("tradeAction") !== 'buy' ? "cursor-pointer focus:shadow-outline text-white rounded-lg bg-red-500 pb-3 pt-4 px-7 lg:pt-3 lg:px-5 border-0 font-bold ml-3 lg:text-sm":"hidden"} type='button'>
+                                        <button onClick={displaySellStockModal} className={params.get("tradeAction") !== 'buy' ? "cursor-pointer focus:shadow-outline text-white rounded-lg bg-red-500 pb-3 pt-4 px-7 lg:pt-3 lg:px-5 border-0 font-bold ml-3 lg:text-sm":"hidden"} type='button'>
                                             Sell
                                         </button>
                                     </div>
@@ -1488,6 +1502,7 @@ const Stock = () => {
                 </div>
             </div>
 
+            {/* Buy Stock Modal */}
             <div className={showTradeStockModal ? 'generic-modal' : 'hidden'}>
                 <div className='generic-modal-dialog'>
                     <div className="buy-stocks-modal rounded-lg">
@@ -1540,8 +1555,8 @@ const Stock = () => {
                         <div className='mb-30'>
                             <div className='mb-10'>
                                 <img src={AtlasIcon} alt="" className="align-middle border-1-d6 rounded-lg" />
-                                <span className="font-bold font-gotham-black-regular mx-3 text-xl">{params.get('symbol')}</span> |
-                                <span className="font-bold mx-3">{params.get('name')}</span>
+                                <span className="font-bold font-gotham-black-regular mx-3 text-lg">{params.get('symbol')}</span> |
+                                <span className="font-bold mx-3 text-sm">{params.get('name')?.substring(0, 10)}...</span>
                             </div>
                         </div>
 
@@ -1842,11 +1857,378 @@ const Stock = () => {
                     </div>
                 </div>
             </div>
+            {/* End */}
 
+            {/* Sell Stock Modal */}
+            <div className={showSellStockModal ? 'generic-modal' : 'hidden'}>
+                <div className='generic-modal-dialog'>
+                    <div className="buy-stocks-modal rounded-lg">
 
+                        {/* Get Price Estimate Error */}
+                        <div className={priceEstimateError === '' ? "hidden" : "error-alert mb-20"}>
+                            <div className="flex justify-between space-x-1 pt-3">
+                                <div className="flex">
+                                    <div>
+                                        <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
+                                        </svg>
+                                    </div>
+
+                                    <div className="pt-1 text-sm">{priceEstimateError}</div>
+                                </div>
+
+                                <div className="cursor-pointer" onClick={closeAlert}>
+                                    <svg className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        {/* End */}
+
+                        <div className="mb-20 flex justify-between">
+                            <div>
+                                <div className="font-bold text-3xl text-green-900 mb-10 font-gotham-black-regular">Sell Stock</div>
+                                <div className='font-bold text-green-900'>Provide the details below</div>
+                            </div>
+
+                            <div onClick={closeModal} className='cursor-pointer'>
+                                <img src={CloseIcon} alt="" className="cursor-pointer" />
+                            </div>
+                        </div>
+
+                        <div className='mb-20'>
+                            <div className="stock-balance-card">
+                                <div className="italic text-green-500 mb-5">Available Balance</div>
+                                <div className="font-bold text-3xl font-gotham-black-regular text-white">
+                                    <svg width="21" height="22" viewBox="0 0 21 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M20.1787 6.06096C20.6317 6.06096 20.9989 5.67627 20.9989 5.20171V4.2995C20.9989 1.92875 19.1578 0 16.8948 0C16.8948 0 4.03797 0.00201923 4.00627 0.00592881C2.92406 0.0455401 1.88451 0.532046 1.13519 1.3546C0.36712 2.1977 -0.0332975 3.29427 0.00439032 4.44802C0.00283195 4.46989 0.00201176 16.8412 0.00201176 16.8412C0.00201176 19.6858 2.21103 22 4.92627 22H16.8948C19.1578 22 20.9989 20.0712 20.9989 17.7005V11.1767C20.9989 8.806 19.1578 6.87724 16.8948 6.87724H4.10292C2.78607 6.87724 1.70645 5.79898 1.64506 4.42246C1.61385 3.72252 1.85421 3.05437 2.3218 2.54105C2.79616 2.02035 3.46236 1.72176 4.14951 1.72176C4.17375 1.72176 16.8947 1.71849 16.8947 1.71849C18.2532 1.71849 19.3584 2.87633 19.3584 4.2995V5.20171C19.3585 5.67627 19.7257 6.06096 20.1787 6.06096ZM4.10292 8.59574H16.8948C18.2533 8.59574 19.3585 9.75358 19.3585 11.1767V17.7005C19.3585 19.1237 18.2533 20.2815 16.8948 20.2815H4.92627C3.11554 20.2815 1.64239 18.7382 1.64239 16.8412V7.73997C2.3284 8.27829 3.18078 8.59574 4.10292 8.59574ZM17.7181 14.4386C17.7181 15.0318 17.2591 15.5127 16.6929 15.5127C15.3329 15.4561 15.3333 13.4209 16.6929 13.3646C17.2591 13.3646 17.7181 13.8454 17.7181 14.4386ZM17.7181 4.2995C17.7181 3.82494 17.3509 3.44025 16.8979 3.44025H4.10297C3.01474 3.48562 3.01556 5.11377 4.10297 5.15875H16.8979C17.3509 5.15875 17.7181 4.77406 17.7181 4.2995Z" fill="white" />
+                                    </svg>
+                                    <span className="ml-2">₦ {HelperFunctions.formatCurrencyWithDecimal(walletBalance)}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className='mb-30'>
+                            <div className='mb-10'>
+                                <img src={AtlasIcon} alt="" className="align-middle border-1-d6 rounded-lg" />
+                                <span className="font-bold font-gotham-black-regular mx-3 text-lg">{params.get('symbol')}</span> |
+                                <span className="font-bold mx-3">{params.get('name')?.substring(0,10)}...</span>
+                            </div>
+                        </div>
+
+                        <div className="">
+                            <div className='mb-10 text-sm font-bold'>Portfolios containing units of the stock</div>
+
+                            <div>
+                                <select className='text-lg outline-white mb-30 w-full font-bold p-3 rounded-lg border border-gray-500' onChange={getPortfolioIdToAddStock}>
+                                    {portfolioList}
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div className='mb-20' >
+                            <div className='mb-10 font-bold'>Current Price /Per Share</div>
+                            <div className='font-gotham-black-regular text-2xl font-bold text-green-900'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
+                        </div>                        
+
+                        <div className='border-bottom-1d mb-20'></div>
+
+                        <div className='mb-20'>
+                            <div className='relative'>
+                                <div className='flex justify-between space-x-5 mb-30'>
+
+                                    <div className='w-1/2 relative cursor-pointer' onClick={displayOrderTypeDropdown}>
+                                        <div className="mb-10 font-bold text-sm">Order Type</div>
+
+                                        <div className='flex justify-between font-bold items-center border p-3 rounded-lg'>
+                                            <div>{orderType}</div>
+                                            <div><img src={ChevronDownIcon} alt='' /></div>
+                                        </div>
+                                    </div>
+
+                                    <div className='w-1/2'>
+                                        <div className="mb-10 font-bold text-sm">Unit</div>
+
+                                        <div>
+                                            <input onChange={e => setStockUnit(e.target.value)} type='number' className='font-bold input border-1-d6 p-2 outline-white' value={stockUnit} />
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div className={showOrderTypeDropdown ? 'generic-dropdown-card left-0 rounded-lg w-1/2' : 'hidden'}>
+                                    <div className='font-gotham-black-regular text-lg text-green-900 mb-10'>Order Type</div>
+
+                                    <ul className='list-none m-0 p-0'>
+                                        <li className='order-type-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'>
+                                            <div className='font-gotham-black-regular mb-5 font-bold text-sm'>Market</div>
+                                            <div className='text-xs'>Instantly sell uints of shares</div>
+                                            <div onClick={selectOrderType} className='element-cover' data-value="Market"></div>
+                                        </li>
+
+                                        <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1'>
+                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Limit</div>
+                                            <div className='text-xs'>Place order based on preferred maximum amount to receive share.</div>
+                                            <div onClick={selectOrderType} className='element-cover' data-value="Limit"></div>
+                                        </li>
+
+                                        <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
+                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Stop Loss</div>
+                                            <div className='text-xs'>- Place order based on price tolerance for a sell.</div>
+                                            <div onClick={selectOrderType} className='element-cover' data-value="Stop Loss"></div>
+                                        </li>
+
+                                        <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
+                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Stop Limit</div>
+                                            <div className='text-xs'>Place order based on minimum limit for sell.</div>
+                                            <div onClick={selectOrderType} className='element-cover' data-value="Stop Limit"></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            {/* Limit - Order Type */}
+                            <div className={limitOrderType ? 'relative flex justify-between space-x-5 mb-30' : 'hidden'}>
+                                <div className='w-1/2'>
+                                    <div className="mb-10 text-sm font-bold">Maximum Limit</div>
+
+                                    <div>
+                                        <input onChange={e => setPriceToleranceAndLimit(e.target.value)} type='number' className='font-bold input border-1-d6 p-2 outline-white' placeholder='Maximum price per share' value={priceToleranceAndLimit} />
+                                    </div>
+                                </div>
+
+                                <div className='w-1/2 relative cursor-pointer' onClick={displayLimitDuration}>
+                                    <div className="mb-10 text-sm font-bold">Duration</div>
+
+                                    <div className='flex justify-between font-bold items-center border p-3 rounded-lg'>
+                                        <div>{duration}</div>
+                                        <div><img src={ChevronDownIcon} alt='' /></div>
+                                    </div>
+                                </div>
+
+                                {/*Duration Dropdown */}
+                                <div className={showLimitDurationDropdown ? 'generic-dropdown-card right-0 rounded-lg w-1/2' : 'hidden'}>
+                                    <div className='font-gotham-black-regular text-lg text-green-900 mb-10'>Duration</div>
+
+                                    <ul className='list-none m-0 p-0'>
+                                        <li className='duration-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'>
+                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>End of day</div>
+                                            <div className='text-xs'>Order should be executed before end of  day, else, cancelled</div>
+                                            <div onClick={selectDuration} className='element-cover' data-value="End of day"></div>
+                                        </li>
+
+                                        <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1'>
+                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Fill or Kill</div>
+                                            <div className='text-xs'>Order should be filled immediately, else, cancelled</div>
+                                            <div onClick={selectDuration} className='element-cover' data-value="Fill or Kill"></div>
+                                        </li>
+
+                                        <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
+                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Immediate or Cancel</div>
+                                            <div className='text-xs'>Order can be partly filled immediately, units not filled immediately should be cancelled</div>
+                                            <div onClick={selectDuration} className='element-cover' data-value="Immediate or Cancel"></div>
+                                        </li>
+
+                                        <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
+                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Good till Cancelled</div>
+                                            <div className='text-xs'>Order should remain open in the market till set date</div>
+                                            <div onClick={selectDuration} className='element-cover' data-value="Good till Cancelled"></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                {/*End */}
+
+                            </div>
+                            {/* End */}
+
+                            {/* Stop Loss - Order Type */}
+                            <div className='relative'>
+                                <div className={stopLossOrderType ? 'flex justify-between space-x-5 mb-30' : 'hidden'}>
+                                    <div className='w-1/2'>
+                                        <div className="mb-10 text-sm font-bold">Price Tolerance</div>
+
+                                        <div>
+                                            <input type='number' onChange={e => setPriceToleranceAndLimit(e.target.value)} className='font-bold input border-1-d6 p-2 outline-white' value={priceToleranceAndLimit} />
+                                        </div>
+                                    </div>
+
+                                    <div className='w-1/2 relative cursor-pointer' onClick={displayStopLossDuration}>
+                                        <div className="mb-10 text-sm font-bold">Duration</div>
+
+                                        <div className='flex justify-between font-bold items-center border p-3 rounded-lg'>
+                                            <div>{duration}</div>
+                                            <div><img src={ChevronDownIcon} alt='' /></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div className={showStopLossDurationDropdown ? 'generic-dropdown-card right-0 rounded-lg w-1/2' : 'hidden'}>
+                                    <div className='font-gotham-black-regular text-lg text-green-900 mb-10'>Duration</div>
+
+                                    <ul className='list-none m-0 p-0'>
+                                        <li className='duration-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'>
+                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>End of day</div>
+                                            <div className='text-xs'>Order should be executed before end of  day, else, cancelled</div>
+                                            <div onClick={selectDuration} className='element-cover' data-value="End of day"></div>
+                                        </li>
+
+                                        <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1'>
+                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Fill or Kill</div>
+                                            <div className='text-xs'>Order should be filled immediately, else, cancelled</div>
+                                            <div onClick={selectDuration} className='element-cover' data-value="Fill or Kill"></div>
+                                        </li>
+
+                                        <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
+                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Immediate or Cancel</div>
+                                            <div className='text-xs'>Order can be partly filled immediately, units not filled immediately should be cancelled</div>
+                                            <div onClick={selectDuration} className='element-cover' data-value="Immediate or Cancel"></div>
+                                        </li>
+
+                                        <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
+                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Good till Cancelled</div>
+                                            <div className='text-xs'>Order should remain open in the market till set date</div>
+                                            <div onClick={selectDuration} className='element-cover' data-value="Good till Cancelled"></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            {/* End */}
+
+                            {/* Stop Limit - Order Type */}
+                            <div className='relative'>
+                                <div className={stopLimitOrderType ? '' : 'hidden'}>
+                                    <div className='flex justify-between space-x-5 mb-20'>
+                                        <div className='w-1/2'>
+                                            <div className="mb-10 text-sm font-bold">Price Tolerance and Limit</div>
+
+                                            <div>
+                                                <input onChange={e => setPriceToleranceAndLimit(e.target.value)} value={priceToleranceAndLimit} type='number' className='font-bold input border-1-d6 p-2 outline-white' />
+                                            </div>
+                                        </div>
+
+                                        <div className='w-1/2 relative cursor-pointer' onClick={displayStopLimitDuration}>
+                                            <div className="mb-10 text-sm font-bold">Duration</div>
+
+                                            <div className='flex justify-between font-bold items-center border p-3 rounded-lg'>
+                                                <div>{duration}</div>
+                                                <div><img src={ChevronDownIcon} alt='' /></div>
+                                            </div>
+                                        </div>
+
+                                        <div className={showStopLimitDurationDropdown ? 'generic-dropdown-card right-0 rounded-lg w-1/2' : 'hidden'}>
+                                            <div className='font-gotham-black-regular text-lg text-green-900 mb-10'>Duration</div>
+
+                                            <ul className='list-none m-0 p-0'>
+                                                <li className='duration-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'>
+                                                    <div className='font-gotham-black-regular mb-5 text-sm font-bold'>End of day</div>
+                                                    <div className='text-xs'>Order should be executed before end of  day, else, cancelled</div>
+                                                    <div onClick={selectDuration} className='element-cover' data-value="End of day"></div>
+                                                </li>
+
+                                                <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1'>
+                                                    <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Fill or Kill</div>
+                                                    <div className='text-xs'>Order should be filled immediately, else, cancelled</div>
+                                                    <div onClick={selectDuration} className='element-cover' data-value="Fill or Kill"></div>
+                                                </li>
+
+                                                <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
+                                                    <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Immediate or Cancel</div>
+                                                    <div className='text-xs'>Order can be partly filled immediately, units not filled immediately should be cancelled</div>
+                                                    <div onClick={selectDuration} className='element-cover' data-value="Immediate or Cancel"></div>
+                                                </li>
+
+                                                <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
+                                                    <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Good till Cancelled</div>
+                                                    <div className='text-xs'>Order should remain open in the market till set date</div>
+                                                    <div onClick={selectDuration} className='element-cover' data-value="Good till Cancelled"></div>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+
+                                    <div>
+                                        <div>
+                                            <div className="mb-10 text-sm font-bold">Enter Date</div>
+                                            <div className='flex justify-between items-center border-1-d6 rounded-lg'>
+                                                <div className='w-full'>
+                                                    <input type="text" className="font-bold outline-white border-0 p-3 input text-sm" placeholder="Enter end date for your order" defaultValue={showDate} />
+                                                </div>
+                                                <div className='p-3 cursor-pointer' onClick={e => displayCalendar()}>
+                                                    <img src={CalendarIcon} alt="" width="20" />
+                                                </div>
+                                            </div>
+
+                                            <Calendar onChange={changeDate} value={dateState} className={showCalendar ? "absolute z-10" : "hidden"} />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className={showStopLossDurationDropdown ? 'generic-dropdown-card right-0 rounded-lg w-1/2' : 'hidden'}>
+                                    <div className='font-gotham-black-regular text-lg text-green-900 mb-10'>Duration</div>
+
+                                    <ul className='list-none m-0 p-0'>
+                                        <li className='duration-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'>
+                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>End of day</div>
+                                            <div className='text-xs'>Order should be executed before end of  day, else, cancelled</div>
+                                            <div onClick={selectDuration} className='element-cover' data-value="End of day"></div>
+                                        </li>
+
+                                        <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1'>
+                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Fill or Kill</div>
+                                            <div className='text-xs'>Order should be filled immediately, else, cancelled</div>
+                                            <div onClick={selectDuration} className='element-cover' data-value="Fill or Kill"></div>
+                                        </li>
+
+                                        <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
+                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Immediate or Cancel</div>
+                                            <div className='text-xs'>Order can be partly filled immediately, units not filled immediately should be cancelled</div>
+                                            <div onClick={selectDuration} className='element-cover' data-value="Immediate or Cancel"></div>
+                                        </li>
+
+                                        <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
+                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Good till Cancelled</div>
+                                            <div className='text-xs'>Order should remain open in the market till set date</div>
+                                            <div onClick={selectDuration} className='element-cover' data-value="Good till Cancelled"></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            {/* End */}
+
+                        </div>
+
+                        <div className='border-bottom-1d mb-20'></div>
+
+                        <div className='mb-20'>
+                            <div className='mb-10 text-sm font-bold'>Estimated cost</div>
+                            <div className='font-gotham-black-regular font-bold text-green-900 text-2xl'>{HelperFunctions.formatCurrencyWithDecimal(estimatedCost)}</div>
+                        </div>
+
+                        <div>
+                            <button onClick={calculateStockOrderEstimate} className={estimatedCost === 0 ? 'w-full bg-green-900 rounded-lg text-white p-4 font-bold text-lg border-0 focus:shadow-outline cursor-pointer' : 'hidden'}>
+                                <span className={showSpinner ? "hidden" : ""}>Get Estimated Cost</span>
+                                <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="30" />
+                            </button>
+
+                            <button onClick={displayStockOrderSummaryModal} className={estimatedCost !== 0 ? 'w-full bg-green-900 rounded-lg text-white p-4 font-bold text-lg border-0 focus:shadow-outline cursor-pointer' : 'hidden'}>
+                                <span className={showSpinner ? "hidden" : ""}>Continue</span>
+                                <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="30" />
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            {/* End */}
+
+            {/* Order Summary Modal */}
             <div className={showOrderSummaryModal ? 'generic-modal' : 'hidden'}>
                 <div className='generic-modal-dialog'>
                     <div className="buy-stocks-modal rounded-lg">
+
                         {/* Buy Stock Error */}
                         <div className={buyStockError === '' ? "hidden" : "error-alert mb-20"}>
                             <div className="flex justify-between space-x-1">
@@ -1883,10 +2265,10 @@ const Stock = () => {
                         </div>
 
                         
-                            <div className='mb-20' >
-                                <div className='mb-10 font-bold'>Current Price /Per Share</div>
-                                <div className='font-gotham-black-regular text-3xl font-bold text-green-900'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
-                            </div>
+                        <div className='mb-20' >
+                            <div className='mb-10 font-bold'>Current Price /Per Share</div>
+                            <div className='font-gotham-black-regular text-3xl font-bold text-green-900'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
+                        </div>
                         
 
                         <div className={params.get("tradeAction") === 'buy' ? '' : 'hidden'} >
@@ -1987,7 +2369,7 @@ const Stock = () => {
                         <div className='border-bottom-1d mb-20'></div>
 
 
-                        <div className='flex space-x-5 mb-10'>
+                        <div className='flex space-x-5 mb-20'>
                             <button type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer" onClick={closeModal}>Cancel</button>
 
                             <button onClick={tradeStock} className='w-full bg-green-900 rounded-lg text-white p-4 font-bold text-lg border-0 focus:shadow-outline cursor-pointer'>
@@ -1996,10 +2378,28 @@ const Stock = () => {
                             </button>
                         </div>
 
+                        {/* Buy Stock Error */}
+                        <div className={buyStockError === '' ? "hidden" : "error-alert mb-10"}>
+                            <div className="flex justify-between space-x-1">
+                                <div className="flex">
+                                    <div>
+                                        <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
+                                        </svg>
+                                    </div>
+
+                                    <div className="text-sm">{buyStockError}</div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* End */}
+
                     </div>
                 </div>
             </div>
+            {/* End */}
 
+            {/* Success Modal */}
             <div className={showSuccessModal ? "stock-success-modal w-32rem" : "hidden"}>
                 <div className="mx-auto w-1/2 mb-6">
                     <img src={SuccessCheckIcon} alt="success icon" className="w-full" />
@@ -2014,6 +2414,7 @@ const Stock = () => {
                     <button onClick={closeModal} type="button" className="py-4 w-full font-bold bg-green-900 text-white rounded-lg border-0 cursor-pointer">Close</button>
                 </div>
             </div>
+            {/* End */}
 
             <div className={showModalBG ? "modal-backdrop opacity-40" : "hidden"}>
             </div>
