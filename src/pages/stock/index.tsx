@@ -1999,9 +1999,8 @@ const Stock = () => {
             </div>
 
             <div className={showSuccessModal ? "stock-success-modal w-32rem" : "hidden"}>
-                <div className="ml-8 mr-auto w-full h-64 relative">
-                    <img src={SuccessCheckIcon} alt="success icon" className="w-96" />
-                    <div className="bg-white p-3 w-96 -bottom-10 absolute"></div>
+                <div className="mx-auto w-1/2 mb-6">
+                    <img src={SuccessCheckIcon} alt="success icon" className="w-full" />
                 </div>
 
                 <div className="relative z-10 text-green-900 font-gotham-black-regular text-3xl text-center mb-10">Successful</div>
