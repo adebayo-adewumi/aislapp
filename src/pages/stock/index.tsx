@@ -97,7 +97,7 @@ const Stock = () => {
 
     const [stockInfo, setStockInfo] = useState('');
 
-    const [stockSymbol, ] = useState('');
+    const [stockSymbol, setStockSymbol] = useState('');
 
     const [graphYAxis, setGraphYAxis] = useState<string[]>(["0","0","0","0","0","0","0","0","0","0","0","0"]);
     const [graphXAxis, setGraphXAxis] = useState<string[]>(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]);
@@ -675,12 +675,14 @@ const Stock = () => {
         setShowNews(true);
     }
 
-    function displayAddToWatchListModal() {
+    function displayAddToWatchListModal(event :any) {
         setShowModalBG(true);
         setShowAddToWatchListModal(true);
         setShowSuccessModal(false);
         setShowTradeStockModal(false);
         setShowSetPriceAlertModal(false);
+
+        setStockSymbol(event.target.getAttribute("data-symbol"))
 
         HelperFunctions.addOverflowAndPaddingToModalBody()
     }
@@ -1025,8 +1027,8 @@ const Stock = () => {
                                     
 
                                     <div>
-                                        <button onClick={displayAddToWatchListModal} className="cursor-pointer focus:shadow-outline rounded-lg bg-gray-300 py-3 px-5 border-0 font-bold lg:text-sm" type='button'>
-                                            <img src={StarIcon} alt="" className="align-bottom mr-2" width="20" />
+                                        <button onClick={displayAddToWatchListModal} className="cursor-pointer focus:shadow-outline rounded-lg bg-gray-300 py-3 px-5 border-0 font-bold lg:text-sm" type='button' data-symbol={params.get('symbol')}>
+                                            <img src={StarIcon} alt="" className="align-bottom mr-2" width="20" data-symbol={params.get('symbol')}/>
                                             Add to watchlist
                                         </button>
 
