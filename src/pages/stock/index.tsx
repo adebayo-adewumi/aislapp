@@ -1030,8 +1030,12 @@ const Stock = () => {
                                             Add to watchlist
                                         </button>
 
-                                        <button onClick={displayBuyStockModal} className={params.get("tradeAction") === 'buy' ? "cursor-pointer focus:shadow-outline text-white rounded-lg bg-green-800 pb-3 pt-4 px-7 lg:pt-3 lg:px-5 border-0 font-bold ml-3 lg:text-sm" : "cursor-pointer focus:shadow-outline text-white rounded-lg bg-red-500 pb-3 pt-4 px-7 border-0 font-bold ml-3 lg:text-sm"} type='button'>
-                                            {params.get("tradeAction") === 'buy' ? 'Buy' : 'Sell'}
+                                        <button onClick={displayBuyStockModal} className="cursor-pointer focus:shadow-outline text-white rounded-lg bg-green-800 pb-3 pt-4 px-7 lg:pt-3 lg:px-5 border-0 font-bold ml-3 lg:text-sm" type='button'>
+                                            Buy
+                                        </button>
+
+                                        <button onClick={displayBuyStockModal} className={params.get("tradeAction") !== 'buy' ? "cursor-pointer focus:shadow-outline text-white rounded-lg bg-red-500 pb-3 pt-4 px-7 lg:pt-3 lg:px-5 border-0 font-bold ml-3 lg:text-sm":"hidden"} type='button'>
+                                            Sell
                                         </button>
                                     </div>
                                 </div>
