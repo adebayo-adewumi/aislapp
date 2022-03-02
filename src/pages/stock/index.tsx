@@ -1630,35 +1630,37 @@ const Stock = () => {
 
                                 </div>
 
+                                {/* Order Type Description */}
                                 <div className={showOrderTypeDropdown ? 'generic-dropdown-card left-0 rounded-lg w-1/2' : 'hidden'}>
                                     <div className='font-gotham-black-regular text-lg text-green-900 mb-10'>Order Type</div>
 
                                     <ul className='list-none m-0 p-0'>
                                         <li className='order-type-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'>
                                             <div className='font-gotham-black-regular mb-5'>Market</div>
-                                            <div className='text-xs'>Instantly Sell uints of shares</div>
+                                            <div className='text-xs'>Instantly buy units of shares.</div>
                                             <div onClick={selectOrderType} className='element-cover' data-value="Market"></div>
                                         </li>
 
                                         <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1'>
                                             <div className='font-gotham-black-regular mb-5'>Limit</div>
-                                            <div className='text-xs'>Place orders based on preferred maximum amount to sell shares</div>
+                                            <div className='text-xs'>Place order based on preferred maximum amount to buy shares.</div>
                                             <div onClick={selectOrderType} className='element-cover' data-value="Limit"></div>
                                         </li>
 
                                         <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
                                             <div className='font-gotham-black-regular mb-5'>Stop Loss</div>
-                                            <div className='text-xs'>Place order based on price tolerance to sell shares</div>
+                                            <div className='text-xs'>- Place order based on price tolerance for a buy. </div>
                                             <div onClick={selectOrderType} className='element-cover' data-value="Stop Loss"></div>
                                         </li>
 
                                         <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
                                             <div className='font-gotham-black-regular mb-5'>Stop Limit</div>
-                                            <div className='text-xs'>Place order based on maximum limit to sell shares</div>
+                                            <div className='text-xs'>Place order based on maximum limit for buy.</div>
                                             <div onClick={selectOrderType} className='element-cover' data-value="Stop Limit"></div>
                                         </li>
                                     </ul>
                                 </div>
+                                {/* End */}
                             </div>
 
                             {/* Limit - Order Type */}
@@ -2006,25 +2008,26 @@ const Stock = () => {
 
                                 </div>
 
+                                {/* Order Types Description */}
                                 <div className={showOrderTypeDropdown ? 'generic-dropdown-card left-0 rounded-lg w-1/2' : 'hidden'}>
                                     <div className='font-gotham-black-regular text-lg text-green-900 mb-10'>Order Type</div>
 
                                     <ul className='list-none m-0 p-0'>
                                         <li className='order-type-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'>
                                             <div className='font-gotham-black-regular mb-5 font-bold text-sm'>Market</div>
-                                            <div className='text-xs'>Instantly sell uints of shares</div>
+                                            <div className='text-xs'>Instantly sell units of shares. </div>
                                             <div onClick={selectOrderType} className='element-cover' data-value="Market"></div>
                                         </li>
 
                                         <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1'>
                                             <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Limit</div>
-                                            <div className='text-xs'>Place order based on preferred maximum amount to receive share.</div>
+                                            <div className='text-xs'>- Place order based on preferred maximum amount to receive share.</div>
                                             <div onClick={selectOrderType} className='element-cover' data-value="Limit"></div>
                                         </li>
 
                                         <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
                                             <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Stop Loss</div>
-                                            <div className='text-xs'>- Place order based on price tolerance for a sell.</div>
+                                            <div className='text-xs'>Place order based on price tolerance for a sell.</div>
                                             <div onClick={selectOrderType} className='element-cover' data-value="Stop Loss"></div>
                                         </li>
 
@@ -2035,6 +2038,7 @@ const Stock = () => {
                                         </li>
                                     </ul>
                                 </div>
+                                {/* End */}
                             </div>
 
                             {/* Limit - Order Type */}
