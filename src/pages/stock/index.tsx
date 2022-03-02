@@ -122,6 +122,9 @@ const Stock = () => {
 
     const [showSellStockModal, setShowSellStockModal] = useState<boolean>(false);
 
+    const [portfolioWithCurrentStock, setPortfolioWithCurrentStock] = useState<any[]>([]);
+    const [portfolioUnitStock, setPortfolioUnitStock] = useState(0);
+
 
     let options = {
         chart: {
@@ -311,10 +314,20 @@ const Stock = () => {
                 });
         }
 
+        getWalletBalance();
+        
+        getNews();
+    },[portfolioWithCurrentStock]);
+
+    useEffect(()=>{
         function getPortfolioList() {
+            const _params = new URLSearchParams(window.location.search);
 
             getAxios(axios).get(portfolioServiceBaseUrlUrl.concat('/portfolio'))
                 .then(function (response) {
+
+                    let portfolioItems :any = [];
+
                     const listItems = response.data.data.portfolio.map((item: any) => {
                         if (item.name !== "availableToInvest") {
                             return <option value={item.uuid}>{item.name}</option>
@@ -323,7 +336,27 @@ const Stock = () => {
                         return false; 
                     });
 
+                    let hasListOfStocks = response.data.data.portfolio.filter((item :any) => item.hasOwnProperty("listOfStocks"));
+
+                    if(hasListOfStocks.length > 0){
+                        hasListOfStocks.map((item :any, index: any)=>{                            
+                            let stockNameExist = item.listOfStocks.filter((el :any) => el.symbol === _params.get("symbol"));
+
+                            if(stockNameExist.length > 0){
+                                portfolioItems.push({
+                                    name: item.name,
+                                    uuid: item.uuid,
+                                    units: stockNameExist.map((item :any) => item.units).reduce((prev :any, next :any) => prev + next, 0)
+                                });
+                            }
+
+                            return false;
+                        });
+                    }
+
                     setPortfolioList(listItems);
+                    setPortfolioWithCurrentStock(portfolioItems);
+
                 })
                 .catch(function (error) {
 
@@ -336,10 +369,7 @@ const Stock = () => {
         }
 
         getPortfolioList();
-        getWalletBalance();
-        
-        getNews();
-    },[]);
+    },[])
 
     useEffect(() => {
         const _params = new URLSearchParams(window.location.search);
@@ -695,6 +725,7 @@ const Stock = () => {
         setShowTradeStockModal(true);
         setShowSuccessModal(false);
         setShowSetPriceAlertModal(false);
+        setShowSellStockModal(false);
 
         HelperFunctions.addOverflowAndPaddingToModalBody();
     }
@@ -913,6 +944,13 @@ const Stock = () => {
         setPortfolioIdToAddStock(event.target.value);
     }
 
+    function getPortfolioIdToSellStock(event: any) {
+        let splitValue = event.target.value.split("&");
+
+        setPortfolioIdToAddStock(splitValue[0]);
+        setPortfolioUnitStock(parseInt(splitValue[1]));
+    }
+
     function validatePin() {
         setShowSpinner(true);
 
@@ -1085,7 +1123,7 @@ const Stock = () => {
                                                     <div className="mb-5">Total Value</div>
                                                     <div className="font-bold font-gotham-black-regular mb-5">₦ {(stockInfo === ''? '':JSON.parse(stockInfo).price) * parseInt(params.get("units") as string)}</div>
 
-                                                    <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-sm" : "font-bold text-red-500 text-sm"}>{stockInfo === '' ? '' : JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === '' ? '' : JSON.parse(stockInfo).percentageChange.replace('-','')}%  </div>
+                                                    <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-sm" : "font-bold text-red-500 text-sm"}>{stockInfo === '' ? '' : JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === '' ? '' : HelperFunctions.formatCurrencyWithDecimal(JSON.parse(stockInfo).percentageChange.replace('-',''))}%  </div>
                                                 </div>
                                             
                                         </div>
@@ -1116,7 +1154,7 @@ const Stock = () => {
                                                                 <div className='font-gotham-black-regular font-bold text-green-900 text-xl'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
 
                                                                 <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-sm" : "font-bold text-red-500 text-sm"}>
-                                                                    {stockInfo === '' ? '' : JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === '' ? '' : JSON.parse(stockInfo).percentageChange.replace('-','')}%
+                                                                    {stockInfo === '' ? '' : JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === '' ? '' : HelperFunctions.formatCurrencyWithDecimal(JSON.parse(stockInfo).percentageChange.replace('-',''))}%
                                                                     </div>
                                                             </div>
                                                         </div>
@@ -1531,7 +1569,7 @@ const Stock = () => {
 
                         <div className="mb-20 flex justify-between">
                             <div>
-                                <div className="font-bold text-3xl text-green-900 mb-10 font-gotham-black-regular">{params.get("tradeAction") === 'buy' ? 'Buy Stock' : 'Sell Stock'}</div>
+                                <div className="font-bold text-3xl text-green-900 mb-10 font-gotham-black-regular">Buy Stock</div>
                                 <div className='font-bold text-green-900'>Provide the details below</div>
                             </div>
 
@@ -1921,9 +1959,20 @@ const Stock = () => {
                             <div className='mb-10 text-sm font-bold'>Portfolios containing units of the stock</div>
 
                             <div>
-                                <select className='text-lg outline-white mb-30 w-full font-bold p-3 rounded-lg border border-gray-500' onChange={getPortfolioIdToAddStock}>
-                                    {portfolioList}
+                                <select className='text-lg outline-white mb-30 w-full font-bold p-3 rounded-lg border border-gray-500' onChange={getPortfolioIdToSellStock}>
+                                    <option value="null&0">...</option>
+                                    {portfolioWithCurrentStock.map((item :any) =>
+                                        <option value={item.uuid+"&"+item.units}>{item.name}</option>
+                                    )}
                                 </select>
+                            </div>
+                        </div>
+
+                        <div className="mb-30">
+                            <div className='text-sm font-bold'>Available Units</div>
+
+                            <div className='font-bold text-xl'>
+                               {portfolioUnitStock}
                             </div>
                         </div>
                         

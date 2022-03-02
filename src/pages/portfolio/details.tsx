@@ -332,7 +332,7 @@ const PortfolioDetails = () => {
                         <div className='p-10 flex-1 bg-gray-100 overflow-y-auto'>
                             <div className='flex justify-between'>
                                 <div>
-                                    <div className="text-3xl mb-20">
+                                    <div className="text-2xl mb-10">
                                         <span className="font-bold text-green-900">Portfolio Details</span>
                                     </div>
 
@@ -341,8 +341,8 @@ const PortfolioDetails = () => {
                                     </div>
                                 </div>
 
-                                <div>
-                                    <button type='button'  className='bg-red-500 font-bold rounded-lg border-0 cursor-pointer px-10 py-3 text-white'>Delete</button>
+                                <div className='cursor-pointer text-xl'>
+                                    <Link to="/portfolio" className='no-underline'><img width="20" src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back</Link>
                                 </div>
                             </div>
 
