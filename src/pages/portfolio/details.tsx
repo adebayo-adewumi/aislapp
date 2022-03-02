@@ -27,6 +27,8 @@ import GreenBoxIcon from '../../assets/images/green-box.svg';
 import RedBoxIcon from '../../assets/images/red-box.svg';
 import BlueBoxIcon from '../../assets/images/blue-box.svg';
 import { Accordion, Form } from 'react-bootstrap';
+import AnchoriaIcon from '../../assets/images/anchoria-icon.svg';
+import AnchoriaSpinner from '../../assets/images/anchoria-spinner.svg';
 
 
 const PortfolioDetails = () => {
@@ -61,6 +63,8 @@ const PortfolioDetails = () => {
     const [portfolioList, setPortfolioList] = useState([]);
 
     const [stocksList, setStocksList] = useState([]);
+
+    const [showPageLoader, setShowPageLoader] = useState<boolean>(true);
 
     let options = {
         chart: {
@@ -182,6 +186,8 @@ const PortfolioDetails = () => {
                 );
 
                 setStocksInPortfolio(listOfStocks);
+
+                setShowPageLoader(false);
             })
             .catch(function (error) {
 
@@ -206,7 +212,7 @@ const PortfolioDetails = () => {
         function getPortfolioList() {
             getAxios(axios).get(getPortfolioEndpoint)
                 .then(function (response) {    
-                    setPortfolioList(response.data.data.portfolio);
+                    setPortfolioList(response.data.data.portfolio.filter((item :any) => item.hasOwnProperty("listOfStocks")));
                 })
                 .catch(function () {});
         }
@@ -372,10 +378,10 @@ const PortfolioDetails = () => {
                                         <div className='font-bold text-xl mb-10'>
                                             <img src={portfolioDetails.portfolioReturn >= 0 ? ArrowUpIcon : ArrowDownIcon} alt="" width="30" className="align-middle mr-3" />
 
-                                            <span>₦ {formatCurrencyWithDecimal(portfolioDetails.portfolioReturn)}</span>
+                                            <span className={portfolioDetails.portfolioReturn >= 0 ? 'text-green-500' : 'text-red-500'}>₦ {String(formatCurrencyWithDecimal(portfolioDetails.portfolioReturn)).replace("-","")}</span>
                                         </div>
                                         <div>
-                                            <span className={String(portfolioDetails.portfolioPercentageReturn).concat("%") ? 'text-green-500 text-sm' : 'text-red-500 text-sm'}>{String(HelperFunctions.formatCurrencyWithDecimal(portfolioDetails.portfolioPercentageReturn)).concat("%")}</span>
+                                            <span className={portfolioDetails.portfolioReturn >= 0 ? 'text-green-500' : 'text-red-500'}>{String(HelperFunctions.formatCurrencyWithDecimal(portfolioDetails.portfolioPercentageReturn)).replace("-","")}%</span>
                                         </div>
                                     </div>
                                 </div>
@@ -462,7 +468,7 @@ const PortfolioDetails = () => {
                                             </div>
                                         </div>
 
-                                        <div className='flex space-x-10 selectbox-border p-5 rounded-lg border-1 hover:bg-gray-100 cursor-pointer mb-30' onClick={displayWatchlistModal}>
+                                        <div className='flex space-x-10 selectbox-border p-5 rounded-lg border-1 hover:bg-gray-100 cursor-pointer mb-30 hidden' onClick={displayWatchlistModal}>
                                             <div>
                                                     <img src={SaveTagIcon} alt="" width='50' />
                                             </div>
@@ -493,7 +499,7 @@ const PortfolioDetails = () => {
 
 
                             {/*Watchlist Modal */}
-                            <div className={showWatchlistModal ? "add-stock-modal":"hidden"}>
+                            <div className={showWatchlistModal ? "add-stock-modal hidden":"hidden"}>
                                 <div className="mb-20 flex items-center justify-between">
                                     <div className="text-2xl text-green-900 font-gotham-black-regular font-bold mb-10">My Watchlists</div>
 
@@ -504,7 +510,7 @@ const PortfolioDetails = () => {
 
                                 <div>
                                     {watchListStocks.length === 0 ? 'No stocks in your watchlist.' : watchListStocks.map((item: any, index: number) =>
-                                        <div className="card mb-20" key={index}>
+                                        <div className="card mb-20 p-3" key={index}>
                                             <div className="flex justify-between items-center">
                                                 <div><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" width="25"/></div>
 
@@ -515,7 +521,7 @@ const PortfolioDetails = () => {
                                                 <div className="font-bold text-color-2 text-right text-sm">₦ {HelperFunctions.formatCurrencyWithDecimal(item.currentPrice)}</div>
 
                                                 <div className='flex justify-between space-x-2 cursor-pointer'>
-                                                    <Form.Check onChange={selectStockToMove} data-value={item.name} type="checkbox" className='portfoliolist-checkbox cursor-pointer' />
+                                                    <Form.Check onChange={selectStockToMove} data-value={item.id} type="checkbox" className='portfoliolist-checkbox cursor-pointer' />
                                                 </div>
                                             </div>
                                         </div>
@@ -551,7 +557,7 @@ const PortfolioDetails = () => {
 
                                                     <div className="text-ellipsis overflow-hidden text-sm">{item.name}</div>
 
-                                                    <div className="font-bold text-color-2 text-right text-sm">₦ {HelperFunctions.formatCurrencyWithDecimal(item.currentPrice)}</div>
+                                                    <div className="font-bold text-color-2 text-right text-sm">₦ {HelperFunctions.formatCurrencyWithDecimal(item.close)}</div>
 
                                                     <div className='flex justify-between space-x-2 cursor-pointer'>
                                                         <Link to={"/stock?name=" + item.name + "&sector=" + item.sector + "&symbol=" + item.symbol + "&sign=" + (item.sign === '+' ? 'positive' : 'negative') + "&change=" + item.change + "&close=" + item.close + "&open=" + item.open + "&high=" + item.high + "&low=" + item.low + "&wkhigh=" + item.weekHigh52 + "&wklow=" + item.weekLow52 + "&volume=" + item.volume + "&mktsegment=" + item.mktSegment + "&pclose=" + item.pclose + "&tradeAction=buy"}>
@@ -564,7 +570,7 @@ const PortfolioDetails = () => {
                                 </div>
 
                                 <div>
-                                    <button onClick={addStockToPortfolio} type='button' className='w-full px-10 py-3 border-0 bg-green-900 text-white font-bold rounded-lg cursor-pointer text-lg'>
+                                    <button onClick={addStockToPortfolio} type='button' className='w-full px-10 py-3 border-0 bg-green-900 text-white font-bold rounded-lg cursor-pointer text-lg hidden'>
                                         Add 
                                     </button>
                                 </div>
@@ -619,12 +625,29 @@ const PortfolioDetails = () => {
 
                                     <div>
                                         {portfolioList.map((item :any, index :any) =>
-                                        <div className=''>
+                                        <div className={portfolioDetails.name === item.name ? 'hidden':''}>
                                             <Accordion defaultActiveKey="0" className='mb-30 portfoliolist-accordion'>
                                                 <Accordion.Item eventKey="0">
                                                     <Accordion.Header className='portfoliolist-accordion-header m-0 bg-transparent font-bold'>{item.name}</Accordion.Header>
 
                                                     <Accordion.Body>
+                                                        {item.listOfStocks.map((item :any, index :any) =>
+                                                            <div className="card mb-20 p-3" key={index}>
+                                                                <div className="flex justify-between items-center">
+                                                                    <div><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" width="25"/></div>
+                    
+                                                                    <div className="font-bold text-color-2 text-sm">{item.name}</div>
+                    
+                                                                    <div className="text-ellipsis overflow-hidden text-sm">{item.name}</div>
+                    
+                                                                    <div className="font-bold text-color-2 text-right text-sm">₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
+                    
+                                                                    <div className='flex justify-between space-x-2 cursor-pointer'>
+                                                                        <Form.Check onChange={selectStockToMove} data-value={item.id} type="checkbox" className='portfoliolist-checkbox cursor-pointer' />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        )}
                                                     </Accordion.Body>
 
                                                 </Accordion.Item>
@@ -726,6 +749,16 @@ const PortfolioDetails = () => {
                             {/* Modal BG*/}
                             <div className={showModalBG ? "modal-backdrop opacity-40" : "modal-backdrop opacity-40 hidden"}>
                             </div>
+                            {/* End */}
+
+                            {/* Page Loader Section */}
+                            <div className={showPageLoader ? "page-loader-backdrop opacity-90" : "hidden"}>
+                                <div className='w-96 relative lg:ml-72'>
+                                    <div className='absolute top-44pc left-46pt5pc'><img src={AnchoriaIcon} alt="" /></div>
+                                    <div className='text-center'><img src={AnchoriaSpinner} alt="" /></div>
+                                </div>
+                            </div>
+                            {/* End */}
 
                         </div>
 

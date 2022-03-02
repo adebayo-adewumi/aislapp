@@ -51,7 +51,9 @@ const Stock = () => {
 
     const [orderType, setOrderType] = useState('Market');
     const [duration, setDuration] = useState('End of day');
+
     const [stockUnit, setStockUnit] = useState('');
+
     const [estimatedCost, setEstimatedCost] = useState(0);
     const [, setActualCost] = useState(0);
     const [priceToleranceAndLimit, setPriceToleranceAndLimit] = useState("0");
@@ -123,7 +125,14 @@ const Stock = () => {
     const [showSellStockModal, setShowSellStockModal] = useState<boolean>(false);
 
     const [portfolioWithCurrentStock, setPortfolioWithCurrentStock] = useState<any[]>([]);
-    const [portfolioUnitStock, setPortfolioUnitStock] = useState(0);
+    const [totalUnitToSell, setTotalUnitToSell] = useState(0);
+
+    const [availableUnit, setAvailableUnit] = useState(0);
+
+    const [unitToSell, setUnitToSell] = useState('0');
+    const [unitToSellError, setUnitToSellError] = useState('');
+    const [isValidateUnitToSell, setIsValidateUnitToSell] = useState<boolean>(false);
+
 
 
     let options = {
@@ -371,6 +380,18 @@ const Stock = () => {
         getPortfolioList();
     },[])
 
+    useEffect(()=>{
+        if(parseInt(unitToSell) > availableUnit || parseInt(unitToSell) === 0 || unitToSell === ''){
+            setUnitToSellError("Units to sell cannot be greater than available units or equal to 0");
+            setIsValidateUnitToSell(false);
+        }
+        else{
+            setUnitToSellError("");
+            setIsValidateUnitToSell(true);
+        }
+
+    },[unitToSell, availableUnit]);
+
     useEffect(() => {
         const _params = new URLSearchParams(window.location.search);
 
@@ -528,7 +549,7 @@ const Stock = () => {
     },[graph1YXAxis, graph1YYAxis]);
 
 
-    function calculateStockOrderEstimate() {
+    function calculateBuyStockOrderEstimate() {
         let customer = HelperFunctions.getCustomerInfo();
 
         let durationArr = ["End of day", "Fill or Kill", "Immediate or Cancel", "Good till Cancelled"];
@@ -542,7 +563,7 @@ const Stock = () => {
         let requestData = {
             "clientUniqueRef": customer.clientUniqueRef,
             "currency": "NGN",
-            "custAid": customer.custAid,
+            "custAid": customer.customerAid,
             "customerId": customer.id,
             "orderType": orderTypeValue[orderTypeIndex],
             "stockCode": params.get("symbol"),
@@ -553,7 +574,65 @@ const Stock = () => {
             "priceLimit": priceToleranceAndLimit,
             "smsPin": "1234",
             "timeInForce": tradeActionArr[durationIndex],
-            "tradeAction": params.get("tradeAction") === 'buy' ? '0' : '1'
+            "tradeAction": '0' 
+        }
+
+        console.log(requestData);
+
+        setShowSpinner(true);
+
+        let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
+        localStorage.setItem('genericCypher', genericCypher);
+
+
+        getAxios(axios).post(stockTradingServiceBaseUrlUrl + '/stock/order/estimate',
+            {
+                "text": localStorage.getItem('genericCypher')
+            })
+            .then(function (response) {
+                setShowSpinner(false);
+                setEstimatedCost(parseFloat(response.data.data))
+
+                let sinfo = JSON.parse(localStorage.get("aislStockInfo"));
+
+                let stkunit = parseFloat(stockUnit);
+                let price = parseFloat(sinfo.price);
+
+                setActualCost(stkunit * price);
+
+            })
+            .catch(function (error) {
+                setPriceEstimateError(error.response.data.message)
+                setShowSpinner(false);
+            });
+    }
+
+    function calculateSellStockOrderEstimate() {
+        let customer = HelperFunctions.getCustomerInfo();
+
+        let durationArr = ["End of day", "Fill or Kill", "Immediate or Cancel", "Good till Cancelled"];
+        let tradeActionArr = ["0", "4", "3", "1"];
+        let durationIndex = durationArr.indexOf(duration);
+
+        let orderTypeArr = ["Market", "Limit", "Stop Loss", "Stop Limit"];
+        let orderTypeValue = ["49", "50", "51", "52"];
+        let orderTypeIndex = orderTypeArr.indexOf(orderType);
+
+        let requestData = {
+            "clientUniqueRef": customer.clientUniqueRef,
+            "currency": "NGN",
+            "custAid": customer.customerAid,
+            "customerId": customer.id,
+            "orderType": orderTypeValue[orderTypeIndex],
+            "stockCode": params.get("symbol"),
+            "stockName": params.get("name"),
+            "units": totalUnitToSell.toString(),
+            "dateLimit": moment(Date.now()).format('YYYY-MM-DD'),
+            "effectiveDate": moment(Date.now()).format('YYYY-MM-DD'),
+            "priceLimit": priceToleranceAndLimit,
+            "smsPin": "1234",
+            "timeInForce": tradeActionArr[durationIndex],
+            "tradeAction": '0'
         }
 
         console.log(requestData);
@@ -948,7 +1027,8 @@ const Stock = () => {
         let splitValue = event.target.value.split("&");
 
         setPortfolioIdToAddStock(splitValue[0]);
-        setPortfolioUnitStock(parseInt(splitValue[1]));
+        setAvailableUnit(parseInt(splitValue[1]));
+        setUnitToSell(splitValue[1])
     }
 
     function validatePin() {
@@ -1034,6 +1114,11 @@ const Stock = () => {
             setGraphXAxis(graph1DXAxis);
         }
 
+    }
+
+    function calculateTotalUnitToSell(){
+        setTotalUnitToSell(parseInt(unitToSell) + totalUnitToSell);
+        setStockUnit((parseInt(unitToSell) + totalUnitToSell).toString());
     }
 
     return (
@@ -1883,7 +1968,7 @@ const Stock = () => {
                         </div>
 
                         <div>
-                            <button onClick={calculateStockOrderEstimate} className={estimatedCost === 0 ? 'w-full bg-green-900 rounded-lg text-white p-4 font-bold text-lg border-0 focus:shadow-outline cursor-pointer' : 'hidden'}>
+                            <button onClick={calculateBuyStockOrderEstimate} className={estimatedCost === 0 ? 'w-full bg-green-900 rounded-lg text-white p-4 font-bold text-lg border-0 focus:shadow-outline cursor-pointer' : 'hidden'}>
                                 <span className={showSpinner ? "hidden" : ""}>Get Estimated Cost</span>
                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="30" />
                             </button>
@@ -1971,11 +2056,23 @@ const Stock = () => {
                         </div>
 
                         <div className="mb-30">
-                            <div className='text-sm font-bold'>Available Units</div>
+                            <div className='text-sm font-bold mb-10'>Available Units</div>
 
-                            <div className='font-bold text-xl'>
-                               {portfolioUnitStock}
+                            <div className='md:flex md:justify-between items-center mb-2'>
+                                <div className='w-2/3'>   
+                                    <div className='font-bold text-xl'>
+                                        <input type="number" className='text-lg outline-white w-full font-bold p-3 rounded-lg border border-gray-500' value={unitToSell} onChange={e => setUnitToSell(e.target.value)}  />
+                                    </div>
+                                </div>
+
+                                <div className='w-1/3'>
+                                    <button onClick={calculateTotalUnitToSell} className={isValidateUnitToSell ? "cursor-pointer focus:shadow-outline text-white rounded-lg bg-green-800 border-0 font-bold ml-3 lg:text-sm w-full py-4 px-7":"cursor-pointer focus:shadow-outline text-white rounded-lg bg-green-800 border-0 font-bold ml-3 lg:text-sm w-full py-4 px-7 opacity-50"} type='button' disabled={!isValidateUnitToSell}>
+                                        Add
+                                    </button>
+                                </div>
                             </div>
+                            
+                            <div className='text-red-500 text-xs'>{unitToSellError}</div>
                         </div>
                         
                         <div className='mb-20' >
@@ -2002,7 +2099,7 @@ const Stock = () => {
                                         <div className="mb-10 font-bold text-sm">Unit</div>
 
                                         <div>
-                                            <input onChange={e => setStockUnit(e.target.value)} type='number' className='font-bold input border-1-d6 p-2 outline-white' value={stockUnit} />
+                                            <input type='number' className='font-bold input border-1-d6 p-2 outline-white' value={totalUnitToSell} readOnly/>
                                         </div>
                                     </div>
 
@@ -2260,8 +2357,8 @@ const Stock = () => {
                             <div className='font-gotham-black-regular font-bold text-green-900 text-2xl'>{HelperFunctions.formatCurrencyWithDecimal(estimatedCost)}</div>
                         </div>
 
-                        <div>
-                            <button onClick={calculateStockOrderEstimate} className={estimatedCost === 0 ? 'w-full bg-green-900 rounded-lg text-white p-4 font-bold text-lg border-0 focus:shadow-outline cursor-pointer' : 'hidden'}>
+                        <div className='mb-20'>
+                            <button onClick={calculateSellStockOrderEstimate} className={estimatedCost === 0 ? 'w-full bg-green-900 rounded-lg text-white p-4 font-bold text-lg border-0 focus:shadow-outline cursor-pointer' : 'hidden'}>
                                 <span className={showSpinner ? "hidden" : ""}>Get Estimated Cost</span>
                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="30" />
                             </button>
@@ -2271,6 +2368,28 @@ const Stock = () => {
                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="30" />
                             </button>
                         </div>
+
+                        {/* Get Price Estimate Error */}
+                        <div className={priceEstimateError === '' ? "hidden" : "error-alert"}>
+                            <div className="flex justify-between space-x-1 pt-3">
+                                <div className="flex">
+                                    <div>
+                                        <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
+                                        </svg>
+                                    </div>
+
+                                    <div className="pt-1 text-sm">{priceEstimateError}</div>
+                                </div>
+
+                                <div className="cursor-pointer" onClick={closeAlert}>
+                                    <svg className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        {/* End */}
 
                     </div>
                 </div>

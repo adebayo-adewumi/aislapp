@@ -18,6 +18,8 @@ import PortfolioInfoCard from '../../components/PortfolioInfoCard';
 import { getAxios } from "../../network/httpClientWrapper"
 import LoaderContainer from '../../containers/LoaderContainer';
 import moment from 'moment';
+import AnchoriaIcon from '../../assets/images/anchoria-icon.svg';
+import AnchoriaSpinner from '../../assets/images/anchoria-spinner.svg';
 
 const Portfolio = () => {
     document.title = "Portfolio - Anchoria";
@@ -36,9 +38,9 @@ const Portfolio = () => {
     const [investmentAmount, setInvestmentAmount] = useState(0);
     const [netPortfolioReturns, setNetPortfolioReturns] = useState(0);
     const [netPortfolioReturnsPercentage, setNetPortfolioReturnsPercentage] = useState(0);
-    const [, setShowPageLoader] = useState<boolean>(true);
     const [graphYAxis, ] = useState<string[]>([]);
     const [graphXAxis, ] = useState<string[]>([]);
+    const [showPageLoader, setShowPageLoader] = useState<boolean>(true);
 
     let options = {
         chart: {
@@ -404,12 +406,14 @@ const Portfolio = () => {
                                 <div className={showModalBG ? "modal-backdrop opacity-40" : "modal-backdrop opacity-40 hidden"}>
                                 </div>
 
-                                {/* <div className={showPageLoader ? "page-loader-backdrop opacity-90" : "hidden"}>
+                                {/* Page Loader Section */}
+                                <div className={showPageLoader ? "page-loader-backdrop opacity-90" : "hidden"}>
                                     <div className='w-96 relative lg:ml-72'>
                                         <div className='absolute top-44pc left-46pt5pc'><img src={AnchoriaIcon} alt="" /></div>
                                         <div className='text-center'><img src={AnchoriaSpinner} alt="" /></div>
                                     </div>
-                                </div> */}
+                                </div>
+                                {/* End */}
                             </div>
 
                         </div>
