@@ -136,11 +136,13 @@ const WithdrawFund = () => {
         setShowSpinner(true);
 
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
+        let pinCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), transactionPin);
+
         localStorage.setItem('genericCypher', genericCypher);
 
         let headers = {
             'x-firebase-token': '12222',
-            'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
+            'x-transaction-pin': JSON.stringify({ text : pinCypher})
         }
 
         getAxios(axios).post(walletAndAccountServiceBaseUrl + '/wallet-api/withdraw/',

@@ -432,6 +432,8 @@ const Profile = () => {
             "password": password
         }
 
+        console.log(requestData);
+
         setShowPasswordSpinner(true);
 
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
