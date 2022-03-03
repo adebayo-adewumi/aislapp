@@ -288,6 +288,10 @@ const PortfolioDetails = () => {
                 setShowSpinner(false);
                 setIsStockAddToPortfolioSuccessful(true);
                 setApiResponseSuccessMsg(response.data.message);
+
+                setTimeout(()=>{
+                   window.location.reload(); 
+                },2000)
             })
             .catch(function (error) {
                 setShowSpinner(false);
@@ -615,7 +619,7 @@ const PortfolioDetails = () => {
                                             <div className="text-xl text-green-900 font-gotham-black-regular font-bold mb-10">
                                                 Portfolio List
                                             </div>
-                                            <div className="font-bold mb-30">Select the stocks you want to move to a this porfolio</div>
+                                            <div className="font-bold mb-30">Select the stocks you want to move to this porfolio</div>
                                         </div>
 
                                         <div className='cursor-pointer' onClick={displayAddNewStockModal}>
@@ -623,37 +627,39 @@ const PortfolioDetails = () => {
                                         </div>
                                     </div>
 
-                                    <div>
-                                        {portfolioList.map((item :any, index :any) =>
-                                        <div className={portfolioDetails.name === item.name ? 'hidden':''}>
-                                            <Accordion defaultActiveKey="0" className='mb-30 portfoliolist-accordion'>
-                                                <Accordion.Item eventKey="0">
-                                                    <Accordion.Header className='portfoliolist-accordion-header m-0 bg-transparent font-bold'>{item.name}</Accordion.Header>
+                                    <div className='mb-20'>
+                                        <div className='overscroll-y-auto max-h-96 overflow-y-auto px-5'>
+                                            {portfolioList.map((item :any, index :any) =>
+                                            <div className={portfolioDetails.name === item.name ? 'hidden':''}>
+                                                <Accordion defaultActiveKey="0" className='mb-30 portfoliolist-accordion'>
+                                                    <Accordion.Item eventKey="0">
+                                                        <Accordion.Header className='portfoliolist-accordion-header m-0 bg-transparent font-bold'>{item.name}</Accordion.Header>
 
-                                                    <Accordion.Body>
-                                                        {item.listOfStocks.map((item :any, index :any) =>
-                                                            <div className="card mb-20 p-3" key={index}>
-                                                                <div className="flex justify-between items-center">
-                                                                    <div><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" width="25"/></div>
-                    
-                                                                    <div className="font-bold text-color-2 text-sm">{item.name}</div>
-                    
-                                                                    <div className="text-ellipsis overflow-hidden text-sm">{item.name}</div>
-                    
-                                                                    <div className="font-bold text-color-2 text-right text-sm">₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
-                    
-                                                                    <div className='flex justify-between space-x-2 cursor-pointer'>
-                                                                        <Form.Check onChange={selectStockToMove} data-value={item.id} type="checkbox" className='portfoliolist-checkbox cursor-pointer' />
+                                                        <Accordion.Body>
+                                                            {item.listOfStocks.map((item :any, index :any) =>
+                                                                <div className="card mb-20 p-3" key={index}>
+                                                                    <div className="flex justify-between items-center">
+                                                                        <div><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" width="25"/></div>
+                        
+                                                                        <div className="font-bold text-color-2 text-sm">{item.name}</div>
+                        
+                                                                        <div className="text-ellipsis overflow-hidden text-sm">{item.name}</div>
+                        
+                                                                        <div className="font-bold text-color-2 text-right text-sm">₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
+                        
+                                                                        <div className='flex justify-between space-x-2 cursor-pointer'>
+                                                                            <Form.Check onChange={selectStockToMove} data-value={item.id} type="checkbox" className='portfoliolist-checkbox cursor-pointer' />
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                        )}
-                                                    </Accordion.Body>
+                                                            )}
+                                                        </Accordion.Body>
 
-                                                </Accordion.Item>
-                                            </Accordion>
+                                                    </Accordion.Item>
+                                                </Accordion>
+                                            </div>
+                                            )}
                                         </div>
-                                        )}
                                     </div>
 
                                     <div className="flex justify-end space-x-5">

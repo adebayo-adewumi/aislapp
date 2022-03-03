@@ -1270,7 +1270,7 @@ const Stock = () => {
                                             <div className='card-unpadded'>
                                                 <div className='flex justify-between px-6 py-4 border-bottom-e'>
                                                     <div className='font-bold'>Bids</div>
-                                                    <div className='text-green-900 font-bold'>View all</div>
+                                                    <div className='text-green-900 font-bold hidden'>View all</div>
                                                 </div>
 
                                                 <div className={bidsList === '' ? 'text-sm':'hidden'}>
@@ -1285,7 +1285,7 @@ const Stock = () => {
                                             <div className='card-unpadded'>
                                                 <div className='flex justify-between px-6 py-4 border-bottom-e'>
                                                     <div className='font-bold'>Offers</div>
-                                                    <div className='text-green-900 font-bold'>View all</div>
+                                                    <div className='text-green-900 font-bold hidden'>View all</div>
                                                 </div>
 
                                                 <div className={offersList === '' ? 'text-sm':'hidden'}>

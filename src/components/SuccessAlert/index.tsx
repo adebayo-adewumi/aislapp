@@ -1,5 +1,6 @@
 
-import SuccessIcon from '../../assets/images/success.gif';
+import SuccessIcon from '../../assets/images/success-check.svg';
+
 const SuccessAlert = ({ showSuccess,
     closeModal,
     message = "Successful",
@@ -8,9 +9,8 @@ const SuccessAlert = ({ showSuccess,
 
     return (
         <div className={showSuccess ? "success-modal" : "success-modal hidden"}>
-            <div className="mx-auto h-64 relative">
-                <img src={SuccessIcon} alt="success icon" className="w-96" />
-                <div className="bg-white p-3 w-full -bottom-10 absolute"></div>
+            <div className="mx-auto w-1/2">
+                <img src={SuccessIcon} alt="success icon" className="w-full" />
             </div>
 
             <div className="relative z-10 text-green-900 font-gotham-black-regular text-3xl text-center mb-20">{title}</div>
