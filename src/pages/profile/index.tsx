@@ -14,8 +14,6 @@ import FileIcon from "../../assets/images/file-icon.svg";
 import DeleteIcon from "../../assets/images/delete-icon.svg";
 import CloseIcon from '../../assets/images/close.svg';
 import BellIcon from '../../assets/images/bell.svg';
-import MaskGroupImg from '../../assets/images/mask-group.svg';
-import LockIcon from '../../assets/images/lock.svg';
 import moment from 'moment';
 import DeleteCardIcon from '../../assets/images/delete-card.svg';
 import { authOnboardingServiceBaseUrl, walletAndAccountServiceBaseUrl } from '../../apiUrls';
@@ -46,7 +44,6 @@ const Profile = () => {
     const [isPinMatch, setIsPinMatch] = useState<boolean>(true);
     const [pinOrConfirmPinIsNullOrEmpty, setPinOrConfirmPinIsNullOrEmpty] = useState<boolean>(true);
     const [isPinChangeSuccessful, setIsPinChangeSuccessful] = useState<boolean>(false);
-    const [isPinValid, setIsPinValid] = useState('');
     
     const [isEmployeeDetailsSuccessful, setIsEmployeeDetailsSuccessful] = useState<boolean>(false);
     const [isNokSuccessful, setIsNokSuccessful] = useState<boolean>(false);
@@ -64,7 +61,6 @@ const Profile = () => {
     const [switchToKYC, setSwitchToKYC] = useState<boolean>(true);
     const [switchToSecurity, setSwitchToSecurity] = useState<boolean>(false);
     const [switchToNotification, setSwitchToNotification] = useState<boolean>(false);
-    const [switchToBankDetails, setSwitchToBankDetails] = useState<boolean>(false);
 
     const [address, setAddress] = useState(customer.permanentAddress);
     const [country, setCountry] = useState(customer.nationality);
@@ -104,42 +100,18 @@ const Profile = () => {
     const [showPinSpinner, setShowPinSpinner] = useState<boolean>(false);
 
     const [showModalBG, setShowModalBG] = useState<boolean>(false);
-    const [showValidatePINModal, setShowValidatePINModal] = useState<boolean>(false);
-
-    const [, setPinValidatedForPersonalDetails] = useState<boolean>(false);
-    const [, setPinValidatedForEmployment] = useState<boolean>(false);
-    const [, setPinValidatedForNok] = useState<boolean>(false);
 
     const [showSpinner, setShowSpinner] = useState<boolean>(false);
-    const [pinValidationType, ] = useState('');
 
     const [notificationLogs, setNotificationLogs] = useState('');
 
     const [showNotificationDetailModal, setShowNotificationDetailModal] = useState<boolean>(false);
-
-    const [bankDetailsList, setBankDetailsList] = useState([]);
-
-    const [showAddBankModal, setShowAddBankModal] = useState<boolean>(false);
-    const [showManageBankModal, setShowManageBankModal] = useState<boolean>(false);
-
-    const [bankDetailsError, setBankDetailsError] = useState('');
-
-    const [isAddBankSuccess, setIsAddBankSuccess] = useState('');
-
-    const [nameEnquiryId, setNameEnquiryId] = useState('');
-
-    const [bankList, setBankList] = useState([]);
-
-    const [accountName, setAccountName] = useState('');
-    const [accountNumber, setAccountNumber] = useState('');
-    const [bankCode, setBankCode] = useState('');
 
     const [apiResponseSuccessMsg, setApiResponseSuccessMsg] = useState('');
 
     const [isDeleteSuccess, setIsDeleteSuccess] = useState('');
 
     const [selectedBankId, setSelectedBankId] = useState('');
-    const [selectedBankDetails, setSelectedBankDetails] = useState([{}]);
 
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
@@ -151,6 +123,8 @@ const Profile = () => {
     const [nokDetails, setNOKDetails] = useState('');
 
     const [bankDetails, setBankDetails] = useState<any[]>([]);
+
+    const [showSelectPrimaryBankDetails, setShowSelectPrimaryBankDetails] = useState<boolean>(false);
 
 
     useEffect(() => {
@@ -330,37 +304,8 @@ const Profile = () => {
             .catch(function (error) {});
         }
 
-        function getBankDetailsList(){
-            let headers = {'Authorization': 'Bearer '+localStorage.getItem('aislUserToken')}
-    
-            axios.get(process.env.REACT_APP_WALLET_SERVICE_URL+'/wallet-api/bank-details', 
-            { headers })
-            .then(function (response) {
-                setBankDetailsList(response.data.data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-        }
-
-        function getBankList(){
-
-            let headers = {'Authorization': 'Bearer '+localStorage.getItem('aislUserToken')}
-
-            axios.get(process.env.REACT_APP_WALLET_SERVICE_URL+'/wallet-api/get-banks', 
-            { headers })
-            .then(function (response) {
-                setBankList(response.data.data.bank);
-            })
-            .catch(function (error) {
-                console.log(error)
-            });
-        }
-
         checkUrlParamsForActiveProfileSection();
         getNotificationLogs();
-        getBankDetailsList();
-        getBankList();
     },[]);
 
     useEffect(()=>{
@@ -562,21 +507,18 @@ const Profile = () => {
         setSwitchToKYC(true);
         setSwitchToSecurity(false);
         setSwitchToNotification(false);
-        setSwitchToBankDetails(false);
     }
 
     function performSwitchToSecurity(){
         setSwitchToKYC(false);
         setSwitchToSecurity(true);
         setSwitchToNotification(false);
-        setSwitchToBankDetails(false);
     }
 
     function performSwitchToNotification(){
         setSwitchToKYC(false);
         setSwitchToSecurity(false);
         setSwitchToNotification(true);
-        setSwitchToBankDetails(false);
     }
 
     function sendPersonalDetails(){
@@ -818,53 +760,6 @@ const Profile = () => {
         setSignatureBase64Img('');
     }
 
-    function validatePin(){
-        setShowSpinner(true);
-
-        let PINData = {
-            "pin": pin
-        }
-
-        let validatePinCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(PINData));
-        localStorage.setItem('validatePinCypher', validatePinCypher);
-
-        let customer =  HelperFunctions.getCustomerInfo()
-
-        let headers = {'Authorization': 'Bearer '+localStorage.getItem('aislUserToken')}
-
-        axios.post(authOnboardingServiceBaseUrl+'/customer/pin/validate?customerId='+customer.id, 
-        {
-            "text" : localStorage.getItem('validatePinCypher')
-        },{headers})
-        .then(function (response) {
-            setIsPinValid('true');
-            setApiResponseMessage(response.data.message);
-
-            if(pinValidationType === "personal-details"){
-                setPinValidatedForPersonalDetails(true);
-            }
-            else if(pinValidationType === "employment"){
-                setPinValidatedForEmployment(true);
-            }
-            else if(pinValidationType === "nok"){
-                setPinValidatedForNok(true);
-            }
-
-            
-            setShowSpinner(false);
-
-            setTimeout(()=>{
-                setShowValidatePINModal(false);
-                setShowModalBG(false);
-            },1000)
-        })
-        .catch(function (error) {
-            setIsPinValid('false');
-            setApiResponseMessage(error.response.data.message);
-            setShowSpinner(false);
-        });
-    }
-
     function displayNotificationDetailModal(event :any){
         setShowNotificationDetailModal(true);
         setShowModalBG(true);
@@ -892,45 +787,7 @@ const Profile = () => {
     }
 
     function selectBankDetails(event :any){
-        let id = event.target.getAttribute("data-bank");
-        let bArr = [];
-        let bDetails :any =  bankDetailsList.find((el :any) => el.id === id);
-
-        bArr.push(bDetails);
-
-        setSelectedBankId(id);
-        setSelectedBankDetails(bArr);
-
-        setShowModalBG(true);
-        setShowManageBankModal(true);
-    }
-
-    function displayAddBankModal(){
-        setShowModalBG(true);
-        setShowAddBankModal(true);
-    }
-
-    function checkNameEnquiryOnBankDetails(event :any){
-        if(accountNumber === ''){
-            setBankDetailsError('Kindly type you account number.');
-        }
-        else{
-            let bl = document.getElementById("bankList") as HTMLInputElement;
-
-            let headers = {'Authorization': 'Bearer '+localStorage.getItem('aislUserToken')}
-
-            axios.get(process.env.REACT_APP_WALLET_SERVICE_URL+'/wallet-api/name-enquiry?accountNo='+accountNumber+'&bankCode='+bl.value, 
-            { headers })
-            .then(function (response) {
-                setAccountName(response.data.data.name);
-                setBankDetailsError('');
-            })
-            .catch(function (error) {
-                setBankDetailsError(error.response.data.message);
-            });
-
-            setBankCode(bl.value);
-        }
+        setSelectedBankId(event.target.value);
     }
 
     function deleteBankDetails(){
@@ -973,84 +830,6 @@ const Profile = () => {
         });
     }
 
-    function addBankDetails(){
-        
-        let requestData = {
-            "accountName": accountName,
-            "accountNumber": accountNumber,
-            "bankCode": bankCode,
-            "bankName": 'VFD MICROFINANCE BANK',
-        }
-
-        console.log(requestData)
-
-        setShowSpinner(true);
-
-        let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
-        localStorage.setItem('genericCypher', genericCypher);
-
-        let headers = {
-            'Authorization': 'Bearer '+localStorage.getItem('aislUserToken'), 
-            'x-firebase-token': '12222',
-            'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
-        }
-
-        axios.post(process.env.REACT_APP_WALLET_SERVICE_URL+'/wallet-api/bank-details/add?nameEnquirySessionId='+nameEnquiryId,
-        {
-            "text": localStorage.getItem('genericCypher')
-        }, 
-        { headers })
-        .then(function (response) {  
-            setShowSpinner(false);
-            setApiResponseSuccessMsg(response.data.description);
-            setIsAddBankSuccess('true');
-
-            alert("Bank Details added successfully.");
-        })
-        .catch(function (error) {
-            setShowSpinner(false);
-            alert("Unable to add bank details. Please try again later")
-        });
-    }
-
-    function validateAccountNumber(event :any){
-        let ccNumberPattern :RegExp = /^\d{0,10}$/g;
-
-        if(ccNumberPattern.test(event.target.value)){
-            setAccountNumber(event.target.value);
-        }
-        else{
-            return;
-        }        
-    }
-
-    function validateAccountNumberOnKeyDown(event :any){
-        
-        let banklist = document.getElementById("bankList") as HTMLInputElement;
-        let acctNo = document.getElementById("accountNumber") as HTMLInputElement;
-
-        let headers = {'Authorization': 'Bearer '+localStorage.getItem('aislUserToken')}
-
-        axios.get(process.env.REACT_APP_WALLET_SERVICE_URL+'/wallet-api/name-enquiry?accountNo='+acctNo.value+'&bankCode='+banklist.value, 
-        { headers })
-        .then(function (response) {
-            setAccountName(response.data.data.name);
-            setNameEnquiryId(response.data.data.account.id);
-            setBankDetailsError('');
-        })
-        .catch(function (error) {
-            setBankDetailsError(error.response.data.message);
-        });
-
-        setBankCode(banklist.value);        
-    }
-
-    function displayDeleteModal(event :any){
-        setShowModalBG(true);
-        setShowDeleteModal(true);
-        setShowManageBankModal(false);
-    }
-
     function closeModal(){
         setIsPasswordChangeSuccessful('false');
         setIsPinChangeSuccessful(false);
@@ -1058,10 +837,33 @@ const Profile = () => {
         setIsPersonalDetailsSuccessful(false);
         setIsNokSuccessful(false);
         setShowModalBG(false);
-        setShowAddBankModal(false);
-        setShowManageBankModal(false);
         setShowDeleteModal(false);
         setShowNotificationDetailModal(false);
+    }
+
+    function changePrimaryBankDetails(){
+        setShowSelectPrimaryBankDetails(true);
+    }
+
+    function updateBankDetails(){
+        let headers = {
+            'Authorization': 'Bearer '+localStorage.getItem('aislUserToken'), 
+            'x-firebase-token': '12222',
+            'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
+        }
+
+        axios.put(walletAndAccountServiceBaseUrl+'/bank-details/primary-bank/'+selectedBankId, 
+        {headers})
+        .then(function (response) {
+            setIsPersonalDetailsSuccessful(true);
+            setApiResponseMessage(response.data.description);
+            setShowPersonalSpinner(false);
+        })
+        .catch(function (error) {
+            setErrorMsg(error.response.data.message);
+            setShowPersonalSpinner(false);
+            console.log(errorMsg)
+        });
     }
 
 
@@ -1101,10 +903,6 @@ const Profile = () => {
                                     <div className='md:text-right'>
                                         <div>
                                             <button type='button' className={switchToKYC ? "rounded-lg bg-green-900 text-white border-0 py-3 px-5 cursor-pointer lg:text-xs w-full":"hidden"}>KYC Category: {customer.kycStatus}</button>
-                                        </div>
-
-                                        <div>
-                                            <button type='button' onClick={displayAddBankModal} className={switchToBankDetails ?"rounded-lg bg-green-900 text-white border-0 py-3 px-12 lg:py-2 lg:px-10 cursor-pointer font-bold lg:text-xs":"hidden"}>Add New Bank</button>
                                         </div>
                                     </div>
                                     
@@ -1609,11 +1407,17 @@ const Profile = () => {
                                             <div>
                                                 <div className='text-gray-700 mb-3 text-sm font-bold'>Primary Bank Details</div>
 
-                                                <div>
-                                                    <select className='font-bold input px-5 py-3 border-1-d6 outline-white font-bold text-lg' id='bankList' >
+                                                <div className={showSelectPrimaryBankDetails ? 'hidden':'mb-20'}>
+                                                {bankDetails.map((item :any, index: any) =>
+                                                    <input className={item.primaryBank ? 'font-bold input px-5 py-3 border-1-d6 outline-white font-bold text-lg':'hidden'} id='bankList' type="text" readOnly value={item.accountName+ " | " +item.bankName +" | "+ item.accountNumber} key={index}/>
+                                                )}
+                                                </div>
+
+                                                <div className={showSelectPrimaryBankDetails ? 'mb-20':'hidden'}>
+                                                    <select className='font-bold input px-5 py-3 border-1-d6 outline-white font-bold text-lg'id='bankList' onChange={selectBankDetails}>
                                                         {
                                                             bankDetails.map((item :any, index: any) =>
-                                                            <option value={item.bankCode} key={index}>{item.accountName} | {item.bankName} | {item.accountNumber}</option>
+                                                            <option value={item.id} key={index}>{item.accountName} | {item.bankName} | {item.accountNumber}</option>
                                                             )
                                                         }
                                                     </select>
@@ -1623,7 +1427,11 @@ const Profile = () => {
 
                                         <div>
                                             <div>
-                                                <button onClick={addBankDetails} type='button' className="rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer hidden">
+                                                <button onClick={changePrimaryBankDetails} type='button' className={showSelectPrimaryBankDetails ? "hidden":"rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer mr-3"}>
+                                                   Change Primary Bank Details
+                                                </button>
+
+                                                <button onClick={updateBankDetails} type='button' className={showSelectPrimaryBankDetails ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer":"hidden"}>
                                                     <span className={ showSpinner ? "hidden" : ""}>Update</span>
                                                     <img src={SpinnerIcon} alt="spinner icon" className={ showSpinner ? "" : "hidden"} width="15"/>
                                                 </button>
@@ -1935,30 +1743,6 @@ const Profile = () => {
                                 </div>
                             </div>
                             {/*End */}
-
-                            {/*Bank Details section */}
-                            <div className={switchToBankDetails ? '':'hidden'}>
-
-                                <div className='bg-white border border-gray-500 p-5 rounded-lg mb-30'>
-                                    <div className={bankDetailsList.length > 0 ? 'hidden':'w-full'}>You have not added a bank account. Click <strong>Add New Bank</strong> button above to begin.</div>
-
-                                    <div className='grid grid-cols-3 gap-4'>
-                                        {
-                                        bankDetailsList.map((item :any, index :any) =>
-                                            <div onClick={selectBankDetails} key={index} data-bank={item.id}>
-                                                <div className='bgcolor-2 rounded-xl p-0 relative cursor-pointer' data-bank={item.id}>
-                                                    <img src={MaskGroupImg} alt='' data-bank={item.id} className="w-full"/>
-                                                    <div className='absolute bottom-0 px-7 py-6' data-bank={item.id}>
-                                                        <div className='text-white text-sm mb-20' data-bank={item.id}>{item.accountName}</div>
-                                                        <div className='text-white font-bold' data-bank={item.id}>{item.bankName} ({item.accountNumber})</div>
-                                                    </div>
-                                                </div>
-                                            </div>  
-                                        )}
-                                    </div>      
-                                </div>
-                            </div>
-                            {/*End */}
                         </div>
                     </div>                    
                 </div>
@@ -1989,243 +1773,7 @@ const Profile = () => {
                 </div>
             </div>
 
-            <div className={showAddBankModal ? 'generic-modal':'hidden'}>
-                <div className='generic-modal-dialog'>
-                    <div className="validate-pin-modal">
-                        <div className="px-5 py-4 flex justify-between" style={{borderBottom : '1px solid #dee2e6'}}>
-                            <div className="font-bold text-xl text-green-900">Add New Bank</div>
-
-                            <div onClick={closeModal} className=''>
-                                <img src={CloseIcon} alt="" className="cursor-pointer" />
-                            </div>
-                        </div>
-
-                        <div className='px-5 py-3'>
-                            {/* Bank Details Error */}
-                            <div className={bankDetailsError ? "error-alert mb-20":"hidden"}>
-                                <div className="flex justify-between space-x-1 pt-3">
-                                    <div className="flex">
-                                        <div>
-                                            <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949"/>
-                                            </svg>
-                                        </div>
-
-                                        <div className="pt-1 text-sm">{bankDetailsError}</div>
-                                    </div>
-                                    
-                                    <div className="cursor-pointer">
-                                        <svg  className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50"/>
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* End */}
-
-                            {/* Add Bank Success */}
-                            <div className={isAddBankSuccess === 'true'? "otp-alert mb-20":"hidden"}>
-                                <div className="flex otp-validated justify-between space-x-1 pt-3">
-                                    <div className="flex">
-                                        <div>
-                                            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062"/>
-                                                <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062"/>
-                                            </svg>
-                                        </div>
-
-                                        <div className="pt-1 text-sm text-green-900">{apiResponseSuccessMsg}</div>
-                                    </div>
-                                    
-                                    <div className="cursor-pointer">
-                                        <svg  className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50"/>
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* End */}
-
-                            
-                            <div className='mb-5 text-green-900 text-xl font-bold'>Enter your bank details below</div>
-                            <div className='mb-30 text-green-900 text-md'>We pay your withdrawal into your bank account </div>
-
-                            <div className='mb-30'>
-                                <div className='text-sm mb-10 font-bold'>Select Bank</div>
-
-                                <div>
-                                    <select onChange={checkNameEnquiryOnBankDetails} className='input px-5 py-3 border-1-d6 outline-white font-bold text-lg' id='bankList' >
-                                        <option value="">...</option>
-                                        {
-                                            bankList.map((item :any) =>
-                                            <option value={item.code}>{item.name}</option>
-                                            )
-                                        }
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div className='mb-30'>
-                                <div className='text-sm mb-10 font-bold'>Account Number</div>
-
-                                <div>
-                                    <input id="accountNumber" type='text' className='input p-3 border-1-d6 outline-white font-bold text-lg' value={accountNumber} onKeyDown={validateAccountNumberOnKeyDown} onChange={validateAccountNumber} maxLength={10}/>
-                                </div>
-                            </div>                                        
-
-                            <div className='mb-30'>
-                                <div className='text-sm mb-10 font-bold'>Account Name</div>
-
-                                <div>
-                                    <input readOnly type='text' className='input p-3 border-1-d6 outline-white font-bold text-lg' value={accountName}/>
-                                </div>
-                            </div>
-
-                            <div>
-                                <button onClick={addBankDetails} type='button' className='w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' >
-                                    <span className={ showSpinner ? "hidden" : ""}>Proceed</span>
-                                    <img src={SpinnerIcon} alt="spinner icon" className={ showSpinner ? "" : "hidden"} width="15"/>
-                                </button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <div className={showManageBankModal ? 'generic-modal':'hidden'}>
-                <div className='generic-modal-dialog'>
-                    <div className='validate-pin-modal'>
-                        <div className="px-5 py-4 flex justify-between" style={{borderBottom : '1px solid #dee2e6'}}>
-                            <div className="font-bold text-xl text-green-900">Manage Bank Details</div>
-
-                            <div onClick={closeModal} className=''>
-                                <img src={CloseIcon} alt="" className="cursor-pointer" />
-                            </div>
-                        </div>
-
-                        <div className='px-5 py-3'>
-                            {selectedBankDetails.map((item :any, index :any)=>
-                            <div className='mb-30'>
-                                <div className='bgcolor-2 rounded-xl p-0 relative cursor-pointer'>
-                                    <img src={MaskGroupImg} alt='' className="w-full" />
-                                    <div className='absolute bottom-0 px-7 py-6'>
-                                        <div className='text-white text-sm mb-20'>{item.accountName}</div>
-                                        <div className='text-white font-bold'>{item.bankName} ({item.accountNumber})</div>
-                                    </div>
-                                </div>
-                            </div>
-                            )} 
-
-                            <div className='mb-20 hidden'>
-                                <div className='mb-10 mt-12'><img src={LockIcon} alt='' /></div>
-                                <div className='mt-1 text-gray-900'>Make this card your default debit card for your payments and transactions</div>
-                            </div>
-
-                            <div className="font-bold flex mb-30 hidden">
-                                <div className='mr-3'>Default bank account </div>
-                                
-                                <div  className='flex rounded-3xl p-1 bg-green-900 ease-in-out transition delay-75 duration-75'>
-                                    <button className="rounded-3xl knob border-0 cursor-pointer ease-in-out transition delay-75 duration-75" type="button"></button>
-
-                                    <button className="ml-0.5 p-1.5 rounded-3xl knob items-center border-0 cursor-pointer opacity-0 ease-in-out transition delay-75 duration-75" type="button"></button>
-                                </div>
-                            </div>
-
-                            {selectedBankDetails.map((item :any, index :any)=>
-                            <div>
-                                <div className='flex justify-between py-5'>
-                                    <div>Bank</div>
-                                    <div className='font-bold'>{item.bankName}</div>
-                                </div>
-
-                                <div className='mb-30 flex justify-between py-5 border-top-1'>
-                                    <div>Date Added</div>
-                                    <div className='font-bold text-green-900 font-bold'>{moment(item.updatedOn).format("MMMM Do, YYYY")}</div>
-                                </div>
-                            </div>
-                            )}
-
-                            <div>
-                                <button onClick={displayDeleteModal} type='button' className='w-full font-bold text-lg border-0 bg-red-500 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer' data-type='Bank'>Delete bank</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div className={ showModalBG ? "modal-backdrop opacity-40" : "modal-backdrop opacity-40 hidden" }>
-            </div>
-
-            <div className={showValidatePINModal ? 'generic-modal':'hidden'}>
-                <div className='generic-modal-dialog'>
-                    <div className="validate-pin-modal">
-                        <div className="p-5 flex justify-between pb-5" style={{borderBottom : '1px solid #dee2e6'}}>
-                            <div className="font-bold text-xl text-green-900">Validate PIN</div>
-
-                            <div onClick={closeModal} className='hidden'>
-                                <img src={CloseIcon} alt="" className="cursor-pointer" />
-                            </div>
-                        </div>
-
-
-                        <div className='p-5'>
-                            {/* Pin Success */}
-                            <div className={isPinValid === 'true'? "otp-alert mb-20":"hidden"}>
-                                <div className="flex otp-validated justify-between space-x-1 pt-3">
-                                    <div className="flex">
-                                        <div>
-                                            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062"/>
-                                                <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062"/>
-                                            </svg>
-                                        </div>
-
-                                        <div className="pt-1 text-sm text-green-900">{apiResponseMessage}</div>
-                                    </div>
-                                    
-                                    <div className="cursor-pointer" onClick={closeModal}>
-                                        <svg  className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50"/>
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* End */}
-
-                            {/* Pin Error */}
-                            <div className={isPinValid !== 'false' ? "hidden":"error-alert mb-20"}>
-                                <div className="flex justify-between space-x-1 pt-3">
-                                    <div className="flex">
-                                        <div>
-                                            <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949"/>
-                                            </svg>
-                                        </div>
-
-                                        <div className="pt-1 text-sm">{apiResponseMessage}</div>
-                                    </div>
-                                    
-                                    <div className="cursor-pointer">
-                                        <svg  className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50"/>
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* End */}
-
-                            <div className='font-bold mb-10'>Enter PIN</div>
-
-                            <div className='mb-30'><input maxLength={4} type="password" className="w-full rounded-lg p-5 border border-gray-100 outline-white" onChange={e => setPin(e.target.value)} /> </div>
-
-                            <div><button type='button' className='px-16 py-3 bg-green-900 text-white rounded-lg font-bold border-0 w-full cursor-pointer' onClick={validatePin}>
-                                <span className={ showSpinner ? "hidden" : ""}>Validate</span>
-                                <img src={SpinnerIcon} alt="spinner icon" className={ showSpinner ? "" : "hidden"} width="15"/>
-                            </button></div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div className={showDeleteModal ? "set-price-alert-modal rounded-lg" : "hidden"}>

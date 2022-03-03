@@ -285,17 +285,17 @@ const Dashboard = () => {
             });
         }
 
-        // function testApiForGet() {
-        //     //let customer = HelperFunctions.getCustomerInfo();
+        function testApiForGet() {
+            //let customer = HelperFunctions.getCustomerInfo();
 
-        //     getAxios(axios).get(authOnboardingServiceBaseUrl + '/customer/kyc/status')
-        //         .then(function (response) { 
-        //             console.log(response.data);
-        //         })
-        //         .catch(function (error) { });
-        // }
+            getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/EKOCORP')
+                .then(function (response) { 
+                    console.log(response.data);
+                })
+                .catch(function (error) { });
+        }
 
-        // testApiForGet();
+        testApiForGet();
 
         getWalletBalance();
         getTopGainers();

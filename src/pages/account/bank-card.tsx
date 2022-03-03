@@ -75,7 +75,7 @@ const BankCard = () => {
     const [cardPIN, setCardPIN] = useState('');
     const [cardOTP, setCardOTP] = useState('');
     const [defaultNewCardDebitMsg, setDefaultNewCardDebitMsg] = useState('');
-    const [isBankDetailsFilled, setIsBankDetailsFilled] = useState<boolean>(false);
+    const [isBankDetailsFilled, setIsBankDetailsFilled] = useState<boolean>(false);    
 
     const [cardFundingDetails, setCardFundingDetails] = useState('');
 
@@ -83,6 +83,9 @@ const BankCard = () => {
     const [verifyCardError, setVerifyCardError] = useState('');
 
     const [transactionPin, setTransactionPIN] = useState('');
+
+    const [bankTransactionPin, setBankTransactionPIN] = useState('');
+    const [isBankTransactionPinFilled, setIsBankTransactionPinFilled] = useState<boolean>(false);
 
     useEffect(() => {
         function getBankList() {
@@ -166,6 +169,19 @@ const BankCard = () => {
 
         checkNameEnquiryOnBankDetails();
     },[accountNumber, bankCode, transactionPin]);
+
+    useEffect(()=>{
+        function checkBankTransactionPIN() {
+            if(bankTransactionPin === '') {
+                setIsBankTransactionPinFilled(false);
+            }
+            else{
+                setIsBankTransactionPinFilled(true);
+            }
+        }
+
+        checkBankTransactionPIN();
+    },[bankTransactionPin]);
 
     
 
@@ -351,10 +367,12 @@ const BankCard = () => {
 
         setShowSpinner(true);
 
+        let pinCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), bankTransactionPin);
+
         let _headers = {
             'Authorization': 'Bearer ' + localStorage.getItem('aislUserToken'),
             'x-firebase-token': '12222',
-            'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
+            'x-transaction-pin': JSON.stringify({ text : pinCypher})
         }
 
         getAxios(axios).delete(walletAndAccountServiceBaseUrl + '/wallet-api/bank-details/delete/'+selectedBankId,
@@ -1013,12 +1031,53 @@ const BankCard = () => {
                                                 </div>
                                             </div>
 
-                                            <div>
+                                            <div className='mb-20'>
                                                 <button onClick={addBankDetails} type='button' className={isBankDetailsFilled ? 'w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer':'w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer opacity-50'} disabled={!isBankDetailsFilled}>
                                                     <span className={showSpinner ? "hidden" : ""}>Proceed</span>
                                                     <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                                 </button>
                                             </div>
+
+                                            {/* Bank Details Error */}
+                                            <div className={bankDetailsError ? "error-alert mb-20" : "hidden"}>
+                                                <div className="flex justify-between space-x-1 pt-3">
+                                                    <div className="flex">
+                                                        <div>
+                                                            <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
+                                                            </svg>
+                                                        </div>
+
+                                                        <div className="pt-1 text-sm">{bankDetailsError}</div>
+                                                    </div>
+
+                                                
+                                                </div>
+                                            </div>
+                                            {/* End */}
+
+                                            {/* Add Bank Success */}
+                                            <div className={isAddBankSuccess === 'true' ? "otp-alert mb-20" : "hidden"}>
+                                                <div className="flex otp-validated justify-between space-x-1 pt-3">
+                                                    <div className="flex">
+                                                        <div>
+                                                            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062" />
+                                                                <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062" />
+                                                            </svg>
+                                                        </div>
+
+                                                        <div className="pt-1 text-sm text-green-900">{apiResponseSuccessMsg}</div>
+                                                    </div>
+
+                                                    <div className="cursor-pointer">
+                                                        <svg className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50" />
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {/* End */}
                                         </div>
                                     </div>
                                     {/* End */}
@@ -1176,7 +1235,17 @@ const BankCard = () => {
                     <div className='text-center mb-20'>
                         <img src={DeleteCardIcon} alt='' />
                     </div>
-                    <div className='text-red-500 font-bold text-3xl text-center mb-30'>Delete {deleteType}</div>                    
+
+                    <div className='text-red-500 font-bold text-3xl text-center mb-30'>Delete {deleteType}</div>           
+                    
+                    <div className='mb-30'>
+                        <div className='text-sm mb-10 font-bold'>PIN</div>
+
+                        <div>
+                            <input type='password' className='input p-3 border-1-d6 outline-white font-bold text-lg' onChange={e => setBankTransactionPIN(e.target.value)} maxLength={4} value={bankTransactionPin}/>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div className="flex space-x-5 mb-10">
@@ -1187,7 +1256,7 @@ const BankCard = () => {
                         <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                     </button>
 
-                    <button onClick={deleteBankDetails} type="button" className={deleteType === 'Bank' ?"py-4 w-full font-bold bg-red-500 text-white rounded-lg border-0 cursor-pointer":"hidden"}>
+                    <button onClick={deleteBankDetails} type="button" className={deleteType === 'Bank' ? "py-4 w-full font-bold bg-red-500 text-white rounded-lg border-0 cursor-pointer":"hidden"} disabled={!isBankTransactionPinFilled}>
                         <span className={showSpinner ? "hidden" : ""}>Delete</span>
                         <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                     </button>
