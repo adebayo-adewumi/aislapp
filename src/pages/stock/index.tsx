@@ -337,13 +337,11 @@ const Stock = () => {
 
                     let portfolioItems :any = [];
 
-                    const listItems = response.data.data.portfolio.map((item: any) => {
-                        if (item.name !== "availableToInvest") {
-                            return <option value={item.uuid}>{item.name}</option>
-                        }
-
-                        return false; 
-                    });
+                    const listItems = response.data.data.portfolio.map((item: any) => 
+                        
+                        <option value={item.uuid} className={item.name === "Cash Balance" ? 'hidden':'ddsf'}>{item.name}</option>
+                        
+                    );
 
                     let hasListOfStocks = response.data.data.portfolio.filter((item :any) => item.hasOwnProperty("listOfStocks"));
 
@@ -690,7 +688,7 @@ const Stock = () => {
             "priceLimit": priceToleranceAndLimit,
             "smsPin": "1234",
             "timeInForce": tradeActionArr[durationIndex],
-            "tradeAction": params.get("tradeAction") === 'buy' ? '0' : '1'
+            "tradeAction": '0'
         }
 
         console.log(requestData);
@@ -2448,6 +2446,7 @@ const Stock = () => {
 
                             <div>
                                 <select className='text-lg outline-white mb-30 w-full font-bold p-5 rounded-lg border border-gray-500' onChange={getPortfolioIdToAddStock}>
+                                    <option value="qazsw">Select portfolio</option>
                                     {portfolioList}
                                 </select>
                             </div>
