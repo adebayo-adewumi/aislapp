@@ -553,7 +553,7 @@ const Portfolio = () => {
                                 </div>
                                 {/* End */}
 
-                                {/* Login Error */}
+                                {/* Delete Error */}
                                 <div className={apiResponseHasError ? "error-alert mb-20" : "hidden"}>
                                     <div className="flex justify-between space-x-1 pt-3">
                                         <div className="flex">

@@ -35,6 +35,11 @@ const WithdrawFund = () => {
 
     const [transactionPin, setTransactionPIN] = useState('');
 
+    const [hasWithdrawError, setHasWithdrawError] = useState<boolean>(false);
+    const [withdrawErrorMsg, setWithdrawErrorMsg] = useState('');
+
+
+
     useEffect(() => {
         function getWalletBalance() {
 
@@ -154,16 +159,25 @@ const WithdrawFund = () => {
                 setShowSpinner(false);
                 setShowWithdrawSummary(false);
                 setShowWithdraw(false);
+
             })
             .catch(function (error) {
                 setShowSuccess(false);
                 setShowSpinner(false);
                 setShowWithdrawSummary(false);
+                setHasWithdrawError(true);
+                setWithdrawErrorMsg(error.response.data.message);
             });
     }
 
     function closeSuccess() {
         window.location.reload();
+    }
+
+    function delineateAmount(event :any) {
+        let newValue = event.target.value.replace(/[^\d]/gi, '');
+
+        setShowAmount(newValue);
     }
 
     return (
@@ -213,6 +227,22 @@ const WithdrawFund = () => {
                                     {/* Withdraw Section */}
                                     <div className={showWithdraw ? 'amount-section' : 'hidden'}>
                                         <div>
+                                            {/* Withdraw Error */}
+                                            <div className={hasWithdrawError ? "error-alert mb-20" : "hidden"}>
+                                                <div className="flex justify-between space-x-1 pt-3">
+                                                    <div className="flex">
+                                                        <div>
+                                                            <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
+                                                            </svg>
+                                                        </div>
+
+                                                        <div className="text-sm">{withdrawErrorMsg}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {/* End */}
+
                                             <div className="wallet-balance-card mb-30">
                                                 <div className="italic text-green-500 mb-5">Available Balance</div>
                                                 <div className="font-bold text-3xl text-white mb-5">
@@ -232,7 +262,7 @@ const WithdrawFund = () => {
                                                 </div>
 
                                                 <div className='w-full'>
-                                                    <input type='text' onChange={e => setShowAmount(e.target.value)} className='input-custom w-full font-gotham-black-regular border-r-0 font-black text-4xl py-5 pr-5 border-l-0 outline-white border-top-gray rounded-r-lg border-bottom-gray border-right-gray' placeholder='0.00' value={showAmount} />
+                                                    <input type='text' onChange={delineateAmount} className='input-custom w-full font-gotham-black-regular border-r-0 font-black text-4xl py-5 pr-5 border-l-0 outline-white border-top-gray rounded-r-lg border-bottom-gray border-right-gray' placeholder='0.00' value={showAmount} />
                                                 </div>
                                             </div>
 
@@ -268,12 +298,28 @@ const WithdrawFund = () => {
                                                 </div>
                                             </div>
 
-                                            <div>
+                                            <div className='mb-20'>
                                                 <button onClick={withdrawFundFromWallet} type='button' className={isWithdrawDetailsFilled ? 'w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer':'w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer opacity-50'} disabled={!isWithdrawDetailsFilled}>
                                                     <span className={showSpinner ? "hidden" : ""}>Proceed</span>
                                                     <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                                 </button>
                                             </div>
+
+                                            {/* Withdraw Error */}
+                                            <div className={hasWithdrawError ? "error-alert mb-20" : "hidden"}>
+                                                <div className="flex justify-between space-x-1 pt-3">
+                                                    <div className="flex">
+                                                        <div>
+                                                            <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
+                                                            </svg>
+                                                        </div>
+
+                                                        <div className="text-sm">{withdrawErrorMsg}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {/* End */}
                                         </div>
                                     </div>
                                     {/* End */}
@@ -284,7 +330,7 @@ const WithdrawFund = () => {
 
                                             <div className='text-lg mb-5 font-bold'>Amount</div>
 
-                                            <div className='mb-30 font-gotham-black-regular font-bold text-4xl text-green-900'>₦ {showAmount}</div>
+                                            <div className='mb-30 font-gotham-black-regular font-bold text-4xl text-green-900'>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(showAmount.replace(',','')))}</div>
 
                                             <div className='hidden'>
                                                 <div className='mb-20 flex justify-between'>

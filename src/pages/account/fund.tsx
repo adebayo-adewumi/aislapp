@@ -99,6 +99,24 @@ const FundAccount = () => {
         getFundingHistory();
 
     },[]);
+
+    // useEffect(() =>{
+
+    //     function delineateAmount() {
+    //         let regExp = /\d/;
+
+    //         if(regExp.test(showAmount)){
+    //             setShowAmount('')
+    //         }
+    //         else{
+    //             setShowAmount(HelperFunctions.formatCurrencyWithDecimal(5000));
+    //         }
+            
+    //     }
+    
+    //     delineateAmount();
+
+    // },[showAmount]);
     
 
     function performSwitchToDebit() {
@@ -349,6 +367,12 @@ const FundAccount = () => {
         setPopTipText("Copied!");
     }
 
+    function delineateAmount(event :any) {
+        let newValue = event.target.value.replace(/[^\d]/gi, '');
+
+        setShowAmount(newValue);
+    }
+
     return (
         <div className="relative">
             <UserAreaHeader />
@@ -413,7 +437,7 @@ const FundAccount = () => {
                                                 </div>
 
                                                 <div className='w-full'>
-                                                    <input type='text' onChange={e => setShowAmount(e.target.value)} className='input-custom w-full font-gotham-black-regular border-r-0 font-black text-4xl py-5 pr-5 border-l-0 outline-white border-top-gray rounded-r-lg border-bottom-gray border-right-gray' placeholder='0.00' value={showAmount} />
+                                                    <input type='text' onChange={delineateAmount} className='input-custom w-full font-gotham-black-regular border-r-0 font-black text-4xl py-5 pr-5 border-l-0 outline-white border-top-gray rounded-r-lg border-bottom-gray border-right-gray' placeholder='0.00' value={showAmount} />
                                                 </div>
                                             </div>
 
@@ -443,7 +467,7 @@ const FundAccount = () => {
                                         <div>
                                             <div className='text-lg font-bold'>Amount</div>
 
-                                            <div className='mb-20 font-gotham-black-regular text-green-900 text-4xl'>₦ {showAmount}</div>
+                                            <div className='mb-20 font-gotham-black-regular text-green-900 text-4xl'>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(showAmount.replace(',','')))}</div>
 
                                             <div className='border-bottom-1d mb-10'></div>
 
