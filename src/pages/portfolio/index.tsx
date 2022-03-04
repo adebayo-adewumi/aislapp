@@ -307,6 +307,11 @@ const Portfolio = () => {
             setShowSpinner(false);
             setApiResponseHasError(true);
             setApiResponseErrorMsg(error.response.data.message);
+
+            setTimeout(()=>{
+                setApiResponseHasError(false);
+                setApiResponseErrorMsg('');
+            },2000)
         });
     }
 
