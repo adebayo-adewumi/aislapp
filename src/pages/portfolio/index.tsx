@@ -25,6 +25,7 @@ import DeleteIcon from '../../assets/images/delete-icon.svg';
 import { defaultToZeroIfNullOrUndefined, isNullOrUndefined } from '../../common/Utilities';
 import { formatCurrencyWithDecimal } from '../../lib/helper';
 import DeleteCardIcon from '../../assets/images/delete-card.svg';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Portfolio = () => {
     document.title = "Portfolio - Anchoria";
@@ -58,6 +59,7 @@ const Portfolio = () => {
     const [apiResponseSuccessMsg, setApiResponseSuccessMsg] = useState('');
     const [apiResponseErrorMsg, setApiResponseErrorMsg] = useState('');
     
+    let navigate = useNavigate();
 
     let options = {
         chart: {
@@ -138,7 +140,30 @@ const Portfolio = () => {
     });
 
     useEffect(() =>{
+        function getStockGraphData() {
 
+            getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/price?stockCode=NGXPREMIUM&endDate=2022-02-13&startDate=2022-01-12')
+            .then(function (response) { 
+
+                response.data.map((item :any, index :any)=>{
+                    graphYAxis.push(item.price);
+
+                    graphXAxis.push(moment(item.date).format("MMM Do"));
+                    
+                    return true;
+                });
+                
+            })
+            .catch(function (error) {
+                
+            });
+        }
+    
+        getStockGraphData();
+        
+    },[graphXAxis,graphYAxis]);
+
+    useEffect(()=>{
         function getPortfolioList() {
             getAxios(axios).get(getPortfolioEndpoint)
                 .then(function (response) {
@@ -182,7 +207,7 @@ const Portfolio = () => {
 
                             <div className={item.hasOwnProperty("uuid") ? 'row d-flex justify-content-end align-items-end':'hidden'}>
                                 <div>
-                                    <img src={ChevronRightIcon} alt="" />
+                                    <Link to={"details/"+item.uuid}><img src={ChevronRightIcon} alt="" /></Link>
                                 </div>
 
                                 <div className='mr-2' onClick={displayDeleteModal} data-value={item.id}>
@@ -204,29 +229,8 @@ const Portfolio = () => {
                 });
         }
 
-        function getStockGraphData() {
-
-            getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/price?stockCode=NGXPREMIUM&endDate=2022-02-13&startDate=2022-01-12')
-            .then(function (response) { 
-
-                response.data.map((item :any, index :any)=>{
-                    graphYAxis.push(item.price);
-
-                    graphXAxis.push(moment(item.date).format("MMM Do"));
-                    
-                    return true;
-                });
-                
-            })
-            .catch(function (error) {
-                
-            });
-        }
-    
-        getStockGraphData();
         getPortfolioList();
-        
-    },[graphXAxis,graphYAxis]);
+    },[])
 
     function showCreatePorfolioModal() {
         setShowCreatePortfolio(true);
