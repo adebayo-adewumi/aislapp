@@ -59,17 +59,17 @@
     }
   })();
 
-  // setInterval(()=>{
-  //     let iframe = document.getElementsByTagName("iframe");
+  setInterval(()=>{
+      let iframe = document.getElementsByTagName("iframe");
       
 
-  //     [].forEach.call(iframe, (el)=>{
-  //       el.style.display = "none";
-  //       el.style.zIndex = "0";
-  //     });
+      [].forEach.call(iframe, (el)=>{
+        //el.style.display = "none";
+        el.style.zIndex = "0";
+      });
 
-  //     document.getElementById("tidio-chat-code").style.display = "block";
-  //   },1000);
+      //document.getElementById("tidio-chat-code").style.display = "block";
+    },1000);
 
 </script>
 </body>
