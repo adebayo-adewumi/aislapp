@@ -198,6 +198,25 @@ const PortfolioDetails = () => {
                 }, 3000);
             });
         }  
+
+        function getPortfolioPerformance() {
+
+            let urlToCall: string = getPortfolioEndpoint.concat("/portfolio-performance/".concat(String(portfolioId)));
+
+            let requestData =  {
+                "startDate":"10-02-2022 01:00:00",
+                "endDate":"11-02-2022 23:59:00"
+            }
+
+            getAxios(axios).post(urlToCall,{
+                data: requestData
+            })
+            .then(function (response) {
+                console.log(response.data)
+            })
+            .catch(function (error) {
+            });
+        }  
         
         function getWatchlist() {
             let customer = HelperFunctions.getCustomerInfo();            
@@ -233,7 +252,8 @@ const PortfolioDetails = () => {
         getPortfolioDetails();
         getWatchlist();
         getPortfolioList();
-        getStocks(); 
+        getStocks();
+        getPortfolioPerformance(); 
 
     },[portfolioId]);
 

@@ -133,6 +133,9 @@ const Stock = () => {
     const [unitToSellError, setUnitToSellError] = useState('');
     const [isValidateUnitToSell, setIsValidateUnitToSell] = useState<boolean>(false);
 
+    const [portfolioNameArray, setPortfolioNameArray] = useState<string[]>([]);
+    const [portfolioStockUnitArray, setPortfolioStockUnitArray] = useState<number[]>([]);
+
 
 
     let options = {
@@ -326,7 +329,7 @@ const Stock = () => {
         getWalletBalance();
         
         getNews();
-    },[portfolioWithCurrentStock]);
+    },[]);
 
     useEffect(()=>{
         function getPortfolioList() {
@@ -336,6 +339,8 @@ const Stock = () => {
                 .then(function (response) {
 
                     let portfolioItems :any = [];
+                    let portfolioNameItems :string[] = [];
+                    let portfolioUnitItems :number[] = [];
 
                     const listItems = response.data.data.portfolio.map((item: any) => 
                         
@@ -355,6 +360,9 @@ const Stock = () => {
                                     uuid: item.uuid,
                                     units: stockNameExist.map((item :any) => item.units).reduce((prev :any, next :any) => prev + next, 0)
                                 });
+
+                                portfolioNameItems.push(item.name);
+                                portfolioNameItems.push(stockNameExist.map((item :any) => item.units).reduce((prev :any, next :any) => prev + next, 0));
                             }
 
                             return false;
@@ -363,6 +371,11 @@ const Stock = () => {
 
                     setPortfolioList(listItems);
                     setPortfolioWithCurrentStock(portfolioItems);
+                    setPortfolioNameArray(portfolioNameItems);
+                    setPortfolioStockUnitArray(portfolioUnitItems);
+
+                    console.log(portfolioNameArray);
+                    console.log(portfolioStockUnitArray);
 
                 })
                 .catch(function (error) {
@@ -376,7 +389,7 @@ const Stock = () => {
         }
 
         getPortfolioList();
-    },[])
+    },[portfolioNameArray,portfolioStockUnitArray])
 
     useEffect(()=>{
         if(parseInt(unitToSell) > availableUnit || parseInt(unitToSell) === 0 || unitToSell === ''){
@@ -1162,7 +1175,7 @@ const Stock = () => {
                                     
 
                                     <div>
-                                        <button onClick={displayAddToWatchListModal} className="cursor-pointer focus:shadow-outline rounded-lg bg-gray-300 py-3 px-5 border-0 font-bold lg:text-sm" type='button' data-symbol={params.get('symbol')}>
+                                        <button onClick={displayAddToWatchListModal} className={params.get('tradeAction') === 'buy'? "cursor-pointer focus:shadow-outline rounded-lg bg-gray-300 py-3 px-5 border-0 font-bold lg:text-sm":"hidden"} type='button' data-symbol={params.get('symbol')}>
                                             <img src={StarIcon} alt="" className="align-bottom mr-2" width="20" data-symbol={params.get('symbol')}/>
                                             Add to watchlist
                                         </button>
@@ -2041,19 +2054,35 @@ const Stock = () => {
                         </div>
 
                         <div className="">
-                            <div className='mb-10 text-sm font-bold'>Portfolios containing units of the stock</div>
+                            <div className='flex justify-between space-x-10 mb-3'>
+                                <div className='w-2/3'>
+                                    <div className='mb-10 text-sm font-bold'>Portfolios</div>
 
-                            <div>
-                                <select className='text-lg outline-white mb-30 w-full font-bold p-3 rounded-lg border border-gray-500' onChange={getPortfolioIdToSellStock}>
-                                    <option value="null&0">...</option>
-                                    {portfolioWithCurrentStock.map((item :any) =>
-                                        <option value={item.uuid+"&"+item.units}>{item.name}</option>
-                                    )}
-                                </select>
+                                    <div>
+                                        <select className='text-sm outline-white w-full p-3 rounded-lg border border-gray-500' onChange={getPortfolioIdToSellStock}>
+                                            <option value="null&0">Select portfolio</option>
+                                            {portfolioWithCurrentStock.map((item :any) =>
+                                                <option value={item.uuid+"&"+item.units}>{item.name}</option>
+                                            )}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div className='w-1/3'>
+                                    <div className='text-sm font-bold mb-10'>Available Units</div>
+
+                                    <div>   
+                                        <div className=''>
+                                            <div className='text-3xl w-full font-bold pl-3'>{unitToSell}</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+
+                            <div className='text-red-500 text-xs mb-30'>{unitToSellError}</div>
                         </div>
 
-                        <div className="mb-30">
+                        <div className="mb-30 hidden">
                             <div className='text-sm font-bold mb-10'>Available Units</div>
 
                             <div className='md:flex md:justify-between items-center mb-2'>
@@ -2068,9 +2097,8 @@ const Stock = () => {
                                         Add
                                     </button>
                                 </div>
-                            </div>
+                            </div>                           
                             
-                            <div className='text-red-500 text-xs'>{unitToSellError}</div>
                         </div>
                         
                         <div className='mb-20' >
@@ -2097,7 +2125,7 @@ const Stock = () => {
                                         <div className="mb-10 font-bold text-sm">Unit</div>
 
                                         <div>
-                                            <input type='number' className='font-bold input border-1-d6 p-2 outline-white' value={totalUnitToSell} readOnly/>
+                                            <input type='number' className='font-bold input border-1-d6 p-2 outline-white' value={totalUnitToSell}/>
                                         </div>
                                     </div>
 

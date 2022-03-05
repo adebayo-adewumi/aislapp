@@ -25,7 +25,7 @@ import DeleteIcon from '../../assets/images/delete-icon.svg';
 import { defaultToZeroIfNullOrUndefined, isNullOrUndefined } from '../../common/Utilities';
 import { formatCurrencyWithDecimal } from '../../lib/helper';
 import DeleteCardIcon from '../../assets/images/delete-card.svg';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Portfolio = () => {
     document.title = "Portfolio - Anchoria";
@@ -59,7 +59,6 @@ const Portfolio = () => {
     const [apiResponseSuccessMsg, setApiResponseSuccessMsg] = useState('');
     const [apiResponseErrorMsg, setApiResponseErrorMsg] = useState('');
     
-    let navigate = useNavigate();
 
     let options = {
         chart: {

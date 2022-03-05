@@ -117,7 +117,7 @@ const Learn = () => {
                             {/*Learn Section */}   
                             <div className={switchToLearn ? '':'hidden'}>
                                 {/* Search Section */}
-                                <div className='px-14 pb-16 search-bg mb-14'>
+                                <div className='px-14 pb-16 search-bg mb-14 hidden'>
                                     <div>
                                         <div className='mb-30 text-3xl font-gotham-black-regular text-green-900 text-center font-bold'>How can we help you?</div>
                                     </div>
