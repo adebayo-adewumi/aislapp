@@ -136,6 +136,9 @@ const Stock = () => {
     const [portfolioNameArray, setPortfolioNameArray] = useState<string[]>([]);
     const [portfolioStockUnitArray, setPortfolioStockUnitArray] = useState<number[]>([]);
 
+    const [highPriceAlert, setHighPriceAlert] = useState('');
+    const [lowPriceAlert, setLowPriceAlert] = useState('');
+
 
 
     let options = {
@@ -1132,6 +1135,31 @@ const Stock = () => {
         setStockUnit((parseInt(unitToSell) + totalUnitToSell).toString());
     }
 
+    function delineateHighPriceAlert(event :any) {
+        let newValue = event.target.value.replace(/[^\d]/gi, '');
+
+        setHighPriceAlert(newValue);
+    }
+
+    function delineateLowPriceAlert(event :any) {
+        let newValue = event.target.value.replace(/[^\d]/gi, '');
+
+        setLowPriceAlert(newValue);
+    }
+
+    function delineateStockUnit(event :any) {
+        let newValue = event.target.value.replace(/[^\d]/gi, '');
+
+        setStockUnit(newValue);
+    }
+
+    function delineatePriceToleranceAndLimit(event :any) {
+        let newValue = event.target.value.replace(/[^\d]/gi, '');
+
+        setPriceToleranceAndLimit(newValue);
+    }
+
+
     return (
         <div className="relative">
             <UserAreaHeader />
@@ -1509,6 +1537,7 @@ const Stock = () => {
                 </div>
             </div>
 
+            {/* Set Price Alert Modal */}
             <div className={showSetPriceAlertModal ? "set-price-alert-modal rounded-lg" : "hidden"}>
                 <div className="mb-10 flex justify-between">
                     <div className="font-bold text-3xl text-green-900 font-gotham-black-regular">Set Price Alerts</div>
@@ -1544,12 +1573,12 @@ const Stock = () => {
                         <div className='mb-30 flex space-x-5'>
                             <div className='w-1/2'>
                                 <div className='font-bold mb-10'>High</div>
-                                <input type="number" className="input border-1-d6 p-2 outline-white" />
+                                <input type="text" value={highPriceAlert} onChange={delineateHighPriceAlert} className="input border-1-d6 p-2 outline-white" />
                             </div>
 
                             <div className='w-1/2'>
                                 <div className='font-bold mb-10'>Low</div>
-                                <input type="number" className="input border-1-d6 p-2 outline-white" />
+                                <input type="text" value={lowPriceAlert} onChange={delineateLowPriceAlert} className="input border-1-d6 p-2 outline-white" />
                             </div>
                         </div>
 
@@ -1564,8 +1593,10 @@ const Stock = () => {
                     </div>
                 </div>
             </div>
+            {/* End */}
 
 
+            {/* Add To Watchlist Modal */}
             <div className={showAddToWatchListModal ? "add-to-watchlist-modal rounded-lg" : "add-to-watchlist-modal rounded-lg hidden"}>
                 <div className="mb-10 flex justify-between">
                     <div className="font-bold text-3xl text-green-900 font-gotham-black-regular">Add To Watchlist</div>
@@ -1635,6 +1666,7 @@ const Stock = () => {
                     </div>
                 </div>
             </div>
+            {/* End */}
 
             {/* Buy Stock Modal */}
             <div className={showTradeStockModal ? 'generic-modal' : 'hidden'}>
@@ -1720,7 +1752,7 @@ const Stock = () => {
                                         <div className="mb-10">Unit</div>
 
                                         <div>
-                                            <input onChange={e => setStockUnit(e.target.value)} type='number' className='font-bold input border-1-d6 p-2 outline-white' value={stockUnit} />
+                                            <input onChange={delineateStockUnit} type='text' className='font-bold input border-1-d6 p-2 outline-white' value={stockUnit} />
                                         </div>
                                     </div>
 
@@ -1765,7 +1797,7 @@ const Stock = () => {
                                     <div className="mb-10">Maximum Limit</div>
 
                                     <div>
-                                        <input onChange={e => setPriceToleranceAndLimit(e.target.value)} type='number' className='font-bold input border-1-d6 p-2 outline-white' placeholder='Maximum price per share' value={priceToleranceAndLimit} />
+                                        <input onChange={delineatePriceToleranceAndLimit} type='text' className='font-bold input border-1-d6 p-2 outline-white' placeholder='Maximum price per share' value={priceToleranceAndLimit} />
                                     </div>
                                 </div>
 
@@ -1820,7 +1852,7 @@ const Stock = () => {
                                         <div className="mb-10">Price Tolerance</div>
 
                                         <div>
-                                            <input type='number' onChange={e => setPriceToleranceAndLimit(e.target.value)} className='font-bold input border-1-d6 p-2 outline-white' value={priceToleranceAndLimit} />
+                                            <input type='text' onChange={delineatePriceToleranceAndLimit} className='font-bold input border-1-d6 p-2 outline-white' value={priceToleranceAndLimit} />
                                         </div>
                                     </div>
 
@@ -1875,7 +1907,7 @@ const Stock = () => {
                                             <div className="mb-10">Price Tolerance and Limit</div>
 
                                             <div>
-                                                <input onChange={e => setPriceToleranceAndLimit(e.target.value)} value={priceToleranceAndLimit} type='number' className='font-bold input border-1-d6 p-2 outline-white' />
+                                                <input onChange={delineatePriceToleranceAndLimit} value={priceToleranceAndLimit} type='text' className='font-bold input border-1-d6 p-2 outline-white' />
                                             </div>
                                         </div>
 
@@ -2125,7 +2157,7 @@ const Stock = () => {
                                         <div className="mb-10 font-bold text-sm">Unit</div>
 
                                         <div>
-                                            <input type='number' className='font-bold input border-1-d6 p-2 outline-white' value={totalUnitToSell}/>
+                                            <input type='number' className='font-bold input border-1-d6 p-2 outline-white' value={totalUnitToSell} readOnly/>
                                         </div>
                                     </div>
 
@@ -2170,7 +2202,7 @@ const Stock = () => {
                                     <div className="mb-10 text-sm font-bold">Maximum Limit</div>
 
                                     <div>
-                                        <input onChange={e => setPriceToleranceAndLimit(e.target.value)} type='number' className='font-bold input border-1-d6 p-2 outline-white' placeholder='Maximum price per share' value={priceToleranceAndLimit} />
+                                        <input onChange={delineatePriceToleranceAndLimit} type='text' className='font-bold input border-1-d6 p-2 outline-white' placeholder='Maximum price per share' value={priceToleranceAndLimit} />
                                     </div>
                                 </div>
 
@@ -2225,7 +2257,7 @@ const Stock = () => {
                                         <div className="mb-10 text-sm font-bold">Price Tolerance</div>
 
                                         <div>
-                                            <input type='number' onChange={e => setPriceToleranceAndLimit(e.target.value)} className='font-bold input border-1-d6 p-2 outline-white' value={priceToleranceAndLimit} />
+                                            <input type='text' onChange={delineatePriceToleranceAndLimit} className='font-bold input border-1-d6 p-2 outline-white' value={priceToleranceAndLimit} />
                                         </div>
                                     </div>
 
@@ -2280,7 +2312,7 @@ const Stock = () => {
                                             <div className="mb-10 text-sm font-bold">Price Tolerance and Limit</div>
 
                                             <div>
-                                                <input onChange={e => setPriceToleranceAndLimit(e.target.value)} value={priceToleranceAndLimit} type='number' className='font-bold input border-1-d6 p-2 outline-white' />
+                                                <input onChange={delineatePriceToleranceAndLimit} value={priceToleranceAndLimit} type='text' className='font-bold input border-1-d6 p-2 outline-white' />
                                             </div>
                                         </div>
 
