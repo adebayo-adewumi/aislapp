@@ -274,7 +274,7 @@ const Profile = () => {
             axios.get(authOnboardingServiceBaseUrl+'/customer/notification/logs?customerId='+customer.id, 
             { headers })
             .then(function (response) {
-                let logs = response.data.data.map((item :any, index :any) =>
+                let logs = response.data.data.sort(compareNotificationLogsDate).map((item :any, index :any) =>
                 <div className={item.readFlag ? 'p-5 md:space-x-20  md:justify-between md:items-center md:flex border-bottom-1d cursor-pointer':'p-5 cursor-pointer md:space-x-20  md:justify-between md:flex border-bottom-1d bg-gray-100 md:items-center'} key={index} data-id={item.id}>
                     <div className='rounded-full bg-B9F1B4 px-3 shadow-sm py-3 md:mb-0 mb-3 md:w-fit w-12' data-id={item.id}>
                         <img src={BellIcon}  alt="" data-id={item.id}/>
@@ -422,6 +422,21 @@ const Profile = () => {
 
         getBankDetails();
     },[]);
+
+    function compareNotificationLogsDate(a :any, b :any) {
+        const dateA = a.createdOn.toUpperCase();
+        const dateB = b.createdOn.toUpperCase();
+        
+        let comparison = 0;
+
+        if (dateA < dateB) {
+            comparison = 1;
+        } else if (dateA > dateB) {
+            comparison = -1;
+        }
+
+        return comparison;
+    }
 
     function changePassword(){
         let customer = HelperFunctions.getCustomerInfo();

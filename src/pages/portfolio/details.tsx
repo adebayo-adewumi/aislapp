@@ -192,6 +192,7 @@ const PortfolioDetails = () => {
             .catch(function (error) {
 
                 setApiResponseHasError(true);
+                //setShowPageLoader(false);
 
                 setTimeout(() => {
                     setApiResponseHasError(false);
@@ -208,7 +209,7 @@ const PortfolioDetails = () => {
                 "endDate":"11-02-2022 23:59:00"
             }
 
-            getAxios(axios).post(urlToCall,{
+            getAxios(axios).get(urlToCall,{
                 data: requestData
             })
             .then(function (response) {

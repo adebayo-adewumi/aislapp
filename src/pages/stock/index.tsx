@@ -133,8 +133,8 @@ const Stock = () => {
     const [unitToSellError, setUnitToSellError] = useState('');
     const [isValidateUnitToSell, setIsValidateUnitToSell] = useState<boolean>(false);
 
-    const [portfolioNameArray, setPortfolioNameArray] = useState<string[]>([]);
-    const [portfolioStockUnitArray, setPortfolioStockUnitArray] = useState<number[]>([]);
+    const [, setPortfolioNameArray] = useState<string[]>([]);
+    const [, setPortfolioStockUnitArray] = useState<number[]>([]);
 
     const [highPriceAlert, setHighPriceAlert] = useState('');
     const [lowPriceAlert, setLowPriceAlert] = useState('');
@@ -377,8 +377,8 @@ const Stock = () => {
                     setPortfolioNameArray(portfolioNameItems);
                     setPortfolioStockUnitArray(portfolioUnitItems);
 
-                    console.log(portfolioNameArray);
-                    console.log(portfolioStockUnitArray);
+                    //console.log(portfolioNameArray);
+                    //console.log(portfolioStockUnitArray);
 
                 })
                 .catch(function (error) {
@@ -392,7 +392,7 @@ const Stock = () => {
         }
 
         getPortfolioList();
-    },[portfolioNameArray,portfolioStockUnitArray])
+    },[])
 
     useEffect(()=>{
         if(parseInt(unitToSell) > availableUnit || parseInt(unitToSell) === 0 || unitToSell === ''){
