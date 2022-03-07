@@ -31,6 +31,8 @@ const Profile = () => {
     const [isShowConfirmPassword, setIsShowConfirmPassword] = useState<boolean>(false);
     const [oldPassword, setOldPassword] = useState('');
     const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [otp, setOTP] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [isPasswordMatch, setIsPasswordMatch] = useState<boolean>(true);
     const [passwordOrConfirmPasswordIsNullOrEmpty, setPasswordOrConfirmPasswordIsNullOrEmpty] = useState<boolean>(true);
@@ -43,7 +45,9 @@ const Profile = () => {
     const [confirmPin, setConfirmPin] = useState('');
     const [isPinMatch, setIsPinMatch] = useState<boolean>(true);
     const [pinOrConfirmPinIsNullOrEmpty, setPinOrConfirmPinIsNullOrEmpty] = useState<boolean>(true);
+
     const [isPinChangeSuccessful, setIsPinChangeSuccessful] = useState<boolean>(false);
+    const [isPinChangeError, setIsPinChangeError] = useState<boolean>(false);
     
     const [isEmployeeDetailsSuccessful, setIsEmployeeDetailsSuccessful] = useState<boolean>(false);
     const [isNokSuccessful, setIsNokSuccessful] = useState<boolean>(false);
@@ -125,6 +129,12 @@ const Profile = () => {
     const [bankDetails, setBankDetails] = useState<any[]>([]);
 
     const [showSelectPrimaryBankDetails, setShowSelectPrimaryBankDetails] = useState<boolean>(false);
+
+    const [showEnterPasswordCard, setShowEnterPasswordCard] = useState<boolean>(false);
+    const [showGeneratePasswordOTPCard, setShowGeneratePasswordOTPCard] = useState<boolean>(true);
+    const [showGeneratePinOTPCard, setShowGeneratePinOTPCard] = useState<boolean>(true);
+
+    const [showEnterPinCard, setShowEnterPinCard] = useState<boolean>(false);
 
 
     useEffect(() => {
@@ -442,10 +452,10 @@ const Profile = () => {
         let customer = HelperFunctions.getCustomerInfo();
 
         let requestData = {
-            
-            "customerId": customer.id,
             "oldPassword": oldPassword,
-            "password": password
+            "password": password,
+            "token": otp,
+            "email": customer.email
         }
 
         console.log(requestData);
@@ -491,7 +501,7 @@ const Profile = () => {
             "newPin": pin,
             "oldPin":oldPin,
             "email":customer.email,
-            "token":"578000"
+            "token":otp
         }
 
         setShowPinSpinner(true);
@@ -512,12 +522,15 @@ const Profile = () => {
         .then(function (response) {
             setShowPinSpinner(false);
             setIsPinChangeSuccessful(true);
-            setApiResponseMessage(response.data.data)
+            setIsPinChangeError(false);
+            setApiResponseMessage(response.data.message);
         })
         .catch(function (error) {
             console.log(error);
             setShowPinSpinner(false);
+            setIsPinChangeError(true);
             setIsPinChangeSuccessful(false);
+            setApiResponseMessage(error.response.data.message);
         });
     }
 
@@ -882,6 +895,52 @@ const Profile = () => {
             setShowPersonalSpinner(false);
             console.log(errorMsg)
         });
+    }
+
+    function sendResetPasswordLink(){
+
+        let customer = HelperFunctions.getCustomerInfo();
+
+        setShowSpinner(true);  
+    
+        getAxios(axios).get(authOnboardingServiceBaseUrl+'/customer/forgot-password/initiate?email='+customer.email)
+        .then(function (response) {           
+
+            setShowSpinner(false);
+
+            setShowEnterPasswordCard(true);
+            setShowEnterPinCard(false);
+            setShowGeneratePasswordOTPCard(false);
+        })
+        .catch(function (error) {
+            setShowSpinner(false); 
+
+            setShowEnterPasswordCard(false);
+            setShowGeneratePasswordOTPCard(true);
+        });        
+    }
+
+    function sendResetPinLink(){
+
+        let customer = HelperFunctions.getCustomerInfo();
+
+        setShowSpinner(true);  
+    
+        getAxios(axios).get(authOnboardingServiceBaseUrl+'/customer/forgot-pin/initiate?email='+customer.email)
+        .then(function (response) {           
+
+            setShowSpinner(false);
+
+            
+            setShowEnterPinCard(true);
+            setShowGeneratePinOTPCard(false);
+        })
+        .catch(function (error) {
+            setShowSpinner(false); 
+
+            setShowEnterPinCard(false);
+            setShowGeneratePinOTPCard(true);
+        });        
     }
 
 
@@ -1490,7 +1549,7 @@ const Profile = () => {
                                     </div>
                                     {/* End */}
 
-                                    {/* Login Error */}
+                                    {/* Change Password Error */}
                                     <div className={isPasswordChangeSuccessful === 'false' ? "error-alert mb-20":"hidden" }>
                                         <div className="flex justify-between space-x-1">
                                             <div className="flex items-center">
@@ -1506,133 +1565,164 @@ const Profile = () => {
                                     </div>
                                     {/* End */}
 
-                                    <div className='font-gotham-black-regular text-green-900 text-xl mb-30'>Change Password</div>
+                                    <div className='font-gotham-black-regular text-green-900 text-xl mb-2'>Change Password</div>
 
-                                    <div className='mb-11'>
-                                        <div>
-                                            <div className='text-gray-700 mb-3 text-sm font-bold'>Old Password</div>
+                                    {/* Generate OTP Section */}
+                                    <div className={showGeneratePasswordOTPCard ? '':'hidden'}>
+                                        <div className='font-bold text-sm mb-7'>Click the button below to send OTP to your registered email.</div>
 
-                                            <div>
-                                                <input onChange={e => setOldPassword(e.target.value)} type='password' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/>
-                                            </div>
+                                        <div className='mb-3 text-sm font-bold hidden'>Email: </div>
+                                        <div className='w-full mb-6 hidden'>
+                                            <input value={email} onChange={e => setEmail(e.target.value)} className="outline-white p-3 input border border-gray-500  text-sm"  type='text' />
                                         </div>
+
+                                        <button onClick={sendResetPasswordLink} type='button' className="rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-56">
+                                            <span className={ showSpinner ? "hidden" : ""}>Send OTP</span>
+                                            <img src={SpinnerIcon} alt="spinner icon" className={ showSpinner ? "" : "hidden"} width="15"/>
+                                        </button>
+
                                     </div>
+                                    {/* End */}
 
-                                    <div className='mb-11'>
-                                        <div className='md:flex md:justify-between md:space-x-10'>
-                                            <div className="md:w-1/2 w-full md:mb-0 mb-11 relative">
-                                                <div className="mb-3 text-sm font-bold">New Password</div>
-                                                
-                                                <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
-                                                    <div className='w-full'>
-                                                        <input value={password} onChange={e => setPassword(e.target.value)} className="outline-white p-3 input border-0 text-sm"  type={isShowPassword ? 'text' : 'password'} name="password"/>
-                                                    </div>
+                                    {/* Enter Password Section */}
+                                    <div className={showEnterPasswordCard ? '':'hidden'}>
+                                        <div className="w-full mb-11">
+                                            <div className="mb-3 text-sm font-bold mt-6">Enter OTP</div>
+                                            
+                                            <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
+                                                <div className='w-full'>
+                                                    <input value={otp} onChange={e => setOTP(e.target.value)} className="outline-white p-3 input border-0 text-sm"  type='text' name="password"/>
+                                                </div>
+                                            </div>                                
+                                        </div>
 
-                                                    <div className='px-2 pt-1'>
-                                                        <svg onClick={e => setIsShowPassword(true)} className={isShowPassword ? 'bg-white cursor-pointer hidden' : 'bg-white cursor-pointer'} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path fillRule="evenodd" clipRule="evenodd" d="M5.63604 5.56529L10.6072 10.5356C10.9673 10.1877 11.4585 9.97347 12 9.97347C13.1046 9.97347 14 10.8649 14 11.9646C14 12.5071 13.7821 12.9989 13.4287 13.3581L18.364 18.2932C18.7545 18.6837 18.7545 19.3169 18.364 19.7074C17.9734 20.0979 17.3403 20.0979 16.9497 19.7074L16.0498 18.8084C14.7649 19.5525 13.4151 19.9292 12 19.9292C8.41439 19.9292 5.2486 17.5106 2.49391 12.8261L2.28282 12.4613L2 11.9646L2.28282 11.4679C3.12423 9.99032 4.00457 8.72699 4.92408 7.68241L4.22183 6.9795C3.8313 6.58897 3.8313 5.95581 4.22183 5.56529C4.61235 5.17476 5.24551 5.17476 5.63604 5.56529ZM4.54572 11.569L4.30532 11.9646L4.51336 12.3079C6.87517 16.1384 9.37415 17.9381 12 17.9381C12.8728 17.9381 13.7313 17.7396 14.575 17.3343L10.7964 13.555C10.6453 13.4414 10.5108 13.307 10.3974 13.1561L6.33749 9.09402C5.73183 9.79538 5.13452 10.6192 4.54572 11.569ZM12 4C15.5856 4 18.7514 6.41863 21.5061 11.1031L21.7172 11.4679L22 11.9646L21.5113 12.8173C20.7425 14.1258 19.9416 15.2576 19.1086 16.2096L17.6965 14.7975C18.3734 14.0081 19.0396 13.0654 19.6948 11.9648C17.2718 7.89826 14.7031 5.99116 12 5.99116C11.1437 5.99116 10.3009 6.18253 9.47198 6.5733L7.99438 5.09542C9.26603 4.36816 10.6011 4 12 4Z" fill="#353F50"/>
-                                                        </svg>
+                                        <div className='mb-11'>
+                                            <div>
+                                                <div className='text-gray-700 mb-3 text-sm font-bold'>Old Password</div>
 
-                                                        <svg onClick={e => setIsShowPassword(false)} className={isShowPassword ? 'bg-white cursor-pointer' : 'bg-white cursor-pointer hidden'} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path fillRule="evenodd" clipRule="evenodd" d="M12 4C15.5878 4 18.7554 6.43241 21.5113 11.1435L21.7172 11.5011L22 12L21.5113 12.8565C18.7554 17.5676 15.5878 20 12 20C8.41215 20 5.24464 17.5676 2.48874 12.8565L2.28282 12.4989L2 12L2.28282 11.5011C5.08652 6.55556 8.32245 4 12 4ZM12 6C9.29692 6 6.72829 7.91554 4.30532 12C6.72829 16.0845 9.29692 18 12 18C14.6297 18 17.1289 16.1901 19.487 12.3447L19.6948 12.0001L19.4867 11.6553C17.1249 7.80768 14.6259 6 12 6ZM12 9C13.6569 9 15 10.3431 15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9Z" fill="#353F50"/>
-                                                        </svg>
-                                                    </div>
-                                                </div>                                
+                                                <div>
+                                                    <input onChange={e => setOldPassword(e.target.value)} type='password' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/>
+                                                </div>
                                             </div>
+                                        </div>                                       
 
-                                            <div className="md:w-1/2 w-full md:mb-0 mb-11 relative">
-                                                <div className="mb-10 text-sm font-bold">Confirm New Password</div>
-                                                
-                                                <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
-                                                    <div className='w-full'>
-                                                        <input value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="outline-white p-3 input border-0 text-sm"  type={isShowConfirmPassword ? 'text' : 'password'} name="password"/>
-                                                    </div>
+                                        <div className='mb-11'>
+                                            <div className='md:flex md:justify-between md:space-x-10'>
+                                                <div className="md:w-1/2 w-full md:mb-0 mb-11 relative">
+                                                    <div className="mb-3 text-sm font-bold">New Password</div>
+                                                    
+                                                    <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
+                                                        <div className='w-full'>
+                                                            <input value={password} onChange={e => setPassword(e.target.value)} className="outline-white p-3 input border-0 text-sm"  type={isShowPassword ? 'text' : 'password'} name="password"/>
+                                                        </div>
 
-                                                    <div className='px-2 pt-1'>
-                                                        <svg onClick={e => setIsShowConfirmPassword(true)} className={isShowConfirmPassword ? 'bg-white cursor-pointer hidden' : 'bg-white cursor-pointer'} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path fillRule="evenodd" clipRule="evenodd" d="M5.63604 5.56529L10.6072 10.5356C10.9673 10.1877 11.4585 9.97347 12 9.97347C13.1046 9.97347 14 10.8649 14 11.9646C14 12.5071 13.7821 12.9989 13.4287 13.3581L18.364 18.2932C18.7545 18.6837 18.7545 19.3169 18.364 19.7074C17.9734 20.0979 17.3403 20.0979 16.9497 19.7074L16.0498 18.8084C14.7649 19.5525 13.4151 19.9292 12 19.9292C8.41439 19.9292 5.2486 17.5106 2.49391 12.8261L2.28282 12.4613L2 11.9646L2.28282 11.4679C3.12423 9.99032 4.00457 8.72699 4.92408 7.68241L4.22183 6.9795C3.8313 6.58897 3.8313 5.95581 4.22183 5.56529C4.61235 5.17476 5.24551 5.17476 5.63604 5.56529ZM4.54572 11.569L4.30532 11.9646L4.51336 12.3079C6.87517 16.1384 9.37415 17.9381 12 17.9381C12.8728 17.9381 13.7313 17.7396 14.575 17.3343L10.7964 13.555C10.6453 13.4414 10.5108 13.307 10.3974 13.1561L6.33749 9.09402C5.73183 9.79538 5.13452 10.6192 4.54572 11.569ZM12 4C15.5856 4 18.7514 6.41863 21.5061 11.1031L21.7172 11.4679L22 11.9646L21.5113 12.8173C20.7425 14.1258 19.9416 15.2576 19.1086 16.2096L17.6965 14.7975C18.3734 14.0081 19.0396 13.0654 19.6948 11.9648C17.2718 7.89826 14.7031 5.99116 12 5.99116C11.1437 5.99116 10.3009 6.18253 9.47198 6.5733L7.99438 5.09542C9.26603 4.36816 10.6011 4 12 4Z" fill="#353F50"/>
-                                                        </svg>
+                                                        <div className='px-2 pt-1'>
+                                                            <svg onClick={e => setIsShowPassword(true)} className={isShowPassword ? 'bg-white cursor-pointer hidden' : 'bg-white cursor-pointer'} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path fillRule="evenodd" clipRule="evenodd" d="M5.63604 5.56529L10.6072 10.5356C10.9673 10.1877 11.4585 9.97347 12 9.97347C13.1046 9.97347 14 10.8649 14 11.9646C14 12.5071 13.7821 12.9989 13.4287 13.3581L18.364 18.2932C18.7545 18.6837 18.7545 19.3169 18.364 19.7074C17.9734 20.0979 17.3403 20.0979 16.9497 19.7074L16.0498 18.8084C14.7649 19.5525 13.4151 19.9292 12 19.9292C8.41439 19.9292 5.2486 17.5106 2.49391 12.8261L2.28282 12.4613L2 11.9646L2.28282 11.4679C3.12423 9.99032 4.00457 8.72699 4.92408 7.68241L4.22183 6.9795C3.8313 6.58897 3.8313 5.95581 4.22183 5.56529C4.61235 5.17476 5.24551 5.17476 5.63604 5.56529ZM4.54572 11.569L4.30532 11.9646L4.51336 12.3079C6.87517 16.1384 9.37415 17.9381 12 17.9381C12.8728 17.9381 13.7313 17.7396 14.575 17.3343L10.7964 13.555C10.6453 13.4414 10.5108 13.307 10.3974 13.1561L6.33749 9.09402C5.73183 9.79538 5.13452 10.6192 4.54572 11.569ZM12 4C15.5856 4 18.7514 6.41863 21.5061 11.1031L21.7172 11.4679L22 11.9646L21.5113 12.8173C20.7425 14.1258 19.9416 15.2576 19.1086 16.2096L17.6965 14.7975C18.3734 14.0081 19.0396 13.0654 19.6948 11.9648C17.2718 7.89826 14.7031 5.99116 12 5.99116C11.1437 5.99116 10.3009 6.18253 9.47198 6.5733L7.99438 5.09542C9.26603 4.36816 10.6011 4 12 4Z" fill="#353F50"/>
+                                                            </svg>
 
-                                                        <svg onClick={e => setIsShowConfirmPassword(false)} className={isShowConfirmPassword ? 'bg-white cursor-pointer' : 'bg-white cursor-pointer hidden'} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path fillRule="evenodd" clipRule="evenodd" d="M12 4C15.5878 4 18.7554 6.43241 21.5113 11.1435L21.7172 11.5011L22 12L21.5113 12.8565C18.7554 17.5676 15.5878 20 12 20C8.41215 20 5.24464 17.5676 2.48874 12.8565L2.28282 12.4989L2 12L2.28282 11.5011C5.08652 6.55556 8.32245 4 12 4ZM12 6C9.29692 6 6.72829 7.91554 4.30532 12C6.72829 16.0845 9.29692 18 12 18C14.6297 18 17.1289 16.1901 19.487 12.3447L19.6948 12.0001L19.4867 11.6553C17.1249 7.80768 14.6259 6 12 6ZM12 9C13.6569 9 15 10.3431 15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9Z" fill="#353F50"/>
-                                                        </svg>
-                                                    </div>                                                
+                                                            <svg onClick={e => setIsShowPassword(false)} className={isShowPassword ? 'bg-white cursor-pointer' : 'bg-white cursor-pointer hidden'} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path fillRule="evenodd" clipRule="evenodd" d="M12 4C15.5878 4 18.7554 6.43241 21.5113 11.1435L21.7172 11.5011L22 12L21.5113 12.8565C18.7554 17.5676 15.5878 20 12 20C8.41215 20 5.24464 17.5676 2.48874 12.8565L2.28282 12.4989L2 12L2.28282 11.5011C5.08652 6.55556 8.32245 4 12 4ZM12 6C9.29692 6 6.72829 7.91554 4.30532 12C6.72829 16.0845 9.29692 18 12 18C14.6297 18 17.1289 16.1901 19.487 12.3447L19.6948 12.0001L19.4867 11.6553C17.1249 7.80768 14.6259 6 12 6ZM12 9C13.6569 9 15 10.3431 15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9Z" fill="#353F50"/>
+                                                            </svg>
+                                                        </div>
+                                                    </div>                                
+                                                </div>
+
+                                                <div className="md:w-1/2 w-full md:mb-0 mb-11 relative">
+                                                    <div className="mb-10 text-sm font-bold">Confirm New Password</div>
+                                                    
+                                                    <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
+                                                        <div className='w-full'>
+                                                            <input value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="outline-white p-3 input border-0 text-sm"  type={isShowConfirmPassword ? 'text' : 'password'} name="password"/>
+                                                        </div>
+
+                                                        <div className='px-2 pt-1'>
+                                                            <svg onClick={e => setIsShowConfirmPassword(true)} className={isShowConfirmPassword ? 'bg-white cursor-pointer hidden' : 'bg-white cursor-pointer'} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path fillRule="evenodd" clipRule="evenodd" d="M5.63604 5.56529L10.6072 10.5356C10.9673 10.1877 11.4585 9.97347 12 9.97347C13.1046 9.97347 14 10.8649 14 11.9646C14 12.5071 13.7821 12.9989 13.4287 13.3581L18.364 18.2932C18.7545 18.6837 18.7545 19.3169 18.364 19.7074C17.9734 20.0979 17.3403 20.0979 16.9497 19.7074L16.0498 18.8084C14.7649 19.5525 13.4151 19.9292 12 19.9292C8.41439 19.9292 5.2486 17.5106 2.49391 12.8261L2.28282 12.4613L2 11.9646L2.28282 11.4679C3.12423 9.99032 4.00457 8.72699 4.92408 7.68241L4.22183 6.9795C3.8313 6.58897 3.8313 5.95581 4.22183 5.56529C4.61235 5.17476 5.24551 5.17476 5.63604 5.56529ZM4.54572 11.569L4.30532 11.9646L4.51336 12.3079C6.87517 16.1384 9.37415 17.9381 12 17.9381C12.8728 17.9381 13.7313 17.7396 14.575 17.3343L10.7964 13.555C10.6453 13.4414 10.5108 13.307 10.3974 13.1561L6.33749 9.09402C5.73183 9.79538 5.13452 10.6192 4.54572 11.569ZM12 4C15.5856 4 18.7514 6.41863 21.5061 11.1031L21.7172 11.4679L22 11.9646L21.5113 12.8173C20.7425 14.1258 19.9416 15.2576 19.1086 16.2096L17.6965 14.7975C18.3734 14.0081 19.0396 13.0654 19.6948 11.9648C17.2718 7.89826 14.7031 5.99116 12 5.99116C11.1437 5.99116 10.3009 6.18253 9.47198 6.5733L7.99438 5.09542C9.26603 4.36816 10.6011 4 12 4Z" fill="#353F50"/>
+                                                            </svg>
+
+                                                            <svg onClick={e => setIsShowConfirmPassword(false)} className={isShowConfirmPassword ? 'bg-white cursor-pointer' : 'bg-white cursor-pointer hidden'} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path fillRule="evenodd" clipRule="evenodd" d="M12 4C15.5878 4 18.7554 6.43241 21.5113 11.1435L21.7172 11.5011L22 12L21.5113 12.8565C18.7554 17.5676 15.5878 20 12 20C8.41215 20 5.24464 17.5676 2.48874 12.8565L2.28282 12.4989L2 12L2.28282 11.5011C5.08652 6.55556 8.32245 4 12 4ZM12 6C9.29692 6 6.72829 7.91554 4.30532 12C6.72829 16.0845 9.29692 18 12 18C14.6297 18 17.1289 16.1901 19.487 12.3447L19.6948 12.0001L19.4867 11.6553C17.1249 7.80768 14.6259 6 12 6ZM12 9C13.6569 9 15 10.3431 15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9Z" fill="#353F50"/>
+                                                            </svg>
+                                                        </div>                                                
+                                                    </div> 
+
+                                                    <div className={isPasswordMatch ? "text-red-500 text-sm mt-2 hidden":"text-red-500 text-sm mt-2 "}>Passwords did not match</div>                               
                                                 </div> 
 
-                                                <div className={isPasswordMatch ? "text-red-500 text-sm mt-2 hidden":"text-red-500 text-sm mt-2 "}>Passwords did not match</div>                               
-                                            </div> 
-
-                                            <div className='md:w-1/2 w-full'>
-                                                <button onClick={changePassword} type='button' className={passwordOrConfirmPasswordIsNullOrEmpty ? "mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer opacity-50 w-full":"mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full"} disabled={passwordOrConfirmPasswordIsNullOrEmpty}>
-                                                    <span className={ showPasswordSpinner ? "hidden" : ""}>Update</span>
-                                                    <img src={SpinnerIcon} alt="spinner icon" className={ showPasswordSpinner ? "" : "hidden"} width="15"/>
-                                                </button>
-                                            </div>                                       
-                                        </div>                                        
-                                    </div>
-
-                                    {/* Password Policy section */}
-                                    <div>
-                                        <div className="md:flex md:space-x-5 md:mb-5 mb-1">
-                                            <div className="flex text-sm space-x-1 text-gray-600">
-                                                <div>
-                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasMinAndMaxCharacter ? '#2AD062' : '#999CA0'}/>
-                                                        <path fillRule="evenodd" clipRule="evenodd" d="M11.3804 8.41699C11.2234 8.41699 11.0832 8.47868 10.9822 8.57961L8.57655 10.9909L7.2924 9.70114C7.19146 9.6002 7.05127 9.53852 6.89426 9.53852C6.58584 9.53852 6.3335 9.79086 6.3335 10.0993C6.3335 10.2563 6.39518 10.3965 6.49612 10.4974L8.17841 12.1797C8.27935 12.2807 8.41954 12.3423 8.57655 12.3423C8.73357 12.3423 8.87376 12.2807 8.97469 12.1797L11.7785 9.3759C11.8795 9.27496 11.9411 9.13477 11.9411 8.97776C11.9411 8.66934 11.6888 8.41699 11.3804 8.41699Z" fill={hasMinAndMaxCharacter ? '#2AD062' : '#999CA0'}/>
-                                                    </svg>
-                                                </div>
-
-                                                <div className={hasMinAndMaxCharacter ? "pt-20 text-color-2a font-bold": "pt-20"}>At least 8 characters strong</div>
-                                            </div>
-
-                                            <div className="flex text-sm space-x-1 text-gray-600">
-                                                <div>
-                                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasLowerCaseCharacter ? "#2AD062":"#999CA0"}/>
-                                                        <path fillRule="evenodd" clipRule="evenodd" d="M11.3804 8.41699C11.2234 8.41699 11.0832 8.47868 10.9822 8.57961L8.57655 10.9909L7.2924 9.70114C7.19146 9.6002 7.05127 9.53852 6.89426 9.53852C6.58584 9.53852 6.3335 9.79086 6.3335 10.0993C6.3335 10.2563 6.39518 10.3965 6.49612 10.4974L8.17841 12.1797C8.27935 12.2807 8.41954 12.3423 8.57655 12.3423C8.73357 12.3423 8.87376 12.2807 8.97469 12.1797L11.7785 9.3759C11.8795 9.27496 11.9411 9.13477 11.9411 8.97776C11.9411 8.66934 11.6888 8.41699 11.3804 8.41699Z" fill={hasLowerCaseCharacter ? "#2AD062":"#999CA0"}/>
-                                                    </svg>
-                                                </div>
-
-                                                <div className={hasLowerCaseCharacter ? "pt-20 font-bold text-color-2a":"pt-20"}>One or more lower case character</div>
-                                            </div>
+                                                <div className='md:w-1/2 w-full'>
+                                                    <button onClick={changePassword} type='button' className={passwordOrConfirmPasswordIsNullOrEmpty ? "mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer opacity-50 w-full":"mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full"} disabled={passwordOrConfirmPasswordIsNullOrEmpty}>
+                                                        <span className={ showPasswordSpinner ? "hidden" : ""}>Update</span>
+                                                        <img src={SpinnerIcon} alt="spinner icon" className={ showPasswordSpinner ? "" : "hidden"} width="15"/>
+                                                    </button>
+                                                </div>                                       
+                                            </div>                                        
                                         </div>
 
-                                        <div className="md:flex md:space-x-5 md:mb-5 mb-1">
-                                            <div className="flex text-sm space-x-1 text-gray-600">
-                                                <div>
-                                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasUpperCaseCharacter ? "#2AD062":"#999CA0"}/>
-                                                        <path fillRule="evenodd" clipRule="evenodd" d="M11.3804 8.41699C11.2234 8.41699 11.0832 8.47868 10.9822 8.57961L8.57655 10.9909L7.2924 9.70114C7.19146 9.6002 7.05127 9.53852 6.89426 9.53852C6.58584 9.53852 6.3335 9.79086 6.3335 10.0993C6.3335 10.2563 6.39518 10.3965 6.49612 10.4974L8.17841 12.1797C8.27935 12.2807 8.41954 12.3423 8.57655 12.3423C8.73357 12.3423 8.87376 12.2807 8.97469 12.1797L11.7785 9.3759C11.8795 9.27496 11.9411 9.13477 11.9411 8.97776C11.9411 8.66934 11.6888 8.41699 11.3804 8.41699Z" fill={hasUpperCaseCharacter ? "#2AD062":"#999CA0"}/>
-                                                    </svg>
+                                        {/* Password Policy section */}
+                                        <div>
+                                            <div className="md:flex md:space-x-5 md:mb-5 mb-1">
+                                                <div className="flex text-sm space-x-1 text-gray-600">
+                                                    <div>
+                                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasMinAndMaxCharacter ? '#2AD062' : '#999CA0'}/>
+                                                            <path fillRule="evenodd" clipRule="evenodd" d="M11.3804 8.41699C11.2234 8.41699 11.0832 8.47868 10.9822 8.57961L8.57655 10.9909L7.2924 9.70114C7.19146 9.6002 7.05127 9.53852 6.89426 9.53852C6.58584 9.53852 6.3335 9.79086 6.3335 10.0993C6.3335 10.2563 6.39518 10.3965 6.49612 10.4974L8.17841 12.1797C8.27935 12.2807 8.41954 12.3423 8.57655 12.3423C8.73357 12.3423 8.87376 12.2807 8.97469 12.1797L11.7785 9.3759C11.8795 9.27496 11.9411 9.13477 11.9411 8.97776C11.9411 8.66934 11.6888 8.41699 11.3804 8.41699Z" fill={hasMinAndMaxCharacter ? '#2AD062' : '#999CA0'}/>
+                                                        </svg>
+                                                    </div>
+
+                                                    <div className={hasMinAndMaxCharacter ? "pt-20 text-color-2a font-bold": "pt-20"}>At least 8 characters strong</div>
                                                 </div>
 
-                                                <div className={hasUpperCaseCharacter ? "pt-20 font-bold text-color-2a":"pt-20"}>One or more upper case character</div>
+                                                <div className="flex text-sm space-x-1 text-gray-600">
+                                                    <div>
+                                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasLowerCaseCharacter ? "#2AD062":"#999CA0"}/>
+                                                            <path fillRule="evenodd" clipRule="evenodd" d="M11.3804 8.41699C11.2234 8.41699 11.0832 8.47868 10.9822 8.57961L8.57655 10.9909L7.2924 9.70114C7.19146 9.6002 7.05127 9.53852 6.89426 9.53852C6.58584 9.53852 6.3335 9.79086 6.3335 10.0993C6.3335 10.2563 6.39518 10.3965 6.49612 10.4974L8.17841 12.1797C8.27935 12.2807 8.41954 12.3423 8.57655 12.3423C8.73357 12.3423 8.87376 12.2807 8.97469 12.1797L11.7785 9.3759C11.8795 9.27496 11.9411 9.13477 11.9411 8.97776C11.9411 8.66934 11.6888 8.41699 11.3804 8.41699Z" fill={hasLowerCaseCharacter ? "#2AD062":"#999CA0"}/>
+                                                        </svg>
+                                                    </div>
+
+                                                    <div className={hasLowerCaseCharacter ? "pt-20 font-bold text-color-2a":"pt-20"}>One or more lower case character</div>
+                                                </div>
                                             </div>
 
-                                            <div className="flex text-sm space-x-1 text-gray-600">
-                                                <div>
-                                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasNumericCharacter ? "#2AD062":"#999CA0"}/>
-                                                        <path fillRule="evenodd" clipRule="evenodd" d="M11.3804 8.41699C11.2234 8.41699 11.0832 8.47868 10.9822 8.57961L8.57655 10.9909L7.2924 9.70114C7.19146 9.6002 7.05127 9.53852 6.89426 9.53852C6.58584 9.53852 6.3335 9.79086 6.3335 10.0993C6.3335 10.2563 6.39518 10.3965 6.49612 10.4974L8.17841 12.1797C8.27935 12.2807 8.41954 12.3423 8.57655 12.3423C8.73357 12.3423 8.87376 12.2807 8.97469 12.1797L11.7785 9.3759C11.8795 9.27496 11.9411 9.13477 11.9411 8.97776C11.9411 8.66934 11.6888 8.41699 11.3804 8.41699Z" fill={hasNumericCharacter ? "#2AD062":"#999CA0"}/>
-                                                    </svg>
+                                            <div className="md:flex md:space-x-5 md:mb-5 mb-1">
+                                                <div className="flex text-sm space-x-1 text-gray-600">
+                                                    <div>
+                                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasUpperCaseCharacter ? "#2AD062":"#999CA0"}/>
+                                                            <path fillRule="evenodd" clipRule="evenodd" d="M11.3804 8.41699C11.2234 8.41699 11.0832 8.47868 10.9822 8.57961L8.57655 10.9909L7.2924 9.70114C7.19146 9.6002 7.05127 9.53852 6.89426 9.53852C6.58584 9.53852 6.3335 9.79086 6.3335 10.0993C6.3335 10.2563 6.39518 10.3965 6.49612 10.4974L8.17841 12.1797C8.27935 12.2807 8.41954 12.3423 8.57655 12.3423C8.73357 12.3423 8.87376 12.2807 8.97469 12.1797L11.7785 9.3759C11.8795 9.27496 11.9411 9.13477 11.9411 8.97776C11.9411 8.66934 11.6888 8.41699 11.3804 8.41699Z" fill={hasUpperCaseCharacter ? "#2AD062":"#999CA0"}/>
+                                                        </svg>
+                                                    </div>
+
+                                                    <div className={hasUpperCaseCharacter ? "pt-20 font-bold text-color-2a":"pt-20"}>One or more upper case character</div>
                                                 </div>
 
-                                                <div className={hasNumericCharacter ? "pt-20 font-bold text-color-2a":"pt-20"}>One or more numeric character</div>
+                                                <div className="flex text-sm space-x-1 text-gray-600">
+                                                    <div>
+                                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasNumericCharacter ? "#2AD062":"#999CA0"}/>
+                                                            <path fillRule="evenodd" clipRule="evenodd" d="M11.3804 8.41699C11.2234 8.41699 11.0832 8.47868 10.9822 8.57961L8.57655 10.9909L7.2924 9.70114C7.19146 9.6002 7.05127 9.53852 6.89426 9.53852C6.58584 9.53852 6.3335 9.79086 6.3335 10.0993C6.3335 10.2563 6.39518 10.3965 6.49612 10.4974L8.17841 12.1797C8.27935 12.2807 8.41954 12.3423 8.57655 12.3423C8.73357 12.3423 8.87376 12.2807 8.97469 12.1797L11.7785 9.3759C11.8795 9.27496 11.9411 9.13477 11.9411 8.97776C11.9411 8.66934 11.6888 8.41699 11.3804 8.41699Z" fill={hasNumericCharacter ? "#2AD062":"#999CA0"}/>
+                                                        </svg>
+                                                    </div>
+
+                                                    <div className={hasNumericCharacter ? "pt-20 font-bold text-color-2a":"pt-20"}>One or more numeric character</div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div className="md:flex md:space-x-5">
+                                                <div className="flex text-sm space-x-1 text-gray-600">
+                                                    <div>
+                                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasSpecialCharacter ? "#2AD062":"#999CA0"}/>
+                                                            <path fillRule="evenodd" clipRule="evenodd" d="M11.3804 8.41699C11.2234 8.41699 11.0832 8.47868 10.9822 8.57961L8.57655 10.9909L7.2924 9.70114C7.19146 9.6002 7.05127 9.53852 6.89426 9.53852C6.58584 9.53852 6.3335 9.79086 6.3335 10.0993C6.3335 10.2563 6.39518 10.3965 6.49612 10.4974L8.17841 12.1797C8.27935 12.2807 8.41954 12.3423 8.57655 12.3423C8.73357 12.3423 8.87376 12.2807 8.97469 12.1797L11.7785 9.3759C11.8795 9.27496 11.9411 9.13477 11.9411 8.97776C11.9411 8.66934 11.6888 8.41699 11.3804 8.41699Z" fill={hasSpecialCharacter ? "#2AD062":"#999CA0"}/>
+                                                        </svg>
+                                                    </div>
+
+                                                    <div className={hasSpecialCharacter ? "pt-20 font-bold text-color-2a":"pt-20"}>A symbol or special character</div>
+                                                </div>
                                             </div>
                                         </div>
-                                        
-                                        <div className="md:flex md:space-x-5">
-                                            <div className="flex text-sm space-x-1 text-gray-600">
-                                                <div>
-                                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <rect x="3.6665" y="4.16699" width="11.6667" height="11.6667" rx="5.83333" stroke={hasSpecialCharacter ? "#2AD062":"#999CA0"}/>
-                                                        <path fillRule="evenodd" clipRule="evenodd" d="M11.3804 8.41699C11.2234 8.41699 11.0832 8.47868 10.9822 8.57961L8.57655 10.9909L7.2924 9.70114C7.19146 9.6002 7.05127 9.53852 6.89426 9.53852C6.58584 9.53852 6.3335 9.79086 6.3335 10.0993C6.3335 10.2563 6.39518 10.3965 6.49612 10.4974L8.17841 12.1797C8.27935 12.2807 8.41954 12.3423 8.57655 12.3423C8.73357 12.3423 8.87376 12.2807 8.97469 12.1797L11.7785 9.3759C11.8795 9.27496 11.9411 9.13477 11.9411 8.97776C11.9411 8.66934 11.6888 8.41699 11.3804 8.41699Z" fill={hasSpecialCharacter ? "#2AD062":"#999CA0"}/>
-                                                    </svg>
-                                                </div>
-
-                                                <div className={hasSpecialCharacter ? "pt-20 font-bold text-color-2a":"pt-20"}>A symbol or special character</div>
-                                            </div>
-                                        </div>
+                                        {/* End */}
                                     </div>
                                     {/* End */}
                                 </div>
@@ -1663,68 +1753,115 @@ const Profile = () => {
                                     </div>
                                     {/* End */}
 
-                                    <div className='font-gotham-black-regular text-green-900 mb-30'>Change Pin</div>
+                                    {/* Change pin Error */}
+                                    <div className={isPinChangeError ? "error-alert mb-20":"hidden" }>
+                                        <div className="flex justify-between space-x-1">
+                                            <div className="flex items-center">
+                                                <div className='pt-2'>
+                                                    <svg width="20" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
+                                                    </svg>
+                                                </div>
 
-                                    <div className='mb-11'>
-                                        <div>
-                                            <div className='text-gray-700 mb-3 font-bold text-sm'>Old Pin</div>
-
-                                            <div>
-                                                <input value={oldPin} onChange={e => setOldPin(e.target.value)} type='password' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full' maxLength={4}/>
+                                                <div className="text-sm">{apiResponseMessage}</div>
                                             </div>
                                         </div>
                                     </div>
+                                    {/* End */}
 
-                                    <div className='md:flex md:justify-between md:space-x-10'>
-                                        <div className="md:w-1/3 w-full  md:mb-0 mb-11 relative">
-                                            <div className="mb-3 text-sm font-bold">New Pin</div>
+                                    <div className='font-gotham-black-regular text-green-900 mb-30'>Change Pin</div>
+
+                                    {/* Generate OTP Section */}
+                                    <div className={showGeneratePinOTPCard ? '':'hidden'}>
+                                        <div className='font-bold text-sm mb-7'>Click the button below to send OTP to your registered email.</div>
+
+                                        <div className='mb-3 text-sm font-bold hidden'>Email: </div>
+                                        <div className='w-full mb-6 hidden'>
+                                            <input value={email} onChange={e => setEmail(e.target.value)} className="outline-white p-3 input border border-gray-500  text-sm"  type='text' />
+                                        </div>
+
+                                        <button onClick={sendResetPinLink} type='button' className="rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-56">
+                                            <span className={ showSpinner ? "hidden" : ""}>Send OTP</span>
+                                            <img src={SpinnerIcon} alt="spinner icon" className={ showSpinner ? "" : "hidden"} width="15"/>
+                                        </button>
+
+                                    </div>
+                                    {/* End */}
+                                    
+                                    {/* Enter Pin Section */}
+                                    <div className={showEnterPinCard ? '':'hidden'}>
+                                        <div className="w-full mb-11">
+                                            <div className="mb-3 text-sm font-bold mt-6">Enter OTP</div>
                                             
                                             <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
                                                 <div className='w-full'>
-                                                    <input value={pin} onChange={e => setPin(e.target.value)} className="outline-white p-3 input border-0 text-sm" type={isShowPin ? 'text' : 'password'} name="password" maxLength={4}/>
+                                                    <input value={otp} onChange={e => setOTP(e.target.value)} className="outline-white p-3 input border-0 text-sm"  type='text' name="password"/>
                                                 </div>
-
-                                                <div className='px-2 pt-1'>
-                                                    <svg onClick={e => setIsShowPin(true)} className={isShowPin ? 'bg-white cursor-pointer hidden' : 'bg-white cursor-pointer'} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path fillRule="evenodd" clipRule="evenodd" d="M5.63604 5.56529L10.6072 10.5356C10.9673 10.1877 11.4585 9.97347 12 9.97347C13.1046 9.97347 14 10.8649 14 11.9646C14 12.5071 13.7821 12.9989 13.4287 13.3581L18.364 18.2932C18.7545 18.6837 18.7545 19.3169 18.364 19.7074C17.9734 20.0979 17.3403 20.0979 16.9497 19.7074L16.0498 18.8084C14.7649 19.5525 13.4151 19.9292 12 19.9292C8.41439 19.9292 5.2486 17.5106 2.49391 12.8261L2.28282 12.4613L2 11.9646L2.28282 11.4679C3.12423 9.99032 4.00457 8.72699 4.92408 7.68241L4.22183 6.9795C3.8313 6.58897 3.8313 5.95581 4.22183 5.56529C4.61235 5.17476 5.24551 5.17476 5.63604 5.56529ZM4.54572 11.569L4.30532 11.9646L4.51336 12.3079C6.87517 16.1384 9.37415 17.9381 12 17.9381C12.8728 17.9381 13.7313 17.7396 14.575 17.3343L10.7964 13.555C10.6453 13.4414 10.5108 13.307 10.3974 13.1561L6.33749 9.09402C5.73183 9.79538 5.13452 10.6192 4.54572 11.569ZM12 4C15.5856 4 18.7514 6.41863 21.5061 11.1031L21.7172 11.4679L22 11.9646L21.5113 12.8173C20.7425 14.1258 19.9416 15.2576 19.1086 16.2096L17.6965 14.7975C18.3734 14.0081 19.0396 13.0654 19.6948 11.9648C17.2718 7.89826 14.7031 5.99116 12 5.99116C11.1437 5.99116 10.3009 6.18253 9.47198 6.5733L7.99438 5.09542C9.26603 4.36816 10.6011 4 12 4Z" fill="#353F50"/>
-                                                    </svg>
-
-                                                    <svg onClick={e => setIsShowPin(false)} className={isShowPin ? 'bg-white cursor-pointer' : 'bg-white cursor-pointer hidden'} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path fillRule="evenodd" clipRule="evenodd" d="M12 4C15.5878 4 18.7554 6.43241 21.5113 11.1435L21.7172 11.5011L22 12L21.5113 12.8565C18.7554 17.5676 15.5878 20 12 20C8.41215 20 5.24464 17.5676 2.48874 12.8565L2.28282 12.4989L2 12L2.28282 11.5011C5.08652 6.55556 8.32245 4 12 4ZM12 6C9.29692 6 6.72829 7.91554 4.30532 12C6.72829 16.0845 9.29692 18 12 18C14.6297 18 17.1289 16.1901 19.487 12.3447L19.6948 12.0001L19.4867 11.6553C17.1249 7.80768 14.6259 6 12 6ZM12 9C13.6569 9 15 10.3431 15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9Z" fill="#353F50"/>
-                                                    </svg>
-                                                </div> 
                                             </div>                                
                                         </div>
 
-                                        <div className="md:w-1/3 w-full relative">
-                                            <div className="mb-3 text-sm font-bold">Confirm New Pin</div>
-                                            
-                                            <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
-                                                <div className='w-full'>
-                                                    <input value={confirmPin} onChange={e => setConfirmPin(e.target.value)} className="outline-white p-3 input border-0 text-sm"  type={isShowConfirmPin ? 'text' : 'password'} name="password" maxLength={4}/>
+                                        <div className='mb-11'>
+                                            <div>
+                                                <div className='text-gray-700 mb-3 font-bold text-sm'>Old Pin</div>
+
+                                                <div>
+                                                    <input value={oldPin} onChange={e => setOldPin(e.target.value)} type='password' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full' maxLength={4}/>
                                                 </div>
-
-                                                <div className='px-2 pt-1'>
-                                                    <svg onClick={e => setIsShowConfirmPin(true)} className={isShowConfirmPin ? 'bg-white cursor-pointer hidden' : 'bg-white cursor-pointer'} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path fillRule="evenodd" clipRule="evenodd" d="M5.63604 5.56529L10.6072 10.5356C10.9673 10.1877 11.4585 9.97347 12 9.97347C13.1046 9.97347 14 10.8649 14 11.9646C14 12.5071 13.7821 12.9989 13.4287 13.3581L18.364 18.2932C18.7545 18.6837 18.7545 19.3169 18.364 19.7074C17.9734 20.0979 17.3403 20.0979 16.9497 19.7074L16.0498 18.8084C14.7649 19.5525 13.4151 19.9292 12 19.9292C8.41439 19.9292 5.2486 17.5106 2.49391 12.8261L2.28282 12.4613L2 11.9646L2.28282 11.4679C3.12423 9.99032 4.00457 8.72699 4.92408 7.68241L4.22183 6.9795C3.8313 6.58897 3.8313 5.95581 4.22183 5.56529C4.61235 5.17476 5.24551 5.17476 5.63604 5.56529ZM4.54572 11.569L4.30532 11.9646L4.51336 12.3079C6.87517 16.1384 9.37415 17.9381 12 17.9381C12.8728 17.9381 13.7313 17.7396 14.575 17.3343L10.7964 13.555C10.6453 13.4414 10.5108 13.307 10.3974 13.1561L6.33749 9.09402C5.73183 9.79538 5.13452 10.6192 4.54572 11.569ZM12 4C15.5856 4 18.7514 6.41863 21.5061 11.1031L21.7172 11.4679L22 11.9646L21.5113 12.8173C20.7425 14.1258 19.9416 15.2576 19.1086 16.2096L17.6965 14.7975C18.3734 14.0081 19.0396 13.0654 19.6948 11.9648C17.2718 7.89826 14.7031 5.99116 12 5.99116C11.1437 5.99116 10.3009 6.18253 9.47198 6.5733L7.99438 5.09542C9.26603 4.36816 10.6011 4 12 4Z" fill="#353F50"/>
-                                                    </svg>
-
-                                                    <svg onClick={e => setIsShowConfirmPin(false)} className={isShowConfirmPin ? 'bg-white cursor-pointer' : 'bg-white cursor-pointer hidden'} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path fillRule="evenodd" clipRule="evenodd" d="M12 4C15.5878 4 18.7554 6.43241 21.5113 11.1435L21.7172 11.5011L22 12L21.5113 12.8565C18.7554 17.5676 15.5878 20 12 20C8.41215 20 5.24464 17.5676 2.48874 12.8565L2.28282 12.4989L2 12L2.28282 11.5011C5.08652 6.55556 8.32245 4 12 4ZM12 6C9.29692 6 6.72829 7.91554 4.30532 12C6.72829 16.0845 9.29692 18 12 18C14.6297 18 17.1289 16.1901 19.487 12.3447L19.6948 12.0001L19.4867 11.6553C17.1249 7.80768 14.6259 6 12 6ZM12 9C13.6569 9 15 10.3431 15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9Z" fill="#353F50"/>
-                                                    </svg>
-                                                </div>
-                                            </div> 
-
-                                            <div className={isPinMatch ? "text-red-500 text-sm mt-2 hidden":"text-red-500 text-sm mt-2 "}>Pins did not match</div>                                
+                                            </div>
                                         </div>
 
-                                        <div className='md:w-1/3 w-full'>
-                                            <button onClick={changePin} type='button' className={pinOrConfirmPinIsNullOrEmpty ? "mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer opacity-50 w-full":"mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full"} disabled={pinOrConfirmPinIsNullOrEmpty}>
-                                                <span className={ showPinSpinner ? "hidden" : ""}>Update</span>
-                                                <img src={SpinnerIcon} alt="spinner icon" className={ showPinSpinner ? "" : "hidden"} width="15"/>
-                                            </button>
-                                        </div>                                    
+                                        <div className='md:flex md:justify-between md:space-x-10'>
+                                            <div className="md:w-1/3 w-full  md:mb-0 mb-11 relative">
+                                                <div className="mb-3 text-sm font-bold">New Pin</div>
+                                                
+                                                <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
+                                                    <div className='w-full'>
+                                                        <input value={pin} onChange={e => setPin(e.target.value)} className="outline-white p-3 input border-0 text-sm" type={isShowPin ? 'text' : 'password'} name="password" maxLength={4}/>
+                                                    </div>
+
+                                                    <div className='px-2 pt-1'>
+                                                        <svg onClick={e => setIsShowPin(true)} className={isShowPin ? 'bg-white cursor-pointer hidden' : 'bg-white cursor-pointer'} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fillRule="evenodd" clipRule="evenodd" d="M5.63604 5.56529L10.6072 10.5356C10.9673 10.1877 11.4585 9.97347 12 9.97347C13.1046 9.97347 14 10.8649 14 11.9646C14 12.5071 13.7821 12.9989 13.4287 13.3581L18.364 18.2932C18.7545 18.6837 18.7545 19.3169 18.364 19.7074C17.9734 20.0979 17.3403 20.0979 16.9497 19.7074L16.0498 18.8084C14.7649 19.5525 13.4151 19.9292 12 19.9292C8.41439 19.9292 5.2486 17.5106 2.49391 12.8261L2.28282 12.4613L2 11.9646L2.28282 11.4679C3.12423 9.99032 4.00457 8.72699 4.92408 7.68241L4.22183 6.9795C3.8313 6.58897 3.8313 5.95581 4.22183 5.56529C4.61235 5.17476 5.24551 5.17476 5.63604 5.56529ZM4.54572 11.569L4.30532 11.9646L4.51336 12.3079C6.87517 16.1384 9.37415 17.9381 12 17.9381C12.8728 17.9381 13.7313 17.7396 14.575 17.3343L10.7964 13.555C10.6453 13.4414 10.5108 13.307 10.3974 13.1561L6.33749 9.09402C5.73183 9.79538 5.13452 10.6192 4.54572 11.569ZM12 4C15.5856 4 18.7514 6.41863 21.5061 11.1031L21.7172 11.4679L22 11.9646L21.5113 12.8173C20.7425 14.1258 19.9416 15.2576 19.1086 16.2096L17.6965 14.7975C18.3734 14.0081 19.0396 13.0654 19.6948 11.9648C17.2718 7.89826 14.7031 5.99116 12 5.99116C11.1437 5.99116 10.3009 6.18253 9.47198 6.5733L7.99438 5.09542C9.26603 4.36816 10.6011 4 12 4Z" fill="#353F50"/>
+                                                        </svg>
+
+                                                        <svg onClick={e => setIsShowPin(false)} className={isShowPin ? 'bg-white cursor-pointer' : 'bg-white cursor-pointer hidden'} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fillRule="evenodd" clipRule="evenodd" d="M12 4C15.5878 4 18.7554 6.43241 21.5113 11.1435L21.7172 11.5011L22 12L21.5113 12.8565C18.7554 17.5676 15.5878 20 12 20C8.41215 20 5.24464 17.5676 2.48874 12.8565L2.28282 12.4989L2 12L2.28282 11.5011C5.08652 6.55556 8.32245 4 12 4ZM12 6C9.29692 6 6.72829 7.91554 4.30532 12C6.72829 16.0845 9.29692 18 12 18C14.6297 18 17.1289 16.1901 19.487 12.3447L19.6948 12.0001L19.4867 11.6553C17.1249 7.80768 14.6259 6 12 6ZM12 9C13.6569 9 15 10.3431 15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9Z" fill="#353F50"/>
+                                                        </svg>
+                                                    </div> 
+                                                </div>                                
+                                            </div>
+
+                                            <div className="md:w-1/3 w-full relative">
+                                                <div className="mb-3 text-sm font-bold">Confirm New Pin</div>
+                                                
+                                                <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
+                                                    <div className='w-full'>
+                                                        <input value={confirmPin} onChange={e => setConfirmPin(e.target.value)} className="outline-white p-3 input border-0 text-sm"  type={isShowConfirmPin ? 'text' : 'password'} name="password" maxLength={4}/>
+                                                    </div>
+
+                                                    <div className='px-2 pt-1'>
+                                                        <svg onClick={e => setIsShowConfirmPin(true)} className={isShowConfirmPin ? 'bg-white cursor-pointer hidden' : 'bg-white cursor-pointer'} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fillRule="evenodd" clipRule="evenodd" d="M5.63604 5.56529L10.6072 10.5356C10.9673 10.1877 11.4585 9.97347 12 9.97347C13.1046 9.97347 14 10.8649 14 11.9646C14 12.5071 13.7821 12.9989 13.4287 13.3581L18.364 18.2932C18.7545 18.6837 18.7545 19.3169 18.364 19.7074C17.9734 20.0979 17.3403 20.0979 16.9497 19.7074L16.0498 18.8084C14.7649 19.5525 13.4151 19.9292 12 19.9292C8.41439 19.9292 5.2486 17.5106 2.49391 12.8261L2.28282 12.4613L2 11.9646L2.28282 11.4679C3.12423 9.99032 4.00457 8.72699 4.92408 7.68241L4.22183 6.9795C3.8313 6.58897 3.8313 5.95581 4.22183 5.56529C4.61235 5.17476 5.24551 5.17476 5.63604 5.56529ZM4.54572 11.569L4.30532 11.9646L4.51336 12.3079C6.87517 16.1384 9.37415 17.9381 12 17.9381C12.8728 17.9381 13.7313 17.7396 14.575 17.3343L10.7964 13.555C10.6453 13.4414 10.5108 13.307 10.3974 13.1561L6.33749 9.09402C5.73183 9.79538 5.13452 10.6192 4.54572 11.569ZM12 4C15.5856 4 18.7514 6.41863 21.5061 11.1031L21.7172 11.4679L22 11.9646L21.5113 12.8173C20.7425 14.1258 19.9416 15.2576 19.1086 16.2096L17.6965 14.7975C18.3734 14.0081 19.0396 13.0654 19.6948 11.9648C17.2718 7.89826 14.7031 5.99116 12 5.99116C11.1437 5.99116 10.3009 6.18253 9.47198 6.5733L7.99438 5.09542C9.26603 4.36816 10.6011 4 12 4Z" fill="#353F50"/>
+                                                        </svg>
+
+                                                        <svg onClick={e => setIsShowConfirmPin(false)} className={isShowConfirmPin ? 'bg-white cursor-pointer' : 'bg-white cursor-pointer hidden'} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fillRule="evenodd" clipRule="evenodd" d="M12 4C15.5878 4 18.7554 6.43241 21.5113 11.1435L21.7172 11.5011L22 12L21.5113 12.8565C18.7554 17.5676 15.5878 20 12 20C8.41215 20 5.24464 17.5676 2.48874 12.8565L2.28282 12.4989L2 12L2.28282 11.5011C5.08652 6.55556 8.32245 4 12 4ZM12 6C9.29692 6 6.72829 7.91554 4.30532 12C6.72829 16.0845 9.29692 18 12 18C14.6297 18 17.1289 16.1901 19.487 12.3447L19.6948 12.0001L19.4867 11.6553C17.1249 7.80768 14.6259 6 12 6ZM12 9C13.6569 9 15 10.3431 15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9Z" fill="#353F50"/>
+                                                        </svg>
+                                                    </div>
+                                                </div> 
+
+                                                <div className={isPinMatch ? "text-red-500 text-sm mt-2 hidden":"text-red-500 text-sm mt-2 "}>Pins did not match</div>                                
+                                            </div>
+
+                                            <div className='md:w-1/3 w-full'>
+                                                <button onClick={changePin} type='button' className={pinOrConfirmPinIsNullOrEmpty ? "mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer opacity-50 w-full":"mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full"} disabled={pinOrConfirmPinIsNullOrEmpty}>
+                                                    <span className={ showPinSpinner ? "hidden" : ""}>Update</span>
+                                                    <img src={SpinnerIcon} alt="spinner icon" className={ showPinSpinner ? "" : "hidden"} width="15"/>
+                                                </button>
+                                            </div>                                    
+                                        </div>
                                     </div>
+                                    {/* End */}
                                 </div>
                                 {/*End */}
 
