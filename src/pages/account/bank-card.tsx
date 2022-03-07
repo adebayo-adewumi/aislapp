@@ -202,6 +202,8 @@ const BankCard = () => {
 
         setShowOTPSection(false);
         setShowSpinner(false);
+
+        setShowManageCard(false);
         
     }
 
@@ -317,36 +319,25 @@ const BankCard = () => {
 
     function deleteCardDetails() {
 
-        let requestData = {
-            "bankDetailsId": selectedBankId
-        }
-
-        console.log(selectedBankId);
 
         setShowSpinner(true);
 
-        let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
-        localStorage.setItem('genericCypher', genericCypher);
+        let pinCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), bankTransactionPin);
 
-        let apipath = "";
+        let apipath :any = "";
 
-        cardsList.map((item :any)=>{
-            apipath! = deleteType === "Card" ? 'card/delete/'+(item.cardNumber) :  '/bank-details/delete';
-
-            return apipath;
+        apipath = cardsList.map((item :any)=>{
+            return 'card/delete/'+(item.maskedPan);
         })
 
         let _headers = {
             'Authorization': 'Bearer ' + localStorage.getItem('aislUserToken'),
             'x-firebase-token': '12222',
-            'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
+            'x-transaction-pin': JSON.stringify({ text : pinCypher})
         }
 
         getAxios(axios).delete(walletAndAccountServiceBaseUrl + '/wallet-api/'+apipath,
             {
-                data: {
-                    "text": localStorage.getItem('genericCypher'),
-                },
                 headers: _headers
             },
         )
@@ -466,28 +457,28 @@ const BankCard = () => {
             {
                 "text": localStorage.getItem('genericCypher')
             },
-            { headers })
-            .then(function (response) {
+        { headers })
+        .then(function (response) {
 
-                if(response.data.statusCode !== 200){
-                    setAddCardError(response.data.message)
-                }
-                else{
-                    setShowOTPSection(true);
-                    setShowAddCard(false);
-                    setShowSpinner(false);
-                    setShowAddCardHeader(true);
-
-                    setShowVerifyCardSection(false);
-
-                    setCardFundingDetails(JSON.stringify(response.data.data));
-                }
-            })
-            .catch(function (error) {
-                console.log(error)
+            if(response.data.statusCode !== 200){
+                setAddCardError(response.data.message)
+            }
+            else{
+                setShowOTPSection(true);
+                setShowAddCard(false);
                 setShowSpinner(false);
-                setAddCardError(error.response.data.message)
-            });
+                setShowAddCardHeader(true);
+
+                setShowVerifyCardSection(false);
+
+                setCardFundingDetails(JSON.stringify(response.data.data));
+            }
+        })
+        .catch(function (error) {
+            console.log(error)
+            setShowSpinner(false);
+            setAddCardError(error.response.data.message)
+        });
     }
 
     function validateFundWithCardOTP() {
@@ -689,9 +680,21 @@ const BankCard = () => {
                                                     <div className='bgcolor-2 rounded-xl p-0 relative cursor-pointer'>
                                                         <img src={MaskGroupImg} alt='' className="w-full" />
                                                         <div className='absolute bottom-0 px-7 py-6'>
-                                                            <div className='text-white font-bold mb-5'>{item.cardNumber}</div>
-                                                            <div className='text-green-500 font-bold'>Expires {item.expiryDate}</div>
+                                                            <div className='text-white font-bold mb-2'>{item.cardBrand}</div>
+                                                            <div className='text-white font-bold mb-2'>{item.maskedPan}</div>
+                                                            <div className='text-white mb-2'>
+                                                                <span className='text-sm'>Expires: </span> 
+                                                                <span className='font-bold'>
+                                                                    {item.expiryMonth} / {item.expiryYear}
+                                                                </span>
+                                                            </div>
+
+                                                            <div className='text-white text-xs'>
+                                                                (Click to view)
+                                                            </div>
                                                         </div>
+
+                                                        <div className='absolute top-1 p-6 right-1 w-32' style={{backgroundColor: '#ffaf34'}}></div>
                                                     </div>
                                                 </div>
                                             )}
@@ -1086,12 +1089,23 @@ const BankCard = () => {
                                     <div className={showManageCard ? 'pin-section ' : 'hidden'}>
                                         <div>
                                             <div className='mb-30'>
-                                                <div className='bgcolor-2 rounded-xl p-0 relative cursor-pointer'>
-                                                    <img src={MaskGroupImg} alt='' className="w-full " />
+                                                <div className='p-5 bg-gray-100 rounded'>  
                                                     {cardsList.map((item :any, index :any) =>
-                                                    <div className='absolute bottom-0 px-7 py-6' key={index}>
-                                                        <div className='text-white font-bold mb-5'>{item.cardNumber}</div>
-                                                        <div className='text-green-500 font-bold'>Expires {item.expiryMonth}/{item.expiryYear}</div>
+                                                    <div key={index}>
+                                                        <div className='font-bold mb-2'>{item.cardBrand}</div>
+
+                                                        <div className='font-bold mb-2'>{item.maskedPan}</div>
+
+                                                        <div className='mb-2'>
+                                                            <span className='text-sm'>Expires: </span> 
+                                                            <span className='font-bold'>{item.expiryMonth}/{item.expiryYear}</span>
+                                                        </div>
+
+                                                        <div>
+                                                            <span className='text-sm'>Created on: </span> 
+                                                            <span className='font-bold text-sm'>{moment(item.createdOn).format("Do MMM, YYYY hh:mm A")}</span>
+                                                        </div>
+
                                                     </div>
                                                     )}
                                                 </div>
@@ -1126,6 +1140,7 @@ const BankCard = () => {
                                                 <div className='mb-30'>
                                                     <div className='rounded-xl p-0'>
                                                         <img src={MaskGroupImg} alt='' className="w-full hidden" />
+
                                                         <div className='px-4 py-6 bg-gray-100 rounded'>
                                                             <div className='text-sm mb-10'>{item.accountName}</div>
                                                             <div className='font-bold mb-10'>{item.bankName} ({item.accountNumber})</div>

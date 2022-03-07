@@ -442,6 +442,7 @@ const Profile = () => {
         let customer = HelperFunctions.getCustomerInfo();
 
         let requestData = {
+            
             "customerId": customer.id,
             "oldPassword": oldPassword,
             "password": password
