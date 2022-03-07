@@ -61,15 +61,27 @@
 
   setInterval(()=>{
       let iframe = document.getElementsByTagName("iframe");
-      
 
-      [].forEach.call(iframe, (el)=>{
-        //el.style.display = "none";
-        el.style.zIndex = "0";
-      });
+      if(iframe.length > 2){
 
-      //document.getElementById("tidio-chat-code").style.display = "block";
+        let iframeLastEl = iframe.length - 1;
+
+        // [].forEach.call(iframe, (el)=>{
+        //   el.style.display = "none";
+        //   el.style.zIndex = "0";
+
+        //   document.getElementById("tidio-chat-code").style.display = "block";
+        // });
+
+        iframe[iframeLastEl].style.display = "none";
+        iframe[iframeLastEl].style.zIndex = "0";
+        
+      }  
+
     },1000);
+
+    
+
 
 </script>
 </body>

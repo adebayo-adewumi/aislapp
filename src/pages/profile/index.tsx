@@ -485,7 +485,11 @@ const Profile = () => {
                 setIsPasswordChangeSuccessful('true');
             }
 
-            setApiResponseMessage(response.data.message)
+            setApiResponseMessage(response.data.message);
+
+            setTimeout(()=>{
+                window.location.reload();
+            },3000);
         })
         .catch(function (error) {
             setApiResponseMessage(error.response.data.message)
@@ -524,6 +528,10 @@ const Profile = () => {
             setIsPinChangeSuccessful(true);
             setIsPinChangeError(false);
             setApiResponseMessage(response.data.message);
+
+            setTimeout(()=>{
+                window.location.reload();
+            },3000);
         })
         .catch(function (error) {
             console.log(error);
