@@ -646,7 +646,7 @@ const Stock = () => {
             "priceLimit": priceToleranceAndLimit,
             "smsPin": "1234",
             "timeInForce": tradeActionArr[durationIndex],
-            "tradeAction": '1'
+            "tradeAction": '0'
         }
 
         console.log(requestData);
