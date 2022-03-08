@@ -286,8 +286,12 @@ const BankCard = () => {
                     setBankDetailsError(response.data.message)
                 }
                 else{
-                    setApiResponseSuccessMsg(response.data.description);
+                    setApiResponseSuccessMsg("Bank details added successfully.");
                     setIsAddBankSuccess('true');
+
+                    setTimeout(()=>{
+                        window.location.reload();
+                    },3000)
                 }
             })
             .catch(function (error) {
@@ -372,10 +376,12 @@ const BankCard = () => {
             })
             .then(function (response) {
                 setIsDeleteSuccess('true');
-                setApiResponseSuccessMsg(response.data.description);
+                setApiResponseSuccessMsg("Bank details deleted successfully.");
                 setShowSpinner(false);
 
-                window.location.reload();
+                setTimeout(()=>{
+                    window.location.reload();
+                },3000);
             })
             .catch(function (error) {
                 setShowSpinner(false);
