@@ -1554,7 +1554,7 @@ const Profile = () => {
 
                                         <div>
                                             <div>
-                                                <button onClick={changePrimaryBankDetails} type='button' className={showSelectPrimaryBankDetails ? "hidden":"rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer mr-3"}>
+                                                <button onClick={changePrimaryBankDetails} type='button' className={showSelectPrimaryBankDetails ? "hidden":"rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer mr-3 hidden"}>
                                                    Change Primary Bank Details
                                                 </button>
 
