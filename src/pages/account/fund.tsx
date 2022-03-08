@@ -755,7 +755,7 @@ const FundAccount = () => {
                                                         <tr key={index}>
                                                             <td className='text-left p-2' style={{ fontSize: '.80rem' }}>{item.fundingSources}</td>
                                                             <td className='text-left text-xs p-2' style={{ fontSize: '.80rem' }}>₦ {HelperFunctions.formatCurrencyWithDecimal(item.amount)}</td>
-                                                            <td className='text-left text-xs  p-2' style={{ fontSize: '.80rem' }}>{moment(item.dateTime).format("MMM Do, YYYY hh:mm A")}</td>
+                                                            <td className='text-left text-xs  p-2' style={{ fontSize: '.80rem' }}>{moment(item.createdOn).format("MMM Do, YYYY hh:mm A")}</td>
                                                         </tr>
                                                     )}
                                                 </tbody>
