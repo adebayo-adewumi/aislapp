@@ -16,7 +16,7 @@ import CloseIcon from '../../assets/images/close.svg';
 import BellIcon from '../../assets/images/bell.svg';
 import moment from 'moment';
 import DeleteCardIcon from '../../assets/images/delete-card.svg';
-import { authOnboardingServiceBaseUrl, walletAndAccountServiceBaseUrl } from '../../apiUrls';
+import { authOnboardingServiceBaseUrl, utilityServiceBaseUrlUrl, walletAndAccountServiceBaseUrl } from '../../apiUrls';
 import { getAxios } from '../../network/httpClientWrapper';
 
 const Profile = () => {   
@@ -485,7 +485,7 @@ const Profile = () => {
                 setIsPasswordChangeSuccessful('true');
             }
 
-            setApiResponseMessage(response.data.message);
+            setApiResponseMessage("Password changed successfully. ");
 
             setTimeout(()=>{
                 window.location.reload();
@@ -527,7 +527,7 @@ const Profile = () => {
             setShowPinSpinner(false);
             setIsPinChangeSuccessful(true);
             setIsPinChangeError(false);
-            setApiResponseMessage(response.data.message);
+            setApiResponseMessage('Pin changed successfully');
 
             setTimeout(()=>{
                 window.location.reload();
@@ -905,50 +905,92 @@ const Profile = () => {
         });
     }
 
-    function sendResetPasswordLink(){
+    function sendChangePasswordOTP(){
 
         let customer = HelperFunctions.getCustomerInfo();
 
-        setShowSpinner(true);  
+        setShowPasswordSpinner(true);
+        
+        let requestData = {
+            //"phoneNumber": customer.phoneNumber,
+            "email": customer.email
+        }  
+
+        let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
+
+        localStorage.setItem('genericCypher', genericCypher);
+
+        let headers = {
+            'Authorization': 'Bearer '+localStorage.getItem('aislUserToken'), 
+            'x-firebase-token': '12222',
+            'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
+        }
+
     
-        getAxios(axios).get(authOnboardingServiceBaseUrl+'/customer/forgot-password/initiate?email='+customer.email)
+        //getAxios(axios).get(authOnboardingServiceBaseUrl+'/customer/forgot-password/initiate?email='+customer.email)
+        getAxios(axios).post(utilityServiceBaseUrlUrl + '/otp/generate', 
+        {
+            "text": localStorage.getItem('genericCypher')
+        },{ headers })
         .then(function (response) {           
 
-            setShowSpinner(false);
+            setShowPasswordSpinner(false);
 
             setShowEnterPasswordCard(true);
             setShowEnterPinCard(false);
             setShowGeneratePasswordOTPCard(false);
         })
         .catch(function (error) {
-            setShowSpinner(false); 
+            setShowPasswordSpinner(false); 
 
             setShowEnterPasswordCard(false);
             setShowGeneratePasswordOTPCard(true);
         });        
     }
 
-    function sendResetPinLink(){
+    
+
+    function sendChangePinOTP(){
 
         let customer = HelperFunctions.getCustomerInfo();
 
-        setShowSpinner(true);  
+        setShowPinSpinner(true);
+        
+        let requestData = {
+            //"phoneNumber": customer.phoneNumber,
+            "email": customer.email
+        }  
+
+        let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
+
+        localStorage.setItem('genericCypher', genericCypher);
+
+        let headers = {
+            'Authorization': 'Bearer '+localStorage.getItem('aislUserToken'), 
+            'x-firebase-token': '12222',
+            'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
+        }
+
     
-        getAxios(axios).get(authOnboardingServiceBaseUrl+'/customer/forgot-pin/initiate?email='+customer.email)
+        //getAxios(axios).get(authOnboardingServiceBaseUrl+'/customer/forgot-password/initiate?email='+customer.email)
+        getAxios(axios).post(utilityServiceBaseUrlUrl + '/otp/generate', 
+        {
+            "text": localStorage.getItem('genericCypher')
+        },{ headers })
         .then(function (response) {           
 
-            setShowSpinner(false);
+            setShowPinSpinner(false);
 
-            
             setShowEnterPinCard(true);
+            setShowEnterPasswordCard(false);
             setShowGeneratePinOTPCard(false);
         })
         .catch(function (error) {
-            setShowSpinner(false); 
+            setShowPinSpinner(false); 
 
             setShowEnterPinCard(false);
             setShowGeneratePinOTPCard(true);
-        });        
+        });          
     }
 
 
@@ -1584,9 +1626,9 @@ const Profile = () => {
                                             <input value={email} onChange={e => setEmail(e.target.value)} className="outline-white p-3 input border border-gray-500  text-sm"  type='text' />
                                         </div>
 
-                                        <button onClick={sendResetPasswordLink} type='button' className="rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-56">
-                                            <span className={ showSpinner ? "hidden" : ""}>Send OTP</span>
-                                            <img src={SpinnerIcon} alt="spinner icon" className={ showSpinner ? "" : "hidden"} width="15"/>
+                                        <button onClick={sendChangePasswordOTP} type='button' className="rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-56">
+                                            <span className={ showPasswordSpinner ? "hidden" : ""}>Send OTP</span>
+                                            <img src={SpinnerIcon} alt="spinner icon" className={ showPasswordSpinner ? "" : "hidden"} width="15"/>
                                         </button>
 
                                     </div>
@@ -1788,9 +1830,9 @@ const Profile = () => {
                                             <input value={email} onChange={e => setEmail(e.target.value)} className="outline-white p-3 input border border-gray-500  text-sm"  type='text' />
                                         </div>
 
-                                        <button onClick={sendResetPinLink} type='button' className="rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-56">
-                                            <span className={ showSpinner ? "hidden" : ""}>Send OTP</span>
-                                            <img src={SpinnerIcon} alt="spinner icon" className={ showSpinner ? "" : "hidden"} width="15"/>
+                                        <button onClick={sendChangePinOTP} type='button' className="rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-56">
+                                            <span className={ showPinSpinner ? "hidden" : ""}>Send OTP</span>
+                                            <img src={SpinnerIcon} alt="spinner icon" className={ showPinSpinner ? "" : "hidden"} width="15"/>
                                         </button>
 
                                     </div>

@@ -133,11 +133,14 @@ const Stock = () => {
     const [unitToSellError, setUnitToSellError] = useState('');
     const [isValidateUnitToSell, setIsValidateUnitToSell] = useState<boolean>(false);
 
-    const [, setPortfolioNameArray] = useState<string[]>([]);
-    const [, setPortfolioStockUnitArray] = useState<number[]>([]);
+    const [portfolioIdArray, setPortfolioIdArray] = useState<string[]>([]);
+    const [portfolioStockUnitArray, setPortfolioStockUnitArray] = useState<number[]>([]);
 
     const [highPriceAlert, setHighPriceAlert] = useState('');
     const [lowPriceAlert, setLowPriceAlert] = useState('');
+
+    const [desiredUnitToSell, setDesiredUnitToSell] = useState('0');
+
 
 
 
@@ -342,7 +345,7 @@ const Stock = () => {
                 .then(function (response) {
 
                     let portfolioItems :any = [];
-                    let portfolioNameItems :string[] = [];
+                    let portfolioIdItems :string[] = [];
                     let portfolioUnitItems :number[] = [];
 
                     const listItems = response.data.data.portfolio.map((item: any) => 
@@ -364,8 +367,8 @@ const Stock = () => {
                                     units: stockNameExist.map((item :any) => item.units).reduce((prev :any, next :any) => prev + next, 0)
                                 });
 
-                                portfolioNameItems.push(item.name);
-                                portfolioNameItems.push(stockNameExist.map((item :any) => item.units).reduce((prev :any, next :any) => prev + next, 0));
+                                portfolioIdItems.push(item.uuid);
+                                portfolioIdItems.push(stockNameExist.map((item :any) => item.units).reduce((prev :any, next :any) => prev + next, 0));
                             }
 
                             return false;
@@ -374,11 +377,8 @@ const Stock = () => {
 
                     setPortfolioList(listItems);
                     setPortfolioWithCurrentStock(portfolioItems);
-                    setPortfolioNameArray(portfolioNameItems);
+                    setPortfolioIdArray(portfolioIdItems);
                     setPortfolioStockUnitArray(portfolioUnitItems);
-
-                    //console.log(portfolioNameArray);
-                    //console.log(portfolioStockUnitArray);
 
                 })
                 .catch(function (error) {
@@ -735,7 +735,7 @@ const Stock = () => {
                     }, 5000);
                 }
                 else {
-                    setApiResponseSuccessMsg(response.data.message)
+                    setApiResponseSuccessMsg("Stock bought successfully.")
                     setShowSuccessModal(true);
                     setShowAddToWatchListModal(false);
                     setShowTradeStockModal(false);
@@ -1158,6 +1158,19 @@ const Stock = () => {
 
         setPriceToleranceAndLimit(newValue);
     }
+
+    function calculateDesiredUnitToSell(event :any){
+    
+        if(event.target.value !== '' && parseInt(unitToSell) > 0){
+            let unitBalance :any  = parseInt(unitToSell) - parseInt(event.target.value);
+
+            setUnitToSell(String(unitBalance));
+        }
+
+        console.log(desiredUnitToSell+""+setDesiredUnitToSell('0')+""+portfolioIdArray+""+portfolioStockUnitArray)
+    }
+
+    
 
 
     return (
@@ -1594,7 +1607,6 @@ const Stock = () => {
                 </div>
             </div>
             {/* End */}
-
 
             {/* Add To Watchlist Modal */}
             <div className={showAddToWatchListModal ? "add-to-watchlist-modal rounded-lg" : "add-to-watchlist-modal rounded-lg hidden"}>
@@ -2085,7 +2097,7 @@ const Stock = () => {
                             </div>
                         </div>
 
-                        <div className="">
+                        <div className="mb-8">
                             <div className='flex justify-between space-x-10 mb-3'>
                                 <div className='w-2/3'>
                                     <div className='mb-10 text-sm font-bold'>Portfolios</div>
@@ -2107,6 +2119,27 @@ const Stock = () => {
                                         <div className=''>
                                             <div className='text-3xl w-full font-bold pl-3'>{unitToSell}</div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>                            
+                        </div>
+
+                        <div className="mb-8">
+                            <div className='flex justify-between space-x-3 items-end  mb-3'>
+                                <div className='w-2/3'>
+                                    <div className='mb-2 text-sm font-bold'>Number of units to sell</div>
+
+                                    <div>
+                                        <input type="text" className='text-lg font-bold outline-white w-full px-3 py-2 rounded-lg border border-gray-500' onChange={calculateDesiredUnitToSell} placeholder="0"/>
+                                           
+                                    </div>
+                                </div>
+
+                                <div className='w-1/3'>
+                                    <div>   
+                                        <button onClick={calculateTotalUnitToSell} className={isValidateUnitToSell ? "cursor-pointer focus:shadow-outline text-white rounded-lg bg-green-800 border-0 font-bold lg:text-sm py-3  w-full":"cursor-pointer focus:shadow-outline text-white rounded-lg bg-green-800 border-0 font-bold lg:text-sm py-3 opacity-50 w-full"} type='button' disabled={!isValidateUnitToSell}>
+                                            Add
+                                        </button>
                                     </div>
                                 </div>
                             </div>
