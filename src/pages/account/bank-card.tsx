@@ -347,10 +347,12 @@ const BankCard = () => {
         )
             .then(function (response) {
                 setIsDeleteSuccess('true');
-                setApiResponseSuccessMsg(response.data.description);
+                setApiResponseSuccessMsg("Card deleted successfully.");
                 setShowSpinner(false);
 
-                window.location.reload();
+                setTimeout(()=>{
+                    window.location.reload();
+                },3000)
             })
             .catch(function (error) {
                 setShowSpinner(false);
@@ -451,12 +453,13 @@ const BankCard = () => {
         setShowSpinner(true);
 
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
+        let pinCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), "1111");
         localStorage.setItem('genericCypher', genericCypher);
 
         let headers = {
             'Authorization': 'Bearer ' + localStorage.getItem('aislUserToken'),
             'x-firebase-token': '12345',
-            'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
+            'x-transaction-pin': JSON.stringify({ text : pinCypher})
         }
 
         getAxios(axios).post(walletAndAccountServiceBaseUrl + '/wallet-api/card',
@@ -557,8 +560,12 @@ const BankCard = () => {
             else{
                 setShowOTPSection(false);
                 setCardFundingDetails(JSON.stringify(response.data.data));
-                setApiResponseSuccessMsg('');
+                setApiResponseSuccessMsg('Card added successfully.');
                 setVerifyCardError('');
+
+                setTimeout(()=>{
+                    window.location.reload();
+                },3000)
             }
         })
         .catch(function (error) {     
