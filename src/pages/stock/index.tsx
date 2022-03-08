@@ -87,7 +87,7 @@ const Stock = () => {
     const [, setApiResponseHasError] = useState<boolean>(false);
     const [apiResponseSuccessMsg, setApiResponseSuccessMsg] = useState('');
     const [portfolioList, setPortfolioList] = useState('');
-    const [, setPortfolioIdToAddStock] = useState('');
+    const [portfolioIdToAddStock, setPortfolioIdToAddStock] = useState('');
 
     const [showValidatePINModal, setShowValidatePINModal] = useState<boolean>(false);
     const [pinValidationType, ] = useState('');
@@ -134,7 +134,7 @@ const Stock = () => {
     const [isValidateUnitToSell, setIsValidateUnitToSell] = useState<boolean>(false);
 
     const [portfolioIdArray, setPortfolioIdArray] = useState<string[]>([]);
-    const [portfolioStockUnitArray, setPortfolioStockUnitArray] = useState<number[]>([]);
+    const [portfolioStockUnitArray, setPortfolioStockUnitArray] = useState<string[]>([]);
 
     const [highPriceAlert, setHighPriceAlert] = useState('');
     const [lowPriceAlert, setLowPriceAlert] = useState('');
@@ -346,7 +346,7 @@ const Stock = () => {
 
                     let portfolioItems :any = [];
                     let portfolioIdItems :string[] = [];
-                    let portfolioUnitItems :number[] = [];
+                    let portfolioUnitItems :string[] = [];
 
                     const listItems = response.data.data.portfolio.map((item: any) => 
                         
@@ -368,7 +368,7 @@ const Stock = () => {
                                 });
 
                                 portfolioIdItems.push(item.uuid);
-                                portfolioIdItems.push(stockNameExist.map((item :any) => item.units).reduce((prev :any, next :any) => prev + next, 0));
+                                portfolioUnitItems.push(stockNameExist.map((item :any) => item.units).reduce((prev :any, next :any) => prev + next, 0));
                             }
 
                             return false;
@@ -396,12 +396,12 @@ const Stock = () => {
 
     useEffect(()=>{
         if(parseInt(unitToSell) > availableUnit || parseInt(unitToSell) === 0 || unitToSell === ''){
-            setUnitToSellError("Units to sell cannot be greater than available units or equal to 0");
-            setIsValidateUnitToSell(false);
+            //setUnitToSellError("Units to sell cannot be greater than available units or equal to 0");
+            //setIsValidateUnitToSell(false);
         }
         else{
-            setUnitToSellError("");
-            setIsValidateUnitToSell(true);
+            //setUnitToSellError("");
+            //setIsValidateUnitToSell(true);
         }
 
     },[unitToSell, availableUnit]);
@@ -1037,13 +1037,6 @@ const Stock = () => {
         setPortfolioIdToAddStock(event.target.value);
     }
 
-    function getPortfolioIdToSellStock(event: any) {
-        let splitValue = event.target.value.split("&");
-
-        setPortfolioIdToAddStock(splitValue[0]);
-        setAvailableUnit(parseInt(splitValue[1]));
-        setUnitToSell(splitValue[1])
-    }
 
     function validatePin() {
         setShowSpinner(true);
@@ -1130,10 +1123,7 @@ const Stock = () => {
 
     }
 
-    function calculateTotalUnitToSell(){
-        setTotalUnitToSell(parseInt(unitToSell) + totalUnitToSell);
-        setStockUnit((parseInt(unitToSell) + totalUnitToSell).toString());
-    }
+   
 
     function delineateHighPriceAlert(event :any) {
         let newValue = event.target.value.replace(/[^\d]/gi, '');
@@ -1159,15 +1149,44 @@ const Stock = () => {
         setPriceToleranceAndLimit(newValue);
     }
 
+    function getPortfolioIdToSellStock(event: any) {
+        let splitValue = event.target.value.split("&");
+
+        setPortfolioIdToAddStock(splitValue[0]);
+        setAvailableUnit(parseInt(splitValue[1]));
+
+        let idIndex = portfolioIdArray.indexOf(splitValue[0]);
+
+        setUnitToSell(portfolioStockUnitArray[idIndex]);
+    }
+
+    function calculateTotalUnitToSell(){
+        setTotalUnitToSell(parseInt(localStorage.getItem("aislDesiredUnitToSell") as string) + totalUnitToSell);
+
+        setStockUnit((parseInt(localStorage.getItem("aislDesiredUnitToSell") as string) + totalUnitToSell).toString());
+
+        let dUnitToSell = document.getElementById("desiredUnitToSell") as HTMLInputElement;
+
+        let idIndex = portfolioIdArray.indexOf(portfolioIdToAddStock);
+        portfolioStockUnitArray.splice(idIndex, 1, unitToSell);
+
+        dUnitToSell.value = '0';
+
+        localStorage.setItem("aislDesiredUnitToSell", '0');
+
+    }
+
     function calculateDesiredUnitToSell(event :any){
     
         if(event.target.value !== '' && parseInt(unitToSell) > 0){
             let unitBalance :any  = parseInt(unitToSell) - parseInt(event.target.value);
 
+            localStorage.setItem("aislDesiredUnitToSell", event.target.value);
+
             setUnitToSell(String(unitBalance));
         }
 
-        console.log(desiredUnitToSell+""+setDesiredUnitToSell('0')+""+portfolioIdArray+""+portfolioStockUnitArray)
+        console.log(desiredUnitToSell+""+setDesiredUnitToSell('0')+""+setUnitToSellError("")+" "+setIsValidateUnitToSell(false));
     }
 
     
@@ -2130,14 +2149,14 @@ const Stock = () => {
                                     <div className='mb-2 text-sm font-bold'>Number of units to sell</div>
 
                                     <div>
-                                        <input type="text" className='text-lg font-bold outline-white w-full px-3 py-2 rounded-lg border border-gray-500' onChange={calculateDesiredUnitToSell} placeholder="0"/>
+                                        <input id="desiredUnitToSell" type="text" className='text-lg font-bold outline-white w-full px-3 py-2 rounded-lg border border-gray-500' onChange={calculateDesiredUnitToSell} placeholder="0"/>
                                            
                                     </div>
                                 </div>
 
                                 <div className='w-1/3'>
                                     <div>   
-                                        <button onClick={calculateTotalUnitToSell} className={isValidateUnitToSell ? "cursor-pointer focus:shadow-outline text-white rounded-lg bg-green-800 border-0 font-bold lg:text-sm py-3  w-full":"cursor-pointer focus:shadow-outline text-white rounded-lg bg-green-800 border-0 font-bold lg:text-sm py-3 opacity-50 w-full"} type='button' disabled={!isValidateUnitToSell}>
+                                        <button onClick={calculateTotalUnitToSell} className="cursor-pointer focus:shadow-outline text-white rounded-lg bg-green-800 border-0 font-bold lg:text-sm py-3  w-full" type='button'>
                                             Add
                                         </button>
                                     </div>
