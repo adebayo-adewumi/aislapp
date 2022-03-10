@@ -41,6 +41,9 @@ const TradeConfirmations = () => {
     const [orderCancelled, setOrderCancelled] = useState('');
     const [orderSold, setOrderSold] = useState('');
 
+    const [buyTrade, setBuyTrade] = useState<any[]>([]);
+    const [sellTrade, setSellTrade] = useState<any[]>([]);
+
     useEffect(()=>{
         function getAllOrders(){
 
@@ -54,35 +57,35 @@ const TradeConfirmations = () => {
                     const allOrders = response.data.data.map((item :any, index :any)=>
                     <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
                         <div className="md:flex md:justify-between md:items-center text-sm">
-                            <div className='flex-child md:mb-0 mb-4'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
+                            <div className='flex-child md:mb-0 mb-4 text-xs'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
-                                <div className='font-bold mb-10'>{item.stockCode}</div>
+                            <div className=" flex-child md:mb-0 mb-4">
+                                <div className='font-bold text-xs'>{item.stockCode}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
-                                <div className='font-bold mb-10'>{item.name}</div>
+                            <div className=" flex-child md:mb-0 mb-4">
+                                <div className='font-bold text-xs'>{parseInt(item.qty)}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
-                                <div className='font-bold '>{parseInt(item.qty)}</div>
+                            <div className=" flex-child md:mb-0 mb-4">
+                                <div className='font-bold text-xs'>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
-                                <div className='font-bold '>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
+                            <div className=" flex-child md:mb-0 mb-4">
+                                <div className='font-bold text-xs'>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
-                                <div className='font-bold '>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
-                            </div>
-
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
-                                <div className='font-bold '>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
+                            <div className=" flex-child md:mb-0 mb-4">
+                                <div className='font-bold text-xs'>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
                             </div> 
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4 text-right">                                
+                                <button type='button' className={item.txntype.toLowerCase() === 'buy' || item.txntype.toLowerCase() ? "py-2 px-3 text-xs border-0 font-bold text-red-500 cursor-pointer bg-transparent":"hidden"}>Cancel</button>
+                            </div>
+
+                            <div className=" flex-child md:mb-0 mb-4 text-xs text-right">
                                 <Link to={"/stock?name="+item.name+"&symbol="+item.stockCode+"&close="+item.quotePrice+"&tradeAction=sell"}>
-                                    <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
+                                    <button type='button' className="rounded-lg bg-green-800 py-2 px-3 border-0 font-bold text-white cursor-pointer text-xs">View</button></Link>
                             </div> 
                             
                         </div>
@@ -96,7 +99,6 @@ const TradeConfirmations = () => {
             })
             .catch(function (error) {
                 setShowPageLoader(false);
-               
             });
         }
 
@@ -112,31 +114,31 @@ const TradeConfirmations = () => {
                         <div className="md:flex md:justify-between md:items-center text-sm">
                             <div className='flex-child md:mb-0 mb-4'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold mb-10'>{item.stockCode}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold mb-10'>{item.name}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold '>{parseInt(item.qty)}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold '>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold '>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold '>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
                             </div> 
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <Link to={"/stock?name="+item.name+"&symbol="+item.stockCode+"&close="+item.quotePrice+"&tradeAction=sell"}>
                                     <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
                             </div> 
@@ -166,31 +168,31 @@ const TradeConfirmations = () => {
                         <div className="md:flex md:justify-between md:items-center text-sm">
                             <div className='flex-child md:mb-0 mb-4'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold mb-10'>{item.stockCode}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold mb-10'>{item.name}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold '>{parseInt(item.qty)}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold '>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold '>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold '>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
                             </div> 
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <Link to={"/stock?name="+item.name+"&symbol="+item.stockCode+"&close="+item.quotePrice+"&tradeAction=sell"}>
                                     <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
                             </div> 
@@ -220,31 +222,31 @@ const TradeConfirmations = () => {
                         <div className="md:flex md:justify-between md:items-center text-sm">
                             <div className='flex-child md:mb-0 mb-4'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold mb-10'>{item.stockCode}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold mb-10'>{item.name}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold '>{parseInt(item.qty)}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold '>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold '>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold '>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
                             </div> 
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <Link to={"/stock?name="+item.name+"&symbol="+item.stockCode+"&close="+item.quotePrice+"&tradeAction=sell"}>
                                     <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
                             </div> 
@@ -274,31 +276,31 @@ const TradeConfirmations = () => {
                         <div className="md:flex md:justify-between md:items-center text-sm">
                             <div className='flex-child md:mb-0 mb-4'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold mb-10'>{item.stockCode}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold mb-10'>{item.name}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold '>{parseInt(item.qty)}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold '>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold '>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold '>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
                             </div> 
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <Link to={"/stock?name="+item.name+"&symbol="+item.stockCode+"&close="+item.quotePrice+"&tradeAction=sell"}>
                                     <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
                             </div> 
@@ -328,31 +330,31 @@ const TradeConfirmations = () => {
                         <div className="md:flex md:justify-between md:items-center text-sm">
                             <div className='flex-child md:mb-0 mb-4'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold mb-10'>{item.stockCode}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold mb-10'>{item.name}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold '>{parseInt(item.qty)}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold '>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold '>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
                             </div>
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold '>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
                             </div> 
 
-                            <div className="text-color-2 flex-child md:mb-0 mb-4">
+                            <div className=" flex-child md:mb-0 mb-4">
                                 <Link to={"/stock?name="+item.name+"&symbol="+item.stockCode+"&close="+item.quotePrice+"&tradeAction=sell"}>
                                     <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
                             </div> 
@@ -367,12 +369,30 @@ const TradeConfirmations = () => {
             .catch(function (error) { });
         }
 
+        function getTradeByTxnType(){
+
+            setShowPageLoader(true);
+    
+            getAxios(axios).get(stockTradingServiceBaseUrlUrl+'/order/all')
+            .then(function (response) {
+                let filterBuyTxnType :any[] = response.data.data.filter((el: any) => el.txntype.toLowerCase() === 'buy');
+                let filterSellTxnType :any[] = response.data.data.filter((el: any) => el.txntype.toLowerCase() === 'sell');
+
+                setBuyTrade(filterBuyTxnType);
+                setSellTrade(filterSellTxnType);
+            })
+            .catch(function (error) {
+                setShowPageLoader(false);
+            });
+        }
+
         getAllOrders();
         getOpenOrders();
         getExecutedOrders();
         getRejectedOrders();
         getCancelledOrders();
         getSoldOrders();
+        getTradeByTxnType();        
 
     },[])
 
@@ -454,7 +474,7 @@ const TradeConfirmations = () => {
                                 </div>
                             </div>
 
-                            <div className="text-sm font-bold text-color-2 mb-30">Summary of all your trades</div>
+                            <div className="text-sm font-bold  mb-30">Summary of all your trades</div>
 
                             {/*Switch Search*/}
                             <div className="mb-20">
@@ -466,18 +486,18 @@ const TradeConfirmations = () => {
                                             </div>
 
                                             <div>
-                                                <button onClick={performSwitchToOpen} type='button' className={switchToOpen ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bg-transparent w-full"}>Open</button>
+                                                <button onClick={performSwitchToOpen} type='button' className={switchToOpen ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bg-transparent w-full"}>Purchased</button>
                                             </div>
 
-                                            <div>
+                                            <div className='hidden'>
                                                 <button onClick={performSwitchToExecuted} type='button' className={switchToExecuted ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bg-transparent w-full"}>Executed</button>
                                             </div>
 
-                                            <div>
+                                            <div className='hidden'>
                                                 <button onClick={performSwitchToRejected} type='button' className={switchToRejected ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bg-transparent w-full"}>Rejected</button>
                                             </div>
 
-                                            <div>
+                                            <div className='hidden'>
                                                 <button onClick={performSwitchToCancelled} type='button' className={switchToCancelled ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bg-transparent w-full"}>Cancelled</button>
                                             </div>
 
@@ -514,14 +534,14 @@ const TradeConfirmations = () => {
                             <div>
                                 <div className="card mb-20 text-sm p-5">
                                     <div className="md:flex md:justify-between md:items-center">
-                                        <div className="font-bold text-color-2 flex-child opacity-0 md:block hidden">Blank</div>
-                                        <div className="font-bold text-color-2 flex-child md:mb-0 mb-4">Code</div>
-                                        <div className="font-bold text-color-2 flex-child md:mb-0 mb-4">Name</div>
-                                        <div className="font-bold text-color-2 flex-child md:mb-0 mb-4">Qty</div>
-                                        <div className="font-bold text-color-2 flex-child md:mb-0 mb-4">Amount</div>
-                                        <div className="font-bold text-color-2 flex-child md:mb-0 mb-4">Status</div>
-                                        <div className="font-bold text-color-2 flex-child md:mb-0 mb-4">Date</div>
-                                        <div className="font-bold text-color-2 flex-child md:block hidden opacity-0">Blank</div>
+                                        <div className="font-bold  flex-child opacity-0 md:block hidden">Blank</div>
+                                        <div className="font-bold  flex-child md:mb-0 mb-4">Code</div>
+                                        <div className="font-bold  flex-child md:mb-0 mb-4">Qty</div>
+                                        <div className="font-bold  flex-child md:mb-0 mb-4">Amount</div>
+                                        <div className="font-bold  flex-child md:mb-0 mb-4">Status</div>
+                                        <div className="font-bold  flex-child md:mb-0 mb-4">Date</div>
+                                        <div className="font-bold  flex-child md:block hidden opacity-0">Blank</div>
+                                        <div className="font-bold  flex-child md:block hidden opacity-0">Blank</div>
                                     </div>
                                 </div>
 
@@ -537,7 +557,43 @@ const TradeConfirmations = () => {
                                 <div className={switchToOpen ? '':'hidden'}>
                                     <div className={orderOpen === '' ? 'text-gray-500 text-center':'hidden'}>No open trades to display</div>
 
-                                    <div>{orderOpen}</div>
+                                    <div>{buyTrade.map((item :any, index :any)=>
+                                        <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
+                                            <div className="md:flex md:justify-between md:items-center text-sm">
+                                                <div className='flex-child md:mb-0 mb-4'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
+
+                                                <div className="flex-child md:mb-0 mb-4">
+                                                    <div className='font-bold text-xs'>{item.stockCode}</div>
+                                                </div>
+
+                                                <div className=" flex-child md:mb-0 mb-4">
+                                                    <div className='font-bold text-xs'>{parseInt(item.qty)}</div>
+                                                </div>
+
+                                                <div className=" flex-child md:mb-0 mb-4">
+                                                    <div className='font-bold text-xs'>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
+                                                </div>
+
+                                                <div className=" flex-child md:mb-0 mb-4">
+                                                    <div className='font-bold text-xs'>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
+                                                </div>
+
+                                                <div className=" flex-child md:mb-0 mb-4">
+                                                    <div className='font-bold text-xs'>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
+                                                </div> 
+
+                                                <div className=" flex-child md:mb-0 mb-4 text-right">                                                    
+                                                    <button type='button' className={item.status  === 'AWAIT_EXECUTION' ? "py-2 px-3 border-0 bg-transparent font-bold text-red-500 text-xs cursor-pointer":"hidden"}>Cancel</button>
+                                                </div>
+
+                                                <div className="flex-child md:mb-0 mb-4 text-right">
+                                                    <button type='button' className="rounded-lg bg-green-800 py-2 px-3 border-0 font-bold text-white cursor-pointer text-xs">View</button>
+                                                </div> 
+                                                
+                                            </div>
+                                        </div>
+                                        )}
+                                    </div>
                                 </div>
                                 {/*End*/}
 
@@ -570,7 +626,43 @@ const TradeConfirmations = () => {
                                 <div className={switchToSold ? '':'hidden'}>
                                     <div className={orderSold === '' ? 'text-gray-500 text-center':'hidden'}>No sold trades to display</div>
 
-                                    <div>{orderSold}</div> 
+                                    <div>{sellTrade.map((item :any, index :any)=>
+                                        <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
+                                            <div className="md:flex md:justify-between md:items-center text-sm">
+                                                <div className='flex-child md:mb-0 mb-4'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
+
+                                                <div className="flex-child md:mb-0 mb-4">
+                                                    <div className='font-bold text-xs'>{item.stockCode}</div>
+                                                </div>
+
+                                                <div className=" flex-child md:mb-0 mb-4">
+                                                    <div className='font-bold text-xs'>{parseInt(item.qty)}</div>
+                                                </div>
+
+                                                <div className=" flex-child md:mb-0 mb-4">
+                                                    <div className='font-bold text-xs'>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
+                                                </div>
+
+                                                <div className=" flex-child md:mb-0 mb-4">
+                                                    <div className='font-bold text-xs'>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
+                                                </div>
+
+                                                <div className=" flex-child md:mb-0 mb-4">
+                                                    <div className='font-bold text-xs'>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
+                                                </div> 
+
+                                                <div className=" flex-child md:mb-0 mb-4 text-right">                                                    
+                                                    <button type='button' className={item.status  === 'AWAIT_EXECUTION' ? "py-3 px-3 border-0 bg-transparent text-xs font-bold text-red-500 cursor-pointer":"hidden"}>Cancel</button>
+                                                </div>
+
+                                                <div className="flex-child md:mb-0 mb-4 text-right">
+                                                    <button type='button' className="rounded-lg bg-green-800 py-3 px-3 border-0 font-bold text-white cursor-pointer text-xs">View</button>
+                                                </div> 
+                                                
+                                            </div>
+                                        </div>
+                                        )}
+                                    </div>
                                     
                                 </div>
                                 {/*End*/}

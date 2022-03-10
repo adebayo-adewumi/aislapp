@@ -290,7 +290,7 @@ const Dashboard = () => {
         function testApiForGet() {
             //let customer = HelperFunctions.getCustomerInfo();
 
-            getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/EKOCORP')
+            getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/bought')
                 .then(function (response) { 
                     console.log(response.data);
                 })
