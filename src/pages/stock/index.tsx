@@ -1169,7 +1169,7 @@ const Stock = () => {
             setUnitToSell(String(unitBalance));
 
             setUnitToSellError("");
-            
+
             setIsValidateUnitToSell(false);
 
         }
@@ -1585,21 +1585,23 @@ const Stock = () => {
                     <div>
                         <div className='mb-10'>
                             <img src={AtlasIcon} alt="" className="align-middle border-1-d6 rounded-lg" />
-                            <span className="font-bold font-gotham-black-regular mx-3 text-xl">{params.get('symbol')}</span> |
-                            <span className="font-bold mx-3">{params.get('name')}</span>
+                            <span className="font-bold font-gotham-black-regular mx-3 text-sm">{params.get('symbol')}</span> |
+                            <span className="font-bold mx-3 text-sm">{String(params.get('name')).substring(0, 16)}...</span>
                         </div>
 
                         <div className="mb-20 w-32 bg-yellow-400 py-2 px-3 rounded-2xl text-sm">Manufacturing</div>
 
                         <div className="leading-6 text-sm mb-20">{companyInfo.length > 250 ? companyInfo.substring(0, 250) + "..." : companyInfo}</div>
 
-                        <div className='mb-20'>
+                        <div className='mb-10'>
                             <div className='mb-10 font-bold'>Current Price</div>
-                            <div className='font-gotham-black-regular text-green-900 text-3xl'>₦ {HelperFunctions.formatCurrencyWithDecimal(parseFloat(params.get('close') as string))}</div>
+                            <div className='font-gotham-black-regular text-green-900 text-3xl'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
                         </div>
 
                         <div className='mb-20'>
-                            <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-sm" : "font-bold text-red-500 text-sm"}>{HelperFunctions.formatCurrencyWithDecimal(parseFloat(params.get('change') as string))} | {HelperFunctions.formatCurrencyWithDecimal(parseFloat(params.get('change') as string))}%  </div>
+                            <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-sm" : "font-bold text-red-500 text-sm"}>
+                                {stockInfo === '' ? '' : JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === '' ? '' : HelperFunctions.formatCurrencyWithDecimal(JSON.parse(stockInfo).percentageChange.replace('-',''))}%
+                            </div>
                         </div>
 
                         <div className='mb-30 flex space-x-5'>

@@ -95,7 +95,7 @@ const Dashboard = () => {
                 .then(function (response) {
                     const topmovers = response.data.data.map((el: any, index :any) =>
                         <div className="card md:w-2/5 w-full md:p-5 px-3 py-3 md:mb-0 mb-6">
-                            <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.stockCode + "&sign=" + (el.sign === '+' ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose+"&tradeAction=buy"} className='no-underline' key={index}>
+                            <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.stockCode + "&sign=" + (parseFloat(el.percentageChange) >= 0 ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose+"&tradeAction=buy"} className='no-underline' key={index}>
                                 <div className="mb-10">
                                     <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt=""/>
                                 </div>
@@ -149,7 +149,7 @@ const Dashboard = () => {
                     const takeGainers = [response.data.data[0], response.data.data[1], response.data.data[2]];
 
                     const listTopGainers = takeGainers.map((el: any, index :any) =>
-                        <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.stockCode + "&sign=" + (el.sign === '+' ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose+"&tradeAction=buy"} className='no-underline' key={index}>
+                        <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.stockCode + "&sign=positive&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose+"&tradeAction=buy"} className='no-underline' key={index}>
                             <div className="card mb-30 md:px-3 px-3 py-3">
                                 <div className="flex justify-between w-full">
                                     <div className="flex md:space-x-5 space-x-3">
@@ -169,7 +169,8 @@ const Dashboard = () => {
                                     <div>
                                         <div className="mt-1">
                                             <div className="font-bold mb-5 text-black text-right md:text-sm text-xs">₦ {HelperFunctions.formatCurrencyWithDecimal(parseFloat(el.price))}</div>
-                                            <div className={(parseFloat(el.price) - parseFloat(el.lclose)) >= 0 ? "mt-3 text-green-500 md:text-sm text-xs" : "text-red-500 mt-3 md:text-sm text-xs"}> {(parseFloat(el.price) - parseFloat(el.lclose)) === 0 ? 0 : HelperFunctions.formatCurrencyWithDecimal(((parseFloat(el.price) - parseFloat(el.lclose)) * 100) / parseFloat(el.price))}%  </div>
+
+                                            <div className={parseFloat(el.percentageChange) >= 0 ? "mt-3 text-green-500 md:text-sm text-xs" : "text-red-500 mt-3 md:text-sm text-xs"}> { HelperFunctions.formatCurrencyWithDecimal(el.percentageChange.replace('-',''))}%  </div>
                                         </div>
                                     </div>
                                 </div>
@@ -194,7 +195,7 @@ const Dashboard = () => {
                     const takeLosers = [response.data.data[0], response.data.data[1], response.data.data[2]];
 
                     const listTopLosers = takeLosers.map((item: any, index :any) =>
-                        <Link to={"/stock?name=" + item.name + "&sector=" + item.sector + "&symbol=" + item.stockCode + "&sign=" + (item.sign === '+' ? 'positive' : 'negative') + "&change=" + item.change + "&close=" + item.close + "&open=" + item.open + "&high=" + item.high + "&low=" + item.low + "&wkhigh=" + item.weekHigh52 + "&wklow=" + item.weekLow52 + "&volume=" + item.volume + "&mktsegment=" + item.mktSegment + "&pclose=" + item.pclose+"&tradeAction=buy"} className='no-underline' key={index}>
+                        <Link to={"/stock?name=" + item.name + "&sector=" + item.sector + "&symbol=" + item.stockCode + "&sign=negative&change=" + item.change + "&close=" + item.close + "&open=" + item.open + "&high=" + item.high + "&low=" + item.low + "&wkhigh=" + item.weekHigh52 + "&wklow=" + item.weekLow52 + "&volume=" + item.volume + "&mktsegment=" + item.mktSegment + "&pclose=" + item.pclose+"&tradeAction=buy"} className='no-underline' key={index}>
                             <div className="card mb-30 md:px-3 px-3 py-3">
                                 <div className="flex justify-between w-full">
                                     <div className="flex md:space-x-5 space-x-3">
@@ -214,7 +215,8 @@ const Dashboard = () => {
                                     <div>
                                         <div className="mt-1">
                                             <div className="font-bold text-black mb-5 text-right md:text-sm text-xs">₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
-                                            <div className={((parseFloat(item.price) - parseFloat(item.lclose))) >= 0 ? "mt-3 text-green-500 md:text-sm text-xs" : "text-red-500 mt-3 md:text-sm text-xs"}> {((parseFloat(item.price) - parseFloat(item.lclose))) === 0 ? 0 : HelperFunctions.formatCurrencyWithDecimal((((parseFloat(item.price) - parseFloat(item.lclose))) * 100) / parseFloat(item.price)).replace("-","")}%  </div>
+
+                                            <div className={parseFloat(item.percentageChange) >= 0 ? "mt-3 text-green-500 md:text-sm text-xs" : "text-red-500 mt-3 md:text-sm text-xs"}> { HelperFunctions.formatCurrencyWithDecimal(item.percentageChange.replace('-',''))}%  </div>
                                         </div>
                                     </div>
                                 </div>
@@ -362,7 +364,7 @@ const Dashboard = () => {
 
                 const topmovers = response.data.data.map((el: any, index :any) =>
                     <div className="card md:w-2/5 w-full md:p-5 px-3 py-3 md:mb-0 mb-6" key={index}>
-                        <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.stockCode + "&sign=" + (el.sign === '+' ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose+"&tradeAction=buy"} className='no-underline' >
+                        <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.stockCode + "&sign=" + (parseFloat(el.percentageChange) >= 0 ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose+"&tradeAction=buy"} className='no-underline' >
                             <div className="mb-10">
                             <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" />
                             </div>
@@ -747,10 +749,10 @@ const Dashboard = () => {
 
                         <div className="border-1 mb-30"></div>
 
-                        <div>
+                        <div className='overflow-y-auto max-h-96 p-5'>
                             {topGainersSeeMore.map((item: any, index :any) =>
-                                <Link to={"/stock?name=" + item.name + "&sector=" + item.sector + "&symbol=" + item.stockCode + "&sign=" + (item.sign === '+' ? 'positive' : 'negative') + "&change=" + item.change + "&close=" + item.close + "&open=" + item.open + "&high=" + item.high + "&low=" + item.low + "&wkhigh=" + item.weekHigh52 + "&wklow=" + item.weekLow52 + "&volume=" + item.volume + "&mktsegment=" + item.mktSegment + "&pclose=" + item.pclose} className='no-underline' key={index}>
-                                    <div className="card mb-30">
+                                <Link to={"/stock?name=" + item.name + "&sector=" + item.sector + "&symbol=" + item.stockCode + "&sign=positive&change=" + item.change + "&close=" + item.close + "&open=" + item.open + "&high=" + item.high + "&low=" + item.low + "&wkhigh=" + item.weekHigh52 + "&wklow=" + item.weekLow52 + "&volume=" + item.volume + "&mktsegment=" + item.mktSegment + "&pclose=" + item.pclose+"&tradeAction=buy"} className='no-underline' key={index}>
+                                    <div className="card mb-30 p-3">
                                         <div className="flex justify-between w-full">
                                             <div className="flex space-x-5">
                                                 <div>
@@ -758,15 +760,15 @@ const Dashboard = () => {
                                                 </div>
 
                                                 <div className="mt-1">
-                                                    <div className="font-bold text-color-2 mb-5">{item.stockCode}</div>
-                                                    <div className="mt-3 text-black">{item.name}</div>
+                                                    <div className="font-bold text-color-2 mb-5 text-sm">{item.stockCode}</div>
+                                                    <div className="mt-3 text-black text-sm">{item.name.substring(0,16)}...</div>
                                                 </div>
                                             </div>
 
                                             <div>
                                                 <div className="mt-1">
                                                     <div className="font-bold text-color-2 mb-5 text-right">₦ {HelperFunctions.formatCurrencyWithDecimal(parseFloat(item.price))}</div>
-                                                    <div className={(parseFloat(item.price) - parseFloat(item.lclose)) >= 0 ? "mt-3 text-green-500" : "text-red-500 mt-3"}> {(parseFloat(item.price) - parseFloat(item.lclose)) === 0 ? 0 : HelperFunctions.formatCurrencyWithDecimal(((parseFloat(item.price) - parseFloat(item.lclose)) * 100) / parseFloat(item.price))}%  </div>
+                                                    <div className={(parseFloat(item.price) - parseFloat(item.lclose)) >= 0 ? "mt-3 text-green-500" : "text-red-500 mt-3"}> { HelperFunctions.formatCurrencyWithDecimal(item.percentageChange)}%  </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -791,10 +793,10 @@ const Dashboard = () => {
 
                         <div className="border-1 mb-30"></div>
 
-                        <div>
+                        <div className='overflow-y-auto max-h-96 p-5'>
                             {topLosersSeeMore.map((item: any, index :any) =>
-                                <Link to={"/stock?name=" + item.name + "&sector=" + item.sector + "&symbol=" + item.stockCode + "&sign=" + (item.sign === '+' ? 'positive' : 'negative') + "&change=" + item.change + "&close=" + item.close + "&open=" + item.open + "&high=" + item.high + "&low=" + item.low + "&wkhigh=" + item.weekHigh52 + "&wklow=" + item.weekLow52 + "&volume=" + item.volume + "&mktsegment=" + item.mktSegment + "&pclose=" + item.pclose} className='no-underline' key={index}>
-                                    <div className="card mb-30">
+                                <Link to={"/stock?name=" + item.name + "&sector=" + item.sector + "&symbol=" + item.stockCode + "&sign=negative&change=" + item.change + "&close=" + item.close + "&open=" + item.open + "&high=" + item.high + "&low=" + item.low + "&wkhigh=" + item.weekHigh52 + "&wklow=" + item.weekLow52 + "&volume=" + item.volume + "&mktsegment=" + item.mktSegment + "&pclose=" + item.pclose+"&tradeAction=buy"} className='no-underline' key={index}>
+                                    <div className="card mb-30 p-3">
                                         <div className="flex justify-between w-full">
                                             <div className="flex space-x-5">
                                                 <div>
@@ -802,15 +804,15 @@ const Dashboard = () => {
                                                 </div>
 
                                                 <div className="mt-1">
-                                                    <div className="font-bold text-color-2 mb-5">{item.stockCode}</div>
-                                                    <div className="mt-3 text-black">{item.name}</div>
+                                                    <div className="font-bold text-color-2 mb-5 text-sm">{item.stockCode}</div>
+                                                    <div className="mt-3 text-black text-sm">{item.name.substring(0,16)}...</div>
                                                 </div>
                                             </div>
 
                                             <div>
                                                 <div className="mt-1">
                                                     <div className="font-bold text-color-2 mb-5 text-right">₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
-                                                    <div className={((parseFloat(item.price) - parseFloat(item.lclose))) >= 0 ? "mt-3 text-green-500" : "text-red-500 mt-3"}> {((parseFloat(item.price) - parseFloat(item.lclose))) === 0 ? 0 : HelperFunctions.formatCurrencyWithDecimal((((parseFloat(item.price) - parseFloat(item.lclose))) * 100) / parseFloat(item.price))}%  </div>
+                                                    <div className={((parseFloat(item.price) - parseFloat(item.lclose))) >= 0 ? "mt-3 text-green-500" : "text-red-500 mt-3"}> { HelperFunctions.formatCurrencyWithDecimal(item.percentageChange.replace('-',''))}%  </div>
                                                 </div>
                                             </div>
                                         </div>
