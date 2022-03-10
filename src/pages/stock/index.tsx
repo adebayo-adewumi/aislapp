@@ -127,8 +127,6 @@ const Stock = () => {
     const [portfolioWithCurrentStock, setPortfolioWithCurrentStock] = useState<any[]>([]);
     const [totalUnitToSell, setTotalUnitToSell] = useState(0);
 
-    const [availableUnit, setAvailableUnit] = useState(0);
-
     const [unitToSell, setUnitToSell] = useState('0');
     const [unitToSellError, setUnitToSellError] = useState('');
     const [isValidateUnitToSell, setIsValidateUnitToSell] = useState<boolean>(false);
@@ -138,8 +136,6 @@ const Stock = () => {
 
     const [highPriceAlert, setHighPriceAlert] = useState('');
     const [lowPriceAlert, setLowPriceAlert] = useState('');
-
-    const [desiredUnitToSell, setDesiredUnitToSell] = useState('0');
 
 
 
@@ -393,18 +389,6 @@ const Stock = () => {
 
         getPortfolioList();
     },[])
-
-    useEffect(()=>{
-        if(parseInt(unitToSell) > availableUnit || parseInt(unitToSell) === 0 || unitToSell === ''){
-            //setUnitToSellError("Units to sell cannot be greater than available units or equal to 0");
-            //setIsValidateUnitToSell(false);
-        }
-        else{
-            //setUnitToSellError("");
-            //setIsValidateUnitToSell(true);
-        }
-
-    },[unitToSell, availableUnit]);
 
     useEffect(() => {
         const _params = new URLSearchParams(window.location.search);
@@ -1153,7 +1137,6 @@ const Stock = () => {
         let splitValue = event.target.value.split("&");
 
         setPortfolioIdToAddStock(splitValue[0]);
-        setAvailableUnit(parseInt(splitValue[1]));
 
         let idIndex = portfolioIdArray.indexOf(splitValue[0]);
 
@@ -1178,15 +1161,32 @@ const Stock = () => {
 
     function calculateDesiredUnitToSell(event :any){
     
-        if(event.target.value !== '' && parseInt(unitToSell) > 0){
+        if(event.target.value !== '' && parseInt(unitToSell) > 0 && (parseInt(event.target.value) <= parseInt(unitToSell)) ){
             let unitBalance :any  = parseInt(unitToSell) - parseInt(event.target.value);
 
             localStorage.setItem("aislDesiredUnitToSell", event.target.value);
 
             setUnitToSell(String(unitBalance));
-        }
 
-        console.log(desiredUnitToSell+""+setDesiredUnitToSell('0')+""+setUnitToSellError("")+" "+setIsValidateUnitToSell(false));
+            setUnitToSellError("");
+            
+            setIsValidateUnitToSell(false);
+
+        }
+        else if(event.target.value === ''){
+            let idIndex = portfolioIdArray.indexOf(portfolioIdToAddStock);
+
+            setUnitToSell(portfolioStockUnitArray[idIndex]);
+
+            setUnitToSellError("");
+            setIsValidateUnitToSell(false);
+        }
+        else if(parseInt(event.target.value) > parseInt(unitToSell)){
+            
+            setUnitToSellError("Number of units to sell cannot be greater than available units");
+            setIsValidateUnitToSell(false);
+            
+        }
     }
 
     

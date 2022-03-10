@@ -87,7 +87,6 @@ const Profile = () => {
     const [nokEmail, setNokEmail] = useState('');
     const [nokAddress, setNokAddress] = useState('');
     const [nokRelationship, setNokRelationship] = useState('');
-    const [nokRelationshipSelected, setNokRelationshipSelected] = useState('');
     const [nokRelationshipOtherValue, setNokRelationshipOtherValue] = useState('');
 
     const [idFile, setIdFile] = useState('');
@@ -352,6 +351,8 @@ const Profile = () => {
                     setNokFirstname(nokDetails === '' ? '': response.data.data.firstName );                 
                     setNokLastname(nokDetails === '' ? '': response.data.data.lastName );                 
                     setNokPhone(nokDetails === '' ? '': response.data.data.phoneNumber );                
+                    setNokRelationship(nokDetails === '' ? '': response.data.data.relationship );                
+                    setNokAddress(nokDetails === '' ? '': response.data.data.address );                
                 })
                 .catch(function (error) {});
         }        
@@ -395,14 +396,6 @@ const Profile = () => {
             }
             else{
                 setIsNOKDetailsFilled(true);
-                setNokRelationshipSelected('');
-            }
-
-            if(nokRelationship === "Other"){
-                setNokRelationshipSelected('Other');
-            }
-            else{
-                setNokRelationshipSelected('');
             }
         }
 
@@ -411,7 +404,7 @@ const Profile = () => {
 
     useEffect(() => {
         function checkIfNOKRelationshipOtherFieldsIsFilled(){
-            if((nokRelationship === 'Other' && nokRelationshipOtherValue === '') || nokFirstname === '' || nokLastname === '' || nokEmail === '' || nokAddress === '' || nokPhone === '' ){
+            if((nokRelationship === 'OTHERS' && nokRelationshipOtherValue === '') || nokFirstname === '' || nokLastname === '' || nokEmail === '' || nokAddress === '' || nokPhone === '' ){
 
                 setIsNOKDetailsFilled(false);
             }
@@ -617,10 +610,12 @@ const Profile = () => {
             "employer": employer,
             "profession": profession,
             "salary": salary,
-            "customerId": customer.id
+            "customerId": customer.id,
+            "isPoliticallyExposed": political === 'Yes' ? true : false,
+            "politicalAffiliation": political
         }
 
-        console.log(salary);
+        console.log(requestData);
 
         setShowEmploymentSpinner(true);
 
@@ -639,7 +634,7 @@ const Profile = () => {
         },{headers})
         .then(function (response) {
             setShowEmploymentSpinner(false);
-            setApiResponseMessage(response.data.description);
+            setApiResponseMessage("Employment details updated successfully.");
             setIsEmployeeDetailsSuccessful(true);
         })
         .catch(function (error) {
@@ -655,11 +650,11 @@ const Profile = () => {
         let requestData = {
             "address": nokAddress,
             "customerId": customer.id,
-            "emailId": nokEmail,
+            "email": nokEmail,
             "firstName": nokFirstname,
             "lastName": nokLastname,
             "phoneNumber": nokPhoneCode.concat(nokPhone),
-            "relationship": nokRelationship
+            "relationship": nokRelationship === 'OTHERS' ? nokRelationshipOtherValue : nokRelationship
         }
 
         setShowNokSpinner(true);
@@ -679,7 +674,7 @@ const Profile = () => {
         },{headers})
         .then(function (response) {
             setShowNokSpinner(false);
-            setApiResponseMessage(response.data.description);
+            setApiResponseMessage('Next of Kin details updated successfully.');
             setIsNokSuccessful(true);
         })
         .catch(function (error) {
@@ -950,9 +945,7 @@ const Profile = () => {
             setShowEnterPasswordCard(false);
             setShowGeneratePasswordOTPCard(true);
         });        
-    }
-
-    
+    }    
 
     function sendChangePinOTP(){
 
@@ -1345,6 +1338,9 @@ const Profile = () => {
                                                     <div>
                                                         <select onChange={e => setPolitical(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
                                                             <option value=''>...</option>
+
+                                                            <option value={employmentDetails === '' ? '...' : JSON.parse(employmentDetails).isPoliticallyExposed} selected={employmentDetails === '' ? '' : JSON.parse(employmentDetails).isPoliticallyExposed}>{employmentDetails === '' ? '' : JSON.parse(employmentDetails).isPoliticallyExposed}</option>
+
                                                             <option value='Yes'>Yes</option>
                                                             <option value='No'>No</option>
                                                         </select>
@@ -1485,25 +1481,28 @@ const Profile = () => {
                                                 <div className='md:w-1/3 w-full'>
                                                     <div className='text-gray-700 mb-3 text-sm font-bold'>Relationship</div>
                                                     <div>
-                                                        <select value={nokRelationship} onChange={e => setNokRelationship(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
+                                                        <select onChange={e => setNokRelationship(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
                                                             <option value="">Select relationship</option>
-                                                            <option value="Father">Father</option>
-                                                            <option value="Mother">Mother</option>
-                                                            <option value="Sister">Sister</option>
-                                                            <option value="Brother">Brother</option>
-                                                            <option value="Other">Other</option>
+
+                                                            <option value={nokDetails === '' ? '...' : JSON.parse(nokDetails).relationship} selected={nokDetails === '' ? '' : JSON.parse(nokDetails).relationship}>{nokDetails === '' ? '' : JSON.parse(nokDetails).relationship}</option>
+
+                                                            <option value="SISTER">SISTER</option>
+                                                            <option value="BROTHER">BROTHER</option>
+                                                            <option value="SPOUSE">SPOUSE</option>
+                                                            <option value="DAUGHTER">DAUGHTER</option>
+                                                            <option value="OTHERS">OTHERS</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div className={nokRelationshipSelected === 'Other' ? 'w-full mb-11':'hidden'}>
+                                        <div className={nokRelationship === 'OTHERS' ? 'w-full mb-11':'hidden'}>
                                             <div>
                                                 <div className='text-gray-700 mb-3 text-sm font-bold'>Other relationship type</div>
                                                 
                                                 <div>
-                                                    <input defaultValue={nokRelationshipOtherValue} onChange={e => setNokRelationshipOtherValue(e.target.value)}  type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/>
+                                                    <input value={nokRelationshipOtherValue} onChange={e => setNokRelationshipOtherValue(e.target.value)}  type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/>
                                                 </div>
                                             </div>
                                         </div>

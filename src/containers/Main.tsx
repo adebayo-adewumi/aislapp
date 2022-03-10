@@ -27,6 +27,7 @@ import Profile from '../pages/profile';
 import Learn from '../pages/learn';
 import News from '../pages/news';
 import NewsDetails from '../pages/news/details';
+import Chat from '../pages/chat';
 
 const Main = () => {
 
@@ -133,6 +134,11 @@ const Main = () => {
                     <Route path="news/details" element={
                       <RequireAuth>
                         <NewsDetails />
+                      </RequireAuth>
+                    } />
+                    <Route path="chat" element={
+                      <RequireAuth>
+                        <Chat />
                       </RequireAuth>
                     } />
                   </Routes>
