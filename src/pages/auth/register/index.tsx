@@ -21,6 +21,7 @@ import CloseIcon from '../../../assets/images/close.svg';
 import CircleCheckGreenIcon from '../../../assets/images/circle-check-green.svg';
 import CircleInfoRedIcon from '../../../assets/images/circle-info-red.svg';
 import * as HelperFunctions from '../../../lib/helper';
+import { Form } from 'react-bootstrap';
 
 const Register = () => {
     const [showSignup, setShowSignup] = useState<boolean>(true);
@@ -100,6 +101,11 @@ const Register = () => {
     const [errorMsg, setErrorMsg] = useState('');
 
     const [hashedSelfieImg, setHashedSelfieImg] = useState('');
+
+    const [showModalBG, setShowModalBG] = useState<boolean>(true);
+    const [showValidateUserIdModal, setShowValidateUserIdModal] = useState<boolean>(true);
+
+    const [hasUserId, setHasUserId] = useState('');
 
     document.title = "Register - Anchoria";
 
@@ -232,6 +238,10 @@ const Register = () => {
         checkIfConfirmPasswordIsNullOrEmpty();
         checkIfOBIsNullOrEmpty();
         getUserIpAddress();
+    });
+
+    useEffect(()=>{
+
     });
 
     function verifyBVNAndDOB() {
@@ -664,7 +674,10 @@ const Register = () => {
 
     function closeModal() {
         setOpenBVNModal(false);
-        setOpenModalBackdrop(false)
+        setOpenModalBackdrop(false);
+
+        setShowModalBG(false);
+        setShowValidateUserIdModal(false);
     }
 
 
@@ -1410,6 +1423,42 @@ const Register = () => {
 
                         <div className={openModalBackdrop ? "modal-backdrop opacity-40" : "modal-backdrop opacity-40 hidden"}>
                         </div>
+
+                        {/* Validate User Id */}
+                        <div className={showValidateUserIdModal ? "generic-modal":"hidden"}>
+                            <div className='generic-modal-dialog'>
+                                <div className="top-losers-modal">
+                                    <div className="mb-10 flex justify-between">
+                                        <div className="font-bold text-xl text-green-900">Validate User ID</div>                                        
+                                    </div>
+
+                                    <div className="border-1 mb-30"></div>
+
+                                    <div className=''>
+                                        <div className='font-bold text-lg mb-3'>Do you have a User ID?</div>
+
+                                        <div className='flex space-x-10 mb-11'>
+                                            <div className='flex space-x-1 items-center '>
+                                                <Form.Check onChange={e => setHasUserId('Yes')} type='radio' name='hasUserId' className='portfoliolist-checkbox'/>
+                                                <label>Yes</label>
+                                            </div>
+
+                                            <div className='flex space-x-1 items-center '>
+                                                <Form.Check onChange={e => setHasUserId('No')} type='radio' name='hasUserId' className='portfoliolist-checkbox'/>
+                                                <label>No</label>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <button className={hasUserId === ''? 'bg-green-900 border-0 cursor-pointer text-white font-bold px-10 py-4 rounded-lg opacity-50':'bg-green-900 border-0 cursor-pointer text-white font-bold px-10 py-4 rounded-lg'} disabled={hasUserId === ''} onClick={closeModal}>Continue</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* End */}
+
+                        <div className={showModalBG ? "modal-backdrop opacity-40" : "modal-backdrop opacity-40 hidden"}></div>
                     </div>
                 </div>
             </div>
