@@ -138,6 +138,7 @@ const Profile = () => {
     const [showGeneratePinOTPCard, setShowGeneratePinOTPCard] = useState<boolean>(true);
 
     const [showEnterPinCard, setShowEnterPinCard] = useState<boolean>(false);
+    const [countries, setCountries] = useState<any[]>([]);
 
 
     useEffect(() => {
@@ -431,7 +432,19 @@ const Profile = () => {
                 .catch(function (error) { });
         }
 
+        function getCountries() {
+
+            getAxios(axios).get(utilityServiceBaseUrlUrl + '/lov/country')
+                .then(function (response) { 
+                    setCountries(response.data.data)
+                })
+                .catch(function (error) { });
+        }
+
+
+
         getBankDetails();
+        getCountries();
     },[]);
 
     function compareNotificationLogsDate(a :any, b :any) {
@@ -1161,14 +1174,13 @@ const Profile = () => {
                                                     <div className='font-bold  text-gray-700 mb-3 text-sm'>Country</div>
                                                     <div>
                                                         <select onChange={e => setCountry(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
-                                                            <option value=''>Select a country</option>
                                                             <option value={customer.nationality}>{customer.nationality}</option>
-                                                            <option value='Ghana'>Ghana</option>
-                                                            <option value='Ghana'>Nigeria</option>
-                                                            <option value='South Africa'>South Africa</option>
-                                                            <option value='US'>US</option>
-                                                            <option value='UK'>UK</option>
-                                                            <option value='China'>China</option>
+
+                                                            <option value=''>...</option>
+                                                            
+                                                            {countries.map((item :any, index :any)=>
+                                                                <option value={item.name} key={index}>{item.name}</option>
+                                                            )}
                                                         </select>
                                                     </div>
                                                 </div>

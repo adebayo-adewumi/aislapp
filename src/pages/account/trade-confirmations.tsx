@@ -717,7 +717,7 @@ const TradeConfirmations = () => {
             </div>
 
             {/* Transaction Details Modal */}
-            <div className="generic-modal">
+            <div className="generic-modal hidden">
                 <div className='generic-modal-dialog'>
                     <div className="top-losers-modal">
                         <div className="mb-6 flex justify-between">
@@ -783,7 +783,7 @@ const TradeConfirmations = () => {
             {/* End */}
 
             {/* Cancel Oder Modal */}
-            <div className="generic-modal">
+            <div className="generic-modal hidden">
                 <div className='generic-modal-dialog'>
                     <div className="top-losers-modal">
 
