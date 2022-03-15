@@ -347,12 +347,16 @@ const Profile = () => {
 
             getAxios(axios).get(authOnboardingServiceBaseUrl + '/customer/kyc/nok-details')
                 .then(function (response) { 
-                    setNOKDetails(JSON.stringify(response.data.data));
-                    setNokFirstname(nokDetails === '' ? '': response.data.data.firstName );                 
-                    setNokLastname(nokDetails === '' ? '': response.data.data.lastName );                 
-                    setNokPhone(nokDetails === '' ? '': response.data.data.phoneNumber );                
-                    setNokRelationship(nokDetails === '' ? '': response.data.data.relationship );                
-                    setNokAddress(nokDetails === '' ? '': response.data.data.address );                
+                    if(response.data.hasOwnProperty('data')){
+                        setNOKDetails(JSON.stringify(response.data.data));
+                        setNokFirstname(nokDetails === '' ? '': response.data.data.firstName);                 
+                        setNokLastname(nokDetails === '' ? '': response.data.data.lastName); 
+                        setNokEmail(nokDetails === '' ? '': response.data.data.email);                
+                        setNokPhone(nokDetails === '' ? '': response.data.data.phoneNumber );                
+                        setNokRelationship(nokDetails === '' ? '': response.data.data.relationship );                
+                        setNokAddress(nokDetails === '' ? '': response.data.data.address ); 
+                    }
+                                   
                 })
                 .catch(function (error) {});
         }        
@@ -564,14 +568,21 @@ const Profile = () => {
         let requestData = {
             "address": address,
             "country": country,
-            "idFile":idFile,
-            "idName":idBase64Img,
             "signature": signatureBase64Img,
             "signatureName": signatureFile,
+            "state":state,
+            "street":city,
             "utilityBill": utilityBillBase64Img,
             "utilityBillName": utilityBillFile,
             "utilityBillType": utilityBillFile,
-            "customerId": customer.id
+            "idFile":idFile,
+            "idName":idBase64Img,
+            "idDetails": {
+                "idNumber": idNumber,
+                "idType": idType,
+                "idCountry": country,
+                "dob":customer.dob
+            }
         }
 
         console.log(requestData);
@@ -593,7 +604,7 @@ const Profile = () => {
         },{headers})
         .then(function (response) {
             setIsPersonalDetailsSuccessful(true);
-            setApiResponseMessage(response.data.description);
+            setApiResponseMessage("Personal details saved successfully.");
             setShowPersonalSpinner(false);
         })
         .catch(function (error) {
@@ -1151,7 +1162,7 @@ const Profile = () => {
                                                     <div>
                                                         <select onChange={e => setCountry(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
                                                             <option value=''>Select a country</option>
-                                                            <option selected value={customer.nationality}>{customer.nationality}</option>
+                                                            <option value={customer.nationality}>{customer.nationality}</option>
                                                             <option value='Ghana'>Ghana</option>
                                                             <option value='Ghana'>Nigeria</option>
                                                             <option value='South Africa'>South Africa</option>
@@ -1321,9 +1332,11 @@ const Profile = () => {
                                                     <div className='text-gray-700 mb-3 text-sm font-bold'>Annual Salary Range</div>
                                                     <div>
                                                         <select onChange={e => setSalary(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
-                                                            <option value=''>Select a salary</option>
+                                                            <option value={employmentDetails === '' ? '...' : JSON.parse(employmentDetails).salary}>{employmentDetails === '' ? '' : JSON.parse(employmentDetails).salary}</option>
 
-                                                            <option value={employmentDetails === '' ? '...' : JSON.parse(employmentDetails).salary} selected={employmentDetails === '' ? '' : JSON.parse(employmentDetails).salary}>{employmentDetails === '' ? '' : JSON.parse(employmentDetails).salary}</option>
+                                                            <option value=''>...</option>
+
+                                                            
 
                                                             <option value='Less than 250,000'>Less than 250,000</option>
                                                             <option value='250,000 - 1m'>250,000 - 1m</option>
@@ -1337,9 +1350,12 @@ const Profile = () => {
                                                     <div className='text-gray-700 mb-3 text-sm font-bold'>Are you a politically exposed person?</div>
                                                     <div>
                                                         <select onChange={e => setPolitical(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
+
+                                                            <option value={employmentDetails === '' ? '...' : JSON.parse(employmentDetails).politicalAffiliation}>{employmentDetails === '' ? '' : JSON.parse(employmentDetails).politicalAffiliation}</option>
+
                                                             <option value=''>...</option>
 
-                                                            <option value={employmentDetails === '' ? '...' : JSON.parse(employmentDetails).isPoliticallyExposed} selected={employmentDetails === '' ? '' : JSON.parse(employmentDetails).isPoliticallyExposed}>{employmentDetails === '' ? '' : JSON.parse(employmentDetails).isPoliticallyExposed}</option>
+                                                            <option value={employmentDetails === '' ? '...' : JSON.parse(employmentDetails).politicalAffiliation}>{employmentDetails === '' ? '' : JSON.parse(employmentDetails).politicalAffiliation}</option>
 
                                                             <option value='Yes'>Yes</option>
                                                             <option value='No'>No</option>
@@ -1482,9 +1498,11 @@ const Profile = () => {
                                                     <div className='text-gray-700 mb-3 text-sm font-bold'>Relationship</div>
                                                     <div>
                                                         <select onChange={e => setNokRelationship(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
-                                                            <option value="">Select relationship</option>
+                                                            <option value={nokDetails === '' ? '...' : JSON.parse(nokDetails).relationship}>{nokDetails === '' ? '' : JSON.parse(nokDetails).relationship}</option>
 
-                                                            <option value={nokDetails === '' ? '...' : JSON.parse(nokDetails).relationship} selected={nokDetails === '' ? '' : JSON.parse(nokDetails).relationship}>{nokDetails === '' ? '' : JSON.parse(nokDetails).relationship}</option>
+                                                            <option value="">...</option>
+
+                                                            <option value={nokDetails === '' ? '...' : JSON.parse(nokDetails).relationship}>{nokDetails === '' ? '' : JSON.parse(nokDetails).relationship}</option>
 
                                                             <option value="SISTER">SISTER</option>
                                                             <option value="BROTHER">BROTHER</option>

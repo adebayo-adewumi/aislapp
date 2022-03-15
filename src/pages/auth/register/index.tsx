@@ -332,7 +332,7 @@ const Register = () => {
             "firstName": firstname,
             "lastName": lastname,
             "nationality": bvnDetails.nationality,
-            "otherNames": "sdsdhjjh",//othername,
+            "otherNames": othername,
             "password": password,
             "phoneNumber": phoneCode.concat(phone),
             "pin": ob1 + '' + ob2 + '' + ob3 + '' + ob4,
