@@ -1449,6 +1449,11 @@ const Register = () => {
                                             </div>
                                         </div>
 
+                                        <div className={hasUserId === 'Yes'? 'mb-11':'hidden'}>
+                                            <div className='font-bold text-sm mb-10'>Enter User ID</div>
+                                            <div><input type="text"  className="border p-3 rounded-lg  w-full outline-white text-lg"/></div>
+                                        </div>
+
                                         <div>
                                             <button className={hasUserId === ''? 'bg-green-900 border-0 cursor-pointer text-white font-bold px-10 py-4 rounded-lg opacity-50':'bg-green-900 border-0 cursor-pointer text-white font-bold px-10 py-4 rounded-lg'} disabled={hasUserId === ''} onClick={closeModal}>Continue</button>
                                         </div>
