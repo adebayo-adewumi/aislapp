@@ -149,7 +149,7 @@ const Trade = () => {
 
             <div>
                 <div className="h-screen flex">
-                    <Sidebar />
+                    <Sidebar /> 
 
                     <div className="mt-20 flex-1 min-w-0 flex flex-col">
                         <div className='p-10 flex-1 bg-gray-100 overflow-y-auto'>
