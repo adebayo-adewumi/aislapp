@@ -17,6 +17,9 @@ import BlueBoxIcon from '../../assets/images/blue-box.svg';
 import moment from 'moment';
 import { stockTradingServiceBaseUrlUrl } from '../../apiUrls';
 import { getAxios } from '../../network/httpClientWrapper';
+import CloseIcon from '../../assets/images/close.svg';
+import CanelOrderIcon from '../../assets/images/cancel-order.svg';
+
 
 
 const TradeConfirmations = () => {
@@ -713,8 +716,118 @@ const TradeConfirmations = () => {
                 </div>
             </div>
 
+            {/* Transaction Details Modal */}
+            <div className="generic-modal">
+                <div className='generic-modal-dialog'>
+                    <div className="top-losers-modal">
+                        <div className="mb-6 flex justify-between">
+                            <div className="font-bold">
+                                <div className='text-2xl mb-3 text-green-900 font-gotham-black-regular'>Transaction Details</div>
+                                <div className='text-sm'>Preview your investment</div>
+                            </div>
+
+                            <div onClick={closeModal}>
+                                <img src={CloseIcon} alt="" className="cursor-pointer" />
+                            </div>
+                        </div>
+
+                        <div className='mb-30'>
+                            <div className="flex md:space-x-5 space-x-3 items-center">
+                                <div>
+                                    <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" width="40"/>
+                                </div>
+
+                                <div className="flex space-x-3 items-center">
+                                    <div className="font-bold text-lg">stockCode</div>
+                                    <div>|</div>
+                                    <div className="font-bold text-sm">stockname</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="py-5 border-b border-solid border-t-0 border-l-0 border-r-0 border-gray-200">
+                            <div className='flex justify-between'>
+                                <div>Side</div>
+                                <div>Buy</div>
+                            </div>
+                        </div>
+
+                        <div className="py-5 border-b border-solid border-t-0 border-l-0 border-r-0 border-gray-200">
+                            <div className='flex justify-between'>
+                                <div>Quantity of Shares</div>
+                                <div>15</div>
+                            </div>
+                        </div>
+
+                        <div className="py-5 mb-6">
+                            <div className='flex justify-between'>
+                                <div>Quantity of Shares</div>
+                                <div>15</div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div className='flex space-x-3'>
+                                <div className='w-1/3'>
+                                    <button className='cursor-pointer w-full border-0 rounded-lg bg-gray-300 px-10 py-3 font-bold'>Cancel</button>
+                                </div>
+
+                                <div className='w-2/3'>
+                                    <button className='cursor-pointer w-full border-0 rounded-lg bg-green-900 text-white px-10 py-3 font-bold'>Download Receipt</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/* End */}
+
+            {/* Cancel Oder Modal */}
+            <div className="generic-modal">
+                <div className='generic-modal-dialog'>
+                    <div className="top-losers-modal">
+
+                        <div className="flex justify-between">
+                            <div className="font-bold opacity-0">
+                                <div className='text-2xl mb-3 text-green-900 font-gotham-black-regular'>Transaction Details</div>
+                                <div className='text-sm'>Preview your investment</div>
+                            </div>
+
+                            <div onClick={closeModal}>
+                                <img src={CloseIcon} alt="" className="cursor-pointer" />
+                            </div>
+                        </div>
+
+                        <div className="mb-11">
+                            <div className='mx-auto w-48 text-center mb-3'>
+                                <img src={CanelOrderIcon} alt="" className="cursor-pointer" />
+                            </div>
+
+                            <div className='text-2xl font-bold text-yellow-500 text-center mb-3'>Cancel Order</div>
+                            <div className='text-xl text-center'>Are you sure you want to cancel this order? </div>
+                        </div>
+
+                        
+                        <div>
+                            <div className='flex space-x-3'>
+                                <div className='w-1/3'>
+                                    <button className='cursor-pointer w-full border-0 rounded-lg bg-gray-300 px-7 py-3 font-bold'>Cancel Order</button>
+                                </div>
+
+                                <div className='w-2/3'>
+                                    <button className='cursor-pointer w-full border-0 rounded-lg bg-green-900 text-white px-10 py-3 font-bold'>No, take me back</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/* End */}
+
+            {/* Modal Background */}
             <div className={showModalBG ? "modal-backdrop opacity-40":"modal-backdrop opacity-40 hidden"}>
             </div>
+            {/* End */}
         </div>
     );
 };
