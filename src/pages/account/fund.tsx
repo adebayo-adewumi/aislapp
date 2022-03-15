@@ -89,7 +89,7 @@ const FundAccount = () => {
         setCustomer(JSON.parse(localStorage.getItem("aislCustomerInfo") as string));
 
         function getFundingHistory() {
-            getAxios(axios).get(walletAndAccountServiceBaseUrl + '/wallet-api/funding-history')
+            getAxios(axios).get(walletAndAccountServiceBaseUrl + '/funding-history')
                 .then(function (response) {
                     setFundingHistory(response.data.data);
                 })
@@ -225,7 +225,7 @@ const FundAccount = () => {
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
         localStorage.setItem('genericCypher', genericCypher);
 
-        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/wallet-api/fw/pay/card',
+        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/fw/pay/card',
             {
                 "text": localStorage.getItem('genericCypher')
         })
@@ -266,7 +266,7 @@ const FundAccount = () => {
             'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
         }
 
-        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/wallet-api/fw/pay/card/validate-otp',
+        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/fw/pay/card/validate-otp',
             {
                 "text": localStorage.getItem('genericCypher')
             }, {headers})
@@ -306,7 +306,7 @@ const FundAccount = () => {
             'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
         }
 
-        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/wallet-api/fw/transaction/verify',
+        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/fw/transaction/verify',
             {
                 "text": localStorage.getItem('genericCypher')
             },{headers})

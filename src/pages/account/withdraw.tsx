@@ -58,7 +58,7 @@ const WithdrawFund = () => {
         }
 
         function getBankDetailsList() {
-            getAxios(axios).get(walletAndAccountServiceBaseUrl + '/wallet-api/bank-details')
+            getAxios(axios).get(walletAndAccountServiceBaseUrl + '/bank-details')
                 .then(function (response) {
                     setBankDetailsList(response.data.data);
                 })
@@ -150,7 +150,7 @@ const WithdrawFund = () => {
             'x-transaction-pin': JSON.stringify({ text : pinCypher})
         }
 
-        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/wallet-api/withdraw/',
+        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/withdraw/',
             {
                 "text": localStorage.getItem('genericCypher')
             },{headers})

@@ -89,7 +89,7 @@ const BankCard = () => {
 
     useEffect(() => {
         function getBankList() {
-            getAxios(axios).get(walletAndAccountServiceBaseUrl + '/wallet-api/get-banks')
+            getAxios(axios).get(walletAndAccountServiceBaseUrl + '/get-banks')
                 .then(function (response) {
                     setBankList(response.data.data.bank);
                 })
@@ -100,7 +100,7 @@ const BankCard = () => {
 
         function getBankDetailsList() {
 
-            getAxios(axios).get(walletAndAccountServiceBaseUrl + '/wallet-api/bank-details')
+            getAxios(axios).get(walletAndAccountServiceBaseUrl + '/bank-details')
                 .then(function (response) {
                     setBankDetailsList(response.data.data);
                 })
@@ -111,7 +111,7 @@ const BankCard = () => {
 
         function getCardsList() {
 
-            getAxios(axios).get(walletAndAccountServiceBaseUrl + '/wallet-api/card')
+            getAxios(axios).get(walletAndAccountServiceBaseUrl + '/card')
                 .then(function (response) {
                     setCardsList(response.data.data);
                 })
@@ -144,7 +144,7 @@ const BankCard = () => {
             }
             else {    
     
-                getAxios(axios).get(walletAndAccountServiceBaseUrl + '/wallet-api/name-enquiry?accountNo=' + accountNumber + '&bankCode=' + bankCode)
+                getAxios(axios).get(walletAndAccountServiceBaseUrl + '/name-enquiry?accountNo=' + accountNumber + '&bankCode=' + bankCode)
                 .then(function (response) {
 
                     if(response.data.statusCode !== 200){
@@ -274,7 +274,7 @@ const BankCard = () => {
             'x-transaction-pin': JSON.stringify({ text : pinCypher})
         }
 
-        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/wallet-api/bank-details/add?nameEnquirySessionId=12233333',
+        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/bank-details/add?nameEnquirySessionId=12233333',
             {
                 "text": localStorage.getItem('genericCypher')
             },
@@ -340,7 +340,7 @@ const BankCard = () => {
             'x-transaction-pin': JSON.stringify({ text : pinCypher})
         }
 
-        getAxios(axios).delete(walletAndAccountServiceBaseUrl + '/wallet-api/'+apipath,
+        getAxios(axios).delete(walletAndAccountServiceBaseUrl + '/'+apipath,
             {
                 headers: _headers
             },
@@ -372,7 +372,7 @@ const BankCard = () => {
             'x-transaction-pin': JSON.stringify({ text : pinCypher})
         }
 
-        getAxios(axios).delete(walletAndAccountServiceBaseUrl + '/wallet-api/bank-details/delete/'+selectedBankId,
+        getAxios(axios).delete(walletAndAccountServiceBaseUrl + '/bank-details/delete/'+selectedBankId,
             {
                 headers: _headers
             })
@@ -462,7 +462,7 @@ const BankCard = () => {
             'x-transaction-pin': JSON.stringify({ text : pinCypher})
         }
 
-        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/wallet-api/card',
+        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/card',
             {
                 "text": localStorage.getItem('genericCypher')
             },
@@ -510,7 +510,7 @@ const BankCard = () => {
             'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
         }
 
-        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/wallet-api/fw/pay/card/validate-otp',
+        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/fw/pay/card/validate-otp',
             {
                 "text": localStorage.getItem('genericCypher')
             }, {headers})
@@ -546,7 +546,7 @@ const BankCard = () => {
             'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
         }
 
-        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/wallet-api/fw/transaction/verify',
+        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/fw/transaction/verify',
         {
             "text": localStorage.getItem('genericCypher')
         },{headers})

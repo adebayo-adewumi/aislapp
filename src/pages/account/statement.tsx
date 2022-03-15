@@ -111,7 +111,7 @@ const AccountStatement = () => {
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
         localStorage.setItem('genericCypher', genericCypher);
 
-        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/wallet-api/account-statement',
+        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/account-statement',
             {
                 "text": localStorage.getItem('genericCypher')
             })

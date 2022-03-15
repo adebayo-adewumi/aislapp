@@ -420,7 +420,7 @@ const Profile = () => {
     useEffect(() => {
         function getBankDetails() {
 
-            getAxios(axios).get(walletAndAccountServiceBaseUrl + '/wallet-api/bank-details')
+            getAxios(axios).get(walletAndAccountServiceBaseUrl + '/bank-details')
                 .then(function (response) { 
                     setBankDetails(response.data.data)
                 })
@@ -847,7 +847,7 @@ const Profile = () => {
             'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
         }
 
-        axios.delete(process.env.REACT_APP_WALLET_SERVICE_URL+'/wallet-api/bank-details/delete',
+        axios.delete(process.env.REACT_APP_WALLET_SERVICE_URL+'/bank-details/delete',
         {
            data:{
                 "text": localStorage.getItem('genericCypher'),
