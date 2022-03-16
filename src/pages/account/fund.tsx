@@ -538,7 +538,7 @@ const FundAccount = () => {
                                         <div>
                                             <div className='text-lg font-bold'>Amount</div>
 
-                                            <div className='mb-20 font-gotham-black-regular text-green-900 text-4xl'>₦ {showAmount}</div>
+                                            <div className='mb-20 font-gotham-black-regular text-green-900 text-4xl'>₦ {HelperFunctions.formatCurrencyWithDecimal(parseFloat(showAmount.replace(',','')))}</div>
 
                                             <div className='border-bottom-1d mb-10'></div>
 

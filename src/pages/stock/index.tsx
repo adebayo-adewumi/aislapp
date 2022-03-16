@@ -575,7 +575,6 @@ const Stock = () => {
             "tradeAction": '0' 
         }
 
-        console.log(requestData);
 
         setShowSpinner(true);
 
