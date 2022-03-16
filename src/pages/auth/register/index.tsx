@@ -1461,11 +1461,9 @@ const Register = () => {
                         <div className={showValidateUserIdModal ? "generic-modal":"hidden"}>
                             <div className='generic-modal-dialog'>
                                 <div className="top-losers-modal">
-                                    <div className="mb-10 flex justify-between">
+                                    <div className="mb-10 flex justify-between hidden">
                                         <div className="font-bold text-xl text-green-900">Validate User ID</div>                                        
                                     </div>
-
-                                    <div className="border-1 mb-30"></div>
 
                                     <div className=''>
                                         {/* Validate User Id Error */}
@@ -1502,8 +1500,19 @@ const Register = () => {
                                         {/* End */}
 
                                         <div className='font-bold text-lg mb-3'>Do you have a User ID?</div>
+                                        <div className='text-xs mb-6'>
+                                            <div className="flex">
+                                                <div>
+                                                    <svg width="20" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#3482F6" />
+                                                    </svg>
+                                                </div>
 
-                                        <div className='flex space-x-10 mb-11'>
+                                                <div className="text-xs">Your user ID is needed to retrieve and display your existing securities.</div>
+                                            </div>                                            
+                                        </div>
+
+                                        <div className='flex space-x-10 mb-6'>
                                             <div className='flex space-x-1 items-center '>
                                                 <Form.Check onChange={e => setHasUserId('Yes')} type='radio' name='hasUserId' className='portfoliolist-checkbox'/>
                                                 <label>Yes</label>

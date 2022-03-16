@@ -258,8 +258,6 @@ const BankCard = () => {
             "bankName": 'VFD MICROFINANCE BANK',
         }
 
-        console.log(requestData)
-
         setShowSpinner(true);
 
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
@@ -688,6 +686,7 @@ const BankCard = () => {
 
                                             <div className={cardsList.length === 0 ? 'pb-16 text-gray-500':'hidden'}>No card added</div>
 
+                                            <div className={cardsList.length > 0 ? '':'hidden'}>
                                             {cardsList.map((item: any, index: any) =>
                                                 <div className='mb-30' onClick={displayManageCard} key={index}>
                                                     <div className='bgcolor-2 rounded-xl p-0 relative cursor-pointer'>
@@ -711,6 +710,7 @@ const BankCard = () => {
                                                     </div>
                                                 </div>
                                             )}
+                                            </div>
 
                                             <div>
                                                 <button onClick={displayAddCard} type='button' className='w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>Add New Card</button>

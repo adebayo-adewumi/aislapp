@@ -583,7 +583,7 @@ const Stock = () => {
         localStorage.setItem('genericCypher', genericCypher);
 
 
-        getAxios(axios).post(stockTradingServiceBaseUrlUrl + '/stock/order/estimate',
+        getAxios(axios).post(stockTradingServiceBaseUrlUrl + '/stock/buy-order/estimate',
             {
                 "text": localStorage.getItem('genericCypher')
             })
@@ -691,7 +691,6 @@ const Stock = () => {
             "tradeAction": '0'
         }
 
-        console.log(requestData);
 
         setShowSpinner(true);
 

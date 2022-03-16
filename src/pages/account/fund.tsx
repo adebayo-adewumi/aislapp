@@ -648,7 +648,6 @@ const FundAccount = () => {
                                         <div>
                                             <div className="mx-auto w-56 h-64 relative">
                                                 <img src={SuccessCheckIcon} alt="success icon" className="w-56" />
-                                                <div className="bg-white p-2 w-full -bottom-5 absolute"></div>
                                             </div>
 
                                             <div className='text-xl font-bold text-green-900 text-center mb-20'>Transaction Successful</div>

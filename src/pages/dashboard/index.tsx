@@ -22,7 +22,7 @@ import moment from 'moment';
 import ArrowDownIcon from '../../assets/images/arrow-down.svg';
 import AnchoriaIcon from '../../assets/images/anchoria-icon.svg';
 import AnchoriaSpinner from '../../assets/images/anchoria-spinner.svg';
-import {getNewsEndpoint, getPortfolioEndpoint, getTopGainersEndpoint, getTopLosersEndpoint, getTopMoverByValueEndpoint, portfolioServiceBaseUrlUrl, stockTradingServiceBaseUrlUrl, utilityServiceBaseUrlUrl } from '../../apiUrls';
+import {authOnboardingServiceBaseUrl, getNewsEndpoint, getPortfolioEndpoint, getTopGainersEndpoint, getTopLosersEndpoint, getTopMoverByValueEndpoint, portfolioServiceBaseUrlUrl, stockTradingServiceBaseUrlUrl, utilityServiceBaseUrlUrl } from '../../apiUrls';
 import { getAxios } from '../../network/httpClientWrapper';
 
 const Dashboard = () => {
@@ -69,6 +69,8 @@ const Dashboard = () => {
 
     const [isShowPortfolioBalance, setIsShowPortfolioBalance] = useState<boolean>(false);
     const [isShowWalletBalance, setIsShowWalletBalance] = useState<boolean>(false);
+
+    const [kycStatus, setKYCStatus] = useState('{"data": { "kycLevel":"Level1" }}');
 
     useEffect(() => {
         document.title = "Dashboard - Anchoria";
@@ -287,18 +289,6 @@ const Dashboard = () => {
             });
         }
 
-        function testApiForGet() {
-            //let customer = HelperFunctions.getCustomerInfo();
-
-            getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/bought')
-                .then(function (response) { 
-                    console.log(response.data);
-                })
-                .catch(function (error) { });
-        }
-
-        testApiForGet();
-
         getWalletBalance();
         getTopGainers();
         getTopLosers();
@@ -309,6 +299,21 @@ const Dashboard = () => {
         
 
     }, []);
+
+    useEffect(()=>{
+
+        function getCustomerKYCStatus() {
+
+            getAxios(axios).get(authOnboardingServiceBaseUrl + '/customer/kyc/status')
+                .then(function (response) { 
+                    setKYCStatus(JSON.stringify(response.data.data));
+                })
+                .catch(function (error) { });
+        }
+
+        getCustomerKYCStatus();
+
+    },[])
 
     function showBalanceModal() {
         setShowModalBG(true);
@@ -451,7 +456,8 @@ const Dashboard = () => {
                                 Overview of your account activities
                             </div>
 
-                            <div className={customer.kycStatus === 'Level1' ? '':'hidden'}>
+                            {/* KYC Status Section */}
+                            <div className={JSON.parse(kycStatus).kycLevel === 'Level1' ? '':'hidden'}>
                                 <div className='bg-white p-7 border border-gray-500 rounded-lg updatekyc-bg md:bg-right-bottom'>
                                     <div className='font-bold md:text-2xl text-xl font-gotham-black-regular mb-10'>Update your KYC</div>
 
@@ -464,6 +470,7 @@ const Dashboard = () => {
                                     </div>
                                 </div>
                             </div>
+                            {/* End */}
 
                             <div className="md:flex mt-10 md:justify-between md:space-x-5 md:mb-8 mb-3">
                                 <div className="card-lg md:w-1/2 md:mb-0 mb-6">
