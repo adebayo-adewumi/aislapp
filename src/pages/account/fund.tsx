@@ -57,6 +57,11 @@ const FundAccount = () => {
     const [fundingHistory, setFundingHistory] = useState([]);
     const [cardFundingDetails, setCardFundingDetails] = useState([]);
 
+    const [savedCards, setSavedCards] = useState<any[]>([]);
+    const [showAddCard, setShowAddCard] = useState<boolean>(false);
+    const [isSelectSavedCard, setIsSelectSavedCard] = useState<boolean>(false);
+    const [selectedSavedCard, setSelectedSavedCard] = useState<any>({});
+
     useEffect(() => {
         setCustomer(JSON.parse(localStorage.getItem("aislCustomerInfo") as string));
 
@@ -100,23 +105,18 @@ const FundAccount = () => {
 
     },[]);
 
-    // useEffect(() =>{
-
-    //     function delineateAmount() {
-    //         let regExp = /\d/;
-
-    //         if(regExp.test(showAmount)){
-    //             setShowAmount('')
-    //         }
-    //         else{
-    //             setShowAmount(HelperFunctions.formatCurrencyWithDecimal(5000));
-    //         }
-            
-    //     }
+    useEffect(() =>{
+        function getSavedCards() {
+            getAxios(axios).get(walletAndAccountServiceBaseUrl + '/card')
+                .then(function (response) {
+                    setSavedCards(response.data.data)
+                })
+                .catch(function (error) { });
+        }
     
-    //     delineateAmount();
+        getSavedCards();
 
-    // },[showAmount]);
+    },[]);
     
 
     function performSwitchToDebit() {
@@ -373,6 +373,65 @@ const FundAccount = () => {
         setShowAmount(newValue);
     }
 
+    function displayAddCard(){
+        setShowAddCard(true);
+    }
+
+    function displaySavedCard(){
+        setShowAddCard(false);
+    }
+
+    function selectSavedCard(event :any){
+        if(event.target.value !== ''){
+            let cardInfo = savedCards.find(elem => elem.maskedPan === event.target.value);
+            setIsSelectSavedCard(true);
+            setSelectedSavedCard(cardInfo);
+
+            console.log(cardInfo);
+        } 
+        else{
+            setIsSelectSavedCard(false);
+            setSelectedSavedCard({});
+        }
+        
+    }
+
+    function processTokenizedPayment(){
+
+        let requestData = {
+            "maskedPan": selectedSavedCard.maskedPan,
+            "token": selectedSavedCard.token,
+            "amount": parseFloat(showAmount.replaceAll(',','')),
+        }
+
+        console.log(requestData);
+
+        setShowSpinner(true);
+
+        let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
+        localStorage.setItem('genericCypher', genericCypher);
+
+        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/fw/pay/tokenized',
+            {
+                "text": localStorage.getItem('genericCypher')
+        })
+        .then(function (response) {
+            setShowSpinner(false);
+
+            setShowAmountSection(false);
+            setShowCardSection(false);
+            setShowOTPSection(false);
+            setShowPinSection(true);
+
+            localStorage.setItem("aislPayWithCardResponse", JSON.stringify(response.data.data));
+
+            setCardFundingDetails([response.data.data] as any);
+        })
+        .catch(function (error) {
+            setShowSpinner(false);
+        });
+    }
+
     return (
         <div className="relative">
             <UserAreaHeader />
@@ -463,7 +522,7 @@ const FundAccount = () => {
                                     {/* End */}
 
                                     {/* Enter Card Details Section */}
-                                    <div className={showCardSection ? 'card-section' : 'hidden'}>
+                                    <div className={showCardSection ? 'card-section' : 'hidden'}>                                        
                                         <div>
                                             <div className='text-lg font-bold'>Amount</div>
 
@@ -471,64 +530,112 @@ const FundAccount = () => {
 
                                             <div className='border-bottom-1d mb-10'></div>
 
-                                            <div className='my-6 text-green-900 text-xl font-bold'>Enter your card details</div>
-
-                                            <div className='mb-20'>
-                                                <div className='text-sm mb-5 font-bold'>Card Number</div>
-
-                                                <div className='relative'>
-                                                    <input value={cardNumber} onKeyDown={handleCreditCardNumberInputSelection} onChange={maskCreditCardNumberInput} placeholder='Enter your 16 digits card number' type='text' className='cc-number-input input p-5 border-1-d6 outline-white font-bold text-lg text-gray-600' maxLength={19} />
-
-                                                    <img style={{ width: '10%', right: '20px' }} className="cc-types__img cc-types__img--amex hidden" alt="" />
-                                                    <img style={{ width: '10%', right: '20px' }} className="cc-types__img cc-types__img--visa hidden" alt="" />
-                                                    <img style={{ width: '10%', right: '20px' }} className="cc-types__img cc-types__img--mastercard hidden" alt="" />
-                                                    <img style={{ width: '10%', right: '20px' }} className="cc-types__img cc-types__img--disc hidden" alt="" />
-                                                    <img style={{ width: '13%', right: '10px' }} className="cc-types__img cc-types__img--generic hidden" alt="" />
-
-                                                </div>
-                                            </div>
-
-                                            <div className='mb-20'>
-                                                <div className='flex justify-between space-x-5'>
-                                                    <div className='w-1/2'>
-                                                        <div className='text-lg mb-5 text-sm font-bold'>Validity</div>
-
-                                                        <div>
-                                                            <input value={cardExpiry} onChange={maskCreditCardExpiryInput} onKeyDown={handleCreditCardExpiryInputSelection} placeholder='MM / YY' type='text' className='input p-5 cc-expiry-input border-1-d6 outline-white font-bold text-lg text-gray-600' maxLength={5} />
-                                                        </div>
+                                            {/* Saved Card Section */}
+                                            <div className={showAddCard ? 'hidden':'bg-gray-200 px-5 py-5 rounded-lg'}>
+                                                <div className='flex justify-between items-center mb-6 pb-5' style={{borderBottom:' 1px solid #ddd'}}>
+                                                    <div className='text-sm font-bold'>
+                                                        Pay with card
                                                     </div>
 
-                                                    <div className='w-1/2'>
-                                                        <div className='text-lg mb-5 text-sm font-bold'>CVV</div>
+                                                    <div>
+                                                        <button onClick={displayAddCard} className='cursor-pointer border-0 bg-green-900 font-bold text-sm text-white px-3 py-2 rounded-lg'>Add New Card</button>
+                                                    </div>
+                                                </div>
 
-                                                        <div>
-                                                            <input value={cardCVV} onChange={maskCreditCardCVVInput} onKeyDown={handleCreditCardCVVInputSelection} placeholder='CVV' type='text' className='input p-5 cc-cvv-input border-1-d6 outline-white font-bold text-lg text-gray-600' maxLength={3} />
+                                                <div className='mb-10 text-sm font-bold'>Saved cards</div>
+
+                                                <div className='mb-3'>
+                                                    <div className={savedCards.length > 0 ? 'hidden':'text-gray-500'}>No saved cards</div>
+
+                                                    <select className={savedCards.length > 0 ? 'px-3 border text-sm outline-white py-3 w-full rounded-lg':'hidden'} onChange={selectSavedCard}>
+                                                        
+                                                        <option value="">Select a Card</option>
+
+                                                        {savedCards.map((item :any, index :any)=>
+                                                            <option value={item.maskedPan}>
+                                                                {item.cardBrand} ({item.maskedPan})
+                                                            </option>
+                                                        )}
+                                                    </select>
+                                                </div>
+
+                                                <div>
+                                                    <button onClick={processTokenizedPayment} className={isSelectSavedCard ? 'cursor-pointer border-0 bg-green-900 font-bold text-sm text-white px-5 py-2 rounded-lg':'cursor-pointer border-0 bg-green-900 font-bold text-sm text-white px-5 py-2 rounded-lg opacity-50'} disabled={!isSelectSavedCard}>
+                                                        <span className={showSpinner ? "hidden" : ""}>Proceed</span>
+                                                        <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            {/* End */}
+
+                                            {/* Enter Card Section */}
+                                            <div className={showAddCard ? '':'hidden'}>
+                                                <div className='flex justify-between items-center'>
+                                                    <div className='my-6 text-green-900 text-xl font-bold'>Enter your card details</div>
+
+                                                    <div className='font-bold cursor-pointer' onClick={displaySavedCard}>
+                                                        <strong className='text-lg'>&larr;</strong> Back
+                                                    </div>
+                                                </div>
+
+                                                <div className='mb-20'>
+                                                    <div className='text-sm mb-5 font-bold'>Card Number</div>
+
+                                                    <div className='relative'>
+                                                        <input value={cardNumber} onKeyDown={handleCreditCardNumberInputSelection} onChange={maskCreditCardNumberInput} placeholder='Enter your 16 digits card number' type='text' className='cc-number-input input p-5 border-1-d6 outline-white font-bold text-lg text-gray-600' maxLength={19} />
+
+                                                        <img style={{ width: '10%', right: '20px' }} className="cc-types__img cc-types__img--amex hidden" alt="" />
+                                                        <img style={{ width: '10%', right: '20px' }} className="cc-types__img cc-types__img--visa hidden" alt="" />
+                                                        <img style={{ width: '10%', right: '20px' }} className="cc-types__img cc-types__img--mastercard hidden" alt="" />
+                                                        <img style={{ width: '10%', right: '20px' }} className="cc-types__img cc-types__img--disc hidden" alt="" />
+                                                        <img style={{ width: '13%', right: '10px' }} className="cc-types__img cc-types__img--generic hidden" alt="" />
+
+                                                    </div>
+                                                </div>
+
+                                                <div className='mb-20'>
+                                                    <div className='flex justify-between space-x-5'>
+                                                        <div className='w-1/2'>
+                                                            <div className='text-lg mb-5 text-sm font-bold'>Validity</div>
+
+                                                            <div>
+                                                                <input value={cardExpiry} onChange={maskCreditCardExpiryInput} onKeyDown={handleCreditCardExpiryInputSelection} placeholder='MM / YY' type='text' className='input p-5 cc-expiry-input border-1-d6 outline-white font-bold text-lg text-gray-600' maxLength={5} />
+                                                            </div>
+                                                        </div>
+
+                                                        <div className='w-1/2'>
+                                                            <div className='text-lg mb-5 text-sm font-bold'>CVV</div>
+
+                                                            <div>
+                                                                <input value={cardCVV} onChange={maskCreditCardCVVInput} onKeyDown={handleCreditCardCVVInputSelection} placeholder='CVV' type='text' className='input p-5 cc-cvv-input border-1-d6 outline-white font-bold text-lg text-gray-600' maxLength={3} />
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <div className='mb-20'>
-                                                <div className='text-lg mb-5 text-sm font-bold'>PIN</div>
+                                                <div className='mb-20'>
+                                                    <div className='text-lg mb-5 text-sm font-bold'>PIN</div>
 
-                                                <div className='mb-30'>
-                                                    <input value={cardPIN} onChange={e => setCardPIN(e.target.value)} type='password' className='input p-4 border-1-d6 text-2xl outline-white' maxLength={4} />
+                                                    <div className='mb-30'>
+                                                        <input value={cardPIN} onChange={e => setCardPIN(e.target.value)} type='password' className='input p-4 border-1-d6 text-2xl outline-white' maxLength={4} />
+                                                    </div>
+                                                </div>
+
+                                                <div className='mb-20 flex hidden'>
+                                                    <Form.Check type="checkbox" className='portfoliolist-checkbox' />
+                                                    <div className='mt-1 font-bold mx-2 text-gray-900'>Save card details</div>
+                                                </div>
+
+                                                <div>
+                                                    <button type='button' className={isCardDetailsFilled ? 'hidden' : 'w-full font-bold text-lg border-0 bg-green-900 text-white hidden rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer opacity-50'}>Proceed</button>
+
+                                                    <button onClick={fundAccountWithCard} type='button' className='w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>
+                                                        <span className={showSpinner ? "hidden" : ""}>Proceed</span>
+                                                        <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
+                                                    </button>
                                                 </div>
                                             </div>
-
-                                            <div className='mb-20 flex hidden'>
-                                                <Form.Check type="checkbox" className='portfoliolist-checkbox' />
-                                                <div className='mt-1 font-bold mx-2 text-gray-900'>Save card details</div>
-                                            </div>
-
-                                            <div>
-                                                <button type='button' className={isCardDetailsFilled ? 'hidden' : 'w-full font-bold text-lg border-0 bg-green-900 text-white hidden rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer opacity-50'}>Proceed</button>
-
-                                                <button onClick={fundAccountWithCard} type='button' className='w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer'>
-                                                    <span className={showSpinner ? "hidden" : ""}>Proceed</span>
-                                                    <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
-                                                </button>
-                                            </div>
+                                            {/* End */}
                                         </div>
                                     </div>
                                     {/* End */}
@@ -545,9 +652,11 @@ const FundAccount = () => {
                                             <div className='mt-6 mb-10 text-green-900 text-xl font-bold'>Enter OTP</div>
 
                                             <div className='mb-20'>
-                                                <div>
+                                                <div className='mb-2'>
                                                     <input onChange={e => setCardOTP(e.target.value)} placeholder='Enter OTP sent to your phone' type='password' className='input p-4 text-lg font-bold border-1-d6 outline-white' max={6} />
                                                 </div>
+
+                                                <div className='font-bold text-green-900 text-sm cursor-pointer hover:underline' onClick={fundAccountWithCard}>Resend OTP</div>
                                             </div>
 
                                             <div>
@@ -576,14 +685,8 @@ const FundAccount = () => {
                                                             </svg>
                                                         </div>
 
-                                                        <div className="pt-1 text-sm text-green-900">{apiResponseSuccessMsg}</div>
-                                                    </div>
-
-                                                    <div className="cursor-pointer">
-                                                        <svg className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50" />
-                                                        </svg>
-                                                    </div>
+                                                        <div className="text-sm text-green-900">{apiResponseSuccessMsg}</div>
+                                                    </div>                                                    
                                                 </div>
                                             </div>
                                             {/* End */}
@@ -598,14 +701,8 @@ const FundAccount = () => {
                                                             </svg>
                                                         </div>
 
-                                                        <div className="pt-1 text-sm">{apiResponseErrorMsg}</div>
-                                                    </div>
-
-                                                    <div className="cursor-pointer">
-                                                        <svg className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50" />
-                                                        </svg>
-                                                    </div>
+                                                        <div className="text-sm">{apiResponseErrorMsg}</div>
+                                                    </div>                                                    
                                                 </div>
                                             </div>
                                             {/* End */}

@@ -373,20 +373,20 @@ const BankCard = () => {
         getAxios(axios).delete(walletAndAccountServiceBaseUrl + '/bank-details/delete/'+selectedBankId,
             {
                 headers: _headers
-            })
-            .then(function (response) {
-                setIsDeleteSuccess('true');
-                setApiResponseSuccessMsg("Bank details deleted successfully.");
-                setShowSpinner(false);
+        })
+        .then(function (response) {
+            setIsDeleteSuccess('true');
+            setApiResponseSuccessMsg("Bank details deleted successfully.");
+            setShowSpinner(false);
 
-                setTimeout(()=>{
-                    window.location.reload();
-                },3000);
-            })
-            .catch(function (error) {
-                setShowSpinner(false);
-                alert("Unable to delete. Please try again later");
-            });
+            setTimeout(()=>{
+                window.location.reload();
+            },3000);
+        })
+        .catch(function (error) {
+            setShowSpinner(false);
+            alert("Unable to delete. Please try again later");
+        });
     }
 
     function displayDeleteModal(event: any) {

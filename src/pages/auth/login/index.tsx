@@ -73,6 +73,8 @@ const Login = () => {
                     setShowSpinner(false);
                     setLoginHasError(true);
 
+                    console.log(error.response)
+
                     setTimeout(() => {
                         setLoginHasError(false);
                     }, 3000);

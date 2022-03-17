@@ -261,7 +261,7 @@ const Register = () => {
         //VERIFY BVN AND DOB
         if (localStorage.getItem('genericCypher')) {
             setShowSpinner(true);
-            getAxios(axios).post(utilityServiceBaseUrlUrl.concat('/bvn/verify'),
+            axios.post(utilityServiceBaseUrlUrl.concat('/bvn/verify'),
                 {
                     "text": localStorage.getItem('genericCypher')
                 })
@@ -271,7 +271,7 @@ const Register = () => {
                     displaySelfie();
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    console.log(error.response.data);
                     setShowSpinner(false);
                     setBVNHasError(true);
 
@@ -346,7 +346,9 @@ const Register = () => {
             "deviceId": localStorage.getItem("aislUserIPAddress"),
             "osType": "Android",
             "permanentAddress": bvnDetails.residentialAddress,
-            'shA': showImgAvatar
+            'shA': showImgAvatar,
+            "custAid":"",
+            "cscsNumber":"",
         }
 
         console.log(requestData)
@@ -687,7 +689,7 @@ const Register = () => {
 
         if(hasUserId === 'Yes'){
             if(customerAid !== ''){
-                getAxios(axios).get(authOnboardingServiceBaseUrl + '/customer/reg-number/'+customerAid)
+                axios.get(authOnboardingServiceBaseUrl + '/customer/reg-number/'+customerAid)
                 .then(function (response) { 
                     setShowSpinner(false);
                     setIsUserIdValid('true');
