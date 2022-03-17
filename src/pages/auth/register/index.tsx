@@ -108,6 +108,7 @@ const Register = () => {
     const [hasUserId, setHasUserId] = useState('');
     const [customerAid, setCustomerAid] = useState('');
     const [isUserIdValid, setIsUserIdValid] = useState('');
+    const [customerAidResponse, setCustomerAidResponse]  = useState<any>({});
 
     document.title = "Register - Anchoria";
 
@@ -347,8 +348,8 @@ const Register = () => {
             "osType": "Android",
             "permanentAddress": bvnDetails.residentialAddress,
             'shA': showImgAvatar,
-            "custAid":"",
-            "cscsNumber":"",
+            "custAid":customerAid,
+            "cscsNumber":customerAidResponse["cscsacct#"],
         }
 
         console.log(requestData)
@@ -694,9 +695,19 @@ const Register = () => {
                     setShowSpinner(false);
                     setIsUserIdValid('true');
 
-                    setTimeout(()=>{
-                        closeModal();
-                    },2000);
+                    if(response.data.data.hasOwnProperty("cscsreg#")){
+                        setCustomerAidResponse(response.data.data);
+
+                        setTimeout(()=>{
+                            closeModal();
+                        },2000);
+                    }
+                    else{
+                        setShowSpinner(false);
+                        setIsUserIdValid('false');
+                    }
+
+                    
                 })
                 .catch(function (error) { 
                     setShowSpinner(false);
