@@ -25,11 +25,13 @@ import DeleteIcon from '../../assets/images/delete-icon.svg';
 import { defaultToZeroIfNullOrUndefined, isNullOrUndefined } from '../../common/Utilities';
 import { formatCurrencyWithDecimal } from '../../lib/helper';
 import DeleteCardIcon from '../../assets/images/delete-card.svg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Portfolio = () => {
     document.title = "Portfolio - Anchoria";
     HelperFunctions.addOverflowAndPaddingToModalBody();
+
+    let navigate = useNavigate();
 
     const [showCreatePortfolio, setShowCreatePortfolio] = useState<boolean>(false);
     const [showModalBG, setShowModalBG] = useState<boolean>(false);
@@ -42,7 +44,9 @@ const Portfolio = () => {
 
     const [portfolioIsNullOrEmpty, setPortfolioIsNullOrEmpty] = useState<boolean>(true);
     const [portfolioCount, setPortfolioCount] = useState(0);
-    const [portfolioList, setPortfolioList] = useState('');
+
+    const [portfolioList, setPortfolioList] = useState<any[]>([]);
+
     const [totalPortfolioValue, setTotalPortfolioValue] = useState(0);
     const [investmentAmount, setInvestmentAmount] = useState(0);
     const [netPortfolioReturns, setNetPortfolioReturns] = useState(0);
@@ -173,48 +177,7 @@ const Portfolio = () => {
                     setNetPortfolioReturns(response.data.data.portfolioReturn);
                     setNetPortfolioReturnsPercentage(response.data.data.percentageReturn);
     
-                    const listItems = response.data.data.portfolio.map((item: any) =>
-                        // <PortfolioInfoCard
-                        //     item={item}
-                        //     title={'Portfolio value'}
-                        //     onReload={getPortfolioList}
-                        // />
-
-                        <div className="card-custom p-5 flex justify-between cursor-pointer md:mb-0 mb-6">
-                            <div className="flex space-x-4">
-                                <div><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" /></div>
-
-                                <div className="text-sm">
-                                    <div className="mb-10 font-bold text-color-2">{item.name}</div>
-                                    <div className={item.hasOwnProperty("listOfStocks") ? 'text-black':'hidden'}>Count: {item.hasOwnProperty("listOfStocks") ? item.listOfStocks.length : 0}</div>
-                                </div>
-                            </div>
-
-                            <div className="text-sm">
-                                <div className="flex mb-10 justify-between">
-                                    <div className="text-green-900 font-bold">Portfolio Value</div>
-                                </div>
-                                <div className="font-gotham-black-regular text-green-900 text-24 mb-10">₦ {formatCurrencyWithDecimal(item.currentValue)}</div>
-                                <div className={item.hasOwnProperty("uuid") ? '':'hidden'}>
-                                    <span className={(item.portfolioReturn) >= 0 ? "text-green-500 text-24 font-bold" : "text-red-500 text-24 font-bold"}>
-                                        <span>{formatCurrencyWithDecimal(defaultToZeroIfNullOrUndefined(item.portfolioReturn)).replace("-","")}</span> |
-                                        <span className='ml-1'>{isNullOrUndefined(item.portfolioPercentageReturn)
-                                            ? 0 : formatCurrencyWithDecimal(item.portfolioPercentageReturn).replace("-","")}</span>%</span>
-                                    <span className='text-black hidden'> 7days</span>
-                                </div>
-                            </div>
-
-                            <div className={item.hasOwnProperty("uuid") ? 'row d-flex justify-content-end align-items-end':'hidden'}>
-                                <div>
-                                    <Link to={"details/"+item.uuid}><img src={ChevronRightIcon} alt="" /></Link>
-                                </div>
-
-                                <div className='mr-2' onClick={displayDeleteModal} data-value={item.id}>
-                                    <img src={DeleteIcon} alt="" data-value={item.uuid}/>
-                                </div>
-                            </div>
-                        </div>
-                    );
+                    const listItems = response.data.data.portfolio;
     
                     setPortfolioList(listItems);
                 })
@@ -325,6 +288,14 @@ const Portfolio = () => {
         setPortfolioId(deleteId);
         setShowModalBG(true);
         setShowDeleteModal(true);
+    }
+
+    function viewPortfolioDetails(event :any){
+        let idAttr = event.target.getAttribute("id");
+
+        if(idAttr !== "deleteIcon"){
+            navigate("details/".concat(idAttr));
+        }
     }
 
 
@@ -449,7 +420,46 @@ const Portfolio = () => {
 
                                 <div className="mb-30">
                                     <div className="md:grid md:grid-cols-2 md:gap-4">
-                                        {portfolioList === '' ? 'You have not created any portfolio.' : portfolioList}
+                                        <div className={portfolioList.length === 0 ? '':'hidden' }>
+                                            You have not created any portfolio.
+                                        </div>
+
+                                        {portfolioList.map((item :any, index :any)=>
+                                            <div onClick={viewPortfolioDetails} className="card-custom p-5 flex justify-between cursor-pointer md:mb-0 mb-6" id={item.uuid} key={index}>
+                                            <div className="flex space-x-4" id={item.uuid}>
+                                                <div id={item.uuid}><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" id={item.uuid} /></div>
+                
+                                                <div className="text-sm" id={item.uuid}>
+                                                    <div className="mb-10 font-bold text-color-2" id={item.uuid}>{item.name}</div>
+                                                    <div id={item.uuid} className={item.hasOwnProperty("listOfStocks") ? 'text-black':'hidden'}>Count: {item.hasOwnProperty("listOfStocks") ? item.listOfStocks.length : 0}</div>
+                                                </div>
+                                            </div>
+                
+                                            <div className="text-sm" id={item.uuid}> 
+                                                <div className="flex mb-10 justify-between" id={item.uuid}>
+                                                    <div className="text-green-900 font-bold" id={item.uuid}>Portfolio Value</div>
+                                                </div>
+                                                <div className="font-gotham-black-regular text-green-900 text-24 mb-10" id={item.uuid}>₦ {formatCurrencyWithDecimal(item.currentValue)}</div>
+                                                <div id={item.uuid} className={item.hasOwnProperty("uuid") ? '':'hidden'}>
+                                                    <span className={(item.portfolioReturn) >= 0 ? "text-green-500 text-24 font-bold" : "text-red-500 text-24 font-bold"} id={item.uuid}>
+                                                        <span id={item.uuid}>{formatCurrencyWithDecimal(defaultToZeroIfNullOrUndefined(item.portfolioReturn)).replace("-","")}</span> |
+                                                        <span className='ml-1' id={item.uuid}>{isNullOrUndefined(item.portfolioPercentageReturn)
+                                                            ? 0 : formatCurrencyWithDecimal(item.portfolioPercentageReturn).replace("-","")}</span>%</span>
+                                                    <span className='text-black hidden' id={item.uuid}> 7days</span>
+                                                </div>
+                                            </div>
+                
+                                            <div className={item.hasOwnProperty("uuid") ? 'row d-flex justify-content-end align-items-end':'hidden'} id={item.uuid}>
+                                                <div id={item.uuid}>
+                                                    <Link to={"details/"+item.uuid} id={item.uuid}><img src={ChevronRightIcon} alt="" id={item.uuid}/></Link>
+                                                </div>
+                
+                                                <div className='mr-2' id='deleteIcon' onClick={displayDeleteModal} data-value={item.id}>
+                                                    <img src={DeleteIcon} alt="" id='deleteIcon' data-value={item.uuid}/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        )}
                                     </div>
                                 </div>
 

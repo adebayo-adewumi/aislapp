@@ -192,7 +192,7 @@ const PortfolioDetails = () => {
             .catch(function (error) {
 
                 setApiResponseHasError(true);
-                //setShowPageLoader(false);
+                setShowPageLoader(false);
 
                 setTimeout(() => {
                     setApiResponseHasError(false);
@@ -200,24 +200,24 @@ const PortfolioDetails = () => {
             });
         }  
 
-        function getPortfolioPerformance() {
+        // function getPortfolioPerformance() {
 
-            let urlToCall: string = getPortfolioEndpoint.concat("/portfolio-performance/".concat(String(portfolioId)));
+        //     let urlToCall: string = getPortfolioEndpoint.concat("/portfolio-performance/".concat(String(portfolioId)));
 
-            let requestData =  {
-                "startDate":"10-02-2022 01:00:00",
-                "endDate":"11-02-2022 23:59:00"
-            }
+        //     let requestData =  {
+        //         "startDate":"10-02-2022 01:00:00",
+        //         "endDate":"11-02-2022 23:59:00"
+        //     }
 
-            getAxios(axios).get(urlToCall,{
-                data: requestData
-            })
-            .then(function (response) {
-                console.log(response.data)
-            })
-            .catch(function (error) {
-            });
-        }  
+        //     getAxios(axios).get(urlToCall,{
+        //         data: requestData
+        //     })
+        //     .then(function (response) {
+        //         console.log(response.data)
+        //     })
+        //     .catch(function (error) {
+        //     });
+        // }  
         
         function getWatchlist() {
             let customer = HelperFunctions.getCustomerInfo();            
@@ -254,7 +254,7 @@ const PortfolioDetails = () => {
         getWatchlist();
         getPortfolioList();
         getStocks();
-        getPortfolioPerformance(); 
+        //getPortfolioPerformance(); 
 
     },[portfolioId]);
 
