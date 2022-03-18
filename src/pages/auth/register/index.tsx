@@ -349,7 +349,7 @@ const Register = () => {
             "permanentAddress": bvnDetails.residentialAddress,
             'shA': showImgAvatar,
             "custAid":customerAid,
-            "cscsNumber":customerAidResponse["cscsacct#"],
+            "cscsNumber":customerAidResponse.cscsacct,
         }
 
         console.log(requestData)
@@ -695,7 +695,7 @@ const Register = () => {
                     setShowSpinner(false);
                     setIsUserIdValid('true');
 
-                    if(response.data.data.hasOwnProperty("cscsreg#")){
+                    if(response.data.data.hasOwnProperty("cscsreg")){
                         setCustomerAidResponse(response.data.data);
 
                         setTimeout(()=>{
