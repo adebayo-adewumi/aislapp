@@ -53,6 +53,7 @@ const BankCard = () => {
     const [accountName, setAccountName] = useState('');
     const [accountNumber, setAccountNumber] = useState('');
     const [bankCode, setBankCode] = useState('');
+    const [bankName, setBankName] = useState('');
 
     const [bankDetailsList, setBankDetailsList] = useState([]);
     const [selectedBankId, setSelectedBankId] = useState('');
@@ -138,13 +139,15 @@ const BankCard = () => {
                 setBankDetailsError('All fields are required.');
                 setIsBankDetailsFilled(false);
             }
-            else if(transactionPin === '') {
-                setBankDetailsError('All fields are required.');
-                setIsBankDetailsFilled(false);
-            }
+            // else if(transactionPin === '') {
+            //     setBankDetailsError('All fields are required.');
+            //     setIsBankDetailsFilled(false);
+            // }
             else {    
+
+                let bCode = bankCode.split("@")[0];
     
-                getAxios(axios).get(walletAndAccountServiceBaseUrl + '/name-enquiry?accountNo=' + accountNumber + '&bankCode=' + bankCode)
+                getAxios(axios).get(walletAndAccountServiceBaseUrl + '/name-enquiry?accountNo=' + accountNumber + '&bankCode=' + bCode)
                 .then(function (response) {
 
                     if(response.data.statusCode !== 200){
@@ -168,7 +171,7 @@ const BankCard = () => {
         }
 
         checkNameEnquiryOnBankDetails();
-    },[accountNumber, bankCode, transactionPin]);
+    },[accountNumber, bankCode]);
 
     useEffect(()=>{
         function checkBankTransactionPIN() {
@@ -250,13 +253,18 @@ const BankCard = () => {
     }
 
     function addBankDetails() {
+        let bankCodeAndName = bankCode.split("@");
+
+        setBankName(bankCodeAndName[1]);
 
         let requestData = {
             "accountName": accountName,
             "accountNumber": accountNumber,
-            "bankCode": bankCode,
-            "bankName": 'VFD MICROFINANCE BANK',
+            "bankCode": bankCodeAndName[0],
+            "bankName": bankName
         }
+
+        console.log(requestData)
 
         setShowSpinner(true);
 
@@ -965,18 +973,16 @@ const BankCard = () => {
                                         <div>
                                             {/* Bank Details Error */}
                                             <div className={bankDetailsError ? "error-alert mb-20" : "hidden"}>
-                                                <div className="flex justify-between space-x-1 pt-3">
-                                                    <div className="flex">
+                                                <div className="flex justify-between space-x-1">
+                                                    <div className="flex py-2">
                                                         <div>
                                                             <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                 <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
                                                             </svg>
                                                         </div>
 
-                                                        <div className="pt-1 text-sm">{bankDetailsError}</div>
-                                                    </div>
-
-                                                
+                                                        <div className="text-sm">{bankDetailsError}</div>
+                                                    </div>                                                
                                                 </div>
                                             </div>
                                             {/* End */}
@@ -1016,7 +1022,7 @@ const BankCard = () => {
                                                         <option value="">...</option>
                                                         {
                                                             bankList.map((item: any) =>
-                                                                <option value={item.code}>{item.name}</option>
+                                                                <option value={item.code+"@"+item.name}>{item.name}</option>
                                                             )
                                                         }
                                                     </select>
