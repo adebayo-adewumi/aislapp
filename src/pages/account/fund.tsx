@@ -62,6 +62,8 @@ const FundAccount = () => {
     const [isSelectSavedCard, setIsSelectSavedCard] = useState<boolean>(false);
     const [selectedSavedCard, setSelectedSavedCard] = useState<any>({});
 
+    const [fundingType, setFundingType] = useState('NEW_CARD_PAYMENT');
+
     useEffect(() => {
         setCustomer(JSON.parse(localStorage.getItem("aislCustomerInfo") as string));
 
@@ -202,6 +204,8 @@ const FundAccount = () => {
     }
 
     function fundAccountWithCard() {
+        setFundingType("NEW_CARD_PAYMENT");
+
         let customer = HelperFunctions.getCustomerInfo();
 
         let requestData = {
@@ -305,7 +309,10 @@ const FundAccount = () => {
             'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
         }
 
-        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/fw/transaction/verify',
+        let _fundingType = fundingType === 'NEW_CARD_PAYMENT' ? '/fw/transaction/verify':'/fw/transaction/tokenized/verify';
+
+       
+        getAxios(axios).post(walletAndAccountServiceBaseUrl + ''+_fundingType,
             {
                 "text": localStorage.getItem('genericCypher')
             },{headers})
@@ -396,6 +403,7 @@ const FundAccount = () => {
     }
 
     function processTokenizedPayment(){
+        setFundingType("SAVED_CARD_PAYMENT");
 
         let requestData = {
             "maskedPan": selectedSavedCard.maskedPan,

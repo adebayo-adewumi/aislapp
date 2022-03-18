@@ -1256,7 +1256,7 @@ const BankCard = () => {
                                     </svg>
                                 </div>
 
-                                <div className="pt-1 text-sm text-green-900">{apiResponseSuccessMsg}</div>
+                                <div className="text-sm text-green-900">{apiResponseSuccessMsg}</div>
                             </div>
 
                             <div className="cursor-pointer">
