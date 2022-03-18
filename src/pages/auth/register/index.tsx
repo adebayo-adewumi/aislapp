@@ -693,17 +693,17 @@ const Register = () => {
                 axios.get(authOnboardingServiceBaseUrl + '/customer/reg-number/'+customerAid)
                 .then(function (response) { 
                     setShowSpinner(false);
-                    setIsUserIdValid('true');
-
-                    if(response.data.data.hasOwnProperty("cscsreg")){
+                   
+                    if(response.data.hasOwnProperty("data")){
                         setCustomerAidResponse(response.data.data);
+                        setIsUserIdValid('true');
 
                         setTimeout(()=>{
                             closeModal();
                         },2000);
                     }
                     else{
-                        setShowSpinner(false);
+                        
                         setIsUserIdValid('false');
                     }
 
