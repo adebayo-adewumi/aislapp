@@ -146,6 +146,8 @@ const BankCard = () => {
             else {    
 
                 let bCode = bankCode.split("@")[0];
+
+                setBankName(bankCode.split("@")[1]);
     
                 getAxios(axios).get(walletAndAccountServiceBaseUrl + '/name-enquiry?accountNo=' + accountNumber + '&bankCode=' + bCode)
                 .then(function (response) {
