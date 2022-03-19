@@ -436,11 +436,11 @@ const FundAccount = () => {
         
       
         // put caret back in the right position
-        var updated_len = input_val.length;
+        // var updated_len = input_val.length;
 
-        caret_pos = updated_len - original_len + caret_pos;
+        // caret_pos = updated_len - original_len + caret_pos;
 
-        event.target.setSelectionRange(caret_pos, caret_pos);
+        // event.target.setSelectionRange(caret_pos, caret_pos);
 
         // send updated string to input
         setShowAmount(input_val);
