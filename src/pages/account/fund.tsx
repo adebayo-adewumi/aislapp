@@ -393,12 +393,6 @@ const FundAccount = () => {
         
         // don't validate empty input
         if (input_val === "") { return; }
-        
-        // original length
-        var original_len = input_val.length;
-      
-        // initial caret position 
-        var caret_pos = event.target.value.selectionStart;
           
         // check for decimal
         if (input_val.indexOf(".") >= 0) {
