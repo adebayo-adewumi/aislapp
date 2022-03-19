@@ -299,7 +299,7 @@ const BankCard = () => {
 
                     setTimeout(()=>{
                         window.location.reload();
-                    },3000)
+                    },2000)
                 }
             })
             .catch(function (error) {
@@ -360,7 +360,7 @@ const BankCard = () => {
 
                 setTimeout(()=>{
                     window.location.reload();
-                },3000)
+                },1000)
             })
             .catch(function (error) {
                 setShowSpinner(false);
@@ -391,7 +391,7 @@ const BankCard = () => {
 
             setTimeout(()=>{
                 window.location.reload();
-            },3000);
+            },1000);
         })
         .catch(function (error) {
             setShowSpinner(false);
@@ -573,7 +573,7 @@ const BankCard = () => {
 
                 setTimeout(()=>{
                     window.location.reload();
-                },3000)
+                },1000)
             }
         })
         .catch(function (error) {     

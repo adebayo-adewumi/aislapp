@@ -56,6 +56,7 @@ const Profile = () => {
     const [isEmployeeDetailsSuccessful, setIsEmployeeDetailsSuccessful] = useState<boolean>(false);
     const [isNokSuccessful, setIsNokSuccessful] = useState<boolean>(false);
     const [isPersonalDetailsSuccessful, setIsPersonalDetailsSuccessful] = useState<boolean>(false);
+    const [isBankDetailsSuccessful, setIsBankDetailsSuccessful] = useState<boolean>(false);
 
     const [hasMinAndMaxCharacter, setHasMinAndMaxCharacter] = useState<boolean>(false);
     const [hasLowerCaseCharacter, setHasLowerCaseCharacter] = useState<boolean>(false);
@@ -130,8 +131,9 @@ const Profile = () => {
     const [nokDetails, setNOKDetails] = useState('');
 
     const [bankDetails, setBankDetails] = useState<any[]>([]);
+    const [primaryBankDetails, setPrimaryBankDetails] = useState<any[]>([]);
 
-    const [showSelectPrimaryBankDetails, setShowSelectPrimaryBankDetails] = useState<boolean>(false);
+    //const [showSelectPrimaryBankDetails, setShowSelectPrimaryBankDetails] = useState<boolean>(false);
 
     const [showEnterPasswordCard, setShowEnterPasswordCard] = useState<boolean>(false);
     const [showGeneratePasswordOTPCard, setShowGeneratePasswordOTPCard] = useState<boolean>(true);
@@ -426,8 +428,14 @@ const Profile = () => {
         function getBankDetails() {
 
             getAxios(axios).get(walletAndAccountServiceBaseUrl + '/bank-details')
-                .then(function (response) { 
+                .then(function (response) {
                     setBankDetails(response.data.data)
+
+                    if(response.data.data.length > 0){
+                        let _primaryBankDetails = response.data.data.filter((elem: { primaryBank: boolean; }) => elem.primaryBank === true);
+
+                        setPrimaryBankDetails(_primaryBankDetails);
+                    }
                 })
                 .catch(function (error) { });
         }
@@ -903,11 +911,13 @@ const Profile = () => {
         setShowNotificationDetailModal(false);
     }
 
-    function changePrimaryBankDetails(){
-        setShowSelectPrimaryBankDetails(true);
-    }
+    // function changePrimaryBankDetails(){
+    //     setShowSelectPrimaryBankDetails(true);
+    // }
 
     function updateBankDetails(){
+        setShowSpinner(true);
+
         let headers = {
             'Authorization': 'Bearer '+localStorage.getItem('aislUserToken'), 
             'x-firebase-token': '12222',
@@ -917,14 +927,18 @@ const Profile = () => {
         axios.put(walletAndAccountServiceBaseUrl+'/bank-details/primary-bank/'+selectedBankId, 
         {headers})
         .then(function (response) {
-            setIsPersonalDetailsSuccessful(true);
-            setApiResponseMessage(response.data.description);
-            setShowPersonalSpinner(false);
+            setIsBankDetailsSuccessful(true);
+            setApiResponseMessage("Bank details updated successfully.");
+            setShowSpinner(false);
+
+            setTimeout(()=>{
+                window.location.reload();
+            },1500)
         })
         .catch(function (error) {
             setErrorMsg(error.response.data.message);
-            setShowPersonalSpinner(false);
-            console.log(errorMsg)
+            setIsBankDetailsSuccessful(false);
+            setShowSpinner(false);
         });
     }
 
@@ -1560,6 +1574,24 @@ const Profile = () => {
                                 {/*Bank Details */}
                                 <div>
                                     <div className='card p-10'>
+                                        {/* Bank Details Success */}
+                                        <div className={isBankDetailsSuccessful ? "otp-alert mb-20":"hidden"}>
+                                            <div className="flex otp-validated justify-between space-x-1 pt-3">
+                                                <div className="flex">
+                                                    <div>
+                                                        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062"/>
+                                                            <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062"/>
+                                                        </svg>
+                                                    </div>
+
+                                                    <div className="text-sm text-green-900">{apiResponseMessage}</div>
+                                                </div>                                               
+                                                
+                                            </div>
+                                        </div>
+                                        {/* End */}
+
                                         <div className='text-xl font-gotham-black-regular text-green-900 mb-3'>Bank Details</div>
                                         <div className='font-bold text-green-900 mb-6 text-sm'>Proceeds from your stock sales would be deposited into this account</div>
 
@@ -1567,14 +1599,21 @@ const Profile = () => {
                                             <div>
                                                 <div className='text-gray-700 mb-3 text-sm font-bold'>Primary Bank Details</div>
 
-                                                <div className={showSelectPrimaryBankDetails ? 'hidden':'mb-20'}>
-                                                {bankDetails.map((item :any, index: any) =>
+                                                <div className={bankDetails.length === 0 ? 'mb-20 text-gray-500 text-sm':'hidden'}>
+                                                    <div>No bank details added</div>
+                                                </div>
+
+                                                <div className={primaryBankDetails.length > 0 ? 'mb-20':'hidden'}>
+                                                {primaryBankDetails.map((item :any, index: any) =>
                                                     <input className={item.primaryBank ? 'font-bold input px-5 py-3 border-1-d6 outline-white font-bold text-lg':'hidden'} id='bankList' type="text" readOnly value={item.accountName+ " | " +item.bankName +" | "+ item.accountNumber} key={index}/>
                                                 )}
                                                 </div>
 
-                                                <div className={showSelectPrimaryBankDetails ? 'mb-20':'hidden'}>
-                                                    <select className='font-bold input px-5 py-3 border-1-d6 outline-white font-bold text-lg'id='bankList' onChange={selectBankDetails}>
+                                                <div className={primaryBankDetails.length === 0 && bankDetails.length > 0 ? 'mb-20':'hidden'}>
+                                                    <select className='font-bold input px-5 py-3 border-1-d6 outline-white font-bold text-sm'id='bankList' onChange={selectBankDetails}>
+                                                        <option value="">Select your primary bank details
+                                                        </option>
+
                                                         {
                                                             bankDetails.map((item :any, index: any) =>
                                                             <option value={item.id} key={index}>{item.accountName} | {item.bankName} | {item.accountNumber}</option>
@@ -1587,11 +1626,8 @@ const Profile = () => {
 
                                         <div>
                                             <div>
-                                                <button onClick={changePrimaryBankDetails} type='button' className={showSelectPrimaryBankDetails ? "hidden":"rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer mr-3 hidden"}>
-                                                   Change Primary Bank Details
-                                                </button>
 
-                                                <button onClick={updateBankDetails} type='button' className={showSelectPrimaryBankDetails ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer":"hidden"}>
+                                                <button onClick={updateBankDetails} type='button' className={primaryBankDetails.length === 0 && bankDetails.length > 0 ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer":"hidden"}>
                                                     <span className={ showSpinner ? "hidden" : ""}>Update</span>
                                                     <img src={SpinnerIcon} alt="spinner icon" className={ showSpinner ? "" : "hidden"} width="15"/>
                                                 </button>
