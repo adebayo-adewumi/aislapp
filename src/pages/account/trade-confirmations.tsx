@@ -29,6 +29,7 @@ const TradeConfirmations = () => {
     const [showModalBG, setShowModalBG] = useState<boolean>(false);
     const [showRemoveStockModal, setShowRemoveStockModal] = useState<boolean>(false);
     const [showCancelOrderModal, setShowCancelOrderModal] = useState<boolean>(false);
+    const [showTradeDetailsModal, setShowTradeDetailsModal] = useState<boolean>(false);
 
     const [switchToAll, setSwitchToAll] = useState<boolean>(true);
     const [switchToOpen, setSwitchToOpen] = useState<boolean>(false);
@@ -41,7 +42,6 @@ const TradeConfirmations = () => {
 
     const [showSpinner, setShowSpinner] = useState<boolean>(false);
 
-    const [orderAll, setOrderAll] = useState('');
     const [orderOpen, setOrderOpen] = useState('');
     const [orderExecuted, setOrderExecuted] = useState('');
     const [orderRejected, setOrderRejected] = useState('');
@@ -50,10 +50,15 @@ const TradeConfirmations = () => {
 
     const [buyTrade, setBuyTrade] = useState<any[]>([]);
     const [sellTrade, setSellTrade] = useState<any[]>([]);
+    const [allTrade, setAllTrade] = useState<any[]>([]);
+    const [fiteredTrade, setFiteredTrade] = useState<any[]>([]);
 
     const [selectedTrade, setSelectedTrade] = useState('');
 
     const [isCancelSuccess, setIsCancelSuccess] = useState('');
+    const [blurScreen, setBlurScreen] = useState<boolean>(false);
+
+
 
     useEffect(()=>{
         function getAllOrders(){
@@ -64,45 +69,7 @@ const TradeConfirmations = () => {
             .then(function (response) {
                 
                 if(response.data.data.length > 0){
-                    const allOrders = response.data.data.sort(compareTradeConfirmationDate).map((item :any, index :any)=>
-                    <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
-                        <div className="md:flex md:justify-between md:items-center text-sm">
-                            <div className='flex-child md:mb-0 mb-4 text-xs'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
-
-                            <div className=" flex-child md:mb-0 mb-4">
-                                <div className='font-bold text-xs'>{item.stockCode}</div>
-                            </div>
-
-                            <div className=" flex-child md:mb-0 mb-4">
-                                <div className='font-bold text-xs'>{parseInt(item.qty)}</div>
-                            </div>
-
-                            <div className=" flex-child md:mb-0 mb-4">
-                                <div className='font-bold text-xs'>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
-                            </div>
-
-                            <div className=" flex-child md:mb-0 mb-4">
-                                <div className='font-bold text-xs'>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
-                            </div>
-
-                            <div className=" flex-child md:mb-0 mb-4">
-                                <div className='font-bold text-xs'>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
-                            </div> 
-
-                            <div className=" flex-child md:mb-0 mb-4 text-right">                                
-                                <button data-order={item.id} onClick={displayCancelOrderModal} type='button' className={item.status === 'AWAIT_EXECUTION' ? "py-2 px-3 text-xs border-0 font-bold text-red-500 cursor-pointer bg-transparent":"hidden"}>Cancel</button>
-                            </div>
-
-                            <div className=" flex-child md:mb-0 mb-4 text-xs text-right">
-                                <Link to={"/stock?name="+item.name+"&symbol="+item.stockCode+"&close="+item.quotePrice+"&tradeAction=sell"}>
-                                    <button type='button' className="rounded-lg bg-green-800 py-2 px-3 border-0 font-bold text-white cursor-pointer text-xs">View</button></Link>
-                            </div> 
-                            
-                        </div>
-                    </div>
-                    );
-
-                    setOrderAll(allOrders);
+                    setAllTrade(response.data.data);
                 }
 
                 setShowPageLoader(false);
@@ -486,16 +453,30 @@ const TradeConfirmations = () => {
         setShowModalBG(false);
         setShowRemoveStockModal(false);
         setShowCancelOrderModal(false);
+        setShowTradeDetailsModal(false);
+        setBlurScreen(false);
     }
 
-    function displayCancelOrderModal(event :any){
-        let sTrade =  event.target.getAttribute("data-order");
-
-        setSelectedTrade(sTrade);
-
+    function displayCancelOrderModal(){
         setShowCancelOrderModal(true);
         setShowModalBG(true);
         setShowRemoveStockModal(false);
+        setShowTradeDetailsModal(false);
+    }
+
+    function displayTradeDetailsModal(event :any){
+        let sTrade =  event.target.getAttribute("data-order");
+
+        let _filteredTrade = allTrade.filter((elem :any) => elem.id === sTrade);
+
+        setFiteredTrade(_filteredTrade);
+
+        setSelectedTrade(sTrade);
+
+        setShowCancelOrderModal(false);
+        setShowModalBG(true);
+        setShowRemoveStockModal(false);
+        setShowTradeDetailsModal(true);
     }
 
     function cancelOrder(){
@@ -516,11 +497,23 @@ const TradeConfirmations = () => {
         });
     }
 
+    function printTrade(){
+        setBlurScreen(true);
+        
+        if(blurScreen){
+            window.print();
+        }
+
+        setTimeout(()=>{
+            window.print();
+        },500)
+    }
+
     return (
         <div className="relative">
-            <UserAreaHeader />
+            <div className={blurScreen ? 'opacity-0':''}><UserAreaHeader/></div>
 
-            <div>
+            <div className={blurScreen ? 'opacity-0':''}>
                 <div className="h-screen flex">
                     <Sidebar />
 
@@ -608,9 +601,46 @@ const TradeConfirmations = () => {
 
                                 {/*All Section*/}
                                 <div className={switchToAll ? '':'hidden'}>
-                                    <div className={orderAll === '' ? 'text-gray-500 text-center':'hidden'}>No trades to display</div>
+                                    <div className={allTrade.length === 0 ? 'text-gray-500 text-center':'hidden'}>No trades to display</div>
 
-                                    <div>{orderAll}</div>
+                                    <div>
+                                        {allTrade.sort(compareTradeConfirmationDate).map((item :any, index :any)=>
+                                        <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
+                                            <div className="md:flex md:justify-between md:items-center text-sm">
+                                                <div className='flex-child md:mb-0 mb-4 text-xs'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
+
+                                                <div className=" flex-child md:mb-0 mb-4">
+                                                    <div className='font-bold text-xs'>{item.stockCode}</div>
+                                                </div>
+
+                                                <div className=" flex-child md:mb-0 mb-4">
+                                                    <div className='font-bold text-xs'>{parseInt(item.qty)}</div>
+                                                </div>
+
+                                                <div className=" flex-child md:mb-0 mb-4">
+                                                    <div className='font-bold text-xs'>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
+                                                </div>
+
+                                                <div className=" flex-child md:mb-0 mb-4">
+                                                    <div className='font-bold text-xs'>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
+                                                </div>
+
+                                                <div className=" flex-child md:mb-0 mb-4">
+                                                    <div className='font-bold text-xs'>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
+                                                </div> 
+
+                                                <div className=" flex-child md:mb-0 mb-4 text-right">                                
+                                                    <button data-order={item.id} onClick={displayTradeDetailsModal} type='button' className={item.status === 'AWAIT_EXECUTION' ? "py-2 px-3 text-xs border-0 font-bold text-red-500 cursor-pointer bg-transparent":"hidden"}>Cancel</button>
+                                                </div>
+
+                                                <div className=" flex-child md:mb-0 mb-4 text-xs text-right">
+                                                    <button data-order={item.id}  onClick={displayTradeDetailsModal} type='button' className="rounded-lg bg-green-800 py-2 px-3 border-0 font-bold text-white cursor-pointer text-xs">View</button>
+                                                </div> 
+                                                
+                                            </div>
+                                        </div>
+                                        )}
+                                    </div>
                                 </div>
                                 {/*End*/}
 
@@ -644,11 +674,11 @@ const TradeConfirmations = () => {
                                                 </div> 
 
                                                 <div className=" flex-child md:mb-0 mb-4 text-right">                                                    
-                                                    <button data-order={item.id} onClick={displayCancelOrderModal} type='button' className={item.status  === 'AWAIT_EXECUTION' ? "py-2 px-3 border-0 bg-transparent font-bold text-red-500 text-xs cursor-pointer":"hidden"}>Cancel</button>
+                                                    <button data-order={item.id} onClick={displayTradeDetailsModal} type='button' className={item.status  === 'AWAIT_EXECUTION' ? "py-2 px-3 border-0 bg-transparent font-bold text-red-500 text-xs cursor-pointer":"hidden"}>Cancel</button>
                                                 </div>
 
                                                 <div className="flex-child md:mb-0 mb-4 text-right">
-                                                    <button type='button' className="rounded-lg bg-green-800 py-2 px-3 border-0 font-bold text-white cursor-pointer text-xs">View</button>
+                                                    <button data-order={item.id} onClick={displayTradeDetailsModal} type='button' className="rounded-lg bg-green-800 py-2 px-3 border-0 font-bold text-white cursor-pointer text-xs">View</button>
                                                 </div> 
                                                 
                                             </div>
@@ -713,11 +743,11 @@ const TradeConfirmations = () => {
                                                 </div> 
 
                                                 <div className=" flex-child md:mb-0 mb-4 text-right">                                                    
-                                                    <button data-order={item.id} onClick={displayCancelOrderModal} type='button' className={item.status  === 'AWAIT_EXECUTION' ? "py-3 px-3 border-0 bg-transparent text-xs font-bold text-red-500 cursor-pointer":"hidden"}>Cancel</button>
+                                                    <button data-order={item.id} onClick={displayTradeDetailsModal} type='button' className={item.status  === 'AWAIT_EXECUTION' ? "py-3 px-3 border-0 bg-transparent text-xs font-bold text-red-500 cursor-pointer":"hidden"}>Cancel</button>
                                                 </div>
 
                                                 <div className="flex-child md:mb-0 mb-4 text-right">
-                                                    <button type='button' className="rounded-lg bg-green-800 py-3 px-3 border-0 font-bold text-white cursor-pointer text-xs">View</button>
+                                                    <button data-order={item.id} onClick={displayTradeDetailsModal} type='button' className="rounded-lg bg-green-800 py-3 px-3 border-0 font-bold text-white cursor-pointer text-xs">View</button>
                                                 </div> 
                                                 
                                             </div>
@@ -775,7 +805,7 @@ const TradeConfirmations = () => {
             </div>
 
             {/* Transaction Details Modal */}
-            <div className="generic-modal hidden">
+            <div className={showTradeDetailsModal ? "generic-modal":"hidden"}>
                 <div className='generic-modal-dialog'>
                     <div className="top-losers-modal">
                         <div className="mb-6 flex justify-between">
@@ -789,51 +819,82 @@ const TradeConfirmations = () => {
                             </div>
                         </div>
 
-                        <div className='mb-30'>
-                            <div className="flex md:space-x-5 space-x-3 items-center">
-                                <div>
-                                    <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" width="40"/>
-                                </div>
-
-                                <div className="flex space-x-3 items-center">
-                                    <div className="font-bold text-lg">stockCode</div>
-                                    <div>|</div>
-                                    <div className="font-bold text-sm">stockname</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="py-5 border-b border-solid border-t-0 border-l-0 border-r-0 border-gray-200">
-                            <div className='flex justify-between'>
-                                <div>Side</div>
-                                <div>Buy</div>
-                            </div>
-                        </div>
-
-                        <div className="py-5 border-b border-solid border-t-0 border-l-0 border-r-0 border-gray-200">
-                            <div className='flex justify-between'>
-                                <div>Quantity of Shares</div>
-                                <div>15</div>
-                            </div>
-                        </div>
-
-                        <div className="py-5 mb-6">
-                            <div className='flex justify-between'>
-                                <div>Quantity of Shares</div>
-                                <div>15</div>
-                            </div>
-                        </div>
-
                         <div>
-                            <div className='flex space-x-3'>
-                                <div className='w-1/3'>
-                                    <button className='cursor-pointer w-full border-0 rounded-lg bg-gray-300 px-10 py-3 font-bold'>Cancel</button>
+                            {fiteredTrade.map((item :any, index :any)=>
+                            <div className='text-sm'>
+                                <div className='mb-30'>
+                                    <div className="flex md:space-x-5 space-x-3 items-center">
+                                        <div>
+                                            <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" width="40"/>
+                                        </div>
+
+                                        <div className="flex space-x-3 items-center">
+                                            <div className="font-bold text-lg">{item.stockCode}</div>
+                                            <div>|</div>
+                                            <div className="text-sm">{item.name}</div>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div className='w-2/3'>
-                                    <button className='cursor-pointer w-full border-0 rounded-lg bg-green-900 text-white px-10 py-3 font-bold'>Download Receipt</button>
+                                <div className="py-5 border-b border-solid border-t-0 border-l-0 border-r-0 border-gray-200">
+                                    <div className='flex justify-between'>
+                                        <div>Type</div>
+                                        <div className='font-bold'>{item.txntype}</div>
+                                    </div>
+                                </div>
+
+                                <div className="py-5 border-b border-solid border-t-0 border-l-0 border-r-0 border-gray-200">
+                                    <div className='flex justify-between'>
+                                        <div>Quantity of Shares</div>
+                                        <div className='font-bold'>{parseInt(item.qty)}</div>
+                                    </div>
+                                </div>
+
+                                <div className="py-5 border-b border-solid border-t-0 border-l-0 border-r-0 border-gray-200">
+                                    <div className='flex justify-between'>
+                                        <div>Price Per Share</div>
+                                        <div className='font-bold'>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.quotePrice))}</div>
+                                    </div>
+                                </div>
+
+                                <div className="py-5 border-b border-solid border-t-0 border-l-0 border-r-0 border-gray-200">
+                                    <div className='flex justify-between'>
+                                        <div>Status</div>
+                                        <div className='font-bold'>{item.status === "AWAIT_EXECUTION" ? 'Pending': item.status}</div>
+                                    </div>
+                                </div>
+
+                                <div className="py-5 border-b border-solid border-t-0 border-l-0 border-r-0 border-gray-200">
+                                    <div className='flex justify-between'>
+                                        <div>Amount</div>
+                                        <div className='font-bold'>₦ {HelperFunctions.formatCurrencyWithDecimal(parseFloat(item.quotePrice) * parseInt(item.qty))}</div>
+                                    </div>
+                                </div>
+
+                                <div className="py-5 mb-6">
+                                    <div className='flex justify-between'>
+                                        <div>Date</div>
+                                        <div className='font-bold'>{moment(item.orderDate).format("Do MMM YYYY | hh:mm A")}</div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div className='flex space-x-3'>
+                                        <div className={item.status === 'AWAIT_EXECUTION'? 'w-1/3':'hidden'}>
+                                            <button onClick={displayCancelOrderModal} className='cursor-pointer w-full border-0 rounded-lg bg-gray-300 px-5 py-3 font-bold'>Cancel Order</button>
+                                        </div>
+
+                                        <div className={item.status === 'AWAIT_EXECUTION'? 'hidden':'hidden'}>
+                                            <button className='cursor-pointer w-full border-0 rounded-lg bg-gray-300 px-10 py-3 font-bold'>Share</button>
+                                        </div>
+
+                                        <div className={item.status === 'AWAIT_EXECUTION'? 'w-2/3':'w-full'}>
+                                            <button onClick={printTrade} className='cursor-pointer w-full border-0 rounded-lg bg-green-900 text-white px-10 py-3 font-bold'>Print Receipt</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                            )}
                         </div>
                     </div>
                 </div>
