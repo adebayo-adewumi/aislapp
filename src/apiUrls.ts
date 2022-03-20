@@ -5,6 +5,7 @@ export const authOnboardingServiceBaseUrl = `${process.env.REACT_APP_AUTH_SERVIC
 export const walletAndAccountServiceBaseUrl = `${process.env.REACT_APP_WALLET_SERVICE_URL}`;
 
 export const getPortfolioEndpoint = portfolioServiceBaseUrlUrl.concat("/portfolio");
+export const getPortfolioPerformanceEndpoint = portfolioServiceBaseUrlUrl.concat("/portfolio/portfolio-performance");
 export const createPortfolioEndpoint = portfolioServiceBaseUrlUrl.concat("/portfolio/add");
 export const getTopMoverByValueEndpoint = utilityServiceBaseUrlUrl.concat("/utils/top-movers?type=value");
 export const getTopMoverByVolumeEndpoint = utilityServiceBaseUrlUrl.concat("/utils/top-movers?type=volume");

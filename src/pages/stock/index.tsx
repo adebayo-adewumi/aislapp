@@ -138,8 +138,6 @@ const Stock = () => {
     const [lowPriceAlert, setLowPriceAlert] = useState('');
 
 
-
-
     let options = {
         chart: {
             toolbar: {

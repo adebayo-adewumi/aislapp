@@ -21,7 +21,7 @@ import * as HelperFunctions from '../../lib/helper';
 import moment from 'moment';
 import { encryptData } from '../../lib/encryptionHelper';
 import { generalEncKey } from '../../common/constants/globals';
-import { getPortfolioEndpoint,getStocksEndpoint,stockTradingServiceBaseUrlUrl } from '../../apiUrls';
+import { getPortfolioEndpoint,getPortfolioPerformanceEndpoint,getStocksEndpoint,stockTradingServiceBaseUrlUrl } from '../../apiUrls';
 import { getAxios } from '../../network/httpClientWrapper';
 import GreenBoxIcon from '../../assets/images/green-box.svg';
 import RedBoxIcon from '../../assets/images/red-box.svg';
@@ -66,6 +66,27 @@ const PortfolioDetails = () => {
 
     const [showPageLoader, setShowPageLoader] = useState<boolean>(true);
 
+    const [graphYAxis, setGraphYAxis] = useState<string[]>(["0","0","0","0","0","0","0","0","0","0","0","0"]);
+    const [graphXAxis, setGraphXAxis] = useState<string[]>(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]);
+
+    const [graph1DYAxis, setGraph1DYAxis] = useState<string[]>([]);
+    const [graph1DXAxis, setGraph1DXAxis] = useState<string[]>([]);
+
+    const [graph1WYAxis, setGraph1WYAxis] = useState<string[]>([]);
+    const [graph1WXAxis, setGraph1WXAxis] = useState<string[]>([]);
+
+    const [graph1MYAxis, setGraph1MYAxis] = useState<string[]>([]);
+    const [graph1MXAxis, setGraph1MXAxis] = useState<string[]>([]);
+
+    const [graph3MYAxis, setGraph3MYAxis] = useState<string[]>([]);
+    const [graph3MXAxis, setGraph3MXAxis] = useState<string[]>([]);
+
+    const [graph6MYAxis, setGraph6MYAxis] = useState<string[]>([]);
+    const [graph6MXAxis, setGraph6MXAxis] = useState<string[]>([]);
+
+    const [graph1YYAxis, setGraph1YYAxis] = useState<string[]>([]);
+    const [graph1YXAxis, setGraph1YXAxis] = useState<string[]>([]);
+
     let options = {
         chart: {
             toolbar: {
@@ -73,10 +94,24 @@ const PortfolioDetails = () => {
             }
         },
         xaxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            categories: graphXAxis,
             tooltip: {
                 enabled: false
+            },
+            title: {
+                text: "",
+            },
+            labels:{
+                show: false
             }
+        },
+        yaxis: {
+            tooltip: {
+                enabled: false
+            },
+            title: {
+                text: "Porfolio Returns (₦)",
+            },
         },
         markers: {
             colors: ['#A41856'],
@@ -90,7 +125,6 @@ const PortfolioDetails = () => {
                 opacityFrom: 0.7,
                 opacityTo: 0.9,
                 stops: [0, 90, 100],
-                //colorStops: ['#A0F2DB', 'rgba(187, 230, 217, 0)']
                 colorStops: [
                     [
                         {
@@ -119,14 +153,14 @@ const PortfolioDetails = () => {
         },
         tooltip: {
             followCursor: false
-        }
+        },
 
     };
 
     let series = [
         {
             name: "series-1",
-            data: [45, 52, 38, 45, 19, 23, 2, 45, 52, 38, 45, 19]
+            data: graphYAxis
         }
     ];
 
@@ -200,24 +234,20 @@ const PortfolioDetails = () => {
             });
         }  
 
-        // function getPortfolioPerformance() {
+        function getPortfolioPerformance() {
 
-        //     let urlToCall: string = getPortfolioEndpoint.concat("/portfolio-performance/".concat(String(portfolioId)));
+            let requestData = {
+                "startDate":"10-02-2022 01:00:00",
+                "endDate":"11-02-2022 23:59:00"
+            }
 
-        //     let requestData =  {
-        //         "startDate":"10-02-2022 01:00:00",
-        //         "endDate":"11-02-2022 23:59:00"
-        //     }
-
-        //     getAxios(axios).get(urlToCall,{
-        //         data: requestData
-        //     })
-        //     .then(function (response) {
-        //         console.log(response.data)
-        //     })
-        //     .catch(function (error) {
-        //     });
-        // }  
+            getAxios(axios).post(getPortfolioPerformanceEndpoint+"/"+String(portfolioId), requestData)
+            .then(function (response) {
+                
+            })
+            .catch(function () {
+            });
+        }
         
         function getWatchlist() {
             let customer = HelperFunctions.getCustomerInfo();            
@@ -254,9 +284,194 @@ const PortfolioDetails = () => {
         getWatchlist();
         getPortfolioList();
         getStocks();
-        //getPortfolioPerformance(); 
+        getPortfolioPerformance(); 
 
     },[portfolioId]);
+
+    useEffect(() => {
+        function get1DStockGraphData() {
+
+            let requestData = {
+                "startDate":moment().subtract(1, 'days').format("DD-MM-YYYY hh:mm:ss"),
+                "endDate":moment().format("DD-MM-YYYY hh:mm:ss")
+            }
+
+            getAxios(axios).post(getPortfolioPerformanceEndpoint+"/"+String(portfolioId), requestData)
+            .then(function (response) { 
+                if(response.data.data.length === 0){
+                    setGraph1DYAxis(["0","0","0","0","0","0","0","0","0","0","0","0"]);
+                    
+                    setGraph1DXAxis(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]);
+                }
+                else{
+                    response.data.data.map((item :any)=>{
+                        graph1DYAxis.push(item.portfolioReturn);
+                        graph1DXAxis.push(moment(item.createdOn).format("MMM Do, YY"));
+
+                        setGraphYAxis(graph1DYAxis);
+                        setGraphXAxis(graph1DXAxis);
+
+                        return false; 
+                    });
+                }
+            })
+            .catch(function (error) {});
+        }
+
+        get1DStockGraphData();
+    },[graph1DXAxis, graph1DYAxis, portfolioId]);
+
+    useEffect(() => {
+        function get1WStockGraphData() {
+
+            let requestData = {
+                "startDate":moment().subtract(1, 'weeks').format("DD-MM-YYYY hh:mm:ss"),
+                "endDate":moment().format("DD-MM-YYYY hh:mm:ss")
+            }
+
+            getAxios(axios).post(getPortfolioPerformanceEndpoint+"/"+String(portfolioId), requestData)
+            .then(function (response) { 
+                if(response.data.data.length === 0){
+                    setGraph1WYAxis(["0","0","0","0","0","0","0","0","0","0","0","0"]);
+                    
+                    setGraph1WXAxis(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]);
+                }
+                else{
+                    response.data.data.map((item :any)=>{
+                        graph1WYAxis.push(item.portfolioReturn);
+                        graph1WXAxis.push(moment(item.createdOn).format("MMM Do, YY"));
+
+                        return false; 
+                    });
+                }
+            })
+            .catch(function (error) {});
+        }
+
+        get1WStockGraphData();
+    },[graph1WXAxis, graph1WYAxis, portfolioId]);
+
+    useEffect(() => {
+        function get1MStockGraphData() {
+
+            let requestData = {
+                "startDate":moment().subtract(1, 'months').format("DD-MM-YYYY hh:mm:ss"),
+                "endDate":moment().format("DD-MM-YYYY hh:mm:ss")
+            }
+
+            getAxios(axios).post(getPortfolioPerformanceEndpoint+"/"+String(portfolioId), requestData)
+            .then(function (response) { 
+                if(response.data.data.length === 0){
+                    setGraph1MYAxis(["0","0","0","0","0","0","0","0","0","0","0","0"]);
+                    
+                    setGraph1MXAxis(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]);
+                }
+                else{
+                    response.data.data.map((item :any)=>{
+                        graph1MYAxis.push(item.portfolioReturn);
+                        graph1MXAxis.push(moment(item.createdOn).format("MMM Do, YY"));
+
+                        return false; 
+                    });
+                }
+            })
+            .catch(function (error) {});
+        }
+
+        get1MStockGraphData();
+    },[graph1MXAxis, graph1MYAxis, portfolioId]);
+    
+    useEffect(() => {
+        function get3MStockGraphData() {
+
+            let requestData = {
+                "startDate":moment().subtract(3, 'months').format("DD-MM-YYYY hh:mm:ss"),
+                "endDate":moment().format("DD-MM-YYYY hh:mm:ss")
+            }
+
+            getAxios(axios).post(getPortfolioPerformanceEndpoint+"/"+String(portfolioId), requestData)
+            .then(function (response) { 
+                if(response.data.data.length === 0){
+                    setGraph3MYAxis(["0","0","0","0","0","0","0","0","0","0","0","0"]);
+                    
+                    setGraph3MXAxis(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]);
+                }
+                else{
+                    response.data.data.map((item :any)=>{
+                        graph3MYAxis.push(item.portfolioReturn);
+                        graph3MXAxis.push(moment(item.createdOn).format("MMM Do, YY"));
+
+                        return false; 
+                    });
+                }
+            })
+            .catch(function (error) {});
+        }
+
+        get3MStockGraphData();
+    },[graph3MXAxis, graph3MYAxis, portfolioId]);
+
+    useEffect(() => {
+        function get6MStockGraphData() {
+
+            let requestData = {
+                "startDate":moment().subtract(6, 'months').format("DD-MM-YYYY hh:mm:ss"),
+                "endDate":moment().format("DD-MM-YYYY hh:mm:ss")
+            }
+
+            getAxios(axios).post(getPortfolioPerformanceEndpoint+"/"+String(portfolioId), requestData)
+            .then(function (response) { 
+                if(response.data.data.length === 0){
+                    setGraph6MYAxis(["0","0","0","0","0","0","0","0","0","0","0","0"]);
+                    
+                    setGraph6MXAxis(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]);
+                }
+                else{
+                    response.data.data.map((item :any)=>{
+                        graph6MYAxis.push(item.portfolioReturn);
+                        graph6MXAxis.push(moment(item.createdOn).format("MMM Do, YY"));
+
+                        return false; 
+                    });
+                }
+            })
+            .catch(function (error) {});
+        }
+
+        get6MStockGraphData();
+    },[graph6MXAxis, graph6MYAxis, portfolioId]);
+
+    useEffect(() => {
+        function get1YStockGraphData() {
+
+            let requestData = {
+                "startDate":moment().subtract(1, 'years').format("DD-MM-YYYY hh:mm:ss"),
+                "endDate":moment().format("DD-MM-YYYY hh:mm:ss")
+            }
+
+            getAxios(axios).post(getPortfolioPerformanceEndpoint+"/"+String(portfolioId), requestData)
+            .then(function (response) { 
+                if(response.data.data.length === 0){
+                    setGraph1YYAxis(["0","0","0","0","0","0","0","0","0","0","0","0"]);
+                    
+                    setGraph1YXAxis(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]);
+                }
+                else{
+                    response.data.data.map((item :any)=>{
+                        graph1YYAxis.push(item.portfolioReturn);
+                        graph1YXAxis.push(moment(item.createdOn).format("MMM Do, YY"));
+
+                        return false; 
+                    });
+                }
+            })
+            .catch(function (error) {});
+        }
+
+        get1YStockGraphData();
+    },[graph1YXAxis, graph1YYAxis, portfolioId]);
+
+
 
     function displayAddNewStockModal() {
         setShowModalBG(true);
@@ -317,12 +532,7 @@ const PortfolioDetails = () => {
             .catch(function (error) {
                 setShowSpinner(false);
             });
-    }    
-
-    function closeApiResponseMsg() {
-        setApiResponseHasError(false);
-        setIsStockAddToPortfolioSuccessful(false);
-    }
+    } 
 
     function selectStockToMove(event :any){
         if(event.target.checked){
@@ -349,6 +559,50 @@ const PortfolioDetails = () => {
         setShowAddNewStockModal(false);
         setShowMarketplaceModal(true);
     }
+
+    function filterGraph(event :any){
+        let filterType = event.target.getAttribute("data-filter");
+        let filterBtns = document.getElementsByClassName("filter-btn");
+        
+        [].forEach.call(filterBtns, (el :any) =>{
+            el.classList.remove("active");
+            el.classList.add("inactive");
+        });
+
+        event.target.classList.remove("inactive");
+        event.target.classList.add("active");
+        
+        if(filterType === "1D"){
+            setGraphYAxis(graph1DYAxis);
+            setGraphXAxis(graph1DXAxis);
+        }
+        else if(filterType === "1W"){
+
+            setGraphYAxis(graph1WYAxis);
+            setGraphXAxis(graph1WXAxis);
+        }
+        else if(filterType === "1M"){
+            setGraphYAxis(graph1MYAxis);
+            setGraphXAxis(graph1MXAxis);
+        }
+        else if(filterType === "3M"){
+            setGraphYAxis(graph3MYAxis);
+            setGraphXAxis(graph3MXAxis);
+        }
+        else if(filterType === "6M"){
+            setGraphYAxis(graph6MYAxis);
+            setGraphXAxis(graph6MXAxis);
+        }
+        else if(filterType === "1Y"){
+            setGraphYAxis(graph1YYAxis);
+            setGraphXAxis(graph1YXAxis);
+        }
+        else{
+            setGraphYAxis(graph1DYAxis);
+            setGraphXAxis(graph1DXAxis);
+        }
+
+    } 
 
 
     return (
@@ -415,26 +669,30 @@ const PortfolioDetails = () => {
                             <div className='mb-30'>
                                 <div className='card p-10'>
                                     <div className='mb-30'>
-                                        <div className='flex justify-between items-center'>
-                                            <div className='font-gotham-black-regular font-bold text-green-900 text-xl'>Portfolio Performance</div>
-                                            <div className='w-1/2 flex bg-gray-300 p-1 rounded justify-between'>
-                                                <button className='bg-gray-300 hover:text-white py-3 px-5 rounded border-0 hover:bg-green-900 cursor-pointer text-gray-500 font-bold' type='button'>1D</button>
+                                        <div className='md:flex md:justify-between md:items-center '>
+                                            <div className='w-1/2 md:mb-0 mb-6'>
+                                                <div className='font-gotham-black-regular font-bold text-green-900 text-xl'>Total Portfolio Performance</div>
 
-                                                <button className='bg-gray-300 hover:text-white py-3 px-5 rounded border-0 hover:bg-green-900 cursor-pointer text-gray-500 font-bold' type='button'>1W</button>
+                                                <div className='text-lg'>Portfolio Value</div>
 
-                                                <button className='bg-gray-300 hover:text-white py-3 px-5 rounded border-0 hover:bg-green-900 cursor-pointer text-gray-500 font-bold' type='button'>1M</button>
+                                                <div className='font-gotham-black-regular font-bold text-green-900 text-xl'>₦ {formatCurrencyWithDecimal(parseFloat(portfolioDetails.currentValue))}</div>
+                                            </div>
 
-                                                <button className='bg-gray-300 hover:text-white py-3 px-5 rounded border-0 hover:bg-green-900 cursor-pointer text-gray-500 font-bold' type='button'>3M</button>
+                                            <div className='w-1/3 flex bg-gray-300 p-1 rounded justify-between'>
+                                                <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn active hover:bg-green-900 hover:text-white' type='button' data-filter="1D">1D</button>
 
-                                                <button className='bg-gray-300 hover:text-white py-3 px-5 rounded border-0 hover:bg-green-900 cursor-pointer text-gray-500 font-bold' type='button'>6M</button>
+                                                <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0  cursor-pointer font-bold filter-btn inactive' type='button' data-filter="1W">1W</button>
 
-                                                <button className='bg-gray-300 hover:text-white py-3 px-5 rounded border-0 hover:bg-green-900 cursor-pointer text-gray-500 font-bold' type='button'>1Y</button>
+                                                <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="1M">1M</button>
+
+                                                <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="3M">3M</button>
+
+                                                <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="6M">6M</button>
+
+                                                <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="1Y">1Y</button>
                                             </div>
                                         </div>
-
-                                        <div className='text-lg '>Portfolio Value</div>
-                                        <div className='font-gotham-black-regular font-bold text-green-900 text-xl'>₦ {formatCurrencyWithDecimal(parseFloat(portfolioDetails.currentValue))}</div>
-                                    </div>
+                                    </div> 
 
                                     <div>
                                         {/* <Line options={options} data={data} id='canvas'/> */}
@@ -615,13 +873,7 @@ const PortfolioDetails = () => {
                                                 </svg>
                                             </div>
 
-                                            <div className="pt-1 text-sm text-green-900">{apiResponseSuccessMsg}</div>
-                                        </div>
-
-                                        <div className="cursor-pointer" onClick={closeApiResponseMsg}>
-                                            <svg className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50" />
-                                            </svg>
+                                            <div className="text-sm text-green-900">{apiResponseSuccessMsg}</div>
                                         </div>
                                     </div>
                                 </div>
