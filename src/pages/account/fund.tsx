@@ -64,6 +64,8 @@ const FundAccount = () => {
 
     const [fundingType, setFundingType] = useState('NEW_CARD_PAYMENT');
 
+    const [transactionPin, setTransactionPIN] = useState('');
+
     useEffect(() => {
         setCustomer(JSON.parse(localStorage.getItem("aislCustomerInfo") as string));
 
@@ -466,6 +468,14 @@ const FundAccount = () => {
     function processTokenizedPayment(){
         setFundingType("SAVED_CARD_PAYMENT");
 
+        let pinCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), transactionPin);
+
+        let _headers = {
+            'Authorization': 'Bearer ' + localStorage.getItem('aislUserToken'),
+            'x-firebase-token': '12222',
+            'x-transaction-pin': JSON.stringify({ text : pinCypher})
+        }
+
         let requestData = {
             "maskedPan": selectedSavedCard.maskedPan,
             "token": selectedSavedCard.token,
@@ -479,9 +489,12 @@ const FundAccount = () => {
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
         localStorage.setItem('genericCypher', genericCypher);
 
-        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/fw/pay/tokenized',
-            {
-                "text": localStorage.getItem('genericCypher')
+        axios.post(walletAndAccountServiceBaseUrl + '/fw/pay/tokenized',
+        {
+            "text": localStorage.getItem('genericCypher')
+        },
+        {
+            headers: _headers
         })
         .then(function (response) {
             setShowSpinner(false);
@@ -631,7 +644,7 @@ const FundAccount = () => {
 
                                                 <div className='mb-10 text-sm font-bold'>Saved cards</div>
 
-                                                <div className='mb-3'>
+                                                <div className='mb-6'>
                                                     <div className={savedCards.length > 0 ? 'hidden':'text-gray-500'}>No saved cards</div>
 
                                                     <select className={savedCards.length > 0 ? 'px-3 border text-sm outline-white py-3 w-full rounded-lg':'hidden'} onChange={selectSavedCard}>
@@ -644,6 +657,14 @@ const FundAccount = () => {
                                                             </option>
                                                         )}
                                                     </select>
+                                                </div>
+
+                                                <div className='mb-6 hidden'>
+                                                    <div className='mb-10 text-sm font-bold'>Transaction Pin</div>
+
+                                                    <div>
+                                                        <input type='password' className='input p-3 border-1-d6 outline-white font-bold text-lg' onChange={e => setTransactionPIN(e.target.value)} maxLength={4} value={transactionPin}/>
+                                                    </div>
                                                 </div>
 
                                                 <div>

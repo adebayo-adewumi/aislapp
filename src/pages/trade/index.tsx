@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import '../portfolio/index.scss';
 import StarIcon from '../../assets/images/star.svg';
 import GreenQuestionmarkIcon from '../../assets/images/green-questionmark.svg';
-import SearchIcon from '../../assets/images/search.svg';
 import UserAreaHeader from '../../components/Headers/UserAreaHeader';
 import Sidebar from '../../components/Sidebar';
 import axios from 'axios';
@@ -28,9 +27,9 @@ const Trade = () => {
     HelperFunctions.addOverflowAndPaddingToModalBody();
 
     const [stocksListStore, setStocksListStore] = useState<{ [key: string]: [] }>({});
-    const [stocksList, setStocksList] = useState([]);
-    const [stockKeys, setStockKeys] = useState([]);
-    const [stockFilter, setStockFilter] = useState([]);
+    const [stocksList, setStocksList] = useState<any[]>([]);
+    const [stockKeys, setStockKeys] = useState<any[]>([]);
+    const [stockFilter, setStockFilter] = useState<any[]>([]);
 
     const [showModalBG, setShowModalBG] = useState<boolean>(false);
     const [showAddToWatchlistModal, setShowAddToWatchlistModal] = useState<boolean>(false);
@@ -42,6 +41,10 @@ const Trade = () => {
     const [apiResponseMessage, setApiResponseMessage] = useState('');
 
     const [stockSymbol, setStockSymbol] = useState('');
+
+    const [searchQuery, setSearchQuery] = useState('');
+    const [stocksSearchList, setStocksSearchList] = useState<any[]>([]);
+    const [showSearchedStocks, setShowSearchedStocks] = useState<boolean>(false);
 
     useEffect(() => {
 
@@ -79,6 +82,17 @@ const Trade = () => {
         getStocks();
         getWatchlist();
     }, []);
+
+    useEffect(()=>{
+        function checkIfSearchQueryIsEmpty(){
+            if(searchQuery === ""){
+                setShowFilteredStocks(false);
+                setShowSearchedStocks(false);
+            }
+        }
+
+        checkIfSearchQueryIsEmpty();
+    },[searchQuery])
 
     function filterStocksByCategory(event: any) {
 
@@ -143,6 +157,28 @@ const Trade = () => {
         }
     }
 
+    function searchForStocks(){
+        setShowSearchedStocks(true);
+        setShowFilteredStocks(false);
+
+        let _stockslist :any[] = [];
+
+        let txt = searchQuery.toUpperCase();
+        let txtLength  = txt.length;
+
+        stocksList.map((item :any) => {
+            let obj = item.filter((elem :any) => elem.symbol.substring(0, txtLength) === txt);
+
+            if(obj.length > 0){
+                _stockslist.push(obj);
+            }            
+
+            return false;
+        });
+
+        setStocksSearchList(_stockslist);
+    }
+
     return (
         <div className="relative">
             <UserAreaHeader />
@@ -163,19 +199,20 @@ const Trade = () => {
                             <div className="mb-20">
                                 <div className="flex justify-between">
                                     <div className=''>
-                                        <button className="hidden py-3 px-6 border-0 bg-transparent font-bold">Filter:</button>
                                         <select className='outline-white cursor-pointer p-3 rounded-lg border border-gray-300 font-bold' onChange={e => filterStocksByCategory(e.target.value)}>
                                             <option value="All">All</option>
                                             {stockKeys.map((item: any) => <option value={item}>{item}</option>)}
                                         </select>
                                     </div>
 
-                                    <div className="relative">
-                                        <div className="absolute hidden w-80 right-0 flex border_1 rounded-lg pr-3 bg-white mb-20">
-                                            <div className="pl-3 py-2"><img src={SearchIcon} alt="" /></div>
-
+                                    <div className='w-80'>
+                                        <div className="flex items-center border rounded-lg pr-2 bg-white mb-20">
                                             <div className='w-full'>
-                                                <input type="text" className="outline-white p-2 input border-0" placeholder="Search for stocks" />
+                                                <input value={searchQuery} onChange={e => setSearchQuery(e.target.value)} type="text" className="outline-white p-2 input border-0" placeholder="Search stocks by name" />
+                                            </div>
+
+                                            <div>
+                                                <button onClick={searchForStocks} className='border-0 rounded-lg bg-green-900 text-white cursor-pointer font-bold px-3 py-2 w-full'>Search</button>
                                             </div>
                                         </div>
                                     </div>
@@ -185,7 +222,7 @@ const Trade = () => {
 
                             {/*Stocks List section*/}
                             <div>
-                                <div className={showFilteredStocks ? 'hidden' : ''}>
+                                <div className={!showFilteredStocks && !showSearchedStocks ? '' : 'hidden'}>
                                     {stocksList.map((elm: any) =>
                                         elm.map((el: any) =>
                                             <div className="card-15px mb-20">
@@ -214,7 +251,36 @@ const Trade = () => {
                                     )}
                                 </div>
 
-                                <div className={showFilteredStocks ? '' : 'hidden'}>
+                                <div className={!showFilteredStocks && showSearchedStocks ? '' : 'hidden'}>
+                                    {stocksSearchList.map((elm: any) =>
+                                        elm.map((el: any) =>
+                                            <div className="card-15px mb-20">
+                                                <div className="md:flex md:justify-between md:items-center">
+                                                    <div className='md:mb-0 mb-3'> <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt=""/></div>
+
+                                                    <div className="font-bold text-color-2 md:mb-0 mb-3">{el.symbol}</div>
+
+                                                    <div className="md:mb-0 mb-3 text-ellipsis overflow-hidden ...">{el.name}</div>
+
+                                                    <div className="md:mb-0 mb-3 font-bold text-color-2 md:text-right">₦ {formatCurrencyWithDecimal(el.close).replace("-","")}</div>
+
+                                                    <div className={el.sign === "+" ? "text-green-500 font-bold md:mb-0 mb-3" : "text-red-500 font-bold md:mb-0 mb-3"}> {formatCurrencyWithDecimal(el.change).replace("-","")}%  </div>
+
+                                                    <div className='flex justify-between space-x-2'>
+                                                        <button onClick={displayAddToWatchlistModal} type='button' className="rounded-lg bg-gray-200 py-2 px-5 border-0 font-bold cursor-pointer" data-symbol={el.symbol} >
+                                                            <img src={StarIcon} width='20' alt='' data-symbol={el.symbol} />
+                                                        </button>
+
+                                                        <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.symbol + "&sign=" + (el.sign === '+' ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose + "&tradeAction=buy"}>
+                                                            <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )
+                                    )}
+                                </div>
+
+                                <div className={showFilteredStocks && !showSearchedStocks ? '' : 'hidden'}>
                                     {stockFilter.map((el: any) =>
                                         <div className="card-15px mb-20">
                                             <div className="md:flex md:justify-between md:items-center">
