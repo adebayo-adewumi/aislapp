@@ -19,6 +19,7 @@ import { stockTradingServiceBaseUrlUrl } from '../../apiUrls';
 import { getAxios } from '../../network/httpClientWrapper';
 import CloseIcon from '../../assets/images/close.svg';
 import CanelOrderIcon from '../../assets/images/cancel-order.svg';
+import SpinnerIcon from '../../assets/images/spinner.gif';
 
 
 
@@ -27,6 +28,7 @@ const TradeConfirmations = () => {
 
     const [showModalBG, setShowModalBG] = useState<boolean>(false);
     const [showRemoveStockModal, setShowRemoveStockModal] = useState<boolean>(false);
+    const [showCancelOrderModal, setShowCancelOrderModal] = useState<boolean>(false);
 
     const [switchToAll, setSwitchToAll] = useState<boolean>(true);
     const [switchToOpen, setSwitchToOpen] = useState<boolean>(false);
@@ -36,6 +38,8 @@ const TradeConfirmations = () => {
     const [switchToSold, setSwitchToSold] = useState<boolean>(false);
 
     const [showPageLoader, setShowPageLoader] = useState<boolean>(true);
+
+    const [showSpinner, setShowSpinner] = useState<boolean>(false);
 
     const [orderAll, setOrderAll] = useState('');
     const [orderOpen, setOrderOpen] = useState('');
@@ -47,6 +51,10 @@ const TradeConfirmations = () => {
     const [buyTrade, setBuyTrade] = useState<any[]>([]);
     const [sellTrade, setSellTrade] = useState<any[]>([]);
 
+    const [selectedTrade, setSelectedTrade] = useState('');
+
+    const [isCancelSuccess, setIsCancelSuccess] = useState('');
+
     useEffect(()=>{
         function getAllOrders(){
 
@@ -54,10 +62,9 @@ const TradeConfirmations = () => {
     
             getAxios(axios).get(stockTradingServiceBaseUrlUrl+'/order/all')
             .then(function (response) {
-                HelperFunctions.removeOverflowAndPaddingFromModalBody();
                 
                 if(response.data.data.length > 0){
-                    const allOrders = response.data.data.map((item :any, index :any)=>
+                    const allOrders = response.data.data.sort(compareTradeConfirmationDate).map((item :any, index :any)=>
                     <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
                         <div className="md:flex md:justify-between md:items-center text-sm">
                             <div className='flex-child md:mb-0 mb-4 text-xs'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
@@ -83,7 +90,7 @@ const TradeConfirmations = () => {
                             </div> 
 
                             <div className=" flex-child md:mb-0 mb-4 text-right">                                
-                                <button type='button' className={item.txntype.toLowerCase() === 'buy' || item.txntype.toLowerCase() ? "py-2 px-3 text-xs border-0 font-bold text-red-500 cursor-pointer bg-transparent":"hidden"}>Cancel</button>
+                                <button data-order={item.id} onClick={displayCancelOrderModal} type='button' className={item.status === 'AWAIT_EXECUTION' ? "py-2 px-3 text-xs border-0 font-bold text-red-500 cursor-pointer bg-transparent":"hidden"}>Cancel</button>
                             </div>
 
                             <div className=" flex-child md:mb-0 mb-4 text-xs text-right">
@@ -109,8 +116,7 @@ const TradeConfirmations = () => {
     
             getAxios(axios).get(stockTradingServiceBaseUrlUrl+'/order/open')
             .then(function (response) {
-                HelperFunctions.removeOverflowAndPaddingFromModalBody();
-                
+
                 if(response.data.data.length > 0){
                     const openOrders = response.data.data.map((item :any, index :any)=>
                     <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
@@ -140,6 +146,10 @@ const TradeConfirmations = () => {
                             <div className=" flex-child md:mb-0 mb-4">
                                 <div className='font-bold '>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
                             </div> 
+
+                            <div className=" flex-child md:mb-0 mb-4 text-right">                                
+                                <button onClick={displayCancelOrderModal} type='button' className={item.status === 'AWAIT_EXECUTION' ? "py-2 px-3 text-xs border-0 font-bold text-red-500 cursor-pointer bg-transparent":"hidden"}>Cancel</button>
+                            </div>
 
                             <div className=" flex-child md:mb-0 mb-4">
                                 <Link to={"/stock?name="+item.name+"&symbol="+item.stockCode+"&close="+item.quotePrice+"&tradeAction=sell"}>
@@ -325,7 +335,6 @@ const TradeConfirmations = () => {
     
             getAxios(axios).get(stockTradingServiceBaseUrlUrl+'/stock/sold?pageNo=0&pageSize=20')
             .then(function (response) {
-                HelperFunctions.removeOverflowAndPaddingFromModalBody();
                 
                 if(response.data.data.length > 0){
                     const soldOrders = response.data.data.map((item :any, index :any)=>
@@ -357,6 +366,10 @@ const TradeConfirmations = () => {
                                 <div className='font-bold '>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
                             </div> 
 
+                            <div className=" flex-child md:mb-0 mb-4 text-right">                                
+                                <button onClick={displayCancelOrderModal} type='button' className={item.status === 'AWAIT_EXECUTION' ? "py-2 px-3 text-xs border-0 font-bold text-red-500 cursor-pointer bg-transparent":"hidden"}>Cancel</button>
+                            </div>
+
                             <div className=" flex-child md:mb-0 mb-4">
                                 <Link to={"/stock?name="+item.name+"&symbol="+item.stockCode+"&close="+item.quotePrice+"&tradeAction=sell"}>
                                     <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
@@ -378,8 +391,9 @@ const TradeConfirmations = () => {
     
             getAxios(axios).get(stockTradingServiceBaseUrlUrl+'/order/all')
             .then(function (response) {
-                let filterBuyTxnType :any[] = response.data.data.filter((el: any) => el.txntype.toLowerCase() === 'buy');
-                let filterSellTxnType :any[] = response.data.data.filter((el: any) => el.txntype.toLowerCase() === 'sell');
+                let filterBuyTxnType :any[] = response.data.data.sort(compareTradeConfirmationDate).filter((el: any) => el.txntype.toLowerCase() === 'buy');
+
+                let filterSellTxnType :any[] = response.data.data.sort(compareTradeConfirmationDate).filter((el: any) => el.txntype.toLowerCase() === 'sell');
 
                 setBuyTrade(filterBuyTxnType);
                 setSellTrade(filterSellTxnType);
@@ -398,6 +412,21 @@ const TradeConfirmations = () => {
         getTradeByTxnType();        
 
     },[])
+
+    function compareTradeConfirmationDate(a :any, b :any) {
+        const dateA = a.orderDate.toUpperCase();
+        const dateB = b.orderDate.toUpperCase();
+        
+        let comparison = 0;
+
+        if (dateA < dateB) {
+            comparison = 1;
+        } else if (dateA > dateB) {
+            comparison = -1;
+        }
+
+        return comparison;
+    }
 
     function performSwitchToAll(){
         setSwitchToAll(true);
@@ -456,6 +485,35 @@ const TradeConfirmations = () => {
     function closeModal(){
         setShowModalBG(false);
         setShowRemoveStockModal(false);
+        setShowCancelOrderModal(false);
+    }
+
+    function displayCancelOrderModal(event :any){
+        let sTrade =  event.target.getAttribute("data-order");
+
+        setSelectedTrade(sTrade);
+
+        setShowCancelOrderModal(true);
+        setShowModalBG(true);
+        setShowRemoveStockModal(false);
+    }
+
+    function cancelOrder(){
+        setShowSpinner(true);
+
+        getAxios(axios).put(stockTradingServiceBaseUrlUrl+'/order/cancel?orderId='+selectedTrade)
+        .then(function (response) {
+            setIsCancelSuccess('true');
+            setShowSpinner(false);
+
+            setTimeout(()=>{
+                window.location.reload();
+            },1500)
+        })
+        .catch(function (error) {
+            setIsCancelSuccess('false');
+            setShowSpinner(false);
+        });
     }
 
     return (
@@ -586,7 +644,7 @@ const TradeConfirmations = () => {
                                                 </div> 
 
                                                 <div className=" flex-child md:mb-0 mb-4 text-right">                                                    
-                                                    <button type='button' className={item.status  === 'AWAIT_EXECUTION' ? "py-2 px-3 border-0 bg-transparent font-bold text-red-500 text-xs cursor-pointer":"hidden"}>Cancel</button>
+                                                    <button data-order={item.id} onClick={displayCancelOrderModal} type='button' className={item.status  === 'AWAIT_EXECUTION' ? "py-2 px-3 border-0 bg-transparent font-bold text-red-500 text-xs cursor-pointer":"hidden"}>Cancel</button>
                                                 </div>
 
                                                 <div className="flex-child md:mb-0 mb-4 text-right">
@@ -655,7 +713,7 @@ const TradeConfirmations = () => {
                                                 </div> 
 
                                                 <div className=" flex-child md:mb-0 mb-4 text-right">                                                    
-                                                    <button type='button' className={item.status  === 'AWAIT_EXECUTION' ? "py-3 px-3 border-0 bg-transparent text-xs font-bold text-red-500 cursor-pointer":"hidden"}>Cancel</button>
+                                                    <button data-order={item.id} onClick={displayCancelOrderModal} type='button' className={item.status  === 'AWAIT_EXECUTION' ? "py-3 px-3 border-0 bg-transparent text-xs font-bold text-red-500 cursor-pointer":"hidden"}>Cancel</button>
                                                 </div>
 
                                                 <div className="flex-child md:mb-0 mb-4 text-right">
@@ -783,9 +841,25 @@ const TradeConfirmations = () => {
             {/* End */}
 
             {/* Cancel Oder Modal */}
-            <div className="generic-modal hidden">
+            <div className={showCancelOrderModal ? "generic-modal":"hidden"}>
                 <div className='generic-modal-dialog'>
                     <div className="top-losers-modal">
+                        {/* Cancel Success */}
+                        <div className={isCancelSuccess === 'true' ? "otp-alert mb-20" : "hidden"}>
+                            <div className="flex otp-validated justify-between space-x-1 pt-3">
+                                <div className="flex">
+                                    <div>
+                                        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062" />
+                                            <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062" />
+                                        </svg>
+                                    </div>
+
+                                    <div className="text-sm text-green-900">Trade cancelled successfully</div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* End */}
 
                         <div className="flex justify-between">
                             <div className="font-bold opacity-0">
@@ -811,11 +885,14 @@ const TradeConfirmations = () => {
                         <div>
                             <div className='flex space-x-3'>
                                 <div className='w-1/3'>
-                                    <button className='cursor-pointer w-full border-0 rounded-lg bg-gray-300 px-7 py-3 font-bold'>Cancel Order</button>
+                                    <button className='cursor-pointer w-full border-0 rounded-lg bg-gray-300 px-7 py-3 font-bold' onClick={cancelOrder}>
+                                        <span className={showSpinner ? "hidden" : ""}>Proceed</span>
+                                        <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
+                                    </button>
                                 </div>
 
                                 <div className='w-2/3'>
-                                    <button className='cursor-pointer w-full border-0 rounded-lg bg-green-900 text-white px-10 py-3 font-bold'>No, take me back</button>
+                                    <button onClick={closeModal} className='cursor-pointer w-full border-0 rounded-lg bg-green-900 text-white px-10 py-3 font-bold'>No, take me back</button>
                                 </div>
                             </div>
                         </div>
