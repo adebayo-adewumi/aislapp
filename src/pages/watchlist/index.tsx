@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from "react-router-dom";
 import '../watchlist/index.scss';
 import SearchIcon from '../../assets/images/search.svg';
@@ -20,6 +20,9 @@ import RedBoxIcon from '../../assets/images/red-box.svg';
 import BlueBoxIcon from '../../assets/images/blue-box.svg';
 import { getAxios } from '../../network/httpClientWrapper';
 import { stockTradingServiceBaseUrlUrl } from '../../apiUrls';
+import Pagination from '../../components/Pagination';
+
+let PageSize = 10;
 
 const Watchlist = () => {
     document.title = "Watchlist - Anchoria";
@@ -48,6 +51,8 @@ const Watchlist = () => {
     const [stockSymbol, setStockSymbol] = useState('');
 
     const [priceAlerts, setPriceAlerts] = useState<any[]>([]);
+
+    const [currentPage, setCurrentPage] = useState(1); 
 
     useEffect(() => {
 
@@ -98,6 +103,12 @@ const Watchlist = () => {
 
         checkIfWatchlistIsNullOrEmpty();
     },[watchList]);
+
+    const watchlistData = useMemo(() => {
+        const firstPageIndex = (currentPage - 1) * PageSize;
+        const lastPageIndex = firstPageIndex + PageSize;
+        return watchListStocks.slice(firstPageIndex, lastPageIndex);
+    }, [currentPage, watchListStocks]);
 
     function closeModal() {
         setShowModalBG(false);
@@ -279,16 +290,18 @@ const Watchlist = () => {
 
                             {/*watchlist section*/}
                             <div className={switchToAll ? '':'hidden'}>
-                                {watchListStocks.length === 0 ? 'No stocks in your watchlist.' : watchListStocks.map((item: any, index: number) =>
-                                    <div className="card-15px mb-20" key={index}>
+                                {watchlistData.length === 0 ? 'No stocks in your watchlist.' : watchlistData.map((item: any, index: number) =>
+                                    <div className="card p-3 text-sm mb-20" key={index}>
                                         <div className="flex justify-between items-center">
-                                            <div><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" /></div>
+                                            <div>
+                                                <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" width={30}/>
+                                            </div>
 
-                                            <div className="font-bold text-color-2">{item.name}</div>
+                                            <div className="font-bold">{item.name}</div>
 
                                             <div className="text-ellipsis overflow-hidden ...">{item.name}</div>
 
-                                            <div className="font-bold text-color-2 text-right">₦ {HelperFunctions.formatCurrencyWithDecimal(item.currentPrice)}</div>
+                                            <div className="font-bold text-right">₦ {HelperFunctions.formatCurrencyWithDecimal(item.currentPrice)}</div>
 
                                             <div className={item.percentageChangeSinceAdded >= 0 ? "text-green-500 font-bold":"text-red-500 font-bold"}> {HelperFunctions.formatCurrencyWithDecimal(item.percentageChangeSinceAdded)}%  </div>
 
@@ -334,18 +347,13 @@ const Watchlist = () => {
                             {/*End*/}
 
                             {/*Pagination section*/}
-                            <div className='hidden'>
-                                <div>
-                                    <ul className='pagination list-none font-bold flex space-x-2 justify-end cursor-pointer text-sm'>
-                                        <li className='font-bold text-green-900 rounded-lg'>Previous</li>
-                                        <li className='text-color-9 rounded-lg'>1</li>
-                                        <li className='text-color-9 rounded-lg'>2</li>
-                                        <li className='text-color-9 rounded-lg active'>3</li>
-                                        <li className='text-color-9 rounded-lg'>4</li>
-                                        <li className='text-color-9 rounded-lg'>5</li>
-                                        <li className='font-bold text-green-900 rounded-lg'>Next</li>
-                                    </ul>
-                                </div>
+                            <div className={switchToAll ? '':'hidden'}>
+                            <Pagination                                
+                                currentPage={currentPage}
+                                totalCount={watchListStocks.length}
+                                pageSize={PageSize}
+                                onPageChange={(page: number) => setCurrentPage(page)}
+                            />
                             </div>
                             {/*End*/}
 

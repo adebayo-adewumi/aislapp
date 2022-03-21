@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from "react-router-dom";
 import '../portfolio/index.scss';
 import StarIcon from '../../assets/images/star.svg';
@@ -19,7 +19,9 @@ import { getStocksEndpoint, stockTradingServiceBaseUrlUrl } from '../../apiUrls'
 import GreenBoxIcon from '../../assets/images/green-box.svg';
 import RedBoxIcon from '../../assets/images/red-box.svg';
 import BlueBoxIcon from '../../assets/images/blue-box.svg';
+import Pagination from '../../components/Pagination';
 
+let PageSize = 4;
 
 const Trade = () => {
 
@@ -45,6 +47,8 @@ const Trade = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [stocksSearchList, setStocksSearchList] = useState<any[]>([]);
     const [showSearchedStocks, setShowSearchedStocks] = useState<boolean>(false);
+
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
 
@@ -94,6 +98,12 @@ const Trade = () => {
         checkIfSearchQueryIsEmpty();
     },[searchQuery])
 
+    const tradeData = useMemo(() => {
+        const firstPageIndex = (currentPage - 1) * PageSize;
+        const lastPageIndex = firstPageIndex + PageSize;
+        return stocksList.slice(firstPageIndex, lastPageIndex);
+    }, [currentPage, stocksList]);
+
     function filterStocksByCategory(event: any) {
 
         if (event === "All") {
@@ -104,7 +114,6 @@ const Trade = () => {
             setShowFilteredStocks(true);
         }
     }
-
 
     function closeModal() {
         setShowModalBG(false);
@@ -223,7 +232,7 @@ const Trade = () => {
                             {/*Stocks List section*/}
                             <div>
                                 <div className={!showFilteredStocks && !showSearchedStocks ? '' : 'hidden'}>
-                                    {stocksList.map((elm: any) =>
+                                    {tradeData.map((elm: any) =>
                                         elm.map((el: any) =>
                                             <div className="card-15px mb-20">
                                                 <div className="md:flex md:justify-between md:items-center">
@@ -310,18 +319,13 @@ const Trade = () => {
                             {/*End*/}
 
                             {/*Pagination section*/}
-                            <div className='hidden'>
-                                <div>
-                                    <ul className='pagination list-none font-bold flex space-x-2 justify-end cursor-pointer text-sm'>
-                                        <li className='font-bold text-green-900 rounded-lg'>Previous</li>
-                                        <li className='text-color-9 rounded-lg'>1</li>
-                                        <li className='text-color-9 rounded-lg'>2</li>
-                                        <li className='text-color-9 rounded-lg active'>3</li>
-                                        <li className='text-color-9 rounded-lg'>4</li>
-                                        <li className='text-color-9 rounded-lg'>5</li>
-                                        <li className='font-bold text-green-900 rounded-lg'>Next</li>
-                                    </ul>
-                                </div>
+                            <div>
+                            <Pagination                                
+                                currentPage={currentPage}
+                                totalCount={stocksList.length}
+                                pageSize={PageSize}
+                                onPageChange={(page: number) => setCurrentPage(page)}
+                            />
                             </div>
                             {/*End*/}
 

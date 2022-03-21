@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Link} from "react-router-dom";
 import '../watchlist/index.scss';
 import SearchIcon from '../../assets/images/search.svg';
@@ -20,8 +20,10 @@ import { getAxios } from '../../network/httpClientWrapper';
 import CloseIcon from '../../assets/images/close.svg';
 import CanelOrderIcon from '../../assets/images/cancel-order.svg';
 import SpinnerIcon from '../../assets/images/spinner.gif';
+import Pagination from '../../components/Pagination';
 
 
+let PageSize = 10;
 
 const TradeConfirmations = () => {
     document.title = "Trade Confirmations - Anchoria";
@@ -58,7 +60,7 @@ const TradeConfirmations = () => {
     const [isCancelSuccess, setIsCancelSuccess] = useState('');
     const [blurScreen, setBlurScreen] = useState<boolean>(false);
 
-
+    const [currentPage, setCurrentPage] = useState(1); 
 
     useEffect(()=>{
         function getAllOrders(){
@@ -380,6 +382,24 @@ const TradeConfirmations = () => {
 
     },[])
 
+    const allTradeData = useMemo(() => {
+        const firstPageIndex = (currentPage - 1) * PageSize;
+        const lastPageIndex = firstPageIndex + PageSize;
+        return allTrade.slice(firstPageIndex, lastPageIndex);
+    }, [currentPage, allTrade]);
+
+    const buyTradeData = useMemo(() => {
+        const firstPageIndex = (currentPage - 1) * PageSize;
+        const lastPageIndex = firstPageIndex + PageSize;
+        return buyTrade.slice(firstPageIndex, lastPageIndex);
+    }, [currentPage, buyTrade]);
+
+    const sellTradeData = useMemo(() => {
+        const firstPageIndex = (currentPage - 1) * PageSize;
+        const lastPageIndex = firstPageIndex + PageSize;
+        return sellTrade.slice(firstPageIndex, lastPageIndex);
+    }, [currentPage, sellTrade]);
+
     function compareTradeConfirmationDate(a :any, b :any) {
         const dateA = a.orderDate.toUpperCase();
         const dateB = b.orderDate.toUpperCase();
@@ -604,7 +624,7 @@ const TradeConfirmations = () => {
                                     <div className={allTrade.length === 0 ? 'text-gray-500 text-center':'hidden'}>No trades to display</div>
 
                                     <div>
-                                        {allTrade.sort(compareTradeConfirmationDate).map((item :any, index :any)=>
+                                        {allTradeData.sort(compareTradeConfirmationDate).map((item :any, index :any)=>
                                         <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
                                             <div className="md:flex md:justify-between md:items-center text-sm">
                                                 <div className='flex-child md:mb-0 mb-4 text-xs'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
@@ -648,7 +668,7 @@ const TradeConfirmations = () => {
                                 <div className={switchToOpen ? '':'hidden'}>
                                     <div className={orderOpen === '' ? 'text-gray-500 text-center':'hidden'}>No open trades to display</div>
 
-                                    <div>{buyTrade.map((item :any, index :any)=>
+                                    <div>{buyTradeData.map((item :any, index :any)=>
                                         <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
                                             <div className="md:flex md:justify-between md:items-center text-sm">
                                                 <div className='flex-child md:mb-0 mb-4'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
@@ -717,7 +737,7 @@ const TradeConfirmations = () => {
                                 <div className={switchToSold ? '':'hidden'}>
                                     <div className={orderSold === '' ? 'text-gray-500 text-center':'hidden'}>No sold trades to display</div>
 
-                                    <div>{sellTrade.map((item :any, index :any)=>
+                                    <div>{sellTradeData.map((item :any, index :any)=>
                                         <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
                                             <div className="md:flex md:justify-between md:items-center text-sm">
                                                 <div className='flex-child md:mb-0 mb-4'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
@@ -761,7 +781,7 @@ const TradeConfirmations = () => {
                             {/*End*/}
 
                             {/*Pagination section*/}
-                            <div className='hidden'>
+                            {/* <div className='hidden'>
                                 <div>
                                     <ul className='pagination list-none font-bold flex space-x-2 justify-end cursor-pointer text-sm'>
                                         <li className='font-bold text-green-900 rounded-lg'>Previous</li>
@@ -773,6 +793,32 @@ const TradeConfirmations = () => {
                                         <li className='font-bold text-green-900 rounded-lg'>Next</li>
                                     </ul>
                                 </div>
+                            </div> */}
+                            <div className={switchToAll ? '':'hidden'}>
+                            <Pagination                                
+                                currentPage={currentPage}
+                                totalCount={allTrade.length}
+                                pageSize={PageSize}
+                                onPageChange={(page: number) => setCurrentPage(page)}
+                            />
+                            </div>
+
+                            <div className={switchToOpen ? '':'hidden'}>
+                                <Pagination                                
+                                    currentPage={currentPage}
+                                    totalCount={buyTrade.length}
+                                    pageSize={PageSize}
+                                    onPageChange={(page: number) => setCurrentPage(page)}
+                                />
+                            </div>
+
+                            <div className={switchToSold ? '':'hidden'}>
+                                <Pagination                                
+                                    currentPage={currentPage}
+                                    totalCount={sellTrade.length}
+                                    pageSize={PageSize}
+                                    onPageChange={(page: number) => setCurrentPage(page)}
+                                />
                             </div>
                             {/*End*/}
 
