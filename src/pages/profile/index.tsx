@@ -587,7 +587,7 @@ const Profile = () => {
         let customer = HelperFunctions.getCustomerInfo();
 
         let requestData = {
-            "address": address,
+            "contactAddress": address,
             "country": country,
             "signature": signatureBase64Img,
             "signatureName": signatureFile,
