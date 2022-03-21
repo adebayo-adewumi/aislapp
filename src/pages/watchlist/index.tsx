@@ -47,6 +47,8 @@ const Watchlist = () => {
 
     const [stockSymbol, setStockSymbol] = useState('');
 
+    const [priceAlerts, setPriceAlerts] = useState<any[]>([]);
+
     useEffect(() => {
 
         function getWatchlist() {
@@ -67,6 +69,20 @@ const Watchlist = () => {
         }
 
         getWatchlist();
+    },[]);
+
+    useEffect(() => {
+
+        function getPriceAlerts() {          
+
+            getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/stock/price-triggers')
+                .then(function (response) {
+                    setPriceAlerts(response.data.data);
+                })
+                .catch(function (error) {});
+        }
+
+        getPriceAlerts();
     },[]);
 
     useEffect(() => {
@@ -143,13 +159,11 @@ const Watchlist = () => {
     function performSwitchToAll() {
         setSwitchToAll(true);
         setSwitchToAlert(false);
-        HelperFunctions.removeOverflowAndPaddingFromModalBody();
     }
 
     function performSwitchToAlert() {
         setSwitchToAll(false);
         setSwitchToAlert(true);
-        HelperFunctions.removeOverflowAndPaddingFromModalBody();
     }
 
     function removeStockFromWatchlist() {
@@ -199,7 +213,7 @@ const Watchlist = () => {
         setStockSymbol(event.target.getAttribute("data-symbol"))
     }
 
-    HelperFunctions.removeOverflowAndPaddingFromModalBody();
+   
 
     return (
         <div className="relative">
@@ -230,11 +244,11 @@ const Watchlist = () => {
                                 <div className="flex justify-between">
                                     <div>
                                         <div className="border_1 flex rounded-lg p-02rem">
-                                            <div className='hidden'>
+                                            <div className=''>
                                                 <button onClick={performSwitchToAll} type='button' className={switchToAll ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>All</button>
                                             </div>
 
-                                            <div className='hidden'>
+                                            <div className=''>
                                                 <button onClick={performSwitchToAlert} type='button' className={switchToAlert ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Alerts</button>
                                             </div>
                                         </div>
@@ -263,9 +277,37 @@ const Watchlist = () => {
                             </div>
                             {/*End*/}
 
-                            {/*Card section*/}
-                            <div>
+                            {/*watchlist section*/}
+                            <div className={switchToAll ? '':'hidden'}>
                                 {watchListStocks.length === 0 ? 'No stocks in your watchlist.' : watchListStocks.map((item: any, index: number) =>
+                                    <div className="card-15px mb-20" key={index}>
+                                        <div className="flex justify-between items-center">
+                                            <div><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" /></div>
+
+                                            <div className="font-bold text-color-2">{item.name}</div>
+
+                                            <div className="text-ellipsis overflow-hidden ...">{item.name}</div>
+
+                                            <div className="font-bold text-color-2 text-right">₦ {HelperFunctions.formatCurrencyWithDecimal(item.currentPrice)}</div>
+
+                                            <div className={item.percentageChangeSinceAdded >= 0 ? "text-green-500 font-bold":"text-red-500 font-bold"}> {HelperFunctions.formatCurrencyWithDecimal(item.percentageChangeSinceAdded)}%  </div>
+
+                                            <div className='flex justify-between space-x-2'>
+
+                                                <button onClick={displayRemoveStockModal} type='button' className="py-3 px-5 border-0 font-bold text-red-500 cursor-pointer bg-transparent" data-symbol={item.name}>Remove</button>
+
+                                                <Link to={"/stock?name=" + item.name + "&symbol=" + item.name + "&sign=" + (item.percentageChangeSinceAdded >= 0 ? 'positive' : 'negative') + "&currentPrice=" + item.currentPrice + "&tradeAction=buy"}>
+                                                    <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                            {/*End*/}
+
+                            {/*Alert section*/}
+                            <div className={switchToAlert ? '':'hidden'}>
+                                {priceAlerts.length === 0 ? 'No price alerts added.' : priceAlerts.map((item: any, index: number) =>
                                     <div className="card-15px mb-20" key={index}>
                                         <div className="flex justify-between items-center">
                                             <div><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" /></div>
