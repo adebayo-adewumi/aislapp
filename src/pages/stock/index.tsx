@@ -134,8 +134,8 @@ const Stock = () => {
     const [portfolioIdArray, setPortfolioIdArray] = useState<string[]>([]);
     const [portfolioStockUnitArray, setPortfolioStockUnitArray] = useState<string[]>([]);
 
-    const [highPriceAlert, setHighPriceAlert] = useState('');
-    const [lowPriceAlert, setLowPriceAlert] = useState('');
+    const [priceAlert, setPriceAlert] = useState('');
+    const [priceCondition, setPriceCondition] = useState('');
 
 
     let options = {
@@ -688,7 +688,6 @@ const Stock = () => {
             "tradeAction": '0'
         }
 
-
         setShowSpinner(true);
 
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
@@ -703,55 +702,31 @@ const Stock = () => {
         getAxios(axios).post(stockTradingServiceBaseUrlUrl + '/stock/' + params.get("tradeAction"),
             {
                 "text": localStorage.getItem('genericCypher')
-            },{headers})
-            .then(function (response) {
-                setShowSpinner(false);
+        },{headers})
+        .then(function (response) {
+            setShowSpinner(false);
 
-                if (response.data.statusCode !== 200) {
-                    setBuyStockError(response.data.message);
+            if (response.data.statusCode !== 200) {
+                setBuyStockError(response.data.message);
 
-                    setTimeout(() => {
-                        setBuyStockError('');
-                    }, 5000);
-                }
-                else {
-                    setApiResponseSuccessMsg("Stock bought successfully.")
-                    setShowSuccessModal(true);
-                    setShowAddToWatchListModal(false);
-                    setShowTradeStockModal(false);
-                    setShowOrderSummaryModal(false);
-                }
-            })
-            .catch(function (error) {
-                setShowSpinner(false);
-                setBuyStockError(error.response.data.message);
-            });
+                setTimeout(() => {
+                    setBuyStockError('');
+                }, 5000);
+            }
+            else {
+                setApiResponseSuccessMsg("Stock bought successfully.")
+                setShowSuccessModal(true);
+                setShowAddToWatchListModal(false);
+                setShowTradeStockModal(false);
+                setShowOrderSummaryModal(false);
+            }
+        })
+        .catch(function (error) {
+            setShowSpinner(false);
+            setBuyStockError(error.response.data.message);
+        });
 
-        //Add Stock to Portfolio
-        // let _requestData = {
-        //     "portfolioId": portfolioIdToAddStock,
-        //     "stocks": [
-        //         "12353dc4-ff12-4493-9042-05fcb5a452d2"
-        //     ]
-        // }
-
-        // let stockToPortfolioCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(_requestData));
-        // localStorage.setItem('stockToPortfolioCypher', stockToPortfolioCypher);
-
-        // let _headers = {'Authorization': 'Bearer '+localStorage.getItem('aislUserToken')}
-
-        //getAxios(axios).post(stockTradingServiceBaseUrlUrl+'/portfolio/add',
-        // {
-        //     "text": localStorage.getItem('stockToPortfolioCypher')
-        // }, 
-        // { headers })
-        // .then(function (response) {  
-        //     console.log(response.data)
-        // })
-        // .catch(function (error) {
-        //     console.log(error)
-        //     setShowSpinner(false);
-        // });
+        
     }
 
     function displayStockOrderSummaryModal() {
@@ -1017,7 +992,6 @@ const Stock = () => {
         setPortfolioIdToAddStock(event.target.value);
     }
 
-
     function validatePin() {
         setShowSpinner(true);
 
@@ -1101,20 +1075,12 @@ const Stock = () => {
             setGraphXAxis(graph1DXAxis);
         }
 
-    }
+    }   
 
-   
-
-    function delineateHighPriceAlert(event :any) {
+    function delineatePriceAlert(event :any) {
         let newValue = event.target.value.replace(/[^\d]/gi, '');
 
-        setHighPriceAlert(newValue);
-    }
-
-    function delineateLowPriceAlert(event :any) {
-        let newValue = event.target.value.replace(/[^\d]/gi, '');
-
-        setLowPriceAlert(newValue);
+        setPriceAlert(newValue);
     }
 
     function delineateStockUnit(event :any) {
@@ -1183,6 +1149,41 @@ const Stock = () => {
             setIsValidateUnitToSell(false);
             
         }
+    }
+
+    function createPriceAlert(){
+        const _params = new URLSearchParams(window.location.search);
+
+        let requestData = {
+            "symbol": _params.get("symbol"),
+            "note":"Testing",
+            "condition": priceCondition,
+            "value": priceAlert
+        }
+
+        console.log(requestData);
+
+        setShowSpinner(true);
+
+        let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
+        localStorage.setItem('genericCypher', genericCypher);
+
+        let headers = {
+            'Authorization': 'Bearer ' + localStorage.getItem('aislUserToken'),
+            'x-firebase-token': '12222',
+            'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
+        }
+
+        getAxios(axios).post(stockTradingServiceBaseUrlUrl + '/stock/price-triggers',
+        {
+            "text": localStorage.getItem('genericCypher')
+        },{ headers })
+        .then(function (response) {
+            setShowSpinner(false);
+        })
+        .catch(function (error) {
+            setShowSpinner(false);
+        });
     }
 
     
@@ -1566,59 +1567,75 @@ const Stock = () => {
             </div>
 
             {/* Set Price Alert Modal */}
-            <div className={showSetPriceAlertModal ? "set-price-alert-modal rounded-lg" : "hidden"}>
-                <div className="mb-10 flex justify-between">
-                    <div className="font-bold text-3xl text-green-900 font-gotham-black-regular">Set Price Alerts</div>
+            <div className={showSetPriceAlertModal ?  'generic-modal' : 'hidden'}>
+                <div className='generic-modal-dialog'>
+                    <div className="set-price-alert-modal rounded-lg">
+                        <div className="mb-10 flex justify-between">
+                            <div className="font-bold text-3xl text-green-900 font-gotham-black-regular">Set Price Alerts</div>
 
-                    <div onClick={closeModal}>
-                        <img src={CloseIcon} alt="" className="cursor-pointer" />
-                    </div>
-                </div>
-
-                <div className="border-1 mb-30"></div>
-
-                <div>
-                    <div>
-                        <div className='mb-10'>
-                            <img src={AtlasIcon} alt="" className="align-middle border-1-d6 rounded-lg" />
-                            <span className="font-bold font-gotham-black-regular mx-3 text-sm">{params.get('symbol')}</span> |
-                            <span className="font-bold mx-3 text-sm">{String(params.get('name')).substring(0, 16)}...</span>
-                        </div>
-
-                        <div className="mb-20 w-32 bg-yellow-400 py-2 px-3 rounded-2xl text-sm">Manufacturing</div>
-
-                        <div className="leading-6 text-sm mb-20">{companyInfo.length > 250 ? companyInfo.substring(0, 250) + "..." : companyInfo}</div>
-
-                        <div className='mb-10'>
-                            <div className='mb-10 font-bold'>Current Price</div>
-                            <div className='font-gotham-black-regular text-green-900 text-3xl'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
-                        </div>
-
-                        <div className='mb-20'>
-                            <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-sm" : "font-bold text-red-500 text-sm"}>
-                                {stockInfo === '' ? '' : JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === '' ? '' : HelperFunctions.formatCurrencyWithDecimal(JSON.parse(stockInfo).percentageChange.replace('-',''))}%
+                            <div onClick={closeModal}>
+                                <img src={CloseIcon} alt="" className="cursor-pointer" />
                             </div>
                         </div>
 
-                        <div className='mb-30 flex space-x-5'>
-                            <div className='w-1/2'>
-                                <div className='font-bold mb-10'>High</div>
-                                <input type="text" value={highPriceAlert} onChange={delineateHighPriceAlert} className="input border-1-d6 p-2 outline-white" />
+                        <div className="border-1 mb-30"></div>
+
+                        <div>
+                            <div>
+                                <div className='mb-10'>
+                                    <img src={AtlasIcon} alt="" className="align-middle border-1-d6 rounded-lg" />
+                                    <span className="font-bold font-gotham-black-regular mx-3 text-sm">{params.get('symbol')}</span> |
+                                    <span className="font-bold mx-3 text-sm">{String(params.get('name')).substring(0, 16)}...</span>
+                                </div>
+
+                                <div className="mb-20 w-32 bg-yellow-400 py-2 px-3 rounded-2xl text-sm">Manufacturing</div>
+
+                                <div className="leading-6 text-sm mb-20">{companyInfo.length > 250 ? companyInfo.substring(0, 250) + "..." : companyInfo}</div>
+
+                                <div className='mb-10'>
+                                    <div className='mb-10 font-bold'>Current Price</div>
+                                    <div className='font-gotham-black-regular text-green-900 text-3xl'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
+                                </div>
+
+                                <div className='mb-20'>
+                                    <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-sm" : "font-bold text-red-500 text-sm"}>
+                                        {stockInfo === '' ? '' : JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === '' ? '' : HelperFunctions.formatCurrencyWithDecimal(JSON.parse(stockInfo).percentageChange.replace('-',''))}%
+                                    </div>
+                                </div>
+
+                                <div className='mb-30 flex space-x-5'>
+                                    <div className='w-full'>
+                                        <div className='font-bold mb-10'>Enter Price</div>
+                                        <input type="text" value={priceAlert} onChange={delineatePriceAlert} className="input border p-2 outline-white w-full font-bold" />
+                                    </div>
+
+                                    {/* <div className='w-1/2 hidden'>
+                                        <div className='font-bold mb-10'>Low</div>
+                                        <input type="text" value={lowPriceAlert} onChange={delineateLowPriceAlert} className="input border-1-d6 p-2 outline-white" />
+                                    </div> */}
+                                </div>
+                                
+                                <div className='mb-30'>
+                                    <div className='w-full font-bold mb-10'>Price Condition</div>
+
+                                    <div className=''>
+                                        <select className='text-sm outline-white w-full p-3 rounded-lg border border-gray-500 font-bold' onChange={e => setPriceCondition(e.target.value)}>
+                                            <option value="">Select a Condition</option>
+                                            <option value="GREATER_THAN">High</option>
+                                            <option value="LESS_THAN">Low</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div className="flex space-x-5 mb-10">
+                                    <button type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer" onClick={closeModal}>Cancel</button>
+
+                                    <button onClick={createPriceAlert} type="button" className="py-4 w-full font-bold bg-green-900 text-white rounded-lg border-0 cursor-pointer">
+                                        <span className={showSpinner ? "hidden" : ""}>Add</span>
+                                        <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="30" />
+                                    </button>
+                                </div>
                             </div>
-
-                            <div className='w-1/2'>
-                                <div className='font-bold mb-10'>Low</div>
-                                <input type="text" value={lowPriceAlert} onChange={delineateLowPriceAlert} className="input border-1-d6 p-2 outline-white" />
-                            </div>
-                        </div>
-
-                        <div className="flex space-x-5 mb-10">
-                            <button type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer" onClick={closeModal}>Cancel</button>
-
-                            <button onClick={closeModal} type="button" className="py-4 w-full font-bold bg-green-900 text-white rounded-lg border-0 cursor-pointer">
-                                <span className={showSpinner ? "hidden" : ""}>Add</span>
-                                <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="30" />
-                            </button>
                         </div>
                     </div>
                 </div>
