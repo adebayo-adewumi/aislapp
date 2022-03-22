@@ -28,6 +28,8 @@ import Learn from '../pages/learn';
 import News from '../pages/news';
 import NewsDetails from '../pages/news/details';
 import Chat from '../pages/chat';
+import AdminCreateResource from '../pages/admin/create-resource';
+import AdminLearnResources from '../pages/admin/resource';
 
 const Main = () => {
 
@@ -139,6 +141,16 @@ const Main = () => {
                     <Route path="chat" element={
                       <RequireAuth>
                         <Chat />
+                      </RequireAuth>
+                    } />
+                    <Route path="admin/learn/create" element={
+                      <RequireAuth>
+                        <AdminCreateResource />
+                      </RequireAuth>
+                    } />
+                    <Route path="admin/learn/resources" element={
+                      <RequireAuth>
+                        <AdminLearnResources />
                       </RequireAuth>
                     } />
                   </Routes>

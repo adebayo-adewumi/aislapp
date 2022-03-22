@@ -1212,7 +1212,7 @@ const Profile = () => {
                                                 <div className='text-gray-900'>Drivers License</div>
                                             </div>
 
-                                            <div className='flex space-x-1 items-end w-full md:mb-0 mb-3'>                                                
+                                            <div className='flex hidden space-x-1 items-end w-full md:mb-0 mb-3'>                                                
                                                 <Form.Check type="radio" name="idtype" value="International Passport" className='portfoliolist-checkbox' checked={idType === "International Passport"} onChange={e => setIdType(e.target.value)}/> 
                                                 <div className='text-gray-900'>Int'l Passport</div>
                                             </div>
