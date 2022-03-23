@@ -21,7 +21,7 @@ import RedBoxIcon from '../../assets/images/red-box.svg';
 import BlueBoxIcon from '../../assets/images/blue-box.svg';
 import Pagination from '../../components/Pagination';
 
-let PageSize = 4;
+let PageSize = 10;
 
 const Trade = () => {
 
@@ -47,6 +47,7 @@ const Trade = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [stocksSearchList, setStocksSearchList] = useState<any[]>([]);
     const [showSearchedStocks, setShowSearchedStocks] = useState<boolean>(false);
+    const [stocksDataList, setStocksDataList] = useState<any[]>([]);
 
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -56,13 +57,25 @@ const Trade = () => {
 
             getAxios(axios).get(getStocksEndpoint)
                 .then(function (response) {
+                    let _sDataList: any[] = [];
 
                     setStocksListStore(response.data.data);
                     setStockKeys(Object.keys(response.data.data) as []);
                     setStocksList(Object.values(response.data.data) as []);
 
+                    stocksList.map((item :any)=>{
+                        item.map((elem :any) => {
+                            _sDataList.push(elem);
+
+                            return 0;
+                        });
+
+                        return 0;
+                    });
+
+                    setStocksDataList(_sDataList);
+
                     setShowPageLoader(false);
-                    HelperFunctions.removeOverflowAndPaddingFromModalBody();
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -84,8 +97,8 @@ const Trade = () => {
         }
 
         getStocks();
-        getWatchlist();
-    }, []);
+        getWatchlist(); 
+    }, [stocksList]);
 
     useEffect(()=>{
         function checkIfSearchQueryIsEmpty(){
@@ -101,8 +114,8 @@ const Trade = () => {
     const tradeData = useMemo(() => {
         const firstPageIndex = (currentPage - 1) * PageSize;
         const lastPageIndex = firstPageIndex + PageSize;
-        return stocksList.slice(firstPageIndex, lastPageIndex);
-    }, [currentPage, stocksList]);
+        return stocksDataList.slice(firstPageIndex, lastPageIndex);
+    }, [currentPage, stocksDataList]);
 
     function filterStocksByCategory(event: any) {
 
@@ -244,8 +257,8 @@ const Trade = () => {
                                     </thead>
 
                                     <tbody>
-                                    {tradeData.map((elm: any) => 
-                                        elm.map((el: any, index :any) =>
+                                    {tradeData.map((el: any, index :any) => 
+                                       
                                         <tr key={index} className="bg-white">
                                             <td className='px-3 py-4 table-border-bottom'>
                                                 <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt=""/>
@@ -277,27 +290,50 @@ const Trade = () => {
                                                         <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
                                                 </div>
                                             </td>
-                                        </tr>)
+                                        </tr>
                                     )}
                                     </tbody>
                                 </table>
+                                
+                                <table className={!showFilteredStocks && showSearchedStocks ? "table-fixed w-full border-0 text-sm text-left text-gray-500 mb-11":"hidden"} cellSpacing={0}>
+                                    <thead className='text-sm text-gray-700 uppercase'>
+                                        <tr className='bg-gray-100'>
+                                            <th className='p-3 font-bold'></th>
+                                            <th className='p-3 font-bold'>Code</th>
+                                            <th   className='p-3 font-bold'>Name</th>
+                                            <th className='p-3 font-bold'>Price</th>
+                                            <th className='p-3 font-bold'>Returns (%)</th>
+                                            <th  className='p-3 font-bold'></th>
+                                        </tr>
+                                    </thead>
 
-                                <div className={!showFilteredStocks && !showSearchedStocks ? 'hidden' : 'hidden'}>
-                                    {tradeData.map((elm: any) =>
-                                        elm.map((el: any) =>
-                                            <div className="card-15px mb-20">
-                                                <div className="md:flex md:justify-between md:items-center">
-                                                    <div className='md:mb-0 mb-3'> <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt=""/></div>
+                                    <tbody>
+                                    {stocksSearchList.map((elm: any) => 
+                                        elm.map((el: any, index :any) =>
+                                       
+                                            <tr key={index} className="bg-white">
+                                                <td className='px-3 py-4 table-border-bottom'>
+                                                    <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt=""/>
+                                                </td>
 
-                                                    <div className="font-bold text-color-2 md:mb-0 mb-3">{el.symbol}</div>
+                                                <td className='px-3 py-4 table-border-bottom'>
+                                                    <div className="font-bold">{el.symbol}</div>
+                                                </td>
 
-                                                    <div className="md:mb-0 mb-3 text-ellipsis overflow-hidden ...">{el.name}</div>
+                                                <td className='px-3 py-4 table-border-bottom'>
+                                                    <div className="">{el.name.substring(0,15)}...</div>
+                                                </td>
 
-                                                    <div className="md:mb-0 mb-3 font-bold text-color-2 md:text-right">₦ {formatCurrencyWithDecimal(el.close).replace("-","")}</div>
+                                                <td className='px-3 py-4 table-border-bottom'>
+                                                    <div className="font-bold">₦ {formatCurrencyWithDecimal(el.close).replace("-","")}</div>
+                                                </td>
 
+                                                <td className='px-3 py-4 table-border-bottom'>
                                                     <div className={el.sign === "+" ? "text-green-500 font-bold md:mb-0 mb-3" : "text-red-500 font-bold md:mb-0 mb-3"}> {formatCurrencyWithDecimal(el.change).replace("-","")}%  </div>
+                                                </td>
 
-                                                    <div className='flex justify-between space-x-2'>
+                                                <td className='px-3 py-4 table-border-bottom'>
+                                                    <div className='flex justify-end space-x-5'>
                                                         <button onClick={displayAddToWatchlistModal} type='button' className="rounded-lg bg-gray-200 py-2 px-5 border-0 font-bold cursor-pointer" data-symbol={el.symbol} >
                                                             <img src={StarIcon} width='20' alt='' data-symbol={el.symbol} />
                                                         </button>
@@ -305,67 +341,63 @@ const Trade = () => {
                                                         <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.symbol + "&sign=" + (el.sign === '+' ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose + "&tradeAction=buy"}>
                                                             <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
                                                     </div>
-                                                </div>
-                                            </div>
+                                                </td>
+                                            </tr>
                                         )
                                     )}
-                                </div>
+                                    </tbody>
+                                </table>                                
 
-                                <div className={!showFilteredStocks && showSearchedStocks ? '' : 'hidden'}>
-                                    {stocksSearchList.map((elm: any) =>
-                                        elm.map((el: any) =>
-                                            <div className="card-15px mb-20">
-                                                <div className="md:flex md:justify-between md:items-center">
-                                                    <div className='md:mb-0 mb-3'> <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt=""/></div>
+                                <table className={showFilteredStocks && !showSearchedStocks ? "table-fixed w-full border-0 text-sm text-left text-gray-500 mb-11":"hidden"} cellSpacing={0}>
+                                    <thead className='text-sm text-gray-700 uppercase'>
+                                        <tr className='bg-gray-100'>
+                                            <th className='p-3 font-bold'></th>
+                                            <th className='p-3 font-bold'>Code</th>
+                                            <th   className='p-3 font-bold'>Name</th>
+                                            <th className='p-3 font-bold'>Price</th>
+                                            <th className='p-3 font-bold'>Returns (%)</th>
+                                            <th  className='p-3 font-bold'></th>
+                                        </tr>
+                                    </thead>
 
-                                                    <div className="font-bold text-color-2 md:mb-0 mb-3">{el.symbol}</div>
+                                    <tbody>
+                                    {stockFilter.map((el: any, index :any) => 
+                                       
+                                        <tr key={index} className="bg-white">
+                                            <td className='px-3 py-4 table-border-bottom'>
+                                                <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt=""/>
+                                            </td>
 
-                                                    <div className="md:mb-0 mb-3 text-ellipsis overflow-hidden ...">{el.name}</div>
+                                            <td className='px-3 py-4 table-border-bottom'>
+                                                <div className="font-bold">{el.symbol}</div>
+                                            </td>
 
-                                                    <div className="md:mb-0 mb-3 font-bold text-color-2 md:text-right">₦ {formatCurrencyWithDecimal(el.close).replace("-","")}</div>
+                                            <td className='px-3 py-4 table-border-bottom'>
+                                                <div className="">{el.name.substring(0,15)}...</div>
+                                            </td>
 
-                                                    <div className={el.sign === "+" ? "text-green-500 font-bold md:mb-0 mb-3" : "text-red-500 font-bold md:mb-0 mb-3"}> {formatCurrencyWithDecimal(el.change).replace("-","")}%  </div>
+                                            <td className='px-3 py-4 table-border-bottom'>
+                                                <div className="font-bold">₦ {formatCurrencyWithDecimal(el.close).replace("-","")}</div>
+                                            </td>
 
-                                                    <div className='flex justify-between space-x-2'>
-                                                        <button onClick={displayAddToWatchlistModal} type='button' className="rounded-lg bg-gray-200 py-2 px-5 border-0 font-bold cursor-pointer" data-symbol={el.symbol} >
-                                                            <img src={StarIcon} width='20' alt='' data-symbol={el.symbol} />
-                                                        </button>
+                                            <td className='px-3 py-4 table-border-bottom'>
+                                                <div className={el.sign === "+" ? "text-green-500 font-bold md:mb-0 mb-3" : "text-red-500 font-bold md:mb-0 mb-3"}> {formatCurrencyWithDecimal(el.change).replace("-","")}%  </div>
+                                            </td>
 
-                                                        <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.symbol + "&sign=" + (el.sign === '+' ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose + "&tradeAction=buy"}>
-                                                            <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )
-                                    )}
-                                </div>
-
-                                <div className={showFilteredStocks && !showSearchedStocks ? '' : 'hidden'}>
-                                    {stockFilter.map((el: any) =>
-                                        <div className="card-15px mb-20">
-                                            <div className="md:flex md:justify-between md:items-center">
-                                                <div className='md:mb-0 mb-3'> <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt=""/></div>
-
-                                                <div className="font-bold text-color-2 md:mb-0 mb-3">{el.symbol}</div>
-
-                                                <div className="md:mb-0 mb-3 text-ellipsis overflow-hidden ...">{el.name}</div>
-
-                                                <div className="md:mb-0 mb-3 font-bold text-color-2 md:text-right">₦ {formatCurrencyWithDecimal(el.close)}</div>
-
-                                                <div className={el.sign === "+" ? "md:mb-0 mb-3 text-green-500 font-bold" : "md:mb-0 mb-3 text-red-500 font-bold"}> {formatCurrencyWithDecimal(el.change)}%  </div>
-
-                                                <div className='flex justify-between space-x-2'>
+                                            <td className='px-3 py-4 table-border-bottom'>
+                                                <div className='flex justify-end space-x-5'>
                                                     <button onClick={displayAddToWatchlistModal} type='button' className="rounded-lg bg-gray-200 py-2 px-5 border-0 font-bold cursor-pointer" data-symbol={el.symbol} >
-                                                        <img src={StarIcon} width='20' alt='' />
+                                                        <img src={StarIcon} width='20' alt='' data-symbol={el.symbol} />
                                                     </button>
 
-                                                    <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.symbol + "&sign=" + (el.sign === '+' ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose+"&tradeAction=buy"}>
+                                                    <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.symbol + "&sign=" + (el.sign === '+' ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose + "&tradeAction=buy"}>
                                                         <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
                                                 </div>
-                                            </div>
-                                        </div>
+                                            </td>
+                                        </tr>
                                     )}
-                                </div>
+                                    </tbody>
+                                </table>
                             </div>
                             {/*End*/}
 

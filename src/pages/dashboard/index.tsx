@@ -289,6 +289,17 @@ const Dashboard = () => {
             });
         }
 
+        function testData() {
+          
+
+            getAxios(axios).get(utilityServiceBaseUrlUrl + '/lov/stocks-details')
+            .then(function (response) {
+               
+            })
+            .catch(function (error) {
+            });
+        }
+
         getWalletBalance();
         getTopGainers();
         getTopLosers();
@@ -296,6 +307,7 @@ const Dashboard = () => {
         getPortfolioList();
         getTopMovers();
         getWatchlist();
+        testData();
         
 
     }, []);

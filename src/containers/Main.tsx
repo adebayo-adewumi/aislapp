@@ -40,7 +40,7 @@ const Main = () => {
           <div className="">
             <main className="">
               <Suspense fallback="loading">
-                <BrowserRouter>
+                <BrowserRouter basename={process.env.PUBLIC_URL} >
                   <Routes>
                     <Route index element={<Login />} />
                     <Route path="register" element={<Register />} />
