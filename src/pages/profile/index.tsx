@@ -96,6 +96,7 @@ const Profile = () => {
     const [idNumber, setIdNumber] = useState('');
 
     const [utilityBillFile, setUtilityBillFile] = useState('');
+    const [utilityBillType, setUtilityBillType] = useState('');
     const [utilityBillBase64Img, setUtilityBillBase64Img] = useState('');
 
     const [signatureFile, setSignatureFile] = useState('');
@@ -127,6 +128,7 @@ const Profile = () => {
     const [isEmploymentDetailsFilled, setIsEmploymentDetailsFilled] = useState<boolean>(false);
     const [isNOKDetailsFilled, setIsNOKDetailsFilled] = useState<boolean>(false);
 
+    const [personalDetails, setPersonalDetails] = useState('');
     const [employmentDetails, setEmploymentDetails] = useState('');
     const [nokDetails, setNOKDetails] = useState('');
 
@@ -141,6 +143,7 @@ const Profile = () => {
 
     const [showEnterPinCard, setShowEnterPinCard] = useState<boolean>(false);
     const [countries, setCountries] = useState<any[]>([]);
+    const [transactionPin, setTransactionPin] = useState('');
 
 
     useEffect(() => {
@@ -323,6 +326,22 @@ const Profile = () => {
         checkUrlParamsForActiveProfileSection();
         getNotificationLogs();
     },[]);
+
+    useEffect(()=>{
+
+        function getPersonalDetails() {          
+
+            getAxios(axios).get(authOnboardingServiceBaseUrl + '/customer/kyc/personal-details')
+            .then(function (response) {
+                setPersonalDetails(response.data.hasOwnProperty("data") ? JSON.stringify(response.data.data) : '');
+            })
+            .catch(function (error) {
+            });
+        }        
+
+        getPersonalDetails();
+
+    },[personalDetails]);
 
     useEffect(()=>{
 
@@ -595,7 +614,7 @@ const Profile = () => {
             "street":city,
             "utilityBill": utilityBillBase64Img,
             "utilityBillName": utilityBillFile,
-            "utilityBillType": utilityBillFile,
+            "utilityBillType": utilityBillType,
             "idFile":idFile,
             "idName":idBase64Img,
             "idDetails": {
@@ -611,17 +630,18 @@ const Profile = () => {
         setShowPersonalSpinner(true);
 
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
-        localStorage.setItem('genericCypher', genericCypher);
+        let pinCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), transactionPin);
+        
 
         let headers = {
             'Authorization': 'Bearer '+localStorage.getItem('aislUserToken'), 
             'x-firebase-token': '12222',
-            'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
+            'x-transaction-pin': JSON.stringify({ text : pinCypher})
         }
 
-        axios.put(authOnboardingServiceBaseUrl+'/customer/kyc/personal-details', 
+        axios.put(authOnboardingServiceBaseUrl+'/customer/kyc/update/personal-details', 
         {
-            "text" : localStorage.getItem('genericCypher')
+            "text" : genericCypher
         },{headers})
         .then(function (response) {
             setIsPersonalDetailsSuccessful(true);
@@ -652,17 +672,18 @@ const Profile = () => {
         setShowEmploymentSpinner(true);
 
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
-        localStorage.setItem('genericCypher', genericCypher);
+        let pinCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), transactionPin);
+        
 
         let headers = {
             'Authorization': 'Bearer '+localStorage.getItem('aislUserToken'), 
             'x-firebase-token': '12222',
-            'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
+            'x-transaction-pin':  JSON.stringify({ text : pinCypher})
         }
 
-        axios.put(authOnboardingServiceBaseUrl+'/customer/kyc/employment-details', 
+        axios.put(authOnboardingServiceBaseUrl+'/customer/kyc/update/employment-details', 
         {
-            "text" : localStorage.getItem('genericCypher')
+            "text" : genericCypher
         },{headers})
         .then(function (response) {
             setShowEmploymentSpinner(false);
@@ -692,17 +713,18 @@ const Profile = () => {
         setShowNokSpinner(true);
 
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
-        localStorage.setItem('genericCypher', genericCypher);
+        let pinCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), transactionPin);
+        
 
         let headers = {
             'Authorization': 'Bearer '+localStorage.getItem('aislUserToken'), 
             'x-firebase-token': '12222',
-            'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
+            'x-transaction-pin':  JSON.stringify({ text : pinCypher})
         }
 
-        axios.put(authOnboardingServiceBaseUrl+'/customer/kyc/nok-details', 
+        axios.put(authOnboardingServiceBaseUrl+'/customer/kyc/update/nok-details', 
         {
-            "text" : localStorage.getItem('genericCypher')
+            "text" : genericCypher
         },{headers})
         .then(function (response) {
             setShowNokSpinner(false);
@@ -1127,7 +1149,7 @@ const Profile = () => {
                                             <div className='md:flex md:justify-between md:space-x-20'>
                                                 <div className='md:w-1/2 w-full md:mb-0 mb-11'>
                                                     <div className='font-bold text-gray-700 mb-3 text-sm'>Address</div>
-                                                    <div><input defaultValue={customer.permanentAddress} onChange={e => setAddress(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
+                                                    <div><input value={customer.permanentAddress} onChange={e => setAddress(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
                                                 </div>
 
                                                 <div className='md:w-1/2 w-full'>
@@ -1244,7 +1266,35 @@ const Profile = () => {
 
                                                 <div className='md:w-1/2 pb-0.5'>
                                                     <div className='text-gray-900 mb-3 text-sm font-bold'>ID Number</div>
-                                                    <input type='number' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full' value={idNumber} onChange={e => setIdNumber(e.target.value)}/>
+                                                    <input type='number' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full' value={personalDetails === '' ? '' : JSON.parse(personalDetails).idDetails.idNumber} onChange={e => setIdNumber(e.target.value)}/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className='mb-11'>
+                                            <div className='mb-10 text-sm font-bold'>Utility Bill Type</div>
+                                            <div>
+                                                <select onChange={e => setUtilityBillType(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
+
+                                                    <option value={personalDetails === '' ? '...' : JSON.parse(personalDetails).utilityBillType}>{personalDetails === '' ? '' : JSON.parse(personalDetails).utilityBillType}</option>
+
+                                                    <option value=''>Select Utility Bill Type</option>
+
+                                                    <option value='Water Bills'>Water Bills</option>
+                                                    <option value='PayTV Bills'>PayTV Bills</option>
+                                                    <option value='Telecommunication Bills'>Telecommunication Bills</option>
+                                                    <option value='Electricity Bills'>Electricity Bills</option>
+                                                    <option value='Electricity Bills'>Electricity Bills</option>
+                                                    <option value='Waste Bills'>Waste Bills</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div className='mb-11'>
+                                            <div className='mb-10 text-sm font-bold'>Transaction Pin</div>
+                                            <div>
+                                                <div>
+                                                    <input type='password' className='input p-3 border-1-d6 outline-white font-bold text-lg' onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
                                                 </div>
                                             </div>
                                         </div>
@@ -1342,12 +1392,21 @@ const Profile = () => {
                                             <div className='md:flex md:justify-between md:space-x-10'>
                                                 <div className='md:w-1/2 w-full md:mb-0 mb-11'>
                                                     <div className='text-gray-700 font-bold mb-3 text-sm'>Name of employer</div>
-                                                    <div><input defaultValue={employmentDetails === '' ? '' : JSON.parse(employmentDetails).employer} onChange={e => setEmployer(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
+                                                    <div><input value={employmentDetails === '' ? '' : JSON.parse(employmentDetails).employer} onChange={e => setEmployer(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
                                                 </div>
 
                                                 <div className='md:w-1/2 w-full'>
                                                     <div className='text-gray-700 font-bold  mb-3 text-sm'>Profession</div>
-                                                    <div><input defaultValue={employmentDetails === '' ? '' : JSON.parse(employmentDetails).profession} onChange={e => setProfession(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg outline-white rounded-lg w-full'/></div>
+                                                    <div><input value={employmentDetails === '' ? '' : JSON.parse(employmentDetails).profession} onChange={e => setProfession(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg outline-white rounded-lg w-full'/></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className='mb-11'>
+                                            <div className='mb-10 text-sm font-bold'>Transaction Pin</div>
+                                            <div>
+                                                <div>
+                                                    <input type='password' className='input p-3 border-1-d6 outline-white font-bold text-lg' onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
                                                 </div>
                                             </div>
                                         </div>
@@ -1388,6 +1447,8 @@ const Profile = () => {
                                                         </select>
                                                     </div>
                                                 </div>
+
+                                                
 
                                                 <div className='md:w-1/3 w-full'>
                                                     <button onClick={sendEmployeeDetails} type='button' className={isEmploymentDetailsFilled ? "mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full":"mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer opacity-50 w-full"} disabled={!isEmploymentDetailsFilled}>
@@ -1547,6 +1608,15 @@ const Profile = () => {
                                                 
                                                 <div>
                                                     <input value={nokRelationshipOtherValue} onChange={e => setNokRelationshipOtherValue(e.target.value)}  type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className='mb-11'>
+                                            <div className='mb-10 text-sm font-bold'>Transaction Pin</div>
+                                            <div>
+                                                <div>
+                                                    <input type='password' className='input p-3 border-1-d6 outline-white font-bold text-lg' onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
                                                 </div>
                                             </div>
                                         </div>

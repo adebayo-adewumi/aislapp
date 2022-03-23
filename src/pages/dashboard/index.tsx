@@ -287,18 +287,7 @@ const Dashboard = () => {
             })
             .catch(function (error) {
             });
-        }
-
-        function testData() {
-          
-
-            getAxios(axios).get(utilityServiceBaseUrlUrl + '/lov/stocks-details')
-            .then(function (response) {
-               
-            })
-            .catch(function (error) {
-            });
-        }
+        }        
 
         getWalletBalance();
         getTopGainers();
@@ -307,7 +296,6 @@ const Dashboard = () => {
         getPortfolioList();
         getTopMovers();
         getWatchlist();
-        testData();
         
 
     }, []);
