@@ -139,9 +139,7 @@ const Main = () => {
                       </RequireAuth>
                     } />
                     <Route path="chat" element={
-                      <RequireAuth>
                         <Chat />
-                      </RequireAuth>
                     } />
                     <Route path="admin/learn/create" element={
                       <RequireAuth>
