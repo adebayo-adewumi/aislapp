@@ -23,7 +23,6 @@ const Profile = () => {
     
     document.title = "Profile - Anchoria";
     let customer = HelperFunctions.getCustomerInfo();
-    HelperFunctions.removeOverflowAndPaddingFromModalBody();
 
     const [showPageLoader, setShowPageLoader] = useState<boolean>(false);
 
@@ -134,8 +133,6 @@ const Profile = () => {
 
     const [bankDetails, setBankDetails] = useState<any[]>([]);
     const [primaryBankDetails, setPrimaryBankDetails] = useState<any[]>([]);
-
-    //const [showSelectPrimaryBankDetails, setShowSelectPrimaryBankDetails] = useState<boolean>(false);
 
     const [showEnterPasswordCard, setShowEnterPasswordCard] = useState<boolean>(false);
     const [showGeneratePasswordOTPCard, setShowGeneratePasswordOTPCard] = useState<boolean>(true);
@@ -933,9 +930,6 @@ const Profile = () => {
         setShowNotificationDetailModal(false);
     }
 
-    // function changePrimaryBankDetails(){
-    //     setShowSelectPrimaryBankDetails(true);
-    // }
 
     function updateBankDetails(){
         setShowSpinner(true);

@@ -87,7 +87,7 @@ const UserAreaHeader = () => {
                                 <div className={showHeaderMenu ? 'absolute bg-white rounded w-full border border-gray-500 shadow-sm' : 'hidden'} style={{ top: '110%' }}>
                                     <div className='px-3 py-2 text-sm'>
                                         <div className='hover:bg-gray-100 hover:font-bold px-3 rounded py-2'>
-                                            <Link to="/learn" className='flex space-x-3 no-underline text-black items-center'>
+                                            <Link to="/learn?type=contactus" className='flex space-x-3 no-underline text-black items-center'>
                                                 <div style={{ marginTop: '6px' }}><img src={PhoneBlackIcon} alt="" style={{ width: '1.3rem' }} /></div>
 
                                                 <div> Contact Us</div>
@@ -95,7 +95,7 @@ const UserAreaHeader = () => {
                                         </div>
 
                                         <div className='hover:bg-gray-100 hover:font-bold px-3 rounded py-2'>
-                                            <Link to="/profile" className='flex space-x-3 no-underline text-black items-center'>
+                                            <Link to="/profile?type=security" className='flex space-x-3 no-underline text-black items-center'>
                                                 <div><img src={SecurityIcon} alt="" style={{ width: '1.5rem' }} /></div>
                                                 <div className='mb-5'> Security</div>
                                             </Link>

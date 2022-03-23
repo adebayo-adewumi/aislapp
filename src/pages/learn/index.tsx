@@ -33,6 +33,21 @@ const Learn = () => {
     const [learningResourcesList, setLearningResourcesList] = useState([{}]);
 
     useEffect(() => {
+        function checkUrlParamsForActiveLearnSection(){
+            let queryParams = new URLSearchParams(window.location.search);
+
+            if(queryParams.has("type")){
+                if(queryParams.get("type") === 'learn'){
+                    setSwitchToLearn(true);
+                    setSwitchToContactUs(false);
+                }
+                else if(queryParams.get("type") === 'contactus'){
+                    setSwitchToLearn(false);
+                    setSwitchToContactUs(true);
+                }
+            }
+        }
+
         function getLearningResource(){
 
             let headers = {'Authorization': 'Bearer '+localStorage.getItem('aislUserToken')}
@@ -48,6 +63,7 @@ const Learn = () => {
         }
 
         getLearningResource();
+        checkUrlParamsForActiveLearnSection();
     },[])
 
     function performSwitchToLearn(){
