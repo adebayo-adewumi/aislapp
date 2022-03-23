@@ -718,7 +718,7 @@ const Stock = () => {
                 }, 5000);
             }
             else {
-                setApiResponseSuccessMsg("Stock bought successfully.")
+                setApiResponseSuccessMsg("Order placed successfully.")
                 setShowSuccessModal(true);
                 setShowAddToWatchListModal(false);
                 setShowTradeStockModal(false);
@@ -1188,9 +1188,7 @@ const Stock = () => {
         .catch(function (error) {
             setShowSpinner(false);
         });
-    }
-
-    
+    }   
 
 
     return (
