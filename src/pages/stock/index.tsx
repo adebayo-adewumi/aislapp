@@ -137,6 +137,8 @@ const Stock = () => {
     const [priceAlert, setPriceAlert] = useState('');
     const [priceCondition, setPriceCondition] = useState('');
 
+    const [transactionPin, setTransactionPin] = useState('');
+
 
     let options = {
         chart: {
@@ -691,17 +693,19 @@ const Stock = () => {
         setShowSpinner(true);
 
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
-        localStorage.setItem('genericCypher', genericCypher);
+
+        let pinCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), transactionPin);
+        
 
         let headers = {
             'Authorization': 'Bearer ' + localStorage.getItem('aislUserToken'),
             'x-firebase-token': '12222',
-            'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
+            'x-transaction-pin': JSON.stringify({ text : pinCypher})
         }
 
         getAxios(axios).post(stockTradingServiceBaseUrlUrl + '/stock/' + params.get("tradeAction"),
             {
-                "text": localStorage.getItem('genericCypher')
+                "text": genericCypher
         },{headers})
         .then(function (response) {
             setShowSpinner(false);
@@ -2576,6 +2580,14 @@ const Stock = () => {
                                     <option value="qazsw">Select portfolio</option>
                                     {portfolioList}
                                 </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div className='mb-10'>Transaction Pin</div>
+
+                            <div>
+                                <input type="password" className='text-lg outline-white mb-30 w-full font-bold px-3 py-4 rounded-lg border border-gray-500' value={transactionPin} onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
                             </div>
                         </div>
 
