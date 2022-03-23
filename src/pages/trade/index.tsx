@@ -405,7 +405,7 @@ const Trade = () => {
                             <div>
                             <Pagination                                
                                 currentPage={currentPage}
-                                totalCount={stocksList.length}
+                                totalCount={stocksDataList.length}
                                 pageSize={PageSize}
                                 onPageChange={(page: number) => setCurrentPage(page)}
                             />
