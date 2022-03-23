@@ -290,31 +290,46 @@ const Watchlist = () => {
 
                             {/*watchlist section*/}
                             <div className={switchToAll ? '':'hidden'}>
-                                {watchlistData.length === 0 ? 'No stocks in your watchlist.' : watchlistData.map((item: any, index: number) =>
-                                    <div className="card p-3 text-sm mb-20" key={index}>
-                                        <div className="flex justify-between items-center">
-                                            <div>
-                                                <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" width={30}/>
-                                            </div>
+                                <div className='shadow-sm sm:rounded-lg'>
+                                    <table className="table-fixed w-full border-0 text-sm text-left text-gray-500 mb-11" cellSpacing={0}>
+                                        <thead className='text-sm text-gray-700 uppercase'>
+                                            <tr className='bg-gray-100'>
+                                                <th className='p-3 font-bold'></th>
+                                                <th className='p-3 font-bold'>Code</th>
+                                                <th   className='p-3 font-bold'>Name</th>
+                                                <th className='p-3 font-bold'>Price</th>
+                                                <th className='p-3 font-bold'>Returns (%)</th>
+                                                <th  className='p-3 font-bold'></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {watchlistData.length === 0 ? 'No stocks in your watchlist.' : watchlistData.map((item: any, index: number) =>
+                                                <tr key={index} className="bg-white">
+                                                    
+                                                    <td className='px-3 py-4 table-border-bottom'>
+                                                        <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" width={30}/>
+                                                    </td>
 
-                                            <div className="font-bold">{item.name}</div>
+                                                    <td className='px-3 py-4 table-border-bottom font-bold text-black'>{item.symbol}</td>
 
-                                            <div className="text-ellipsis overflow-hidden ...">{item.name}</div>
+                                                    <td className='px-3 py-4 table-border-bottom font-bold text-black'>{item.name}</td>
 
-                                            <div className="font-bold text-right">₦ {HelperFunctions.formatCurrencyWithDecimal(item.currentPrice)}</div>
+                                                    <td className='px-3 py-4 table-border-bottom font-bold text-black'>₦ {HelperFunctions.formatCurrencyWithDecimal(item.currentPrice)}</td>
 
-                                            <div className={item.percentageChangeSinceAdded >= 0 ? "text-green-500 font-bold":"text-red-500 font-bold"}> {HelperFunctions.formatCurrencyWithDecimal(item.percentageChangeSinceAdded)}%  </div>
+                                                    <td className={item.percentageChangeSinceAdded >= 0 ? 'px-3 py-4 table-border-bottom font-bold text-green-500':"px-3 py-4 table-border-bottom font-bold text-red-500"}> {HelperFunctions.formatCurrencyWithDecimal(item.percentageChangeSinceAdded)}%  </td>
 
-                                            <div className='flex justify-between space-x-2'>
+                                                    <td className='px-3 py-4 table-border-bottom'>
 
-                                                <button onClick={displayRemoveStockModal} type='button' className="py-3 px-5 border-0 font-bold text-red-500 cursor-pointer bg-transparent" data-symbol={item.name}>Remove</button>
+                                                        <button onClick={displayRemoveStockModal} type='button' className="py-3 px-5 border-0 font-bold text-red-500 cursor-pointer bg-transparent mr-5" data-symbol={item.name}>Remove</button>
 
-                                                <Link to={"/stock?name=" + item.name + "&symbol=" + item.name + "&sign=" + (item.percentageChangeSinceAdded >= 0 ? 'positive' : 'negative') + "&currentPrice=" + item.currentPrice + "&tradeAction=buy"}>
-                                                    <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
+                                                        <Link to={"/stock?name=" + item.name + "&symbol=" + item.name + "&sign=" + (item.percentageChangeSinceAdded >= 0 ? 'positive' : 'negative') + "&currentPrice=" + item.currentPrice + "&tradeAction=buy"}>
+                                                            <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
+                                                    </td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                             {/*End*/}
 
