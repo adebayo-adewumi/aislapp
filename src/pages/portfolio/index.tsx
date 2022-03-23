@@ -161,8 +161,6 @@ const Portfolio = () => {
         }
     ];
 
-    HelperFunctions.removeOverflowAndPaddingFromModalBody();
-
     useEffect(() => {
         function checkIfPortfolioIsNullOrEmpty() {
 
@@ -185,7 +183,7 @@ const Portfolio = () => {
                     setPortfolioCount(response.data.data.portfolio.length);
                     setTotalPortfolioValue(response.data.data.totalCurrentPrice);
                     setInvestmentAmount(response.data.data.totalPurchasedPrice);
-                    setNetPortfolioReturns(response.data.data.portfolioReturn);
+                    setNetPortfolioReturns(response.data.data.totalPortfolioReturn);
                     setNetPortfolioReturnsPercentage(response.data.data.percentageReturn);
     
                     const listItems = response.data.data.portfolio;

@@ -176,48 +176,52 @@ const PortfolioDetails = () => {
 
                 HelperFunctions.removeOverflowAndPaddingFromModalBody();
 
-                const listOfStocks = response.data.data.listOfStocks.map((item: any) =>
-                    <div>
-                        <Link to={"/stock?name=" + item.name + "&symbol=" + item.symbol + "&sign=" + (item.sign === '+' ? 'positive' : 'negative') + "&currentPrice=" + item.currentPrice + "&tradeAction=sell&units=" + item.units} className='no-underline'>
-                            <div className="card mb-30 p-3" key={item.id}>
-                                <div className="flex justify-between items-center">
-                                    <div> <img src={AtlasIcon} alt="" /></div>
+                const listOfStocks:any = 
+                    <div className='shadow-sm sm:rounded-lg'>
+                        <table className="w-full border-0 text-sm text-left text-gray-500" cellSpacing={0}>
+                            <thead className='text-sm text-gray-700 uppercase'>
+                                <tr className='bg-gray-100'>
+                                    <th scope="col" className='p-3 font-bold'></th>
+                                    <th scope="col"  className='p-3 font-bold'>Code</th>
+                                    <th  scope="col" className='p-3 font-bold'>Price</th>
+                                    <th scope="col"className='p-3 font-bold'>Units</th>
+                                    <th scope="col" className='p-3 font-bold'>Returns</th>
+                                    <th scope="col" className='p-3 font-bold'></th>
+                                </tr>
+                            </thead>
 
-                                    <div className="text-color-2">
-                                        <div className='font-bold mb-10 text-sm'>{item.symbol}</div>
-                                        <div className='text-sm'>{item.name.substring(0,10)}...</div>
-                                    </div>
-
-                                    <div className="text-color-2 hidden">
-                                        <div className='mb-10'>Entry Price</div>
-                                        <div className='font-bold '>₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
-                                    </div>
-
-                                    <div className="text-color-2">
-                                        <div className='mb-10 text-sm'>Current Price</div>
-                                        <div className='font-bold text-sm'>₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
-                                    </div>
-
-                                    <div className="text-color-2">
-                                        <div className='mb-10 text-sm'>Units</div>
-                                        <div className='font-bold text-sm'>{HelperFunctions.formatCurrencyWithDecimal(item.units)}</div>
-                                    </div>
-
-                                    <div className="text-color-2">
-                                        <div className='mb-10 text-sm'>Returns</div>
-                                        <div className='font-bold text-sm'>
-                                            <span className='mr-3'>₦ {HelperFunctions.formatCurrencyWithDecimal(item.estimatedValue)}</span>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <button className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer text-sm">View</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </Link>
+                            <tbody>
+                                {response.data.data.listOfStocks.map((item: any, index: any) =>
+                                    <tr key={index} className="bg-white " >
+                                        <td className='px-3 py-4 table-border-bottom'>
+                                            <img src={AtlasIcon} alt="" />
+                                        </td>
+                                        <td className='px-3 py-4 border-b border-b-gray-700 table-border-bottom'>
+                                            <div className='font-bold mb-10 text-sm'>{item.symbol}</div>
+                                            <div className='text-sm'>{item.name.substring(0,10)}...</div>
+                                        </td>
+                                        <td className='px-3 py-4 table-border-bottom'>
+                                            <div className='font-bold '>₦ {HelperFunctions.formatCurrencyWithDecimal(item.currentPrice)}</div>
+                                        </td>
+                                        <td className='px-3 py-4 table-border-bottom'>
+                                            <div className='font-bold text-sm'>{HelperFunctions.formatCurrencyWithDecimal(item.units)}</div>
+                                        </td>
+                                        <td className='px-3 py-4 table-border-bottom'>
+                                            <div className='font-bold text-sm'>
+                                                <span className='mr-3'>₦ {HelperFunctions.formatCurrencyWithDecimal(item.estimatedValue)}</span>
+                                            </div>
+                                        </td>
+                                        <td className='px-3 py-4 table-border-bottom'>
+                                            <Link to={"/stock?name=" + item.name + "&symbol=" + item.symbol + "&sign=" + (item.sign === '+' ? 'positive' : 'negative') + "&currentPrice=" + item.currentPrice + "&tradeAction=sell&units=" + item.units} className='no-underline'>    
+                                                <button className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer text-sm">View</button>
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
                     </div>
-                );
+                
 
                 setStocksInPortfolio(listOfStocks);
 
@@ -801,7 +805,7 @@ const PortfolioDetails = () => {
 
                                                 <div className="text-ellipsis overflow-hidden text-sm">{item.name}</div>
 
-                                                <div className="font-bold text-color-2 text-right text-sm">₦ {HelperFunctions.formatCurrencyWithDecimal(item.currentPrice)}</div>
+                                                <div className="font-bold text-color-2 text-right text-sm">₦ {HelperFunctions.formatCurrencyWithDecimal(parseFloat(item.currentPrice))}</div>
 
                                                 <div className='flex justify-between space-x-2 cursor-pointer'>
                                                     <Form.Check onChange={selectStockToMove} data-value={item.id} type="checkbox" className='portfoliolist-checkbox cursor-pointer' />
