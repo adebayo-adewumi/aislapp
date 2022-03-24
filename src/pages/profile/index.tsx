@@ -64,7 +64,7 @@ const Profile = () => {
     const [hasSpecialCharacter, setHasSpecialCharacter] = useState<boolean>(false);
     
     const [apiResponseMessage, setApiResponseMessage] = useState('');
-    const [errorMsg, setErrorMsg] = useState('');
+    const [, setErrorMsg] = useState('');
 
     const [switchToKYC, setSwitchToKYC] = useState<boolean>(true);
     const [switchToSecurity, setSwitchToSecurity] = useState<boolean>(false);
@@ -127,7 +127,7 @@ const Profile = () => {
     const [isEmploymentDetailsFilled, setIsEmploymentDetailsFilled] = useState<boolean>(false);
     const [isNOKDetailsFilled, setIsNOKDetailsFilled] = useState<boolean>(false);
 
-    const [personalDetails, setPersonalDetails] = useState('');
+    const [personalDetails, setPersonalDetails] = useState<any[]>([]);
     const [employmentDetails, setEmploymentDetails] = useState('');
     const [nokDetails, setNOKDetails] = useState('');
 
@@ -330,7 +330,15 @@ const Profile = () => {
 
             getAxios(axios).get(authOnboardingServiceBaseUrl + '/customer/kyc/personal-details')
             .then(function (response) {
-                setPersonalDetails(response.data.hasOwnProperty("data") ? JSON.stringify(response.data.data) : '');
+                if(response.data.hasOwnProperty("data")){
+                    let pDetails :any[] = []
+                    
+                    pDetails.push(response.data.data);
+
+                    setPersonalDetails(pDetails);
+
+                }
+                
             })
             .catch(function (error) {
             });
@@ -338,7 +346,7 @@ const Profile = () => {
 
         getPersonalDetails();
 
-    },[personalDetails]);
+    },[]);
 
     useEffect(()=>{
 
@@ -353,8 +361,7 @@ const Profile = () => {
                 setProfession(employmentDetails === '' ? '': response.data.data.profession );                 
             })
             .catch(function (error) {});
-        }
-        
+        }        
 
         getEmploymentDetails();
 
@@ -365,19 +372,19 @@ const Profile = () => {
         function getNOKDetails() {
 
             getAxios(axios).get(authOnboardingServiceBaseUrl + '/customer/kyc/nok-details')
-                .then(function (response) { 
-                    if(response.data.hasOwnProperty('data')){
-                        setNOKDetails(JSON.stringify(response.data.data));
-                        setNokFirstname(nokDetails === '' ? '': response.data.data.firstName);                 
-                        setNokLastname(nokDetails === '' ? '': response.data.data.lastName); 
-                        setNokEmail(nokDetails === '' ? '': response.data.data.email);                
-                        setNokPhone(nokDetails === '' ? '': response.data.data.phoneNumber );                
-                        setNokRelationship(nokDetails === '' ? '': response.data.data.relationship );                
-                        setNokAddress(nokDetails === '' ? '': response.data.data.address ); 
-                    }
-                                   
-                })
-                .catch(function (error) {});
+            .then(function (response) { 
+                if(response.data.hasOwnProperty('data')){
+                    setNOKDetails(JSON.stringify(response.data.data));
+                    setNokFirstname(nokDetails === '' ? '': response.data.data.firstName);                 
+                    setNokLastname(nokDetails === '' ? '': response.data.data.lastName); 
+                    setNokEmail(nokDetails === '' ? '': response.data.data.email);                
+                    setNokPhone(nokDetails === '' ? '': response.data.data.phoneNumber );                
+                    setNokRelationship(nokDetails === '' ? '': response.data.data.relationship );                
+                    setNokAddress(nokDetails === '' ? '': response.data.data.address ); 
+                }
+                                
+            })
+            .catch(function (error) {});
         }        
 
         getNOKDetails();
@@ -392,6 +399,12 @@ const Profile = () => {
             else{
                 setIsPersonalDetailsFilled(true);
             }
+
+            // console.log(address+"-"+city+"-"+state+"-"+country+"-"+idNumber+"-"+idType)
+
+            // console.log(idBase64Img)
+            // console.log(utilityBillBase64Img)
+            // console.log(signatureBase64Img)
         }
 
         checkIfPersonalDetailsFieldsAreFilled();
@@ -648,7 +661,6 @@ const Profile = () => {
         .catch(function (error) {
             setErrorMsg(error.response.data.message);
             setShowPersonalSpinner(false);
-            console.log(errorMsg)
         });
     }
 
@@ -1120,211 +1132,236 @@ const Profile = () => {
 
                                         <div className='font-gotham-black-regular text-green-900 text-xl mb-30'>Personal Details</div>
 
-                                        <div className='mb-11'>
-                                            <div className='md:flex md:justify-between'>
-                                                <div className='md:mb-0 mb-11'>
-                                                    <div className='font-bold  text-gray-700 mb-3 text-sm'>Firstname</div>
-                                                    <div>{customer.firstName}</div>
-                                                </div>
-
-                                                <div className='md:mb-0 mb-11'>
-                                                    <div className='font-bold text-gray-700 mb-3 text-sm'>Surname</div>
-                                                    <div>{customer.lastName}</div>
-                                                </div>
-
-                                                <div className='md:mb-0'>
-                                                    <div className='font-bold text-gray-700 mb-3 text-sm'>Email address</div>
-                                                    <div>{customer.email}</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className='mb-11'>
-                                            <div className='md:flex md:justify-between md:space-x-20'>
-                                                <div className='md:w-1/2 w-full md:mb-0 mb-11'>
-                                                    <div className='font-bold text-gray-700 mb-3 text-sm'>Address</div>
-                                                    <div><input value={customer.permanentAddress} onChange={e => setAddress(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
-                                                </div>
-
-                                                <div className='md:w-1/2 w-full'>
-                                                    <div className='font-bold text-gray-700 mb-3 text-sm'>City</div>
-                                                    <div><input type='text' value={city} onChange={e => setCity(e.target.value)} className='border border-gray-300 px-3 py-2 text-lg outline-white rounded-lg w-full'/></div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className='mb-11'>
-                                            <div className='md:flex md:space-x-20'>
-                                                <div className='md:w-1/2 w-full md:mb-0 mb-11'>
-                                                    <div className='font-bold  text-gray-700 mb-3 text-sm'>State</div>
-                                                    <div>
-                                                        <select onChange={e => setState(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
-                                                            <option value="">Select a state</option>
-                                                            <option value="Abuja">Abuja</option>
-                                                            <option value="Abia">Abia</option>
-                                                            <option value="Adamawa">Adamawa</option>
-                                                            <option value="Akwa Ibom">Akwa Ibom</option>
-                                                            <option value="Anambra">Anambra</option>
-                                                            <option value="Bauchi">Bauchi</option>
-                                                            <option value="Bayelsa">Bayelsa</option>
-                                                            <option value="Benue">Benue</option>
-                                                            <option value="Borno">Borno</option>
-                                                            <option value="Cross River">Cross River</option>
-                                                            <option value="Delta">Delta</option>
-                                                            <option value="Ebonyi">Ebonyi</option>
-                                                            <option value="Edo">Edo</option>
-                                                            <option value="Ekiti">Ekiti</option>
-                                                            <option value="Enugu">Enugu</option>
-                                                            <option value="Gombe">Gombe</option>
-                                                            <option value="Imo">Imo</option>
-                                                            <option value="Jigawa">Jigawa</option>
-                                                            <option value="Kaduna">Kaduna</option>
-                                                            <option value="Kano">Kano</option>
-                                                            <option value="Katsina">Katsina</option>
-                                                            <option value="Kebbi">Kebbi</option>
-                                                            <option value="Kogi">Kogi</option>
-                                                            <option value="Kwara">Kwara</option>
-                                                            <option value="Lagos">Lagos</option>
-                                                            <option value="Niger">Niger</option>
-                                                            <option value="Ogun">Ogun</option>
-                                                            <option value="Ondo">Ondo</option>
-                                                            <option value="Osun">Osun</option>
-                                                            <option value="Oyo">Oyo</option>
-                                                            <option value="Plateau">Plateau</option>
-                                                            <option value="Rivers">Rivers</option>
-                                                            <option value="Sokoto">Sokoto</option>
-                                                            <option value="Taraba">Taraba</option>
-                                                            <option value="Yobe">Yobe</option>
-                                                            <option value="Zamfara">Zamfara</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <div className='md:w-1/2 w-full'>
-                                                    <div className='font-bold  text-gray-700 mb-3 text-sm'>Country</div>
-                                                    <div>
-                                                        <select onChange={e => setCountry(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
-                                                            <option value={customer.nationality}>{customer.nationality}</option>
-
-                                                            <option value=''>...</option>
-                                                            
-                                                            {countries.map((item :any, index :any)=>
-                                                                <option value={item.name} key={index}>{item.name}</option>
-                                                            )}
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className='border mb-11 opacity-40'></div>
-
-                                        <div className=' text-green-900 mb-6 text-xl font-gotham-black-regular'>Uploads</div>
-                                        <div className='font-bold mb-3'>Valid identification</div>
-
-                                        <div className='md:flex md:justify-between mb-11 text-sm'>
-                                            <div className='flex  space-x-1 items-end w-full md:mb-0 mb-3'>                                                
-                                                <Form.Check type="radio" name="idtype" value="Drivers License" className='portfoliolist-checkbox' checked={idType === 'Drivers License'} onChange={e => setIdType(e.target.value)} /> 
-                                                <div className='text-gray-900'>Drivers License</div>
-                                            </div>
-
-                                            <div className='flex hidden space-x-1 items-end w-full md:mb-0 mb-3'>                                                
-                                                <Form.Check type="radio" name="idtype" value="International Passport" className='portfoliolist-checkbox' checked={idType === "International Passport"} onChange={e => setIdType(e.target.value)}/> 
-                                                <div className='text-gray-900'>Int'l Passport</div>
-                                            </div>
-
-                                            <div className='flex space-x-1 items-end w-full md:mb-0 mb-3'>                                                
-                                                <Form.Check type="radio" name="idtype" value="NIN" className='portfoliolist-checkbox' checked={idType === "NIN"} onChange={e => setIdType(e.target.value)}/> 
-                                                <div className='text-gray-900'>NIN</div>
-                                            </div>
-
-                                            <div className='flex items-end space-x-1 w-full md:mb-0 mb-3'>                                                
-                                                <Form.Check type="radio"  name="idtype" value="Voters Card" className='portfoliolist-checkbox' checked={idType === "Voters Card"} onChange={e => setIdType(e.target.value)}/> 
-                                                <div className='text-gray-900'>Voters Card</div>
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <div className='font-bold mb-3 text-sm'>Upload a selected ID type </div>
-
-                                            <div className='md:flex md:justify-between md:items-end md:space-x-10 mb-11'>
-                                                <div className='md:w-1/2 md:flex md:items-center md:mb-0 mb-11'>
-                                                    <img className={idFile === '' ? 'cursor-pointer w-full':'hidden'} src={BrowseFile} alt="" onClick={triggerIdUpload}/>
-
-                                                    <div className={idFile === '' ? 'hidden':'flex space-x-3 items-center p-5 w-96 bg-gray-100 border rounded-lg w-full'}>
-                                                        <div><img src={FileIcon} alt=""/></div>
-                                                        <div className='font-bold flex-1'>{idFile}</div>
-                                                        <div><img className='cursor-pointer' src={DeleteIcon} onClick={deleteIdFile} alt=""/></div>
-                                                    </div>
-                                                </div>
-
-                                                <div className='md:w-1/2 pb-0.5'>
-                                                    <div className='text-gray-900 mb-3 text-sm font-bold'>ID Number</div>
-                                                    <input type='number' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full' value={personalDetails === '' ? '' : JSON.parse(personalDetails).idDetails.idNumber} onChange={e => setIdNumber(e.target.value)}/>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className='mb-11'>
-                                            <div className='mb-10 text-sm font-bold'>Utility Bill Type</div>
-                                            <div>
-                                                <select onChange={e => setUtilityBillType(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
-
-                                                    <option value={personalDetails === '' ? '...' : JSON.parse(personalDetails).utilityBillType}>{personalDetails === '' ? '' : JSON.parse(personalDetails).utilityBillType}</option>
-
-                                                    <option value=''>Select Utility Bill Type</option>
-
-                                                    <option value='Water Bills'>Water Bills</option>
-                                                    <option value='PayTV Bills'>PayTV Bills</option>
-                                                    <option value='Telecommunication Bills'>Telecommunication Bills</option>
-                                                    <option value='Electricity Bills'>Electricity Bills</option>
-                                                    <option value='Electricity Bills'>Electricity Bills</option>
-                                                    <option value='Waste Bills'>Waste Bills</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div className='mb-11'>
-                                            <div className='mb-10 text-sm font-bold'>Transaction Pin</div>
-                                            <div>
-                                                <div>
-                                                    <input type='password' className='input p-3 border-1-d6 outline-white font-bold text-lg' onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className='md:flex md:justify-between md:space-x-5 md:items-end mb-6'>
-                                            <div className='md:w-1/2 w-full md:mb-0 mb-11'>
-                                                <div className='font-bold mb-3 text-sm'>Upload a Valid Utility Bill (3 months old)</div>
-
-                                                <img className={utilityBillFile === '' ? 'cursor-pointer w-full':'hidden'} src={BrowseFile} alt="" onClick={triggerUtilityBillUpload} />
-
-                                                <div className={utilityBillFile === '' ? 'hidden':'flex space-x-3 items-center p-5 w-96 bg-gray-100 border rounded-lg w-full'}>
-                                                    <div><img src={FileIcon} alt=""/></div>
-                                                    <div className='font-bold flex-1'>{utilityBillFile}</div>
-                                                    <div><img className='cursor-pointer' src={DeleteIcon} onClick={deleteUtilityBillFile} alt=""/></div>
-                                                </div>
-                                            </div>
+                                        {personalDetails.map((item :any, index :any)=>
+                                        <div key={index}>
                                             
-                                            <div className='md:w-1/2 w-full md:mb-0'>
-                                                <div className='font-bold mb-3 text-sm'>Upload Signature </div>
-                                                <img className={signatureFile === '' ? 'cursor-pointer w-full':'hidden'} src={BrowseFile} alt="" onClick={triggerSignatureUpload} />
+                                            <div className='mb-11'>
+                                                <div className='md:flex md:justify-between'>
+                                                    <div className='md:mb-0 mb-11'>
+                                                        <div className='font-bold  text-gray-700 mb-3 text-sm'>Firstname</div>
+                                                        <div>{customer.firstName}</div>
+                                                    </div>
 
-                                                <div className={signatureFile === '' ? 'hidden':'flex space-x-3 items-center p-5 w-96 bg-gray-100 border rounded-lg w-full'}>
-                                                    <div><img src={FileIcon} alt=""/></div>
-                                                    <div className='font-bold flex-1'>{signatureFile}</div>
-                                                    <div><img className='cursor-pointer' src={DeleteIcon} onClick={deleteSignatureFile} alt=""/></div>
+                                                    <div className='md:mb-0 mb-11'>
+                                                        <div className='font-bold text-gray-700 mb-3 text-sm'>Surname</div>
+                                                        <div>{customer.lastName}</div>
+                                                    </div>
+
+                                                    <div className='md:mb-0'>
+                                                        <div className='font-bold text-gray-700 mb-3 text-sm'>Email address</div>
+                                                        <div>{customer.email}</div>
+                                                    </div>
                                                 </div>
                                             </div>
 
-                                            <div className='md:w-1/2 w-full pb-1'>
+                                            <div className='mb-11'>
+                                                <div className='md:flex md:justify-between md:space-x-20'>
+                                                    <div className='md:w-1/2 w-full md:mb-0 mb-11'>
+                                                        <div className='font-bold text-gray-700 mb-3 text-sm'>Address</div>
+                                                        <div><input defaultValue={item.contactAddress} onChange={e => setAddress(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
+                                                    </div>
 
-                                                <button onClick={sendPersonalDetails} type='button' className={isPersonalDetailsFilled ? "mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full":"mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer opacity-50  w-full"} disabled={!isPersonalDetailsFilled}>
-                                                    <span className={ showPersonalSpinner ? "hidden" : ""}>Update</span>
-                                                    <img src={SpinnerIcon} alt="spinner icon" className={ showPersonalSpinner ? "" : "hidden"} width="15"/>
-                                                </button>
+                                                    <div className='md:w-1/2 w-full'>
+                                                        <div className='font-bold text-gray-700 mb-3 text-sm'>City</div>
+                                                        <div><input type='text' value={city} onChange={e => setCity(e.target.value)} className='border border-gray-300 px-3 py-2 text-lg outline-white rounded-lg w-full'/></div>
+                                                    </div>
+                                                </div>
                                             </div>
+
+                                            <div className='mb-11'>
+                                                <div className='md:flex md:space-x-20'>
+                                                    <div className='md:w-1/2 w-full md:mb-0 mb-11'>
+                                                        <div className='font-bold  text-gray-700 mb-3 text-sm'>State</div>
+                                                        <div>
+                                                            <select onChange={e => setState(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
+                                                                <option value="">Select a state</option>
+                                                                <option value="Abuja">Abuja</option>
+                                                                <option value="Abia">Abia</option>
+                                                                <option value="Adamawa">Adamawa</option>
+                                                                <option value="Akwa Ibom">Akwa Ibom</option>
+                                                                <option value="Anambra">Anambra</option>
+                                                                <option value="Bauchi">Bauchi</option>
+                                                                <option value="Bayelsa">Bayelsa</option>
+                                                                <option value="Benue">Benue</option>
+                                                                <option value="Borno">Borno</option>
+                                                                <option value="Cross River">Cross River</option>
+                                                                <option value="Delta">Delta</option>
+                                                                <option value="Ebonyi">Ebonyi</option>
+                                                                <option value="Edo">Edo</option>
+                                                                <option value="Ekiti">Ekiti</option>
+                                                                <option value="Enugu">Enugu</option>
+                                                                <option value="Gombe">Gombe</option>
+                                                                <option value="Imo">Imo</option>
+                                                                <option value="Jigawa">Jigawa</option>
+                                                                <option value="Kaduna">Kaduna</option>
+                                                                <option value="Kano">Kano</option>
+                                                                <option value="Katsina">Katsina</option>
+                                                                <option value="Kebbi">Kebbi</option>
+                                                                <option value="Kogi">Kogi</option>
+                                                                <option value="Kwara">Kwara</option>
+                                                                <option value="Lagos">Lagos</option>
+                                                                <option value="Niger">Niger</option>
+                                                                <option value="Ogun">Ogun</option>
+                                                                <option value="Ondo">Ondo</option>
+                                                                <option value="Osun">Osun</option>
+                                                                <option value="Oyo">Oyo</option>
+                                                                <option value="Plateau">Plateau</option>
+                                                                <option value="Rivers">Rivers</option>
+                                                                <option value="Sokoto">Sokoto</option>
+                                                                <option value="Taraba">Taraba</option>
+                                                                <option value="Yobe">Yobe</option>
+                                                                <option value="Zamfara">Zamfara</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className='md:w-1/2 w-full'>
+                                                        <div className='font-bold  text-gray-700 mb-3 text-sm'>Country</div>
+                                                        <div>
+                                                            <select onChange={e => setCountry(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
+                                                                <option value={item.idDetails.idCountry}>{item.idDetails.idCountry}</option>
+
+                                                                <option value=''>...</option>
+                                                                
+                                                                {countries.map((el :any, ind :any)=>
+                                                                    <option value={el.name} className={el.name === item.idDetails.idCountry ? "hidden":""} key={ind}>{el.name}</option>
+                                                                )}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className='border mb-11 opacity-40'></div>
+
+                                            <div className=' text-green-900 mb-6 text-xl font-gotham-black-regular'>Uploads</div>
+                                            <div className='font-bold mb-3'>Valid identification</div>
+
+                                            <div className='md:flex md:justify-between mb-11 text-sm'>
+                                                <select onChange={e => setCountry(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-96'>
+                                                    <option value={item.idDetails.idType}>{item.idDetails.idType}</option>
+
+                                                    <option value=''>Select a Valid ID</option>
+                                                    
+                                                    <option value="Drivers License" className={item.idDetails.idType === 'Drivers License' ? 'hidden':''}>Drivers Licence</option>
+
+                                                    <option value="NIN" className={item.idDetails.idType === 'NIN' ? 'hidden':''}>NIN</option>
+
+                                                    <option value="Voters Card" className={item.idDetails.idType === 'Voters Card' ? 'hidden':''}>Voters Card</option>
+                                                </select>
+
+                                                <div className='hidden'>
+                                                    <div className='flex  space-x-1 items-end w-full md:mb-0 mb-3'>                                                
+                                                        <Form.Check type="radio" name="idtype" value="Drivers License" className='portfoliolist-checkbox' checked={idType === 'Drivers License'} onChange={e => setIdType(e.target.value)} /> 
+                                                        <div className='text-gray-900'>Drivers License</div>
+                                                    </div>
+
+                                                    <div className='flex hidden space-x-1 items-end w-full md:mb-0 mb-3'>                                                
+                                                        <Form.Check type="radio" name="idtype" value="International Passport" className='portfoliolist-checkbox' checked={idType === "International Passport"} onChange={e => setIdType(e.target.value)}/> 
+                                                        <div className='text-gray-900'>Int'l Passport</div>
+                                                    </div>
+
+                                                    <div className='flex space-x-1 items-end w-full md:mb-0 mb-3'>                                                
+                                                        <Form.Check type="radio" name="idtype" value="NIN" className='portfoliolist-checkbox' checked={idType === "NIN"} onChange={e => setIdType(e.target.value)}/> 
+                                                        <div className='text-gray-900'>NIN</div>
+                                                    </div>
+
+                                                    <div className='flex items-end space-x-1 w-full md:mb-0 mb-3'>                                                
+                                                        <Form.Check type="radio"  name="idtype" value="Voters Card" className='portfoliolist-checkbox' checked={idType === "Voters Card"} onChange={e => setIdType(e.target.value)}/> 
+                                                        <div className='text-gray-900'>Voters Card</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div className='font-bold mb-3 text-sm'>Upload a selected ID type </div>
+
+                                                <div className='md:flex md:justify-between md:items-end md:space-x-10 mb-11'>
+                                                    <div className='md:w-1/2 md:flex md:items-center md:mb-0 mb-11'>
+                                                        <img className={idFile === '' ? 'cursor-pointer w-full':'hidden'} src={BrowseFile} alt="" onClick={triggerIdUpload}/>
+
+                                                        <div className={idFile === '' ? 'hidden':'flex space-x-3 items-center p-5 w-96 bg-gray-100 border rounded-lg w-full'}>
+                                                            <div><img src={FileIcon} alt=""/></div>
+                                                            <div className='font-bold flex-1'>{idFile}</div>
+                                                            <div><img className='cursor-pointer' src={DeleteIcon} onClick={deleteIdFile} alt=""/></div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className='md:w-1/2 pb-0.5'>
+                                                        <div className='text-gray-900 mb-3 text-sm font-bold'>ID Number</div>
+                                                        <input type='number' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full' value={item.idDetails.idNumber} onChange={e => setIdNumber(e.target.value)}/>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className='mb-11 flex justify-between space-x-5'>
+                                                <div className='w-1/2'>
+                                                    <div className='mb-10 text-sm font-bold'>Utility Bill Type</div>
+                                                    
+                                                    <div>
+                                                        <select onChange={e => setUtilityBillType(e.target.value)} className='border px-4 py-3 text-lg text-gray-700 focus:outline-white rounded-lg w-full'>
+
+                                                            <option value={item.utilityBillType}>{item.utilityBillType}</option>
+
+                                                            <option value=''>Select Utility Bill Type</option>
+
+                                                            <option value='Water Bills' className={item.utilityBillType === 'Water Bills' ? 'hidden':''}>Water Bills</option>
+
+                                                            <option value='PayTV Bills' className={item.utilityBillType === 'PayTV Bills' ? 'hidden':''}>PayTV Bills</option>
+
+                                                            <option value='Telecommunication Bills' className={item.utilityBillType === 'Telecommunication Bills' ? 'hidden':''}>Telecommunication Bills</option>
+
+                                                            <option value='Electricity Bills' className={item.utilityBillType === 'Electricity Bills' ? 'hidden':''}>Electricity Bills</option>
+
+                                                            <option value='Waste Bills' className={item.utilityBillType === 'Waste Bills' ? 'hidden':''}>Waste Bills</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div className='w-1/2'>
+                                                    <div className='mb-10 text-sm font-bold'>Transaction Pin</div>
+                                                    <div>
+                                                        <div>
+                                                            <input type='password' className='px-3 py-2 border outline-white font-bold text-lg rounded-lg focus:outline-white w-full' onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className='md:flex md:justify-between md:space-x-5 md:items-end mb-6'>
+                                                <div className='md:w-1/2 w-full md:mb-0 mb-11'>
+                                                    <div className='font-bold mb-3 text-sm'>Upload a Valid Utility Bill (3 months old)</div>
+
+                                                    <img className={utilityBillFile === '' ? 'cursor-pointer w-full':'hidden'} src={BrowseFile} alt="" onClick={triggerUtilityBillUpload} />
+
+                                                    <div className={utilityBillFile === '' ? 'hidden':'flex space-x-3 items-center p-5 w-96 bg-gray-100 border rounded-lg w-full'}>
+                                                        <div><img src={FileIcon} alt=""/></div>
+                                                        <div className='font-bold flex-1'>{utilityBillFile}</div>
+                                                        <div><img className='cursor-pointer' src={DeleteIcon} onClick={deleteUtilityBillFile} alt=""/></div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div className='md:w-1/2 w-full md:mb-0'>
+                                                    <div className='font-bold mb-3 text-sm'>Upload Signature </div>
+                                                    <img className={signatureFile === '' ? 'cursor-pointer w-full':'hidden'} src={BrowseFile} alt="" onClick={triggerSignatureUpload} />
+
+                                                    <div className={signatureFile === '' ? 'hidden':'flex space-x-3 items-center p-5 w-96 bg-gray-100 border rounded-lg w-full'}>
+                                                        <div><img src={FileIcon} alt=""/></div>
+                                                        <div className='font-bold flex-1'>{signatureFile}</div>
+                                                        <div><img className='cursor-pointer' src={DeleteIcon} onClick={deleteSignatureFile} alt=""/></div>
+                                                    </div>
+                                                </div>
+
+                                                <div className='md:w-1/2 w-full pb-1'>
+
+                                                    <button onClick={sendPersonalDetails} type='button' className={isPersonalDetailsFilled ? "mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full":"mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer opacity-50  w-full"} disabled={!isPersonalDetailsFilled}>
+                                                        <span className={ showPersonalSpinner ? "hidden" : ""}>Update</span>
+                                                        <img src={SpinnerIcon} alt="spinner icon" className={ showPersonalSpinner ? "" : "hidden"} width="15"/>
+                                                    </button>
+                                                </div>
+                                            </div>                                        
                                         </div>
+                                        )}
 
                                         {/* Personal Deatils Success */}
                                         <div className={isPersonalDetailsSuccessful ? "otp-alert mb-20":"hidden"}>
@@ -1386,12 +1423,12 @@ const Profile = () => {
                                             <div className='md:flex md:justify-between md:space-x-10'>
                                                 <div className='md:w-1/2 w-full md:mb-0 mb-11'>
                                                     <div className='text-gray-700 font-bold mb-3 text-sm'>Name of employer</div>
-                                                    <div><input value={employmentDetails === '' ? '' : JSON.parse(employmentDetails).employer} onChange={e => setEmployer(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
+                                                    <div><input defaultValue={employmentDetails === '' ? '' : JSON.parse(employmentDetails).employer} onChange={e => setEmployer(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
                                                 </div>
 
                                                 <div className='md:w-1/2 w-full'>
                                                     <div className='text-gray-700 font-bold  mb-3 text-sm'>Profession</div>
-                                                    <div><input value={employmentDetails === '' ? '' : JSON.parse(employmentDetails).profession} onChange={e => setProfession(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg outline-white rounded-lg w-full'/></div>
+                                                    <div><input defaultValue={employmentDetails === '' ? '' : JSON.parse(employmentDetails).profession} onChange={e => setProfession(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg outline-white rounded-lg w-full'/></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -2200,6 +2237,7 @@ const Profile = () => {
             <input type="file" id="utilitybill_file" className='opacity-0' onChange={changeUtlityBill}/>
 
             <input type="file" id="signature_file" className='opacity-0' onChange={changeSignature}/>
+
             <input type="hidden" value={state} />
         </div>
     );
