@@ -82,6 +82,7 @@ const Stock = () => {
     const [offersList, setOffersList] = useState('');
 
     const [buyStockError, setBuyStockError] = useState('');
+    const [priceAlertError, setPriceAlertError] = useState('');
     const [priceEstimateError, setPriceEstimateError] = useState('');
     const [showPageLoader, setShowPageLoader] = useState<boolean>(true);
     const [, setApiResponseHasError] = useState<boolean>(false);
@@ -1170,23 +1171,28 @@ const Stock = () => {
         setShowSpinner(true);
 
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
-        localStorage.setItem('genericCypher', genericCypher);
+        let pinCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), transactionPin);
+            
 
         let headers = {
             'Authorization': 'Bearer ' + localStorage.getItem('aislUserToken'),
             'x-firebase-token': '12222',
-            'x-transaction-pin': '{ "text":"0v++z64VjWwH0ugxkpRCFg=="}'
+            'x-transaction-pin': JSON.stringify({ text : pinCypher})
         }
 
         getAxios(axios).post(stockTradingServiceBaseUrlUrl + '/stock/price-triggers',
         {
-            "text": localStorage.getItem('genericCypher')
+            "text": genericCypher
         },{ headers })
         .then(function (response) {
             setShowSpinner(false);
+            setApiResponseSuccessMsg("Price alert created successfully.")
+            setShowSuccessModal(true);
+            setShowSetPriceAlertModal(false);
         })
         .catch(function (error) {
             setShowSpinner(false);
+            setPriceAlertError(error.response.data.message);
         });
     }   
 
@@ -1572,6 +1578,22 @@ const Stock = () => {
             <div className={showSetPriceAlertModal ?  'generic-modal' : 'hidden'}>
                 <div className='generic-modal-dialog'>
                     <div className="set-price-alert-modal rounded-lg">
+                        {/* price Alert Error */}
+                        <div className={priceAlertError === '' ? "hidden" : "error-alert mb-20"}>
+                            <div className="flex justify-between space-x-1">
+                                <div className="flex">
+                                    <div>
+                                        <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
+                                        </svg>
+                                    </div>
+
+                                    <div className="text-sm">{priceAlertError}</div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* End */}
+
                         <div className="mb-10 flex justify-between">
                             <div className="font-bold text-3xl text-green-900 font-gotham-black-regular">Set Price Alerts</div>
 
@@ -1582,7 +1604,7 @@ const Stock = () => {
 
                         <div className="border-1 mb-30"></div>
 
-                        <div>
+                        <div className='mb-6'>
                             <div>
                                 <div className='mb-10'>
                                     <img src={AtlasIcon} alt="" className="align-middle border-1-d6 rounded-lg" />
@@ -1607,7 +1629,7 @@ const Stock = () => {
 
                                 <div className='mb-30 flex space-x-5'>
                                     <div className='w-full'>
-                                        <div className='font-bold mb-10'>Enter Price</div>
+                                        <div className='font-bold mb-10 text-sm'>Enter Price</div>
                                         <input type="text" value={priceAlert} onChange={delineatePriceAlert} className="input border p-2 outline-white w-full font-bold" />
                                     </div>
 
@@ -1618,7 +1640,7 @@ const Stock = () => {
                                 </div>
                                 
                                 <div className='mb-30'>
-                                    <div className='w-full font-bold mb-10'>Price Condition</div>
+                                    <div className='w-full font-bold mb-10 text-sm'>Price Condition</div>
 
                                     <div className=''>
                                         <select className='text-sm outline-white w-full p-3 rounded-lg border border-gray-500 font-bold' onChange={e => setPriceCondition(e.target.value)}>
@@ -1626,6 +1648,14 @@ const Stock = () => {
                                             <option value="GREATER_THAN">High</option>
                                             <option value="LESS_THAN">Low</option>
                                         </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div className='mb-10 font-bold text-sm'>Transaction Pin</div>
+
+                                    <div>
+                                        <input type="password" className='text-lg outline-white mb-30 w-full font-bold px-3 py-2 rounded-lg border border-gray-500' value={transactionPin} onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
                                     </div>
                                 </div>
 
@@ -1639,6 +1669,22 @@ const Stock = () => {
                                 </div>
                             </div>
                         </div>
+
+                        {/* price Alert Error */}
+                        <div className={priceAlertError === '' ? "hidden" : "error-alert mb-20"}>
+                            <div className="flex justify-between space-x-1">
+                                <div className="flex">
+                                    <div>
+                                        <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
+                                        </svg>
+                                    </div>
+
+                                    <div className="text-sm">{priceAlertError}</div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* End */}
                     </div>
                 </div>
             </div>
