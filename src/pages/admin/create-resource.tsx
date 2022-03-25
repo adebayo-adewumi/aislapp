@@ -49,7 +49,7 @@ const AdminCreateResource = () => {
         }
 
         getFileTypes();
-    });
+    },[]);
 
     function triggerFileUpload(){
         document.getElementById("learn_file")?.click();
@@ -67,7 +67,6 @@ const AdminCreateResource = () => {
         let _fileExt = file.name.split(".")[1];
 
         setFileName(file.name.split(".")[0]);
-        setFileType(file.name.split(".")[1]);
 
         if(fileExtArr.includes(_fileExt.toLowerCase())){
             let reader = new FileReader();
