@@ -128,8 +128,8 @@ const Profile = () => {
     const [isNOKDetailsFilled, setIsNOKDetailsFilled] = useState<boolean>(false);
 
     const [personalDetails, setPersonalDetails] = useState<any[]>([]);
-    const [employmentDetails, setEmploymentDetails] = useState('');
-    const [nokDetails, setNOKDetails] = useState('');
+    const [employmentDetails, setEmploymentDetails] = useState<any[]>([]);
+    const [nokDetails, setNOKDetails] = useState<any[]>([]);
 
     const [bankDetails, setBankDetails] = useState<any[]>([]);
     const [primaryBankDetails, setPrimaryBankDetails] = useState<any[]>([]);
@@ -336,7 +336,6 @@ const Profile = () => {
                     pDetails.push(response.data.data);
 
                     setPersonalDetails(pDetails);
-
                 }
                 
             })
@@ -354,18 +353,24 @@ const Profile = () => {
 
             getAxios(axios).get(authOnboardingServiceBaseUrl + '/customer/kyc/employment-details')
             .then(function (response) { 
-                setEmploymentDetails(response.data.hasOwnProperty("data") ? JSON.stringify(response.data.data) : '');
+                if(response.data.hasOwnProperty("data")){
+                    let eDetails :any[] = [];
+                    
+                    eDetails.push(response.data.data);
 
-                setEmployer(employmentDetails === '' ? '': response.data.data.employer );                 
-                setSalary(employmentDetails === '' ? '': response.data.data.salary );                 
-                setProfession(employmentDetails === '' ? '': response.data.data.profession );                 
+                    setEmploymentDetails(eDetails);
+                }                
+
+                // setEmployer(employmentDetails === '' ? '': response.data.data.employer );                 
+                // setSalary(employmentDetails === '' ? '': response.data.data.salary );                 
+                // setProfession(employmentDetails === '' ? '': response.data.data.profession );                 
             })
             .catch(function (error) {});
         }        
 
         getEmploymentDetails();
 
-    },[employmentDetails]);
+    },[]);
 
     useEffect(()=>{
 
@@ -373,14 +378,12 @@ const Profile = () => {
 
             getAxios(axios).get(authOnboardingServiceBaseUrl + '/customer/kyc/nok-details')
             .then(function (response) { 
-                if(response.data.hasOwnProperty('data')){
-                    setNOKDetails(JSON.stringify(response.data.data));
-                    setNokFirstname(nokDetails === '' ? '': response.data.data.firstName);                 
-                    setNokLastname(nokDetails === '' ? '': response.data.data.lastName); 
-                    setNokEmail(nokDetails === '' ? '': response.data.data.email);                
-                    setNokPhone(nokDetails === '' ? '': response.data.data.phoneNumber );                
-                    setNokRelationship(nokDetails === '' ? '': response.data.data.relationship );                
-                    setNokAddress(nokDetails === '' ? '': response.data.data.address ); 
+                if(response.data.hasOwnProperty("data")){
+                    let nDetails :any[] = [];
+                    
+                    nDetails.push(response.data.data);
+
+                    setNOKDetails(nDetails);
                 }
                                 
             })
@@ -400,11 +403,11 @@ const Profile = () => {
                 setIsPersonalDetailsFilled(true);
             }
 
-            // console.log(address+"-"+city+"-"+state+"-"+country+"-"+idNumber+"-"+idType)
+            console.log(address+"-"+city+"-"+state+"-"+country+"-"+idNumber+"-"+idType)
 
-            // console.log(idBase64Img)
-            // console.log(utilityBillBase64Img)
-            // console.log(signatureBase64Img)
+            console.log(idBase64Img)
+            console.log(utilityBillBase64Img)
+            console.log(signatureBase64Img)
         }
 
         checkIfPersonalDetailsFieldsAreFilled();
@@ -1241,7 +1244,7 @@ const Profile = () => {
                                                 <select onChange={e => setCountry(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-96'>
                                                     <option value={item.idDetails.idType}>{item.idDetails.idType}</option>
 
-                                                    <option value=''>Select a Valid ID</option>
+                                                    <option value=''>...</option>
                                                     
                                                     <option value="Drivers License" className={item.idDetails.idType === 'Drivers License' ? 'hidden':''}>Drivers Licence</option>
 
@@ -1303,7 +1306,7 @@ const Profile = () => {
 
                                                             <option value={item.utilityBillType}>{item.utilityBillType}</option>
 
-                                                            <option value=''>Select Utility Bill Type</option>
+                                                            <option value=''>...</option>
 
                                                             <option value='Water Bills' className={item.utilityBillType === 'Water Bills' ? 'hidden':''}>Water Bills</option>
 
@@ -1418,77 +1421,80 @@ const Profile = () => {
 
                                         <div className='font-gotham-black-regular text-green-900 text-xl mb-30'>Employment Details</div>
 
+                                        {employmentDetails.map((item :any, index :any)=>
+                                        <div key={index}>
+                                            <div className='mb-11'>
+                                                <div className='md:flex md:justify-between md:space-x-10'>
+                                                    <div className='md:w-1/2 w-full md:mb-0 mb-11'>
+                                                        <div className='text-gray-700 font-bold mb-3 text-sm'>Name of employer</div>
+                                                        <div><input defaultValue={item.employer} onChange={e => setEmployer(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
+                                                    </div>
 
-                                        <div className='mb-11'>
-                                            <div className='md:flex md:justify-between md:space-x-10'>
-                                                <div className='md:w-1/2 w-full md:mb-0 mb-11'>
-                                                    <div className='text-gray-700 font-bold mb-3 text-sm'>Name of employer</div>
-                                                    <div><input defaultValue={employmentDetails === '' ? '' : JSON.parse(employmentDetails).employer} onChange={e => setEmployer(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
-                                                </div>
-
-                                                <div className='md:w-1/2 w-full'>
-                                                    <div className='text-gray-700 font-bold  mb-3 text-sm'>Profession</div>
-                                                    <div><input defaultValue={employmentDetails === '' ? '' : JSON.parse(employmentDetails).profession} onChange={e => setProfession(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg outline-white rounded-lg w-full'/></div>
+                                                    <div className='md:w-1/2 w-full'>
+                                                        <div className='text-gray-700 font-bold  mb-3 text-sm'>Profession</div>
+                                                        <div><input defaultValue={item.profession} onChange={e => setProfession(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg outline-white rounded-lg w-full'/></div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div className='mb-11'>
-                                            <div className='mb-10 text-sm font-bold'>Transaction Pin</div>
-                                            <div>
+                                            <div className='mb-11'>
+                                                <div className='mb-10 text-sm font-bold'>Transaction Pin</div>
                                                 <div>
-                                                    <input type='password' className='input p-3 border-1-d6 outline-white font-bold text-lg' onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
+                                                    <div>
+                                                        <input type='password' className='input p-3 border-1-d6 outline-white font-bold text-lg' onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div className='md:flex md:justify-between md:space-x-10'>
+                                                    <div className='md:w-1/3 w-full md:mb-0 mb-11'>
+                                                        <div className='text-gray-700 mb-3 text-sm font-bold'>Annual Salary Range</div>
+                                                        <div>
+                                                            <select onChange={e => setSalary(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
+                                                                <option value={item.salary}>{item.salary}</option>
+
+                                                                <option value=''>...</option>
+
+                                                                <option value='Less than 250,000' className={item.salary === 'Less than 250,000'? 'hidden':''}>Less than 250,000</option>
+
+                                                                <option value='250,000 - 1m' className={item.salary === '250,000 - 1m'? 'hidden':''}>250,000 - 1m</option>
+
+                                                                <option value='1m - 5m' className={item.salary === '1m - 5m'? 'hidden':''}>1m - 5m</option>
+
+                                                                <option value='Above 5m' className={item.salary === 'Above 5m'? 'hidden':''}>Above 5m</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className='md:w-1/3 w-full'>
+                                                        <div className='text-gray-700 mb-3 text-sm font-bold'>Are you a politically exposed person?</div>
+                                                        <div>
+                                                            <select onChange={e => setPolitical(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
+
+                                                                <option value={item.politicalAffiliation}>{item.politicalAffiliation}</option>
+
+                                                                <option value=''>...</option>
+
+                                                                <option value='Yes' className={item.politicalAffiliation === 'Yes'? 'hidden':''}>Yes</option>
+
+                                                                <option value='No' className={item.politicalAffiliation === 'No'? 'hidden':''}>No</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    
+
+                                                    <div className='md:w-1/3 w-full'>
+                                                        <button onClick={sendEmployeeDetails} type='button' className={isEmploymentDetailsFilled ? "mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full":"mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer opacity-50 w-full"} disabled={!isEmploymentDetailsFilled}>
+                                                            <span className={ showEmploymentSpinner ? "hidden" : ""}>Update</span>
+                                                            <img src={SpinnerIcon} alt="spinner icon" className={ showEmploymentSpinner ? "" : "hidden"} width="15"/>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div>
-                                            <div className='md:flex md:justify-between md:space-x-10'>
-                                                <div className='md:w-1/3 w-full md:mb-0 mb-11'>
-                                                    <div className='text-gray-700 mb-3 text-sm font-bold'>Annual Salary Range</div>
-                                                    <div>
-                                                        <select onChange={e => setSalary(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
-                                                            <option value={employmentDetails === '' ? '...' : JSON.parse(employmentDetails).salary}>{employmentDetails === '' ? '' : JSON.parse(employmentDetails).salary}</option>
-
-                                                            <option value=''>...</option>
-
-                                                            
-
-                                                            <option value='Less than 250,000'>Less than 250,000</option>
-                                                            <option value='250,000 - 1m'>250,000 - 1m</option>
-                                                            <option value='1m - 5m'>1m - 5m</option>
-                                                            <option value='Above 5m'>Above 5m</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <div className='md:w-1/3 w-full'>
-                                                    <div className='text-gray-700 mb-3 text-sm font-bold'>Are you a politically exposed person?</div>
-                                                    <div>
-                                                        <select onChange={e => setPolitical(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
-
-                                                            <option value={employmentDetails === '' ? '...' : JSON.parse(employmentDetails).politicalAffiliation}>{employmentDetails === '' ? '' : JSON.parse(employmentDetails).politicalAffiliation}</option>
-
-                                                            <option value=''>...</option>
-
-                                                            <option value={employmentDetails === '' ? '...' : JSON.parse(employmentDetails).politicalAffiliation}>{employmentDetails === '' ? '' : JSON.parse(employmentDetails).politicalAffiliation}</option>
-
-                                                            <option value='Yes'>Yes</option>
-                                                            <option value='No'>No</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                
-
-                                                <div className='md:w-1/3 w-full'>
-                                                    <button onClick={sendEmployeeDetails} type='button' className={isEmploymentDetailsFilled ? "mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full":"mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer opacity-50 w-full"} disabled={!isEmploymentDetailsFilled}>
-                                                        <span className={ showEmploymentSpinner ? "hidden" : ""}>Update</span>
-                                                        <img src={SpinnerIcon} alt="spinner icon" className={ showEmploymentSpinner ? "" : "hidden"} width="15"/>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        )}
 
                                     </div>
                                     
@@ -1523,150 +1529,155 @@ const Profile = () => {
 
                                         <div className='font-gotham-black-regular text-green-900 text-xl mb-30'>Next of KIN Details</div>
 
+                                        {nokDetails.map((item :any, index :any)=>
+                                        <div key={index}>
+                                            <div className='mb-11'>
+                                                <div className='md:flex md:justify-between md:space-x-10'>
+                                                    <div className='md:w-1/2 w-full md:mb-0 mb-11'>
+                                                        <div className='text-gray-700 mb-3 text-sm font-bold'>Firstname</div>
+                                                        <div><input defaultValue={item.firstName} onChange={e => setNokFirstname(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
+                                                    </div>
 
-                                        <div className='mb-11'>
-                                            <div className='md:flex md:justify-between md:space-x-10'>
-                                                <div className='md:w-1/2 w-full md:mb-0 mb-11'>
-                                                    <div className='text-gray-700 mb-3 text-sm font-bold'>Firstname</div>
-                                                    <div><input value={nokFirstname} onChange={e => setNokFirstname(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
+                                                    <div className='md:w-1/2 w-full'>
+                                                        <div className='text-gray-700 mb-3 text-sm font-bold'>Lastname</div>
+                                                        <div><input defaultValue={item.lastName} onChange={e => setNokLastname(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
+                                                    </div>                                            
                                                 </div>
-
-                                                <div className='md:w-1/2 w-full'>
-                                                    <div className='text-gray-700 mb-3 text-sm font-bold'>Lastname</div>
-                                                    <div><input value={nokLastname} onChange={e => setNokLastname(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
-                                                </div>                                            
                                             </div>
-                                        </div>
 
-                                        <div className='mb-11'>
-                                            <div className='md:flex md:justify-between md:space-x-10'>
-                                                <div className='md:w-1/3 w-full md:mb-0 mb-11'>
-                                                    <div className='text-gray-700 mb-3 text-sm font-bold'>Email Address</div>
-                                                    <div><input value={nokEmail} onChange={e => setNokEmail(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
+                                            <div className='mb-11'>
+                                                <div className='md:flex md:justify-between md:space-x-10'>
+                                                    <div className='md:w-1/3 w-full md:mb-0 mb-11'>
+                                                        <div className='text-gray-700 mb-3 text-sm font-bold'>Email Address</div>
+                                                        <div><input defaultValue={item.email} onChange={e => setNokEmail(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
+                                                    </div>
+
+                                                    <div className='md:w-1/3 w-full md:mb-0 mb-11'>
+                                                        <div className='text-gray-700 mb-3 text-sm font-bold'>Phone number</div>
+
+                                                        <div className='flex border-1-d6 rounded-lg p-2'>
+                                                            <select onChange={e => setNokPhoneCode(e.target.value)} className='border-0 font-gotham outline-white text-sm'>
+                                                                <option value="234">+234</option>
+                                                                <option value="1">+1</option>
+                                                                <option value="44">+44</option>
+                                                                <option value="213">+213</option>
+                                                                <option value="376">+376</option>
+                                                                <option value="244">+244</option>
+                                                                <option value="1264">+1264</option>
+                                                                <option value="1268">+1268</option>
+                                                                <option value="54">+54</option>
+                                                                <option value="374">+374</option>
+                                                                <option value="297">+297</option>
+                                                                <option value="61">+61</option>
+                                                                <option value="43">+43</option>
+                                                                <option value="994">+994</option>
+                                                                <option value="1242">+1242</option>
+                                                                <option value="973">+973</option>
+                                                                <option value="880">+880</option>
+                                                                <option value="1246">+1246</option>
+                                                                <option value="375">+375</option>
+                                                                <option value="32">+32</option>
+                                                                <option value="501">+501</option>
+                                                                <option value="229">+229</option>
+                                                                <option value="1441">+1441</option>
+                                                                <option value="975">+975</option>
+                                                                <option value="591">+591</option>
+                                                                <option  value="387">+387</option>
+                                                                <option  value="267">+267</option>
+                                                                <option  value="55">+55</option>
+                                                                <option  value="673">+673</option>
+                                                                <option  value="359">+359</option>
+                                                                <option  value="226">+226</option>
+                                                                <option  value="257">+257</option>
+                                                                <option  value="855">+855</option>
+                                                                <option  value="237">+237</option>
+                                                                <option  value="1">+1</option>
+                                                                <option  value="238">+238</option>
+                                                                <option  value="1345">+1345</option>
+                                                                <option  value="236">+236</option>
+                                                                <option  value="56">+56</option>
+                                                                <option  value="86">+86</option>
+                                                                <option  value="57">+57</option>
+                                                                <option  value="269">+269</option>
+                                                                <option  value="242">+242</option>
+                                                                <option  value="682">+682</option>
+                                                                <option  value="506">+506</option>
+                                                                <option  value="385">+385</option>
+                                                                <option  value="53">+53</option>
+                                                                <option  value="599">+599</option>
+                                                                <option  value="90392">+90392</option>
+                                                                <option  value="357">+357</option>
+                                                                <option  value="420">+420</option>
+                                                                <option  value="45">+45</option>
+                                                                <option  value="253">+253</option>
+                                                                <option  value="1809">+1809</option>
+                                                                <option  value="1809">+1809</option>
+                                                                
+                                                            </select>
+
+                                                            <input defaultValue={item.phoneNumber} onChange={e => setNokPhone(e.target.value)} className="px-2 py-1 border-0 input text-lg outline-white" placeholder="ex: 813 000 1111 OR 0813 000 1111" type="text" />
+                                                        </div>                                                
+                                                    </div>
+
+                                                    <div className='md:w-1/3 w-full'>
+                                                        <div className='text-gray-700 mb-3 text-sm font-bold'>Relationship</div>
+                                                        <div>
+                                                            <select onChange={e => setNokRelationship(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
+                                                                <option value={item.relationship}>{item.relationship}</option>
+
+                                                                <option value="">...</option>
+
+                                                                <option value="SISTER" className={item.relationship === 'SISTER' ? 'hidden':''}>SISTER</option>
+
+                                                                <option value="BROTHER" className={item.relationship === 'BROTHER' ? 'hidden':''}>BROTHER</option>
+
+                                                                <option value="SPOUSE" className={item.relationship === 'SPOUSE' ? 'hidden':''}>SPOUSE</option>
+
+                                                                <option value="DAUGHTER" className={item.relationship === 'DAUGHTER' ? 'hidden':''}>DAUGHTER</option>
+
+                                                                <option value="OTHERS" className={item.relationship === 'OTHERS' ? 'hidden':''}>OTHERS</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                 </div>
+                                            </div>
 
-                                                <div className='md:w-1/3 w-full md:mb-0 mb-11'>
-                                                    <div className='text-gray-700 mb-3 text-sm font-bold'>Phone number</div>
-
-                                                    <div className='flex border-1-d6 rounded-lg p-2'>
-                                                        <select onChange={e => setNokPhoneCode(e.target.value)} className='border-0 font-gotham outline-white text-sm'>
-                                                            <option value="234">+234</option>
-                                                            <option value="1">+1</option>
-                                                            <option value="44">+44</option>
-                                                            <option value="213">+213</option>
-                                                            <option value="376">+376</option>
-                                                            <option value="244">+244</option>
-                                                            <option value="1264">+1264</option>
-                                                            <option value="1268">+1268</option>
-                                                            <option value="54">+54</option>
-                                                            <option value="374">+374</option>
-                                                            <option value="297">+297</option>
-                                                            <option value="61">+61</option>
-                                                            <option value="43">+43</option>
-                                                            <option value="994">+994</option>
-                                                            <option value="1242">+1242</option>
-                                                            <option value="973">+973</option>
-                                                            <option value="880">+880</option>
-                                                            <option value="1246">+1246</option>
-                                                            <option value="375">+375</option>
-                                                            <option value="32">+32</option>
-                                                            <option value="501">+501</option>
-                                                            <option value="229">+229</option>
-                                                            <option value="1441">+1441</option>
-                                                            <option value="975">+975</option>
-                                                            <option value="591">+591</option>
-                                                            <option  value="387">+387</option>
-                                                            <option  value="267">+267</option>
-                                                            <option  value="55">+55</option>
-                                                            <option  value="673">+673</option>
-                                                            <option  value="359">+359</option>
-                                                            <option  value="226">+226</option>
-                                                            <option  value="257">+257</option>
-                                                            <option  value="855">+855</option>
-                                                            <option  value="237">+237</option>
-                                                            <option  value="1">+1</option>
-                                                            <option  value="238">+238</option>
-                                                            <option  value="1345">+1345</option>
-                                                            <option  value="236">+236</option>
-                                                            <option  value="56">+56</option>
-                                                            <option  value="86">+86</option>
-                                                            <option  value="57">+57</option>
-                                                            <option  value="269">+269</option>
-                                                            <option  value="242">+242</option>
-                                                            <option  value="682">+682</option>
-                                                            <option  value="506">+506</option>
-                                                            <option  value="385">+385</option>
-                                                            <option  value="53">+53</option>
-                                                            <option  value="599">+599</option>
-                                                            <option  value="90392">+90392</option>
-                                                            <option  value="357">+357</option>
-                                                            <option  value="420">+420</option>
-                                                            <option  value="45">+45</option>
-                                                            <option  value="253">+253</option>
-                                                            <option  value="1809">+1809</option>
-                                                            <option  value="1809">+1809</option>
-                                                            
-                                                        </select>
-
-                                                        <input value={nokPhone} onChange={e => setNokPhone(e.target.value)} className="px-2 py-1 border-0 input text-lg outline-white" placeholder="ex: 813 000 1111 OR 0813 000 1111" type="text" />
-                                                    </div>                                                
-                                                </div>
-
-                                                <div className='md:w-1/3 w-full'>
-                                                    <div className='text-gray-700 mb-3 text-sm font-bold'>Relationship</div>
+                                            <div className={nokRelationship === 'OTHERS' ? 'w-full mb-11':'hidden'}>
+                                                <div>
+                                                    <div className='text-gray-700 mb-3 text-sm font-bold'>Other relationship type</div>
+                                                    
                                                     <div>
-                                                        <select onChange={e => setNokRelationship(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
-                                                            <option value={nokDetails === '' ? '...' : JSON.parse(nokDetails).relationship}>{nokDetails === '' ? '' : JSON.parse(nokDetails).relationship}</option>
+                                                        <input value={nokRelationshipOtherValue} onChange={e => setNokRelationshipOtherValue(e.target.value)}  type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                                            <option value="">...</option>
+                                            <div className='mb-11'>
+                                                <div className='mb-10 text-sm font-bold'>Transaction Pin</div>
+                                                <div>
+                                                    <div>
+                                                        <input type='password' className='input p-3 border-1-d6 outline-white font-bold text-lg' onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                                            <option value={nokDetails === '' ? '...' : JSON.parse(nokDetails).relationship}>{nokDetails === '' ? '' : JSON.parse(nokDetails).relationship}</option>
+                                            <div>
+                                                <div className='md:flex md:justify-between md:space-x-10'>
+                                                    <div className='md:w-1/2 w-full md:mb-0 md-11'>
+                                                        <div className='text-gray-700 mb-3 text-sm font-bold'>Next of Kin Address</div>
+                                                        <div><input defaultValue={item.address} onChange={e => setNokAddress(e.target.value)}  type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
+                                                    </div>
 
-                                                            <option value="SISTER">SISTER</option>
-                                                            <option value="BROTHER">BROTHER</option>
-                                                            <option value="SPOUSE">SPOUSE</option>
-                                                            <option value="DAUGHTER">DAUGHTER</option>
-                                                            <option value="OTHERS">OTHERS</option>
-                                                        </select>
+                                                    <div className='md:w-1/2 w-full'>
+                                                        <button onClick={sendNextOfKin} type='button' className={isNOKDetailsFilled ? "mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full":"mt-9 rounded-lg bg text-white border-0 py-3 px-12 font-bold bg-green-900 cursor-pointer opacity-50 w-full"} disabled={!isNOKDetailsFilled}>
+                                                            <span className={ showNokSpinner ? "hidden" : ""}>Update</span>
+                                                            <img src={SpinnerIcon} alt="spinner icon" className={ showNokSpinner ? "" : "hidden"} width="15"/>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div className={nokRelationship === 'OTHERS' ? 'w-full mb-11':'hidden'}>
-                                            <div>
-                                                <div className='text-gray-700 mb-3 text-sm font-bold'>Other relationship type</div>
-                                                
-                                                <div>
-                                                    <input value={nokRelationshipOtherValue} onChange={e => setNokRelationshipOtherValue(e.target.value)}  type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className='mb-11'>
-                                            <div className='mb-10 text-sm font-bold'>Transaction Pin</div>
-                                            <div>
-                                                <div>
-                                                    <input type='password' className='input p-3 border-1-d6 outline-white font-bold text-lg' onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <div className='md:flex md:justify-between md:space-x-10'>
-                                                <div className='md:w-1/2 w-full md:mb-0 md-11'>
-                                                    <div className='text-gray-700 mb-3 text-sm font-bold'>Next of Kin Address</div>
-                                                    <div><input value={nokAddress} onChange={e => setNokAddress(e.target.value)}  type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
-                                                </div>
-
-                                                <div className='md:w-1/2 w-full'>
-                                                    <button onClick={sendNextOfKin} type='button' className={isNOKDetailsFilled ? "mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full":"mt-9 rounded-lg bg text-white border-0 py-3 px-12 font-bold bg-green-900 cursor-pointer opacity-50 w-full"} disabled={!isNOKDetailsFilled}>
-                                                        <span className={ showNokSpinner ? "hidden" : ""}>Update</span>
-                                                        <img src={SpinnerIcon} alt="spinner icon" className={ showNokSpinner ? "" : "hidden"} width="15"/>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        )}
 
                                     </div>                                
                                 </div>
