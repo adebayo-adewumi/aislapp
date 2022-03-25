@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AdminSidebar from '../../components/AdminSidebar';
 import UserAreaHeader from '../../components/Headers/UserAreaHeader';
 import DeleteIcon from "../../assets/images/delete-icon.svg";
@@ -9,6 +9,7 @@ import { generalEncKey } from '../../common/constants/globals';
 import { utilityServiceBaseUrlUrl } from '../../apiUrls';
 import axios from 'axios';
 import SpinnerIcon from "../../assets/images/spinner.gif";
+import { getAxios } from '../../network/httpClientWrapper';
 
 const AdminCreateResource = () => {
 
@@ -17,7 +18,9 @@ const AdminCreateResource = () => {
     const [learnFile, setLearnFile] = useState('');
     const [learnBase64Img, setLearnBase64Img] = useState('');
     const [fileName, setFileName] = useState('');
-    const [fileExt, setFileExt] = useState('');
+    const [fileType, setFileType] = useState<any[]>([]);
+
+    const [fileCategory, setFileCategory] = useState('');
 
     const [errorMsg, setErrorMsg] = useState('');
 
@@ -30,6 +33,23 @@ const AdminCreateResource = () => {
     const [link, setLink] = useState('');
 
     const [showSpinner, setShowSpinner] = useState<boolean>(false);
+
+    useEffect(()=>{
+        function getFileTypes() {
+
+            getAxios(axios).get(utilityServiceBaseUrlUrl + '/utils/file-types')
+            .then(function (response) {
+                let _fTypes :any[] = [];
+
+                _fTypes.push(response.data)
+
+                setFileType(_fTypes);
+            })
+            .catch(function (error) { });
+        }
+
+        getFileTypes();
+    });
 
     function triggerFileUpload(){
         document.getElementById("learn_file")?.click();
@@ -47,7 +67,7 @@ const AdminCreateResource = () => {
         let _fileExt = file.name.split(".")[1];
 
         setFileName(file.name.split(".")[0]);
-        setFileExt(file.name.split(".")[1]);
+        setFileType(file.name.split(".")[1]);
 
         if(fileExtArr.includes(_fileExt.toLowerCase())){
             let reader = new FileReader();
@@ -81,7 +101,7 @@ const AdminCreateResource = () => {
             "link": link,
             "files": [{
                 "name": fileName,    
-                "category": fileExt.toUpperCase(),    
+                "category": fileCategory,    
                 "data": learnBase64Img   
             }]
         }
@@ -194,6 +214,21 @@ const AdminCreateResource = () => {
                                             </div>
 
                                             <div className='mb-11'>
+                                                <div className='text-sm font-bold mb-10'>File Types</div>
+                                                <div>
+                                                    {fileType.map((item :any, index:any)=>
+                                                        <select className='text-sm outline-white w-full p-3 rounded-lg border border-gray-500 ' onChange={e => setFileCategory(e.target.value)} key={index}>
+                                                            <option value=''>Select a file type</option>
+                                                            <option value={item.DOC}>{item.DOC}</option>
+                                                            <option value={item.GIF}>{item.GIF}</option>
+                                                            <option value={item.IMAGE}>{item.IMAGE}</option>
+                                                            <option value={item.VIDEO}>{item.VIDEO}</option>
+                                                        </select>
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            <div className='mb-11'>
                                                 <img className={learnFile === '' ? 'cursor-pointer w-full':'hidden'} src={BrowseFile} alt="" onClick={triggerFileUpload}/>
 
                                                 <div className={learnFile === '' ? 'hidden':'flex space-x-3 items-center p-5 w-96 bg-gray-100 border rounded-lg w-full'}>
@@ -211,6 +246,24 @@ const AdminCreateResource = () => {
                                                     <img src={SpinnerIcon} alt="spinner icon" className={ showSpinner ? "" : "hidden"} width="15"/>
                                                 </button>
                                             </div>
+
+                                            {/* Success */}
+                                            <div className={isSuccessful === 'true' ? "otp-alert mb-20":"hidden"}>
+                                                <div className="flex otp-validated justify-between space-x-1 pt-3">
+                                                    <div className="flex">
+                                                        <div>
+                                                            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062"/>
+                                                                <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062"/>
+                                                            </svg>
+                                                        </div>
+
+                                                        <div className="text-sm text-green-900">Learn Rresource created successfully.</div>
+                                                    </div>                                                
+                                                    
+                                                </div>
+                                            </div>
+                                            {/* End */}
 
                                             {/* Error */}
                                             <div className={isSuccessful === 'false' ? "error-alert mb-20" : "hidden"}>
