@@ -340,21 +340,11 @@ const Watchlist = () => {
                                         <div className="flex justify-between items-center">
                                             <div><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" /></div>
 
-                                            <div className="font-bold text-color-2">{item.name}</div>
+                                            <div className="font-bold text-color-2">{item.symbol}</div>
 
-                                            <div className="text-ellipsis overflow-hidden ...">{item.name}</div>
+                                            <div className="font-bold text-color-2 text-right">₦ {HelperFunctions.formatCurrencyWithDecimal(item.value)}</div>
 
-                                            <div className="font-bold text-color-2 text-right">₦ {HelperFunctions.formatCurrencyWithDecimal(item.currentPrice)}</div>
-
-                                            <div className={item.percentageChangeSinceAdded >= 0 ? "text-green-500 font-bold":"text-red-500 font-bold"}> {HelperFunctions.formatCurrencyWithDecimal(item.percentageChangeSinceAdded)}%  </div>
-
-                                            <div className='flex justify-between space-x-2'>
-
-                                                <button onClick={displayRemoveStockModal} type='button' className="py-3 px-5 border-0 font-bold text-red-500 cursor-pointer bg-transparent" data-symbol={item.name}>Remove</button>
-
-                                                <Link to={"/stock?name=" + item.name + "&symbol=" + item.name + "&sign=" + (item.percentageChangeSinceAdded >= 0 ? 'positive' : 'negative') + "&currentPrice=" + item.currentPrice + "&tradeAction=buy"}>
-                                                    <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
-                                            </div>
+                                            
                                         </div>
                                     </div>
                                 )}
