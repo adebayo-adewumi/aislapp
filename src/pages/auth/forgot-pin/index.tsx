@@ -119,7 +119,7 @@ const ForgotPin = () => {
                         </button>
                     </div>
 
-                    <div className="text-right font-bold forgot-text text-sm">
+                    <div className="text-right font-bold forgot-text text-sm signup-text">
                         <Link to="/" className="no-underline text-green-900">Back to Login</Link>
                     </div>
                 </form>

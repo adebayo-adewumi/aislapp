@@ -182,7 +182,7 @@ const Login = () => {
                                         </div>
                                     </div>
 
-                                    <div className="mb-20 text-right">
+                                    <div className="mb-20 text-right signup-text">
                                         <Link to="/forgot" className="no-underline"><strong className="text-sm font-bold text-green-900 mr-2">Forgot Password</strong></Link>
                                     </div>
 

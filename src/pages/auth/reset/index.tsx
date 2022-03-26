@@ -277,7 +277,7 @@ const Reset = () => {
                     </div>
                     {/* End */}
 
-                    <div className="text-right">
+                    <div className="text-right signup-text">
                         <Link to="/" className="no-underline text-green-900">Take me back to <span className="font-bold">Login </span></Link>
                     </div>
                 </form>
