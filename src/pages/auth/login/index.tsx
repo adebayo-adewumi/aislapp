@@ -208,10 +208,12 @@ const Login = () => {
                                 <strong>Investing is for everyone</strong>
                             </div>
                             <div className='md:h-44 h-5'>
-                                <ul className='list-disc-important'>
-                                    <li>Build wealth plans</li>
-                                    <li>Transparent historical returns</li>
-                                    <li>Portfolio dashboard view</li>
+                                <ul className='list-none'>
+                                    <li style={{paddingTop: '1rem'}}>
+                                        <span className='font-bold'>&middot;</span> Build wealth plans
+                                    </li>
+                                    <li><span className='font-bold'>&middot;</span> Transparent historical returns</li>
+                                    <li><span className='font-bold'>&middot;</span> Portfolio dashboard view</li>
                                 </ul>
                             </div>
                         </div>
