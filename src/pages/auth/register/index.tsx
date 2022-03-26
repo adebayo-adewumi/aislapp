@@ -768,7 +768,7 @@ const Register = () => {
                                         <img width="20" src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
                                     </div>
 
-                                    <div>
+                                    <div className='signup-text'>
                                         <span>Already have an account?</span>
                                         <Link to="/" className="no-underline text-green-900"><span><strong> Login</strong> </span></Link>
                                     </div>
