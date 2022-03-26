@@ -156,16 +156,18 @@ const Login = () => {
                                 <form className="form">
                                     <div className="mb-20">
                                         <div className="mb-10 text-sm">Email</div>
-                                        <input onChange={e => setEmail(e.target.value)} className="outline-white p-3 text-sm border border-gray-500 input" placeholder="Enter your email" />
+
+                                        <input onChange={e => setEmail(e.target.value)} className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white border-gray-400 focus:ring-indigo-500" placeholder="Enter your email" type="email" />
+
                                         <div className={isInvalidEmail ? 'text-red-500 text-sm mt-2' : 'text-red-500 text-sm mt-2 hidden'}>Please enter a valid email address</div>
                                     </div>
 
                                     <div className="mb-20 relative">
                                         <div className="mb-10 text-sm">Password</div>
 
-                                        <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
+                                        <div className='flex w-full items-center justify-between border rounded '>
                                             <div className='w-full'>
-                                                <input onChange={e => setPassword(e.target.value)} className="outline-white p-3 input border-0 text-sm" placeholder="Enter password" type={isShowPassword ? 'text' : 'password'} name="password" />
+                                                <input onChange={e => setPassword(e.target.value)} className="bg- text border-0 w-full focus:outline-white px-3 py-3 rounded text-gray-900 focus:bg-white" placeholder="Enter password" type={isShowPassword ? 'text' : 'password'} name="password"/>
                                             </div>
 
                                             <div className='px-2 pt-1'>
