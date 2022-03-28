@@ -4,6 +4,7 @@ import UserAreaHeader from '../../components/Headers/UserAreaHeader';
 import { utilityServiceBaseUrlUrl } from '../../apiUrls';
 import axios from 'axios';
 import { getAxios } from '../../network/httpClientWrapper';
+import moment from 'moment';
 
 const AdminLearnResources = () => {
 
@@ -41,18 +42,26 @@ const AdminLearnResources = () => {
                         <div className='p-10 flex-1 bg-gray-100 overflow-y-auto'>
                             <div className='pt-5'>
 
-                                <div className='mb-30 rounded-lg border bg-white px-10 py-5'>                                   
+                                <div className='mb-30 rounded-lg border bg-white px-10 pt-5'>                                   
                                     <div className='font-bold text-green-900 text-lg mb-6'>
                                         Learn Resources
                                     </div>
 
-                                    <div className={learnResource.length === 0 ? '':'hidden'}>
+                                    <div className={learnResource.length === 0 ? 'mb-30':'hidden'}>
                                         No learning resource created.
                                     </div>
                                     
                                     <div className={learnResource.length > 0 ? '':'hidden'}>
                                         {learnResource.map((item :any, index :any) =>
-                                            <div key={index}></div>
+                                            <div key={index} className="w-full">
+                                                <div className='flex space-x-5 w-full' style={{borderBottom :'1px solid #e5e5e5'}}>
+                                                    <div className='py-5' >
+                                                        <div className='font-bold mb-3'>{item.title}</div>
+                                                        <div className='text-xs mb-3 text-gray-500'>{item.description}</div>
+                                                        <div className='text-xs'>{moment(item.createdOn).format("Do MMM, YYYY hh:mm A")}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         )}
                                     </div>
                                 </div>
