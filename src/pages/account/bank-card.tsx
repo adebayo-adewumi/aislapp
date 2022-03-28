@@ -135,7 +135,7 @@ const BankCard = () => {
         getBankDetailsList();
         getCardsList();
         getDefaultNewCardDebit();
-    }, []);
+    }, [defaultNewCardDebitMsg]);
 
     useEffect(()=>{
         function checkNameEnquiryOnBankDetails() {
