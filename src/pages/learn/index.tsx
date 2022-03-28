@@ -212,14 +212,14 @@ const Learn = () => {
                                     <div className="mb-11">
                                         <div className={learningResourcesList.length <= 0 ? 'mx-auto text-center text-gray-400':'hidden'} style={{width: '18rem'}}>No resources available</div>
 
-                                        <div className={learningResourcesList.length > 0 ? 'flex mx-auto space-x-5 mb-28':'hidden'} style={{width: '18rem'}}>
+                                        <div className={learningResourcesList.length > 0 ? 'grid grid-cols-4 gap-4 mb-28':'hidden'}>
                                             {learningResourcesList.map((item :any, index :any)=>
-                                                <div className='rounded-lg px-12 py-5 w-72' style={{backgroundColor: '#EBEBEB'}} key={index}>
+                                                <div className='rounded-lg px-12 py-5' style={{backgroundColor: '#EBEBEB'}} key={index}>
                                                     <div className='mb-10 text-center'><img src={SpreadsheetIcon} alt=""/></div>
                                                     <div className='mb-10 font-bold text-center'>{item.title}</div>
                                                     <div className='mb-30 text-center text-xs'>{item.description}</div>
                                                     <div className='mb-10 text-center text-xs font-bold'>
-                                                        <a href={item.link}>Read article</a>
+                                                        <a href={item.link} className="text-green-900 no-underline hover:underline">Read article</a>
                                                     </div>
                                                 </div>
                                             )}
