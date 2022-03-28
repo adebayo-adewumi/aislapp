@@ -406,7 +406,7 @@ const Portfolio = () => {
             "name": portfolioName
         }
 
-        console.log(requestData)
+        
 
         setShowSpinner(true);
 

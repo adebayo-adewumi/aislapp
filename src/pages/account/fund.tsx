@@ -224,7 +224,7 @@ const FundAccount = () => {
             "pin": parseInt(cardPIN)
         }
 
-        console.log(requestData);
+        ;
 
         setShowSpinner(true);
 
@@ -260,7 +260,7 @@ const FundAccount = () => {
             "otp": cardOTP
         }
 
-        console.log(requestData);
+        ;
 
         setShowSpinner(true);
 
@@ -299,7 +299,7 @@ const FundAccount = () => {
             "firebaseToken": HelperFunctions.generateRandomString(10)
         }
 
-        console.log(requestData)
+        
 
         setShowSpinner(true);
 
@@ -456,7 +456,7 @@ const FundAccount = () => {
             setIsSelectSavedCard(true);
             setSelectedSavedCard(cardInfo);
 
-            console.log(cardInfo);
+            
         } 
         else{
             setIsSelectSavedCard(false);
@@ -482,7 +482,7 @@ const FundAccount = () => {
             "amount": parseFloat(showAmount.replaceAll(',','')),
         }
 
-        console.log(requestData);
+        ;
 
         setShowSpinner(true);
 

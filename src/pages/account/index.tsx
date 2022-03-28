@@ -35,7 +35,7 @@ const Account = () => {
                 setUnsettledBalance(response.data.data.unsettledBalance);
             })
             .catch(function (error) {
-                console.log(error)
+                
             });
         }
 

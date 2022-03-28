@@ -75,8 +75,6 @@ const Dashboard = () => {
     useEffect(() => {
         document.title = "Dashboard - Anchoria";
 
-        HelperFunctions.addOverflowAndPaddingToModalBody();
-
         function getPortfolioList() {
 
             getAxios(axios).get(getPortfolioEndpoint)
@@ -86,7 +84,7 @@ const Dashboard = () => {
                     setNetPortfolioReturnsPercentage(response.data.data.percentageReturn);
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    ;
                 });
         }
 
@@ -139,7 +137,7 @@ const Dashboard = () => {
                 })
                 .catch(function (error) {
                     HelperFunctions.removeOverflowAndPaddingFromModalBody();
-                    console.log(error)
+                    
                 });
         }
 
@@ -287,6 +285,16 @@ const Dashboard = () => {
             })
             .catch(function (error) {
             });
+        }    
+
+        function testData() {
+
+            getAxios(axios).get(utilityServiceBaseUrlUrl + '/utils/charge-message/7000')
+            .then(function (response) {
+                
+            })
+            .catch(function (error) {
+            });
         }        
 
         getWalletBalance();
@@ -296,7 +304,7 @@ const Dashboard = () => {
         getPortfolioList();
         getTopMovers();
         getWatchlist();
-        
+        testData();        
 
     }, []);
 
@@ -389,7 +397,7 @@ const Dashboard = () => {
                 setTopMoversList(topmovers);
             })
             .catch(function (error) {
-                console.log(error)
+                
             });
     }
 

@@ -67,7 +67,7 @@ const Watchlist = () => {
                 })
                 .catch(function (error) {
 
-                    console.log(error);
+                    ;
 
                     setShowSpinner(false);
                 });
@@ -158,7 +158,7 @@ const Watchlist = () => {
                 })
                 .catch(function (error) {
 
-                    console.log(error);
+                    ;
 
                     alert("You already have a watchlist. Proceed to adding stocks to it.");
 
@@ -185,7 +185,7 @@ const Watchlist = () => {
             "watchlistId": watchlist.data.watchlistId
         }
 
-        console.log(requestData);
+        ;
 
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
         localStorage.setItem('genericCypher', genericCypher);

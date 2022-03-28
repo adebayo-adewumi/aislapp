@@ -110,7 +110,7 @@ export const ccNumberInputKeyDownHandler = (e: any) => {
 
   let ccNumberInputOldCursor = el.selectionEnd;
 
-  console.log(ccNumberInputOldValue+""+ccNumberInputOldCursor);
+  console.log(ccNumberInputOldValue+" "+ccNumberInputOldCursor);
 };
 
 export const ccNumberInputHandler = (e: any) => {
@@ -155,7 +155,7 @@ export const ccExpiryInputKeyDownHandler = (e: any) => {
 
   let ccExpiryInputOldCursor: any = el.selectionEnd;
 
-  console.log(ccExpiryInputOldValue+""+ccExpiryInputOldCursor);
+  console.log(ccExpiryInputOldValue+" "+ccExpiryInputOldCursor);
 };
 
 export const ccExpiryInputHandler = (e: any) => {
@@ -188,7 +188,7 @@ export const ccCVVInputKeyDownHandler = (e: any) => {
 
   let ccCVVInputOldCursor = el.selectionEnd;
 
-  console.log(ccCVVInputOldValue+""+ccCVVInputOldCursor);
+  console.log(ccCVVInputOldValue+" "+ccCVVInputOldCursor);
 };
 
 export const ccCVVInputHandler = (e: any) => {

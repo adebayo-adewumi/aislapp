@@ -133,7 +133,7 @@ const ResetPin = () => {
             setIsInvalidPin(false);
         })
         .catch(function (error) {
-            console.log(error)
+            
             setShowSpinner(false);
         });
     }

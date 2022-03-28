@@ -53,7 +53,7 @@ const WithdrawFund = () => {
                 })
                 .catch(function (error) {
                     HelperFunctions.removeOverflowAndPaddingFromModalBody();
-                    console.log(error)
+                    
                 });
         }
 
@@ -63,7 +63,7 @@ const WithdrawFund = () => {
                     setBankDetailsList(response.data.data);
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    ;
                 });
         }
 

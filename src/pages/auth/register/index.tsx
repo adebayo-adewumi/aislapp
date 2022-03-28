@@ -160,7 +160,7 @@ const Register = () => {
                 }
             }
 
-            console.log();
+            
 
             checkIfBVNPhoneDobIsNullOrEmpty();
         }
@@ -224,7 +224,7 @@ const Register = () => {
                     localStorage.setItem("aislUserIPAddress", response.data)
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    ;
                 });
         }
 
@@ -272,7 +272,7 @@ const Register = () => {
                     displaySelfie();
                 })
                 .catch(function (error) {
-                    console.log(error.response.data);
+                    
                     setShowSpinner(false);
                     setBVNHasError(true);
 
@@ -306,7 +306,7 @@ const Register = () => {
                 .then(function (response) {
                     if(response.data.statusCode !== 200){
                         setErrorMsg(response.data.message);
-                        console.log(response.data.message);
+                        
                     }
                     
                     localStorage.setItem('aislUserWorkflowReference', response.data.data.workflowDetails.value);
@@ -352,7 +352,7 @@ const Register = () => {
             "cscsNumber":customerAidResponse.cscsacct,
         }
 
-        console.log(requestData)
+        
 
         setShowSpinner(true);
 
@@ -389,7 +389,7 @@ const Register = () => {
             "workflowReferenceValue": localStorage.getItem('aislUserWorkflowReference')
         }
 
-        console.log(requestData);
+        ;
 
         setShowSpinner(true);
 
@@ -421,7 +421,7 @@ const Register = () => {
             "otp": otpbox1 + '' + otpbox2 + '' + otpbox3 + '' + otpbox4 + '' + otpbox5 + '' + otpbox6
         }
 
-        console.log(requestData)
+        
 
         setShowSpinner(true);
 

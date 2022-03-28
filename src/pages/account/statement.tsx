@@ -51,7 +51,7 @@ const AccountStatement = () => {
                 })
                 .catch(function (error) {
                     HelperFunctions.removeOverflowAndPaddingFromModalBody();
-                    console.log(error)
+                    
                 });
         }
 

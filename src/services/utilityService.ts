@@ -9,7 +9,7 @@ export const getTopMoversApiCall = async (getBy = "value") => {
             return response.data.data;
         })
         .catch(function (error) {
-            console.log(error)
+            
         });
 
     return data;
@@ -21,7 +21,7 @@ export const getStockQuoteApiCall = async (stockCode: string) => {
             return response.data.data;
         })
         .catch(function (error) {
-            console.log(error)
+            
         });
 
     return data;
@@ -33,7 +33,7 @@ export const getNewsApiCall = async () => {
             return response.data.data;
         })
         .catch(function (error) {
-            console.log(error)
+            
         });
 
     return data;
@@ -45,7 +45,7 @@ export const getStockApiCall = async () => {
             return response.data.data;
         })
         .catch(function (error) {
-            console.log(error)
+            
         });
 
     return data;

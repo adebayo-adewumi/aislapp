@@ -34,7 +34,7 @@ const UserAreaHeader = () => {
             localStorage.setItem("aislToggleSidebar","show");
         }
 
-        //console.log(localStorage.getItem("aislToggleSidebar"));
+        
     }
 
     const doLogout = () => {

@@ -43,7 +43,7 @@ const QuickSearch = () => {
                 HelperFunctions.removeOverflowAndPaddingFromModalBody();
             })
             .catch(function (error) {    
-                //console.log(error);
+                //;
             });            
         }
 

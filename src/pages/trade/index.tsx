@@ -78,7 +78,7 @@ const Trade = () => {
                     setShowPageLoader(false);
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    ;
                 });
         }
 
@@ -90,7 +90,7 @@ const Trade = () => {
                 })
                 .catch(function (error) {
 
-                    console.log(error);
+                    ;
 
                     setShowSpinner(false);
                 });
@@ -155,7 +155,7 @@ const Trade = () => {
             "watchlistId": watchlist.data.watchlistId
         }
 
-        console.log(requestData);
+        ;
 
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
         localStorage.setItem('genericCypher', genericCypher);

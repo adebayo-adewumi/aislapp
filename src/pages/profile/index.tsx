@@ -403,11 +403,7 @@ const Profile = () => {
                 setIsPersonalDetailsFilled(true);
             }
 
-            console.log(address+"-"+city+"-"+state+"-"+country+"-"+idNumber+"-"+idType)
-
-            console.log(idBase64Img)
-            console.log(utilityBillBase64Img)
-            console.log(signatureBase64Img)
+            
         }
 
         checkIfPersonalDetailsFieldsAreFilled();
@@ -512,7 +508,7 @@ const Profile = () => {
             "email": customer.email
         }
 
-        console.log(requestData);
+        ;
 
         setShowPasswordSpinner(true);
 
@@ -588,7 +584,7 @@ const Profile = () => {
             },3000);
         })
         .catch(function (error) {
-            console.log(error);
+            ;
             setShowPinSpinner(false);
             setIsPinChangeError(true);
             setIsPinChangeSuccessful(false);
@@ -638,7 +634,7 @@ const Profile = () => {
             }
         }
 
-        console.log(requestData);
+        ;
 
         setShowPersonalSpinner(true);
 
@@ -679,7 +675,7 @@ const Profile = () => {
             "politicalAffiliation": political
         }
 
-        console.log(requestData);
+        ;
 
         setShowEmploymentSpinner(true);
 
@@ -703,7 +699,7 @@ const Profile = () => {
             setIsEmployeeDetailsSuccessful(true);
         })
         .catch(function (error) {
-            console.log(error);
+            ;
             setShowEmploymentSpinner(false);
 
         });
@@ -744,7 +740,7 @@ const Profile = () => {
             setIsNokSuccessful(true);
         })
         .catch(function (error) {
-            console.log(error);
+            ;
             setShowNokSpinner(false);
         });
     }
@@ -875,7 +871,7 @@ const Profile = () => {
             "customerId": customer.id
         }
 
-        console.log(requestData);
+        ;
 
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
         localStorage.setItem('genericCypher', genericCypher);
@@ -900,7 +896,7 @@ const Profile = () => {
             "bankDetailsId": selectedBankId
         }
 
-        console.log(selectedBankId);
+        
 
         setShowSpinner(true);
 

@@ -105,7 +105,7 @@ const AdminCreateResource = () => {
             }]
         }
 
-        console.log(requestData);
+        ;
 
         setShowSpinner(true);
 

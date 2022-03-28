@@ -261,7 +261,7 @@ const Stock = () => {
                     
                 })
                 .catch(function (error) {
-                    console.log(error)
+                    
                 });
         }
 
@@ -281,7 +281,7 @@ const Stock = () => {
                     }
                 })
                 .catch(function (error) {
-                    console.log(error)
+                    
                 });
         }
 
@@ -312,7 +312,7 @@ const Stock = () => {
                     setNewsList(newsItem);
                 })
                 .catch(function (error) {
-                    console.log(error)
+                    
                 });
         }
 
@@ -325,7 +325,7 @@ const Stock = () => {
                     setWalletBalance(response.data.data.balance);
                 })
                 .catch(function (error) {
-                    console.log(error)
+                    
                 });
         }
 
@@ -633,7 +633,7 @@ const Stock = () => {
             "tradeAction": '0'
         }
 
-        console.log(requestData);
+        ;
 
         setShowSpinner(true);
 
@@ -970,7 +970,7 @@ const Stock = () => {
             "watchlistId": watchlist.data.watchlistId
         }
 
-        console.log(requestData);
+        ;
 
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
         localStorage.setItem('genericCypher', genericCypher);
@@ -1166,7 +1166,7 @@ const Stock = () => {
             "value": priceAlert
         }
 
-        console.log(requestData);
+        ;
 
         setShowSpinner(true);
 

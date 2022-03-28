@@ -133,7 +133,7 @@ const Reset = () => {
             setIsInvalidPassword(false);
         })
         .catch(function (error) {
-            console.log(error)
+            
             setShowSpinner(false);
         });
     }

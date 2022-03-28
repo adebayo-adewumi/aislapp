@@ -88,6 +88,8 @@ const BankCard = () => {
     const [bankTransactionPin, setBankTransactionPIN] = useState('');
     const [isBankTransactionPinFilled, setIsBankTransactionPinFilled] = useState<boolean>(false);
 
+    const [chargeAmount, setChargeAmount] = useState(0);
+
     useEffect(() => {
         function getBankList() {
             getAxios(axios).get(walletAndAccountServiceBaseUrl + '/get-banks')
@@ -95,7 +97,7 @@ const BankCard = () => {
                     setBankList(response.data.data.bank);
                 })
                 .catch(function (error) {
-                    console.log(error)
+                    
                 });
         }
 
@@ -106,7 +108,7 @@ const BankCard = () => {
                     setBankDetailsList(response.data.data);
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    ;
                 });
         }
 
@@ -123,6 +125,8 @@ const BankCard = () => {
             getAxios(axios).get(getUtilitiesEndpoint + '/default-new-card-debit')
                 .then(function (response) {
                     setDefaultNewCardDebitMsg(response.data.message);
+
+                    setChargeAmount(parseInt(defaultNewCardDebitMsg.split("charge of")[1].trim().substring(0,5)));
                 })
                 .catch(function (error) { });
         }
@@ -139,10 +143,6 @@ const BankCard = () => {
                 setBankDetailsError('All fields are required.');
                 setIsBankDetailsFilled(false);
             }
-            // else if(transactionPin === '') {
-            //     setBankDetailsError('All fields are required.');
-            //     setIsBankDetailsFilled(false);
-            // }
             else {    
 
                 let bCode = bankCode.split("@")[0];
@@ -266,7 +266,7 @@ const BankCard = () => {
             "bankName": bankName
         }
 
-        console.log(requestData)
+        
 
         setShowSpinner(true);
 
@@ -313,7 +313,7 @@ const BankCard = () => {
         let bArr = [];
         let bDetails: any = bankDetailsList.find((el: any) => el.id === id);
 
-        console.log(id);
+        
 
         bArr.push(bDetails);
 
@@ -453,10 +453,8 @@ const BankCard = () => {
             "phoneNumber": customer.phoneNumber,
             "saveCard": true,
             "pin": cardPIN,
-            "amount": 1089
-        }
-
-        console.log(requestData)
+            "amount": chargeAmount
+        }        
 
         setShowSpinner(true);
 
@@ -492,7 +490,7 @@ const BankCard = () => {
             }
         })
         .catch(function (error) {
-            console.log(error)
+            
             setShowSpinner(false);
             setAddCardError(error.response.data.message)
         });
@@ -506,7 +504,7 @@ const BankCard = () => {
             "otp": cardOTP
         }
 
-        console.log(requestData);
+        ;
 
         setShowSpinner(true);
 
@@ -529,7 +527,7 @@ const BankCard = () => {
                 setCardFundingDetails(JSON.stringify(response.data.data));
             })
             .catch(function (error) {
-                console.log(error)
+                
                 setShowSpinner(false);
             });
     }
@@ -542,7 +540,7 @@ const BankCard = () => {
             "firebaseToken": HelperFunctions.generateRandomString(10)
         }
 
-        console.log(requestData)
+        
 
         setShowSpinner(true);
 

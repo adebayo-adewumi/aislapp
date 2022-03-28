@@ -280,7 +280,7 @@ const PortfolioDetails = () => {
                 HelperFunctions.removeOverflowAndPaddingFromModalBody();
             })
             .catch(function (error) {
-                console.log(error);
+                ;
             });
         }
 
