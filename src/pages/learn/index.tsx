@@ -19,6 +19,7 @@ import * as HelperFunctions from '../../lib/helper';
 import axios from 'axios';
 import { utilityServiceBaseUrlUrl } from '../../apiUrls';
 import ArrowBackIcon from '../../assets/images/arrow-back.svg';
+import moment from 'moment';
 
 const Learn = () => {
     document.title = "Learn - Anchoria";
@@ -92,6 +93,21 @@ const Learn = () => {
         setSwitchToSupport(false);
         setSwitchToContactUs(false);
         setShowLearningResource(true);
+    }
+
+    function compareNotificationLogsDate(a :any, b :any) {
+        const dateA = a.createdOn.toUpperCase();
+        const dateB = b.createdOn.toUpperCase();
+        
+        let comparison = 0;
+
+        if (dateA < dateB) {
+            comparison = 1;
+        } else if (dateA > dateB) {
+            comparison = -1;
+        }
+
+        return comparison;
     }
 
     return (
@@ -213,11 +229,13 @@ const Learn = () => {
                                         <div className={learningResourcesList.length <= 0 ? 'mx-auto text-center text-gray-400':'hidden'} style={{width: '18rem'}}>No resources available</div>
 
                                         <div className={learningResourcesList.length > 0 ? 'grid grid-cols-4 gap-4 mb-28':'hidden'}>
-                                            {learningResourcesList.map((item :any, index :any)=>
+                                            {learningResourcesList.sort(compareNotificationLogsDate).map((item :any, index :any)=>
                                                 <div className='rounded-lg px-12 py-5' style={{backgroundColor: '#EBEBEB'}} key={index}>
                                                     <div className='mb-10 text-center'><img src={SpreadsheetIcon} alt=""/></div>
                                                     <div className='mb-10 font-bold text-center'>{item.title}</div>
-                                                    <div className='mb-30 text-center text-xs'>{item.description}</div>
+                                                    <div className='mb-10 text-center text-xs'>{item.description}</div>
+                                                    <div className='mb-30 text-center text-xs'>{moment(item.createdOn).format("Do MMM, YYYY hh:mm")}</div>
+
                                                     <div className='mb-10 text-center text-xs font-bold'>
                                                         <a href={item.link} className="text-green-900 no-underline hover:underline">Read article</a>
                                                     </div>

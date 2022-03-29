@@ -25,6 +25,7 @@ import BankCard from '../pages/account/bank-card';
 import QuickSearch from '../pages/search/quick';
 import Profile from '../pages/profile';
 import Learn from '../pages/learn';
+import LearnDetails from '../pages/learn/details';
 import News from '../pages/news';
 import NewsDetails from '../pages/news/details';
 import Chat from '../pages/chat';
@@ -126,6 +127,11 @@ const Main = () => {
                     <Route path="learn" element={
                       <RequireAuth>
                         <Learn />
+                      </RequireAuth>
+                    } />
+                    <Route path="learn" element={
+                      <RequireAuth>
+                        <LearnDetails />
                       </RequireAuth>
                     } />
                     <Route path="news" element={

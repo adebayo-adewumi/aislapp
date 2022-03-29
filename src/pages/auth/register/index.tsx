@@ -243,10 +243,6 @@ const Register = () => {
         getUserIpAddress();
     });
 
-    useEffect(()=>{
-
-    });
-
     function verifyBVNAndDOB() {
         let requestData = {
             "bvn": bvn,
@@ -695,15 +691,21 @@ const Register = () => {
                     setShowSpinner(false);
                    
                     if(response.data.hasOwnProperty("data")){
-                        setCustomerAidResponse(response.data.data);
-                        setIsUserIdValid('true');
 
-                        setTimeout(()=>{
-                            closeModal();
-                        },2000);
+                        if(response.data.data){
+                            setCustomerAidResponse(response.data.data);
+
+                            setIsUserIdValid('true');
+
+                            setTimeout(()=>{
+                                closeModal();
+                            },2000);
+                        }  
+                        else{
+                            setIsUserIdValid('false');
+                        }                        
                     }
-                    else{
-                        
+                    else{                        
                         setIsUserIdValid('false');
                     }
 

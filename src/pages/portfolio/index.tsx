@@ -404,9 +404,7 @@ const Portfolio = () => {
     function createPortfolio() {
         let requestData = {
             "name": portfolioName
-        }
-
-        
+        }        
 
         setShowSpinner(true);
 

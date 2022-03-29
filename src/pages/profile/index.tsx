@@ -356,9 +356,13 @@ const Profile = () => {
                 if(response.data.hasOwnProperty("data")){
                     let eDetails :any[] = [];
                     
-                    eDetails.push(response.data.data);
+                    if(response.data.data){
+                        eDetails.push(response.data.data);
 
-                    setEmploymentDetails(eDetails);
+                        setEmploymentDetails(eDetails);
+                    }
+
+                    
                 }                
                 
             })
@@ -377,10 +381,14 @@ const Profile = () => {
             .then(function (response) { 
                 if(response.data.hasOwnProperty("data")){
                     let nDetails :any[] = [];
-                    
-                    nDetails.push(response.data.data);
 
-                    setNOKDetails(nDetails);
+                    if(response.data.data){
+                        nDetails.push(response.data.data);
+
+                        setNOKDetails(nDetails);
+                    }
+
+                    
                 }
                                 
             })

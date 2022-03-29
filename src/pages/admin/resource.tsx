@@ -25,7 +25,22 @@ const AdminLearnResources = () => {
 
         getCustomerKYCStatus();
 
-    },[])
+    },[]);
+
+    function compareNotificationLogsDate(a :any, b :any) {
+        const dateA = a.createdOn.toUpperCase();
+        const dateB = b.createdOn.toUpperCase();
+        
+        let comparison = 0;
+
+        if (dateA < dateB) {
+            comparison = 1;
+        } else if (dateA > dateB) {
+            comparison = -1;
+        }
+
+        return comparison;
+    }
 
 
     return (
@@ -52,12 +67,13 @@ const AdminLearnResources = () => {
                                     </div>
                                     
                                     <div className={learnResource.length > 0 ? '':'hidden'}>
-                                        {learnResource.map((item :any, index :any) =>
+                                        {learnResource.sort(compareNotificationLogsDate).map((item :any, index :any) =>
                                             <div key={index} className="w-full">
                                                 <div className='flex space-x-5 w-full' style={{borderBottom :'1px solid #e5e5e5'}}>
                                                     <div className='py-5' >
                                                         <div className='font-bold mb-3'>{item.title}</div>
                                                         <div className='text-xs mb-3 text-gray-500'>{item.description}</div>
+                                                        <div className='text-xs mb-3 text-gray-500'>{item.content.substring(0,150)}...</div>
                                                         <div className='text-xs'>{moment(item.createdOn).format("Do MMM, YYYY hh:mm A")}</div>
                                                     </div>
                                                 </div>
