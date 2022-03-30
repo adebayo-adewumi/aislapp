@@ -5,6 +5,7 @@ import { utilityServiceBaseUrlUrl } from '../../apiUrls';
 import axios from 'axios';
 import { getAxios } from '../../network/httpClientWrapper';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 const AdminLearnResources = () => {
 
@@ -69,14 +70,16 @@ const AdminLearnResources = () => {
                                     <div className={learnResource.length > 0 ? '':'hidden'}>
                                         {learnResource.sort(compareNotificationLogsDate).map((item :any, index :any) =>
                                             <div key={index} className="w-full">
-                                                <div className='flex space-x-5 w-full' style={{borderBottom :'1px solid #e5e5e5'}}>
-                                                    <div className='py-5' >
-                                                        <div className='font-bold mb-3'>{item.title}</div>
-                                                        <div className='text-xs mb-3 text-gray-500'>{item.description}</div>
-                                                        <div className='text-xs mb-3 text-gray-500'>{item.content.substring(0,150)}...</div>
-                                                        <div className='text-xs'>{moment(item.createdOn).format("Do MMM, YYYY hh:mm A")}</div>
+                                                <Link to="/admin/learn/resource/details" className='no-underline hover:underline'>
+                                                    <div className='flex space-x-5 w-full' style={{borderBottom :'1px solid #e5e5e5'}}>
+                                                        <div className='py-5' >
+                                                            <div className='font-bold mb-3 text-green-900'>{item.title}</div>
+                                                            <div className='text-xs mb-3 text-gray-500'>{item.description}</div>
+                                                            <div className='text-xs mb-3 text-gray-500'>{item.content.substring(0,150)}...</div>
+                                                            <div className='text-xs text-black'>{moment(item.createdOn).format("Do MMM, YYYY hh:mm A")}</div>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                </Link>
                                             </div>
                                         )}
                                     </div>

@@ -31,6 +31,7 @@ import NewsDetails from '../pages/news/details';
 import Chat from '../pages/chat';
 import AdminCreateResource from '../pages/admin/create-resource';
 import AdminLearnResources from '../pages/admin/resource';
+import AdminLearnResourceDetails from '../pages/admin/resource';
 
 const Main = () => {
 
@@ -155,6 +156,11 @@ const Main = () => {
                     <Route path="admin/learn/resources" element={
                       <RequireAuth>
                         <AdminLearnResources />
+                      </RequireAuth>
+                    } />
+                    <Route path="admin/learn/resource/details" element={
+                      <RequireAuth>
+                        <AdminLearnResourceDetails />
                       </RequireAuth>
                     } />
                   </Routes>

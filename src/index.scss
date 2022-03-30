@@ -43,9 +43,6 @@ body{
 .text-13{
   font-size: 13px;
 }
-.mb-30{
-  margin-bottom: 30px;
-}
 .text-color{
   color: #144A22;
   font-family: 'Gotham Black Regular';
@@ -207,18 +204,6 @@ body{
   
   .terms {
     display: flex;
-  }
-  
-  .mb-20 {
-    margin-bottom: 20px;
-  }
-  
-  .mb-10 {
-    margin-bottom: 10px;
-  }
-  
-  .mb-5 {
-    margin-bottom: 5px;
   }
   
   .text-center {
@@ -772,7 +757,7 @@ iframe{
   border-bottom: 1px solid rgb(243 244 246);
 }
 
-[multiple], [type=date], [type=datetime-local], [type=email], [type=month], [type=number], [type=password], [type=search], [type=tel], [type=text], [type=time], [type=url], [type=week], select, textarea {
+[multiple], [type=date], [type=datetime-local], [type=email], [type=month], [type=number], [type=password], [type=search], [type=tel], [type=text], [type=time], [type=url], [type=week], textarea {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;

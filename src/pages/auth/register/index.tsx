@@ -21,7 +21,6 @@ import CloseIcon from '../../../assets/images/close.svg';
 import CircleCheckGreenIcon from '../../../assets/images/circle-check-green.svg';
 import CircleInfoRedIcon from '../../../assets/images/circle-info-red.svg';
 import * as HelperFunctions from '../../../lib/helper';
-import { Form } from 'react-bootstrap';
 
 const Register = () => {
     const [showSignup, setShowSignup] = useState<boolean>(true);
@@ -744,24 +743,8 @@ const Register = () => {
                             <div className={showSignup ? "signup-container md:rounded-lg mx-auto md:mx-0 w-full md:w-4/12 md:absolute" : "hidden"}>
 
                                 {/* BVN Validated Error */}
-                                <div className={bvnHasError ? "error-alert mb-20" : "hidden"}>
-                                    <div className="flex justify-between space-x-1 pt-3">
-                                        <div className="flex">
-                                            <div>
-                                                <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
-                                                </svg>
-                                            </div>
-
-                                            <div className="pt-1 text-sm">BVN and Date of Birth does not match</div>
-                                        </div>
-
-                                        <div className="cursor-pointer" onClick={closeBVNHasError}>
-                                            <svg className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50" />
-                                            </svg>
-                                        </div>
-                                    </div>
+                                <div className={bvnHasError ? "error-alert mb-3 p-3" : "hidden"}>
+                                    <div className="text-sm">BVN and Date of Birth does not match</div>
                                 </div>
                                 {/* End */}
 
@@ -776,33 +759,36 @@ const Register = () => {
                                     </div>
                                 </div>
 
-                                <div className="mb-10 text-xl text-green-900 font-gotham-black-regular"><strong>Signup</strong></div>
-                                <div className="mb-30 text-sm">Provide the details below to get started</div>
+                                <div className="mb-2 text-xl text-green-900 font-gotham-black-regular"><strong>Signup</strong></div>
+
+                                <div className="mb-5 text-sm">Provide the details below to get started</div>
 
                                 <form className="form">
                                     {/* BVN Section*/}
-                                    <div className="mb-20">
-                                        <div className="flex md:justify-between md:space-x-0 space-x-5 mb-10">
+                                    <div className="mb-4">
+                                        <div className="flex md:justify-between md:space-x-0 space-x-5 mb-2">
                                             <span className="text-xs md:text-sm">BVN (Bank Verification Number) </span>
 
                                             <span onClick={displayBVNModal} className="flex md:justify-between justify-end text-xs md:text-sm cursor-pointer">
                                                 <span className="mr-2">Why we need this</span>
+
                                                 <svg width="22" height="21" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path fillRule="evenodd" clipRule="evenodd" d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2ZM12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4ZM12 16C12.5523 16 13 16.4477 13 17C13 17.5523 12.5523 18 12 18C11.4477 18 11 17.5523 11 17C11 16.4477 11.4477 16 12 16ZM12 6C14.2091 6 16 7.79086 16 10C16 11.7948 14.8179 13.3135 13.1898 13.8201L13 13.874V14C13 14.5523 12.5523 15 12 15C11.4872 15 11.0645 14.614 11.0067 14.1166L11 14V13C11 12.4872 11.386 12.0645 11.8834 12.0067L12.1493 11.9945C13.1841 11.9182 14 11.0544 14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 10.5523 9.55228 11 9 11C8.44772 11 8 10.5523 8 10C8 7.79086 9.79086 6 12 6Z" fill="#353F50" />
                                                 </svg>
                                             </span>
                                         </div>
 
-                                        <input value={bvn} onChange={e => setBVN(e.target.value)} className="border-1-d6 p-3 input text-sm outline-white" placeholder="Enter your BVN" type='text' />
+                                        <input value={bvn} onChange={e => setBVN(e.target.value)} className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white border-gray-400 focus:ring-indigo-500" placeholder="Enter your BVN" type='text' />
 
                                         <div className={isInvalidBVN ? "text-red-500 text-sm mt-2" : "text-red-500 text-sm mt-2 hidden"}>BVN can only consist of 11 digits</div>
                                     </div>
                                     {/*End*/}
 
                                     {/* Phone Section*/}
-                                    <div className="mb-20">
+                                    <div className="mb-4">
                                         <div>
-                                            <div className="mb-5 text-xs md:text-sm">Phone number</div>
+                                            <div className="mb-2 text-xs md:text-sm">Phone number</div>
+
                                             <div className='flex border-1-d6 rounded-lg p-2'>
                                                 <select onChange={e => setPhoneCode(e.target.value)} className='border-0 font-gotham outline-white'>
                                                     <option value="234">+234</option>
@@ -865,16 +851,17 @@ const Register = () => {
 
                                                 <input value={phone} onChange={e => setPhone(e.target.value)} className="px-2 py-1 border-0 input text-sm outline-white" placeholder="ex: 813 000 1111 OR 0813 000 1111" type="text" />
                                             </div>
+
                                             <div className={isInvalidPhone ? "text-red-500 text-sm mt-2" : "text-red-500 text-sm mt-2 hidden"}>Kindly enter a valid phone number</div>
                                         </div>
                                     </div>
                                     {/* End */}
 
                                     {/* DOB Section*/}
-                                    <div className="mb-20">
+                                    <div className="mb-3">
                                         <div>
-                                            <div className="mb-5 text-xs md:text-sm">Date of birth (DD / MM / YYYY)</div>
-                                            <div className='flex justify-between items-center border-1-d6 rounded-lg'>
+                                            <div className="mb-2 text-xs md:text-sm">Date of birth (DD / MM / YYYY)</div>
+                                            <div className='flex justify-between items-center border border-gray-500 rounded-lg'>
                                                 <div className='w-full'>
                                                     <input readOnly value={dob} onChange={e => setDOB(e.target.value)} className="outline-white border-0 p-3 input text-sm" placeholder="DD / MM / YYYY" />
                                                 </div>
@@ -890,15 +877,13 @@ const Register = () => {
                                     </div>
                                     {/* End Section*/}
 
-                                    <div className="border-1 mb-20"></div>
-
-                                    <div className="flex mb-20">
+                                    <div className="flex mb-2">
                                         <div className="text-sm font-bold opacity-0 w-full text-right">
                                             <button type="button" className="no-underline text-black border-0 bg-gray-100 rounded-lg px-5 py-3 cursor-pointer font-bold">Cancel</button>
                                         </div>
 
-                                        <div className='w-full'>
-                                            <button onClick={verifyBVNAndDOB} className={bVNPhoneDobIsNullOrEmpty ? "bg-green-900 px-20 py-3 font-bold text-white rounded-lg border-0 focus:shadow-outline opacity-50" : "bg-green-900 px-20 py-3 font-bold text-white rounded-lg border-0 focus:shadow-outline cursor-pointer"} type='button' disabled={bVNPhoneDobIsNullOrEmpty}>
+                                        <div className='w-full text-right'>
+                                            <button onClick={verifyBVNAndDOB} className={bVNPhoneDobIsNullOrEmpty ? "bg-green-900 px-5 py-2 font-bold text-white rounded-lg border-0 focus:shadow-outline opacity-50" : "bg-green-900 px-5 py-2 font-bold text-white rounded-lg border-0 focus:shadow-outline cursor-pointer"} type='button' disabled={bVNPhoneDobIsNullOrEmpty}>
                                                 <span className={showSpinner ? "hidden" : ""}>Proceed</span>
                                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                             </button>
@@ -906,7 +891,8 @@ const Register = () => {
                                     </div>
 
                                     <div className="text-center">
-                                        <div className="mb-5 text-sm">By creating an account, you agree to Anchoria </div>
+                                        <div className="mb-2 text-sm">By creating an account, you agree to Anchoria </div>
+
                                         <div className="text-sm">
                                             <a href="https://anchoriaonline.com/terms-and-conditions-of-use/" target="_blank" rel='noreferrer'><button type="button" className="no-underline border-0 bg-transparent text-green-900 cursor-pointer"><strong>Terms & Conditions</strong></button></a> and
 
@@ -1414,16 +1400,21 @@ const Register = () => {
                             {/* End */}
                         </div>
 
-                        <div className="invest-text top-4 relative pl-5 md:pl-24 md:pt-7 md:top-full">
-                            <div className="font-gotham-black-regular font-bold text-2xl md:text-4xl">
+                        <div className="top-4 relative  md:pl-28 md:pt-7 md:top-full z-0">
+                            <div className="font-gotham-black-regular font-bold text-2xl md:text-3xl">
                                 <strong>Investing is for everyone</strong>
                             </div>
+
                             <div className='md:h-44 h-5'>
-                                <ul className='list-disc-important'>
-                                    <li>Build wealth plans</li>
-                                    <li>Transparent historical returns</li>
-                                    <li>Portfolio dashboard view</li>
-                                </ul>
+                                <div>
+                                    <div style={{paddingTop: '1rem'}} className="text-lg">&middot; Build wealth plans
+                                    </div>
+
+                                    <div className="text-lg">&middot; Transparent historical returns
+                                    </div>
+
+                                    <div className="text-lg">&middot; Portfolio dashboard view</div>
+                                </div>
                             </div>
                         </div>
 
@@ -1514,8 +1505,8 @@ const Register = () => {
                                         </div>
                                         {/* End */}
 
-                                        <div className='font-bold text-lg mb-3'>Do you have a User ID?</div>
-                                        <div className='text-xs mb-6'>
+                                        <div className='font-bold text-lg mb-2'>Do you have a User ID?</div>
+                                        <div className='text-xs mb-4'>
                                             <div className="flex">
                                                 <div>
                                                     <svg width="20" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1527,25 +1518,25 @@ const Register = () => {
                                             </div>                                            
                                         </div>
 
-                                        <div className='flex space-x-10 mb-6'>
+                                        <div className='flex space-x-10 mb-4'>
                                             <div className='flex space-x-1 items-center '>
-                                                <Form.Check onChange={e => setHasUserId('Yes')} type='radio' name='hasUserId' className='portfoliolist-checkbox'/>
-                                                <label>Yes</label>
+                                                <input onChange={e => setHasUserId('Yes')} type='radio' name='hasUserId'/>
+                                                <div>Yes</div>
                                             </div>
 
                                             <div className='flex space-x-1 items-center '>
-                                                <Form.Check onChange={e => setHasUserId('No')} type='radio' name='hasUserId' className='portfoliolist-checkbox'/>
-                                                <label>No</label>
+                                                <input onChange={e => setHasUserId('No')} type='radio' name='hasUserId'/>
+                                                <div>No</div>
                                             </div>
                                         </div>
 
-                                        <div className={hasUserId === 'Yes'? 'mb-11':'hidden'}>
-                                            <div className='font-bold text-sm mb-10'>Enter User ID</div>
+                                        <div className={hasUserId === 'Yes'? 'mb-5':'hidden'}>
+                                            <div className='font-bold text-sm mb-2'>Enter User ID</div>
                                             <div><input  value={customerAid} onChange={e => setCustomerAid(e.target.value)} type="number"  className="border p-3 rounded-lg  w-full outline-white text-lg"/></div>
                                         </div>
 
                                         <div>
-                                            <button className={hasUserId === ''? 'bg-green-900 border-0 cursor-pointer text-white font-bold px-10 py-4 rounded-lg opacity-50':'bg-green-900 border-0 cursor-pointer text-white font-bold px-10 py-4 rounded-lg'} disabled={hasUserId === ''} onClick={validateUserId}>
+                                            <button className={hasUserId === ''? 'bg-green-900 border-0 cursor-pointer text-white font-bold px-5 py-2 rounded-lg opacity-50':'bg-green-900 border-0 cursor-pointer text-white font-bold px-5 py-2 rounded-lg'} disabled={hasUserId === ''} onClick={validateUserId}>
                                                 <span className={showSpinner ? "hidden" : ""}>Proceed</span>
                                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                             </button>
