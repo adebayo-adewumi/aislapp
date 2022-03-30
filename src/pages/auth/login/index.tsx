@@ -211,15 +211,20 @@ const Login = () => {
                             </div>
                             <div className='md:h-44 h-5'>
                                 <div>
-                                    <div style={{paddingTop: '1rem'}} className="text-lg">
-                                        <span className='font-bold'>&middot;</span> Build wealth plans
+                                    <div style={{paddingTop: '1rem'}}>
+                                        <span className='font-bold text-lg'>&middot; </span> 
+                                        <span className='text-lg'>Build wealth plans</span>
+                                    </div>
+
+                                    <div>
+                                        <span className='font-bold text-lg'>&middot; </span> 
+                                        <span className='text-lg'>Transparent historical returns</span>
                                     </div>
 
                                     <div className="text-lg">
-                                        <span className='font-bold'>&middot;</span> Transparent historical returns
+                                        <span className='font-bold'>&middot; </span> 
+                                        <span className='text-lg'>Portfolio dashboard view</span>
                                     </div>
-
-                                    <div className="text-lg"><span className='font-bold'>&middot;</span> Portfolio dashboard view</div>
                                 </div>
                             </div>
                         </div>
