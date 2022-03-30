@@ -145,7 +145,7 @@ const Login = () => {
 
                                 <div className="mb-20 signup-text text-sm">
                                     <span>Don’t have an account?</span>
-                                    <Link to="/register" className="no-underline text-green-900">
+                                    <Link to="/register" className="text-green-900">
                                         <span><strong>Sign Up</strong> </span>
                                     </Link>
                                 </div>
@@ -183,7 +183,7 @@ const Login = () => {
                                     </div>
 
                                     <div className="mb-20 text-right signup-text">
-                                        <Link to="/forgot" className="no-underline"><strong className="text-sm font-bold text-green-900 mr-2">Forgot Password</strong></Link>
+                                        <Link to="/forgot" className=""><strong className="text-sm font-bold text-green-900 mr-2">Forgot Password</strong></Link>
                                     </div>
 
                                     <div className="mb-20">
@@ -210,13 +210,17 @@ const Login = () => {
                                 <strong>Investing is for everyone</strong>
                             </div>
                             <div className='md:h-44 h-5'>
-                                <ul className='list-none'>
-                                    <li style={{paddingTop: '1rem'}}>
+                                <div>
+                                    <div style={{paddingTop: '1rem'}} className="text-lg">
                                         <span className='font-bold'>&middot;</span> Build wealth plans
-                                    </li>
-                                    <li><span className='font-bold'>&middot;</span> Transparent historical returns</li>
-                                    <li><span className='font-bold'>&middot;</span> Portfolio dashboard view</li>
-                                </ul>
+                                    </div>
+
+                                    <div className="text-lg">
+                                        <span className='font-bold'>&middot;</span> Transparent historical returns
+                                    </div>
+
+                                    <div className="text-lg"><span className='font-bold'>&middot;</span> Portfolio dashboard view</div>
+                                </div>
                             </div>
                         </div>
                     </div>
