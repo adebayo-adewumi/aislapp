@@ -94,9 +94,9 @@ const Dashboard = () => {
             getAxios(axios).get(url)
                 .then(function (response) {
                     const topmovers = response.data.data.map((el: any, index :any) =>
-                        <div className="card md:w-2/5 w-full md:p-5 px-3 py-3 md:mb-0 mb-6">
-                            <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.stockCode + "&sign=" + (parseFloat(el.percentageChange) >= 0 ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose+"&tradeAction=buy"} className='no-underline' key={index}>
-                                <div className="mb-10">
+                        <div className="card md:w-2/5 w-full md:p-5 px-3 py-3 md:mb-0 mb-3">
+                            <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.stockCode + "&sign=" + (parseFloat(el.percentageChange) >= 0 ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose+"&tradeAction=buy"} className='' key={index}>
+                                <div className="mb-3">
                                     <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt=""/>
                                 </div>
 
@@ -149,8 +149,8 @@ const Dashboard = () => {
                     const takeGainers = [response.data.data[0], response.data.data[1], response.data.data[2]];
 
                     const listTopGainers = takeGainers.map((el: any, index :any) =>
-                        <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.stockCode + "&sign=positive&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose+"&tradeAction=buy"} className='no-underline' key={index}>
-                            <div className="card mb-30 md:px-3 px-3 py-3">
+                        <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.stockCode + "&sign=positive&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose+"&tradeAction=buy"} className='' key={index}>
+                            <div className="card mb-3 md:px-3 px-3 py-3">
                                 <div className="flex justify-between w-full">
                                     <div className="flex md:space-x-5 space-x-3">
                                         <div>
@@ -196,7 +196,7 @@ const Dashboard = () => {
 
                     const listTopLosers = takeLosers.map((item: any, index :any) =>
                         <Link to={"/stock?name=" + item.name + "&sector=" + item.sector + "&symbol=" + item.stockCode + "&sign=negative&change=" + item.change + "&close=" + item.close + "&open=" + item.open + "&high=" + item.high + "&low=" + item.low + "&wkhigh=" + item.weekHigh52 + "&wklow=" + item.weekLow52 + "&volume=" + item.volume + "&mktsegment=" + item.mktSegment + "&pclose=" + item.pclose+"&tradeAction=buy"} className='no-underline' key={index}>
-                            <div className="card mb-30 md:px-3 px-3 py-3">
+                            <div className="card mb-3 md:px-3 px-3 py-3">
                                 <div className="flex justify-between w-full">
                                     <div className="flex md:space-x-5 space-x-3">
                                         <div>
@@ -241,27 +241,27 @@ const Dashboard = () => {
 
                     const newsItem = takeNews.map((item: any, index :any) =>
                         
-                        <div className="flex justify-between md:space-x-5 space-x-3  md:mb-0 mb-11 md:w-1/2 w-full">
+                        <div className="flex justify-between md:space-x-5 space-x-3  md:mb-0 mb-3 md:w-1/2 w-full">
                             <div>
-                                <div className="font-bold md:text-sm text-xs mb-10 text-black">
-                                    <a href={item.url === null || item.url === '' ? '#': item.url} className='text-black no-underline' target="_blank" key={index} rel="noreferrer">{item.title}</a>
+                                <div className="font-bold md:text-sm text-xs mb-3 text-black">
+                                    <a href={item.url === null || item.url === '' ? '#': item.url} className='text-black' target="_blank" key={index} rel="noreferrer">{item.title}</a>
                                 </div>
 
-                                <div className="md:text-sm text-xs text-gray-500 mb-10 leading-5 md:block hidden">
-                                    <a href={item.url === null || item.url === '' ? '#': item.url} className='text-black no-underline' target="_blank" key={index} rel="noreferrer">{item.snippet}</a>
+                                <div className="md:text-sm text-xs text-gray-500 mb-3 leading-5 md:block hidden">
+                                    <a href={item.url === null || item.url === '' ? '#': item.url} className='text-black' target="_blank" key={index} rel="noreferrer">{item.snippet}</a>
                                 </div>
 
-                                <div className="md:text-sm text-xs text-gray-500 mb-10 leading-5 md:hidden block">
-                                    <a href={item.url === null || item.url === '' ? '#': item.url} className='text-black no-underline' target="_blank" key={index} rel="noreferrer">{item.snippet.substring(0, 100)}...</a>
+                                <div className="md:text-sm text-xs text-gray-500 mb-3 leading-5 md:hidden block">
+                                    <a href={item.url === null || item.url === '' ? '#': item.url} className='text-black' target="_blank" key={index} rel="noreferrer">{item.snippet.substring(0, 100)}...</a>
                                 </div>
 
                                 <div className="font-bold md:text-sm text-xs text-black mb-10">
-                                    <a href={item.url === null || item.url === '' ? '#': item.url} className='text-black no-underline' target="_blank" key={index} rel="noreferrer">&middot; {moment(item.date).format("MMM Do YYYY, hh:ss a")}</a>
+                                    <a href={item.url === null || item.url === '' ? '#': item.url} className='text-black' target="_blank" key={index} rel="noreferrer">&middot; {moment(item.date).format("MMM Do YYYY, hh:ss a")}</a>
                                 </div>
                             </div>
 
                             <div > 
-                                <a href={item.url === null || item.url === '' ? '#': item.url} className='no-underline text-black' target="_blank" key={index} rel="noreferrer">
+                                <a href={item.url === null || item.url === '' ? '#': item.url} className='text-black' target="_blank" key={index} rel="noreferrer">
                                     <img src={item.imageUrl} className='newsImg rounded-lg' alt="" />
                                 </a>
                             </div>
@@ -482,10 +482,10 @@ const Dashboard = () => {
 
                             <div className="md:flex mt-10 md:justify-between md:space-x-5 md:mb-8 mb-3">
                                 <div className="card-lg md:w-1/2 md:mb-0 mb-6">
-                                    <div className="w-full mb-10">
+                                    <div className="w-full">
                                         <div className="md:flex md:justify-between w-full">
                                             <div>
-                                                <div className="mb-10 text-sm">Total Portfolio Balance</div>
+                                                <div className="mb-3 text-sm">Total Portfolio Balance</div>
 
                                                 <div className="font-bold text-xl font-gotham-black-regular mb-3">
                                                     <img src={WalletIcon} alt="" className='align-middle w-5' /> ₦ <span id='portfolio-balance'>{HelperFunctions.formatCurrencyWithDecimal(totalPortfolioValue)}</span>
@@ -512,10 +512,10 @@ const Dashboard = () => {
                                 </div>
 
                                 <div className="card-md md:w-1/2 md:mb-0 mb-11">
-                                    <div className="w-full mb-10">
+                                    <div className="w-full">
                                         <div className="md:flex md:justify-between w-full">
                                             <div>
-                                                <div className="mb-10 text-sm">Total Wallet Balance</div>
+                                                <div className="mb-3 text-sm">Total Wallet Balance</div>
 
                                                 <div className="font-bold text-xl font-gotham-black-regular md:mb-0 mb-4">
                                                     <img src={WalletIcon} alt="" className='align-middle w-5'/> ₦ <span id='wallet-balance'>{HelperFunctions.formatCurrencyWithDecimal(walletBalance)} </span>
@@ -537,11 +537,11 @@ const Dashboard = () => {
                             {/*Search Section*/}
                             <div className="flex justify-between mb-0 items-center">
                                 <div>
-                                    <div className="font-bold text-color-2 mb-5">Quick links</div>
+                                    <div className="font-bold">Quick links</div>
 
                                     <div className="flex justify-between w-full md:space-x-10 space-x-3">
                                         <div>
-                                            <Link to="/trade" className='no-underline text-green-900'>
+                                            <Link to="/trade" className=' text-green-900'>
                                                 <div className="md:text-center">
                                                     <button className="button-xsm cursor-pointer" type='button'>
                                                         <img src={ArrowBidirectionalIcon} alt="" />
@@ -553,7 +553,7 @@ const Dashboard = () => {
                                         </div>
 
                                         <div>
-                                            <Link to="/account/fund" className='cursor-pointer no-underline text-green-900'>
+                                            <Link to="/account/fund" className='cursor-pointer text-green-900'>
                                                 <div className="text-center">
                                                     <button className="cursor-pointer button-xsm">
                                                         <img src={CommerceIcon} alt="" />
@@ -565,7 +565,7 @@ const Dashboard = () => {
                                         </div>
 
                                         <div>
-                                            <Link to="/account/withdraw" className='cursor-pointer no-underline text-green-900'>
+                                            <Link to="/account/withdraw" className='cursor-pointer text-green-900'>
                                                 <div className="text-center">
                                                     <button className="cursor-pointer button-xsm">
                                                         <img src={ArrowUpWhiteIcon} alt="" />
@@ -577,7 +577,7 @@ const Dashboard = () => {
                                         </div>
 
                                         <div>
-                                            <Link to="/learn" className='cursor-pointer no-underline text-green-900'>
+                                            <Link to="/learn" className='cursor-pointer text-green-900'>
                                                 <div className="text-center">
                                                     <button className="cursor-pointer button-xsm">
                                                         <img src={LearnWhiteIcon} alt="" />
@@ -613,10 +613,10 @@ const Dashboard = () => {
                             <div className="border-bottom-1d my-10"></div>
 
                             {/*Top Gainers and Losers Section */}
-                            <div className="md:flex w-full md:space-x-10 mb-12">
+                            <div className="md:flex w-full md:space-x-10 mb-16">
                                 {/*Top gainers section */}
-                                <div className="w-full md:mb-0 mb-11">
-                                    <div className="flex justify-between w-full mb-20">
+                                <div className="w-full md:mb-0 mb-3">
+                                    <div className="flex justify-between w-full mb-3">
                                         <div className="font-bold md:text-sm text-xs">Top Gainers</div>
                                         <div onClick={showTopGainerModal} className="cursor-pointer font-bold text-green-900 md:text-sm text-xs">
                                             See More
@@ -632,7 +632,7 @@ const Dashboard = () => {
 
                                 {/*Top losers section */}
                                 <div className="w-full">
-                                    <div className="flex justify-between w-full mb-20">
+                                    <div className="flex justify-between w-full mb-3">
                                         <div className="font-bold md:text-sm text-xs">Top Losers</div>
                                         <div onClick={showTopLoserModal} className="cursor-pointer font-bold text-green-900 md:text-sm text-xs">See More</div>
                                     </div>
@@ -647,11 +647,11 @@ const Dashboard = () => {
                             {/*End */}
 
                             {/* Top Movers Section */}
-                            <div className='mb-24'>
-                                <div className="mb-30">
-                                    <div className="text-green-900 font-bold mb-10 md:text-sm text-xs">Top Movers</div>
+                            <div className='mb-16'>
+                                <div className="mb-3">
+                                    <div className="text-green-900 font-bold mb-3 md:text-sm text-xs">Top Movers</div>
 
-                                    <div className="flex md:justify-between md:w-96 w-60 rounded-lg border border-gray-500 p-1">
+                                    <div className="bg-white flex md:justify-between md:w-96 w-60 rounded-lg p-1" style={{border: '1px solid rgb(209 213 219)'}}>
                                         <div className='text-sm w-1/2'>
                                             <button data-value="value" type='button' className={byValueActive ? "rounded-lg bg-green-900 text-white border-0 py-3 md:px-12 px-5 font-bold cursor-pointer w-full" : "cursor-pointer rounded-lg py-3 md:px-12 px-5 font-bold border-0 bg-transparent w-full"} onClick={getTopMovers}>By Value</button>
                                         </div>
@@ -662,7 +662,7 @@ const Dashboard = () => {
                                     </div>
                                 </div>
 
-                                <div className="w-full mb-14">
+                                <div className="w-full mb-3">
                                     <div className={topMoversApiResponseSuccess ? 'hidden' : 'text-sm text-gray-400'}>Nothing to display</div>
 
                                     <div className={topMoversApiResponseSuccess ? "md:flex md:justify-between md:space-x-5 md:overflow-x-scroll md:pr-12" : "hidden"}>
@@ -674,12 +674,12 @@ const Dashboard = () => {
 
 
                             {/* News Section */}
-                            <div className="flex justify-between font-bold mb-20">
+                            <div className="flex justify-between font-bold mb-3">
                                 <div className="font-gotham-black-regular md:text-lg text-sm">News and Insights</div>
-                                <Link to="/news" className='no-underline'><div className="text-green-900 text-sm">See More</div></Link>
+                                <Link to="/news" className=''><div className="text-green-900 text-sm">See More</div></Link>
                             </div>
 
-                            <div className="mb-11">
+                            <div className="mb-3">
                                 <div className={newsApiResponseSuccess ? 'hidden' : 'text-sm text-gray-400'}>Nothing to display</div>
 
                                 <div className="md:flex news-section md:justify-between md:space-x-10 w-full">
