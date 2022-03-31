@@ -439,15 +439,15 @@ const Trade = () => {
             </div>
 
             <div className={showAddToWatchlistModal ? "success-modal" : "hidden"}>
-                <div className="mx-auto w-2/5 mb-30">
+                <div className="mx-auto w-2/5">
                     <img src={GreenQuestionmarkIcon} alt="qm icon" className="w-32" />
                 </div>
 
-                <div className="relative z-10 text-green-900 font-gotham-black-regular text-3xl text-center mb-20">Add stocks to watchlist</div>
+                <div className="relative mb-3 z-10 text-green-900 font-gotham-black-regular text-3xl text-center">Add stocks to watchlist</div>
 
-                <div className="text-sm text-center mb-14">Are you sure you want to add this stocks from your watchlist?</div>
+                <div className="text-sm text-center mb-5">Are you sure you want to add this stocks from your watchlist?</div>
 
-                <div className="flex space-x-5 mb-30">
+                <div className="flex space-x-5">
                     <button onClick={closeModal} type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer">Close</button>
 
                     <button onClick={addStockToWatchlist} type="button" className="py-4 w-full font-bold bg-green-900 text-white rounded-lg border-0 cursor-pointer">
