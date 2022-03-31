@@ -20,6 +20,9 @@ import GreenBoxIcon from '../../assets/images/green-box.svg';
 import RedBoxIcon from '../../assets/images/red-box.svg';
 import BlueBoxIcon from '../../assets/images/blue-box.svg';
 import Pagination from '../../components/Pagination';
+import { Input } from 'antd';
+
+const { Search } = Input;
 
 let PageSize = 10;
 
@@ -211,24 +214,34 @@ const Trade = () => {
 
                     <div className="mt-20 flex-1 min-w-0 flex flex-col">
                         <div className='p-10 flex-1 bg-gray-100 overflow-y-auto'>
-                            <div className="text-3xl mb-10">
+                            <div className="text-3xl mb-3">
                                 <span className="font-bold text-green-900">Trade</span>
                             </div>
 
-                            <div className="text-sm font-bold text-color-2 mb-30">Buy stocks on the go</div>
+                            <div className="text-sm font-bold mb-11">Buy stocks on the go</div>
 
                             {/*Quick Search*/}
-                            <div className="mb-20">
+                            <div className="mb-11">
                                 <div className="flex justify-between">
                                     <div className=''>
                                         <select className='outline-white cursor-pointer p-3 rounded-lg border border-gray-300 font-bold' onChange={e => filterStocksByCategory(e.target.value)}>
                                             <option value="All">All</option>
                                             {stockKeys.map((item: any) => <option value={item}>{item}</option>)}
                                         </select>
-                                    </div>
+                                    </div>                                    
 
                                     <div className='w-80'>
-                                        <div className="flex items-center border rounded-lg pr-2 bg-white mb-20">
+                                        <Search
+                                        placeholder="Search stocks by name"
+                                        allowClear
+                                        enterButton="Search"
+                                        size="large"
+                                        value={searchQuery}
+                                        onSearch={searchForStocks}
+                                        onChange={e => setSearchQuery(e.target.value)}
+                                        />
+
+                                        <div className="hidden flex items-center border rounded-lg pr-2 bg-white">
                                             <div className='w-full'>
                                                 <input value={searchQuery} onChange={e => setSearchQuery(e.target.value)} type="text" className="outline-white p-2 input border-0" placeholder="Search stocks by name" />
                                             </div>
@@ -244,7 +257,7 @@ const Trade = () => {
 
                             {/*Stocks List section*/}
                             <div className='shadow-sm sm:rounded-lg'>
-                                <table className={!showFilteredStocks && !showSearchedStocks ? "table-fixed w-full border-0 text-sm text-left text-gray-500 mb-11":"hidden"} cellSpacing={0}>
+                                <table className={!showFilteredStocks && !showSearchedStocks ? "table-fixed w-full border-0 text-sm text-left text-gray-500":"hidden"} cellSpacing={0}>
                                     <thead className='text-sm text-gray-700 uppercase'>
                                         <tr className='bg-gray-100'>
                                             <th className='p-3 font-bold'></th>
