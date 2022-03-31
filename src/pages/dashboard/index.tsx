@@ -456,11 +456,11 @@ const Dashboard = () => {
 
                     <div className="mt-20 flex-1 min-w-0 flex flex-col">
                         <div className='p-10 flex-1 bg-gray-100 overflow-y-auto'>
-                            <div className="md:text-3xl text-xl md:mb-20 mb-5">
+                            <div className="md:text-3xl text-xl mb-3">
                                 <span className="font-bold text-green-900">Hello {customer.firstName}</span> 👋🏾
                             </div>
 
-                            <div className="text-sm font-bold mb-30">
+                            <div className="text-sm font-bold mb-5">
                                 Overview of your account activities
                             </div>
 
