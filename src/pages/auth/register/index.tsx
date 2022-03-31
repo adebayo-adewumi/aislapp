@@ -21,6 +21,7 @@ import CloseIcon from '../../../assets/images/close.svg';
 import CircleCheckGreenIcon from '../../../assets/images/circle-check-green.svg';
 import CircleInfoRedIcon from '../../../assets/images/circle-info-red.svg';
 import * as HelperFunctions from '../../../lib/helper';
+import 'antd/dist/antd.css';
 
 const Register = () => {
     const [showSignup, setShowSignup] = useState<boolean>(true);

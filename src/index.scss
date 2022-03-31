@@ -10,6 +10,7 @@ body{
   margin: 0 !important;
   padding: 0 !important;
 }
+
 .fx-center {
   display: flex;
   align-items: center;
@@ -92,13 +93,13 @@ body{
     bottom: 28.08%;
   }
   
-  .logo {
-    position: absolute;
-    left: 3.06%;
-    right: 88.4%;
-    top: 17.5%;
-    bottom: 28.08%;
-  }
+  // .logo {
+  //   position: absolute;
+  //   left: 3.06%;
+  //   right: 88.4%;
+  //   top: 17.5%;
+  //   bottom: 28.08%;
+  // }
   
   .candle-stick-container {
     position: relative;
@@ -768,4 +769,12 @@ iframe{
   font-size: 1rem;
   line-height: 1.5rem;
   padding: 0.5rem 0.75rem;
+}
+
+.logo {
+  float: left;
+  width: 120px;
+  height: 31px;
+  // margin: 10px 24px 22px 0;
+  background: rgba(255, 255, 255, 0.3);
 }

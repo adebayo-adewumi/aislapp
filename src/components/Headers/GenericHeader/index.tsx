@@ -1,14 +1,15 @@
 import React from 'react';
 import './index.scss';
 import img from '../../../assets/images/anchoria.svg';
+import { Header } from 'antd/lib/layout/layout';
 
 const AuthPagesHeader = () => {
     return (
-        <div className="header">
-            <div className="logo-container">
-                <img className="logo" src={img} alt="Anchoria Logo" />
+        <Header className="header" style={{backgroundColor: 'white'}}>
+            <div className="logo">
+                <img src={img} alt="Anchoria Logo" style={{height: '40px'}}/>
             </div>
-        </div>
+        </Header>
     );
 };
 
