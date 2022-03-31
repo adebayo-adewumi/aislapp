@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.scss';
 import img from '../../../assets/images/anchoria.svg';
-import { Header } from 'antd/lib/layout/layout';
+import { Header } from 'antd/lib/layout/layout'; 
 
 const AuthPagesHeader = () => {
     return (
