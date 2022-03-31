@@ -458,15 +458,15 @@ const Trade = () => {
             </div>
 
             <div className={showSuccess ? "success-modal" : "success-modal hidden"}>
-                <div className="mx-auto w-56 mb-6">
+                <div className="mx-auto w-56 mb-3">
                     <img src={SuccessIcon} alt="success icon" className="w-full" />
                 </div>
 
-                <div className="relative z-10 text-green-900 font-gotham-black-regular text-3xl text-center mb-20">Successful</div>
+                <div className="relative mb-3 z-10 text-green-900 font-gotham-black-regular text-3xl text-center ">Successful</div>
 
-                <div className="text-color-4 text-sm text-center mb-14">{apiResponseMessage}</div>
+                <div className="text-sm text-center mb-8">{apiResponseMessage}</div>
 
-                <div className="flex space-x-5 mb-30">
+                <div className="flex space-x-5">
                     <button onClick={closeModal} type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer">Close</button>
 
                     <button onClick={closeModal} type="button" className="py-4 w-full font-bold bg-green-900 text-white rounded-lg border-0 cursor-pointer">Okay</button>
