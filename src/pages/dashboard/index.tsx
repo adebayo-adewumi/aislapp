@@ -454,7 +454,7 @@ const Dashboard = () => {
                 <div className="h-screen flex">
                     <Sidebar/>
 
-                    <div className="mt-20 flex-1 min-w-0 flex flex-col">
+                    <div className="flex-1 min-w-0 flex flex-col">
                         <div className='p-10 flex-1 bg-gray-100 overflow-y-auto'>
                             <div className="md:text-3xl text-xl mb-3">
                                 <span className="font-bold text-green-900">Hello {customer.firstName}</span> 👋🏾
