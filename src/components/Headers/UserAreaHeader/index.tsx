@@ -71,30 +71,33 @@ const UserAreaHeader = () => {
                     </Menu>
 
                     <div className={showHeaderMenu ? 'absolute bg-white rounded w-64 border border-gray-500 shadow-sm top-16 right-16' : 'hidden'}>
-                            <div className='px-3 py-2 text-sm'>
-                                <div className='hover:bg-gray-100 hover:font-bold px-3 rounded py-2'>
-                                    <Link to="/learn?type=contactus" className='flex space-x-3 text-black items-center'>
-                                        <img src={PhoneBlackIcon} alt="" style={{ width: '1.3rem' }} />
+                        <div className='px-3 py-2 text-sm'>
+                            <div className='hover:bg-gray-100 hover:font-bold px-3 rounded py-2'>
+                                <Link to="/learn?type=contactus" className='flex space-x-3 text-black items-center'>
+                                    <img src={PhoneBlackIcon} alt="" style={{ width: '1.3rem' }} />
 
-                                        <div className='w-full' style={{color: '#000000'}}> Contact Us</div>
-                                    </Link>
-                                </div>
-
-                                <div className='hover:bg-gray-100 hover:font-bold px-3 rounded py-2'>
-                                    <Link to="/profile?type=security" className='flex space-x-3 text-black items-center'>
-                                        <img src={SecurityIcon} alt="" style={{ width: '1.5rem' }} />
-                                        <div className='w-full' style={{color: '#000000'}}> Security</div>
-                                    </Link>
-                                </div>
-
-                                <div className='hover:bg-gray-100 hover:font-bold px-3 rounded py-2'>
-                                    <Link to="/" className='flex space-x-3 text-black items-center'>
-                                        <img src={LogoutIcon} alt="" style={{ width: '1.5rem' }} />
-                                        <div className='w-full' onClick={doLogout} style={{color: '#000000'}}> Logout</div>
-                                    </Link>
-                                </div>
+                                    <div className='w-full' style={{color: '#000000'}}> Contact Us</div>
+                                </Link>
                             </div>
+
+                            <div className='hover:bg-gray-100 hover:font-bold px-3 rounded py-2'>
+                                <Link to="/profile?type=security" className='flex space-x-3 text-black items-center'>
+                                    <img src={SecurityIcon} alt="" style={{ width: '1.5rem' }} />
+                                    <div className='w-full' style={{color: '#000000'}}> Security</div>
+                                </Link>
+                            </div>
+
+                            <div className='hover:bg-gray-100 hover:font-bold px-3 rounded py-2'>
+                                <Link to="/" className='flex space-x-3 text-black items-center'>
+                                    <img src={LogoutIcon} alt="" style={{ width: '1.5rem' }} />
+                                    <div className='w-full' onClick={doLogout} style={{color: '#000000'}}> Logout</div>
+                                </Link>
+                            </div>
+                            
                         </div>
+
+                        
+                    </div>
                 </div>
 
                 
