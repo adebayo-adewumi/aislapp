@@ -309,11 +309,11 @@ const Watchlist = () => {
                         <div className='p-10 flex-1 bg-gray-100 overflow-y-auto'>
                             <div className='flex justify-between items-center'>
                                 <div>
-                                    <div className="text-3xl mb-10">
+                                    <div className="text-3xl mb-3">
                                         <span className="font-bold text-green-900">My Watchlist</span>
                                     </div>
 
-                                    <div className="text-sm font-bold text-color-2 mb-30">Overview of your favourite stocks</div>
+                                    <div className="text-sm font-bold text-color-2 mb-8">Overview of your favourite stocks</div>
                                 </div>
 
                                 <div>
@@ -322,7 +322,7 @@ const Watchlist = () => {
                             </div>
 
                             {/*Quick Search*/}
-                            <div className="mb-20">
+                            <div className="mb-11">
                                 <div className="flex justify-between">
                                     <div>
                                         <div className="border_1 flex rounded-lg p-02rem">
@@ -407,7 +407,7 @@ const Watchlist = () => {
                             {/*Alert section*/}
                             <div className={switchToAlert ? '':'hidden'}>
                                 {priceAlerts.length === 0 ? 'No price alerts added.' : priceAlerts.sort(compareNotificationLogsDate).map((item: any, index: number) =>
-                                    <div className="card-15px mb-20" key={index}>
+                                    <div className="card-15px mb-3" key={index}>
                                         <div className="flex justify-between items-center">
                                             <div><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" /></div>
 
@@ -503,7 +503,7 @@ const Watchlist = () => {
 
             {/* Delete Modal */}
             <div className={showDeleteModal ? "success-modal rounded-lg" : "hidden"}>
-                <div className="mb-10 flex justify-between">
+                <div className="mb-3 flex justify-between">
                     <div className="font-bold text-3xl text-green-900 font-gotham-black-regular"></div>
 
                     <div onClick={closeModal}>
@@ -513,48 +513,31 @@ const Watchlist = () => {
 
                 <div>
                     {/* Delete Success */}
-                    <div className={isDeleteSuccess ? "otp-alert mb-20" : "hidden"}>
-                        <div className="flex otp-validated justify-between space-x-1 pt-3">
-                            <div className="flex">
-                                <div>
-                                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062" />
-                                        <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062" />
-                                    </svg>
-                                </div>
-
-                                <div className="pt-1 text-sm text-green-900">{apiResponseSuccessMsg}</div>
-                            </div>
+                    <div className={isDeleteSuccess ? "otp-alert mb-5" : "hidden"}>
+                        <div className="otp-validated p-3">
+                            <div className="text-sm text-green-900">{apiResponseSuccessMsg}</div>
                         </div>
                     </div>
                     {/* End */}
 
                     {/* Delete Error */}
-                    <div className={apiResponseHasError ? "error-alert mb-20" : "hidden"}>
-                        <div className="flex justify-between space-x-1 pt-3">
-                            <div className="flex">
-                                <div>
-                                    <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
-                                    </svg>
-                                </div>
-
+                    <div className={apiResponseHasError ? "error-alert mb-5" : "hidden"}>
+                        <div className="p-3">
                                 <div className="text-sm">{apiResponseErrorMsg}</div>
-                            </div>
                         </div>
                     </div>
                     {/* End */}
 
-                    <div className='text-center mb-20'>
+                    <div className='text-center mb-3'>
                         <img src={DeleteCardIcon} alt='' />
                     </div>
 
-                    <div className='text-red-500 font-bold text-3xl text-center mb-30'>Delete this price alert</div>           
+                    <div className='text-red-500 font-bold text-3xl text-center mb-11'>Delete this price alert</div>           
                     
 
                 </div>
 
-                <div className="flex space-x-5 mb-10">
+                <div className="flex space-x-5">
                     <button type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer" onClick={closeModal}>Cancel</button>
 
                     <button onClick={deletePriceAlert} type="button" className="py-4 w-full font-bold bg-red-500 text-white rounded-lg border-0 cursor-pointer">
