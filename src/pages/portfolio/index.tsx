@@ -760,8 +760,59 @@ const Portfolio = () => {
                                     </div>
                                 </div>
 
-                                <div className={showModalBG ? "modal-backdrop opacity-40" : "modal-backdrop opacity-40 hidden"}>
+                                <div className={showModalBG ? "modal-backdrop opacity-40" :  "hidden"}>
                                 </div>
+
+                                {/* Delete Modal */}
+                                <div className={showDeleteModal ? "success-modal" : "hidden"}>
+                                    <div className="mb-3 flex justify-between">
+                                        <div className="font-bold text-3xl text-green-900 font-gotham-black-regular"></div>
+
+                                        <div onClick={closeModal}>
+                                            <img src={CloseIcon} alt="" className="cursor-pointer" />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        {/* Delete Success */}
+                                        <div className={isDeleteSuccess ? "otp-alert mb-3" : "hidden"}>
+                                            <div className="otp-validated p-3">
+                                                <div> 
+                                                    <div className="text-sm text-green-900">{apiResponseSuccessMsg}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {/* End */}
+
+                                        {/* Delete Error */}
+                                        <div className={apiResponseHasError ? "error-alert mb-20" : "hidden"}>
+                                            <div className="p-3">
+                                                <div className="">
+                                                    <div className="text-sm">{apiResponseErrorMsg}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {/* End */}
+
+                                        <div className='text-center mb-3'>
+                                            <img src={DeleteCardIcon} alt='' />
+                                        </div>
+
+                                        <div className='text-red-500 font-bold text-3xl text-center mb-11'>Delete this portfolio</div>           
+                                        
+
+                                    </div>
+
+                                    <div className="flex space-x-5 mb-3">
+                                        <button type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer" onClick={closeModal}>Cancel</button>
+
+                                        <button onClick={deletePortfolio} type="button" className="py-4 w-full font-bold bg-red-500 text-white rounded-lg border-0 cursor-pointer">
+                                            <span className={showSpinner ? "hidden" : ""}>Delete</span>
+                                            <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
+                                        </button>
+                                    </div>
+                                </div>
+                                {/* End */}
 
                                 {/* Page Loader Section */}
                                 <div className={showPageLoader ? "page-loader-backdrop opacity-90" : "hidden"}>
@@ -774,62 +825,6 @@ const Portfolio = () => {
                             </div>
 
                         </div>
-
-                        {/* Delete Modal */}
-                        <div className={showDeleteModal ? "set-price-alert-modal rounded-lg" : "hidden"}>
-                            <div className="mb-3 flex justify-between">
-                                <div className="font-bold text-3xl text-green-900 font-gotham-black-regular"></div>
-
-                                <div onClick={closeModal}>
-                                    <img src={CloseIcon} alt="" className="cursor-pointer" />
-                                </div>
-                            </div>
-
-                            <div>
-                                {/* Delete Success */}
-                                <div className={isDeleteSuccess ? "otp-alert mb-3" : "hidden"}>
-                                    <div className="otp-validated p-3">
-                                        <div> 
-                                            <div className="text-sm text-green-900">{apiResponseSuccessMsg}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* End */}
-
-                                {/* Delete Error */}
-                                <div className={apiResponseHasError ? "error-alert mb-20" : "hidden"}>
-                                    <div className="p-3">
-                                        <div className="">
-                                            <div className="text-sm">{apiResponseErrorMsg}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* End */}
-
-                                <div className='text-center mb-3'>
-                                    <img src={DeleteCardIcon} alt='' />
-                                </div>
-
-                                <div className='text-red-500 font-bold text-3xl text-center mb-3'>Delete this portfolio</div>           
-                                
-
-                            </div>
-
-                            <div className="flex space-x-5 mb-3">
-                                <button type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer" onClick={closeModal}>Cancel</button>
-
-                                <button onClick={deletePortfolio} type="button" className="py-4 w-full font-bold bg-red-500 text-white rounded-lg border-0 cursor-pointer">
-                                    <span className={showSpinner ? "hidden" : ""}>Delete</span>
-                                    <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
-                                </button>
-                            </div>
-                        </div>
-                        {/* End */}
-
-                        {/* Modal BG */}
-                        <div className={showModalBG ? "modal-backdrop opacity-40" : "modal-backdrop opacity-40 hidden"}>
-                        </div>
-                        {/* End */}
                     </div>
                 </div>
             </div>
