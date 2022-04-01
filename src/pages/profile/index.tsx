@@ -17,7 +17,7 @@ import moment from 'moment';
 import DeleteCardIcon from '../../assets/images/delete-card.svg';
 import { authOnboardingServiceBaseUrl, utilityServiceBaseUrlUrl, walletAndAccountServiceBaseUrl } from '../../apiUrls';
 import { getAxios } from '../../network/httpClientWrapper';
-import { Input } from 'antd';
+import { Input, Select } from 'antd';
 
 const Profile = () => {   
     
@@ -142,6 +142,7 @@ const Profile = () => {
     const [countries, setCountries] = useState<any[]>([]);
     const [transactionPin, setTransactionPin] = useState('');
 
+    const { Option } = Select;
 
     useEffect(() => {
         function checkIfPasswordOrConfirmPasswordIsNullOrEmpty(){
@@ -1168,63 +1169,63 @@ const Profile = () => {
                                                 <div className='md:flex md:space-x-20'>
                                                     <div className='md:w-1/2 w-full md:mb-0 mb-11'>
                                                         <div className='font-bold  text-gray-700 mb-3 text-sm'>State</div>
-                                                        <div>
-                                                            <select onChange={e => setState(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
-                                                                <option value="">Select a state</option>
-                                                                <option value="Abuja">Abuja</option>
-                                                                <option value="Abia">Abia</option>
-                                                                <option value="Adamawa">Adamawa</option>
-                                                                <option value="Akwa Ibom">Akwa Ibom</option>
-                                                                <option value="Anambra">Anambra</option>
-                                                                <option value="Bauchi">Bauchi</option>
-                                                                <option value="Bayelsa">Bayelsa</option>
-                                                                <option value="Benue">Benue</option>
-                                                                <option value="Borno">Borno</option>
-                                                                <option value="Cross River">Cross River</option>
-                                                                <option value="Delta">Delta</option>
-                                                                <option value="Ebonyi">Ebonyi</option>
-                                                                <option value="Edo">Edo</option>
-                                                                <option value="Ekiti">Ekiti</option>
-                                                                <option value="Enugu">Enugu</option>
-                                                                <option value="Gombe">Gombe</option>
-                                                                <option value="Imo">Imo</option>
-                                                                <option value="Jigawa">Jigawa</option>
-                                                                <option value="Kaduna">Kaduna</option>
-                                                                <option value="Kano">Kano</option>
-                                                                <option value="Katsina">Katsina</option>
-                                                                <option value="Kebbi">Kebbi</option>
-                                                                <option value="Kogi">Kogi</option>
-                                                                <option value="Kwara">Kwara</option>
-                                                                <option value="Lagos">Lagos</option>
-                                                                <option value="Niger">Niger</option>
-                                                                <option value="Ogun">Ogun</option>
-                                                                <option value="Ondo">Ondo</option>
-                                                                <option value="Osun">Osun</option>
-                                                                <option value="Oyo">Oyo</option>
-                                                                <option value="Plateau">Plateau</option>
-                                                                <option value="Rivers">Rivers</option>
-                                                                <option value="Sokoto">Sokoto</option>
-                                                                <option value="Taraba">Taraba</option>
-                                                                <option value="Yobe">Yobe</option>
-                                                                <option value="Zamfara">Zamfara</option>
-                                                            </select>
+                                                        <div>   
+                                                            <Select size="large" onChange={e => setState(e.target.value)} className="w-full">
+                                                                <Option value="" selected>Select a state</Option>
+                                                                <Option value="Abuja">Abuja</Option>
+                                                                <Option value="Abia">Abia</Option>
+                                                                <Option value="Adamawa">Adamawa</Option>
+                                                                <Option value="Akwa Ibom">Akwa Ibom</Option>
+                                                                <Option value="Anambra">Anambra</Option>
+                                                                <Option value="Bauchi">Bauchi</Option>
+                                                                <Option value="Bayelsa">Bayelsa</Option>
+                                                                <Option value="Benue">Benue</Option>
+                                                                <Option value="Borno">Borno</Option>
+                                                                <Option value="Cross River">Cross River</Option>
+                                                                <Option value="Delta">Delta</Option>
+                                                                <Option value="Ebonyi">Ebonyi</Option>
+                                                                <Option value="Edo">Edo</Option>
+                                                                <Option value="Ekiti">Ekiti</Option>
+                                                                <Option value="Enugu">Enugu</Option>
+                                                                <Option value="Gombe">Gombe</Option>
+                                                                <Option value="Imo">Imo</Option>
+                                                                <Option value="Jigawa">Jigawa</Option>
+                                                                <Option value="Kaduna">Kaduna</Option>
+                                                                <Option value="Kano">Kano</Option>
+                                                                <Option value="Katsina">Katsina</Option>
+                                                                <Option value="Kebbi">Kebbi</Option>
+                                                                <Option value="Kogi">Kogi</Option>
+                                                                <Option value="Kwara">Kwara</Option>
+                                                                <Option value="Lagos">Lagos</Option>
+                                                                <Option value="Niger">Niger</Option>
+                                                                <Option value="Ogun">Ogun</Option>
+                                                                <Option value="Ondo">Ondo</Option>
+                                                                <Option value="Osun">Osun</Option>
+                                                                <Option value="Oyo">Oyo</Option>
+                                                                <Option value="Plateau">Plateau</Option>
+                                                                <Option value="Rivers">Rivers</Option>
+                                                                <Option value="Sokoto">Sokoto</Option>
+                                                                <Option value="Taraba">Taraba</Option>
+                                                                <Option value="Yobe">Yobe</Option>
+                                                                <Option value="Zamfara">Zamfara</Option>
+                                                            </Select>
                                                         </div>
                                                     </div>
 
                                                     <div className='md:w-1/2 w-full'>
                                                         <div className='font-bold  text-gray-700 mb-3 text-sm'>Country</div>
                                                         <div>
-                                                            <select onChange={e => setCountry(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
-                                                                <option value={item.hasOwnProperty("idDetails") ? item.idDetails.idCountry : ""} className={item.hasOwnProperty("idDetails") ? "" : "hidden"}>
+                                                            <Select size="large" className="w-full" onChange={e => setCountry(e.target.value)}>
+                                                                <Option value={item.hasOwnProperty("idDetails") ? item.idDetails.idCountry : ""} className={item.hasOwnProperty("idDetails") ? "" : "hidden"}>
                                                                     {item.hasOwnProperty("idDetails") ? item.idDetails.idCountry : ""}
-                                                                </option>
+                                                                </Option>
 
-                                                                <option value=''>...</option>
+                                                                <Option value=''>...</Option>
                                                                 
                                                                 {countries.map((el :any, ind :any)=>
-                                                                    <option value={el.name} className={item.hasOwnProperty("idDetails") ? (el.name === item.idDetails.idCountry ? "hidden":"") : ""} key={ind}>{el.name}</option>
+                                                                    <Option value={el.name} className={item.hasOwnProperty("idDetails") ? (el.name === item.idDetails.idCountry ? "hidden":"") : ""} key={ind}>{el.name}</Option>
                                                                 )}
-                                                            </select>
+                                                            </Select>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1236,19 +1237,19 @@ const Profile = () => {
                                             <div className='font-bold mb-3'>Valid identification</div>
 
                                             <div className='md:flex md:justify-between mb-11 text-sm'>
-                                                <select onChange={e => setCountry(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-96'>
-                                                    <option value={item.hasOwnProperty("idDetails") ? item.idDetails.idType : ""} className={item.hasOwnProperty("idDetails") ? "" : "hidden"}>
+                                                <Select size="large" className="w-full" onChange={e => setCountry(e.target.value)} style={{width: '20rem'}} >
+                                                    <Option value={item.hasOwnProperty("idDetails") ? item.idDetails.idType : ""} className={item.hasOwnProperty("idDetails") ? "" : "hidden"}>
                                                         {item.hasOwnProperty("idDetails") ? item.idDetails.idType : ""}
-                                                    </option>
+                                                    </Option>
 
-                                                    <option value=''>...</option>
+                                                    <Option value=''>...</Option>
                                                     
-                                                    <option value="Drivers License" className={item.hasOwnProperty("idDetails") ? (item.idDetails.idType === 'Drivers License' ? 'hidden':'') :''}>Drivers Licence</option>
+                                                    <Option value="Drivers License" className={item.hasOwnProperty("idDetails") ? (item.idDetails.idType === 'Drivers License' ? 'hidden':'') :''}>Drivers Licence</Option>
 
-                                                    <option value="NIN" className={item.hasOwnProperty("idDetails") ? (item.idDetails.idType === 'NIN' ? 'hidden':'') : ''}>NIN</option>
+                                                    <Option value="NIN" className={item.hasOwnProperty("idDetails") ? (item.idDetails.idType === 'NIN' ? 'hidden':'') : ''}>NIN</Option>
 
-                                                    <option value="Voters Card" className={item.hasOwnProperty("idDetails") ? (item.idDetails.idType === 'Voters Card' ? 'hidden':'') : ''}>Voters Card</option>
-                                                </select>
+                                                    <Option value="Voters Card" className={item.hasOwnProperty("idDetails") ? (item.idDetails.idType === 'Voters Card' ? 'hidden':'') : ''}>Voters Card</Option>
+                                                </Select>
 
                                                 <div className='hidden'>
                                                     <div className='flex  space-x-1 items-end w-full md:mb-0 mb-3'>                                                
@@ -1299,22 +1300,22 @@ const Profile = () => {
                                                     <div className='mb-3 text-sm font-bold'>Utility Bill Type</div>
                                                     
                                                     <div>
-                                                        <select onChange={e => setUtilityBillType(e.target.value)} className='px-4 py-3 text-lg text-gray-700 focus:outline-white rounded-lg w-full border border-gray-300'>
+                                                        <Select size="large" className="w-full" onChange={e => setUtilityBillType(e.target.value)} >
 
-                                                            <option value={item.utilityBillType}>{item.utilityBillType}</option>
+                                                            <Option value={item.utilityBillType}>{item.utilityBillType}</Option>
 
-                                                            <option value=''>...</option>
+                                                            <Option value=''>...</Option>
 
-                                                            <option value='Water Bills' className={item.utilityBillType === 'Water Bills' ? 'hidden':''}>Water Bills</option>
+                                                            <Option value='Water Bills' className={item.utilityBillType === 'Water Bills' ? 'hidden':''}>Water Bills</Option>
 
-                                                            <option value='PayTV Bills' className={item.utilityBillType === 'PayTV Bills' ? 'hidden':''}>PayTV Bills</option>
+                                                            <Option value='PayTV Bills' className={item.utilityBillType === 'PayTV Bills' ? 'hidden':''}>PayTV Bills</Option>
 
-                                                            <option value='Telecommunication Bills' className={item.utilityBillType === 'Telecommunication Bills' ? 'hidden':''}>Telecommunication Bills</option>
+                                                            <Option value='Telecommunication Bills' className={item.utilityBillType === 'Telecommunication Bills' ? 'hidden':''}>Telecommunication Bills</Option>
 
-                                                            <option value='Electricity Bills' className={item.utilityBillType === 'Electricity Bills' ? 'hidden':''}>Electricity Bills</option>
+                                                            <Option value='Electricity Bills' className={item.utilityBillType === 'Electricity Bills' ? 'hidden':''}>Electricity Bills</Option>
 
-                                                            <option value='Waste Bills' className={item.utilityBillType === 'Waste Bills' ? 'hidden':''}>Waste Bills</option>
-                                                        </select>
+                                                            <Option value='Waste Bills' className={item.utilityBillType === 'Waste Bills' ? 'hidden':''}>Waste Bills</Option>
+                                                        </Select>
                                                     </div>
                                                 </div>
 
@@ -1436,35 +1437,35 @@ const Profile = () => {
                                                     <div className='md:w-1/3 w-full md:mb-0 mb-11'>
                                                         <div className='text-gray-700 mb-3 text-sm font-bold'>Annual Salary Range</div>
                                                         <div>
-                                                            <select onChange={e => setSalary(e.target.value)} className='border border-gray-300 px-4 py-3 text-sm text-gray-700 outline-white rounded-lg w-full'>
-                                                                <option value={employmentDetails.length > 0 ? employmentDetails[0].salary : ''}>{employmentDetails.length > 0 ? employmentDetails[0].salary : ''}</option>
+                                                            <Select size="large" className="w-full" onChange={e => setSalary(e.target.value)} >
+                                                                <Option value={employmentDetails.length > 0 ? employmentDetails[0].salary : ''}>{employmentDetails.length > 0 ? employmentDetails[0].salary : ''}</Option>
 
-                                                                <option value=''>...</option>
+                                                                <Option value=''>...</Option>
 
-                                                                <option value='Less than 250,000' className={employmentDetails.length > 0 ? (employmentDetails[0].salary === 'Less than 250,000' ? 'hidden':'') : ''}>Less than 250,000</option>
+                                                                <Option value='Less than 250,000' className={employmentDetails.length > 0 ? (employmentDetails[0].salary === 'Less than 250,000' ? 'hidden':'') : ''}>Less than 250,000</Option>
 
-                                                                <option value='250,000 - 1m' className={employmentDetails.length > 0 ? (employmentDetails[0].salary === '250,000 - 1m'? 'hidden':'') : ''}>250,000 - 1m</option>
+                                                                <Option value='250,000 - 1m' className={employmentDetails.length > 0 ? (employmentDetails[0].salary === '250,000 - 1m'? 'hidden':'') : ''}>250,000 - 1m</Option>
 
-                                                                <option value='1m - 5m' className={employmentDetails.length > 0 ? (employmentDetails[0].salary === '1m - 5m'? 'hidden':'') : ''}>1m - 5m</option>
+                                                                <Option value='1m - 5m' className={employmentDetails.length > 0 ? (employmentDetails[0].salary === '1m - 5m'? 'hidden':'') : ''}>1m - 5m</Option>
 
-                                                                <option value='Above 5m' className={employmentDetails.length > 0 ? (employmentDetails[0].salary === 'Above 5m'? 'hidden':'') : ''}>Above 5m</option>
-                                                            </select>
+                                                                <Option value='Above 5m' className={employmentDetails.length > 0 ? (employmentDetails[0].salary === 'Above 5m'? 'hidden':'') : ''}>Above 5m</Option>
+                                                            </Select>
                                                         </div>
                                                     </div>
 
                                                     <div className='md:w-1/3 w-full'>
                                                         <div className='text-gray-700 mb-3 text-sm font-bold'>Are you a politically exposed person?</div>
                                                         <div>
-                                                            <select onChange={e => setPolitical(e.target.value)} className='border border-gray-300 px-4 py-3 text-sm text-gray-700 outline-white rounded-lg w-full'>
+                                                            <Select size="large" className="w-full" onChange={e => setPolitical(e.target.value)} >
 
-                                                                <option value={employmentDetails.length > 0 ? employmentDetails[0].politicalAffiliation : ''}>{employmentDetails.length > 0 ? employmentDetails[0].politicalAffiliation : ''}</option>
+                                                                <Option value={employmentDetails.length > 0 ? employmentDetails[0].politicalAffiliation : ''}>{employmentDetails.length > 0 ? employmentDetails[0].politicalAffiliation : ''}</Option>
 
-                                                                <option value=''>...</option>
+                                                                <Option value=''>...</Option>
 
-                                                                <option value='Yes' className={employmentDetails.length > 0 ? (employmentDetails[0].politicalAffiliation === 'Yes'? 'hidden':'') :''}>Yes</option>
+                                                                <Option value='Yes' className={employmentDetails.length > 0 ? (employmentDetails[0].politicalAffiliation === 'Yes'? 'hidden':'') :''}>Yes</Option>
 
-                                                                <option value='No' className={employmentDetails.length > 0 ? (employmentDetails[0].politicalAffiliation === 'No'? 'hidden':''):''}>No</option>
-                                                            </select>
+                                                                <Option value='No' className={employmentDetails.length > 0 ? (employmentDetails[0].politicalAffiliation === 'No'? 'hidden':''):''}>No</Option>
+                                                            </Select>
                                                         </div>
                                                     </div>
 
@@ -1527,64 +1528,64 @@ const Profile = () => {
                                                         <div className='text-gray-700 mb-3 text-sm font-bold'>Phone number</div>
 
                                                         <div className='flex border-1-d6 rounded-lg px-2'>
-                                                            <select onChange={e => setNokPhoneCode(e.target.value)} className='border-0 font-gotham outline-white text-sm'>
-                                                                <option value="234">+234</option>
-                                                                <option value="1">+1</option>
-                                                                <option value="44">+44</option>
-                                                                <option value="213">+213</option>
-                                                                <option value="376">+376</option>
-                                                                <option value="244">+244</option>
-                                                                <option value="1264">+1264</option>
-                                                                <option value="1268">+1268</option>
-                                                                <option value="54">+54</option>
-                                                                <option value="374">+374</option>
-                                                                <option value="297">+297</option>
-                                                                <option value="61">+61</option>
-                                                                <option value="43">+43</option>
-                                                                <option value="994">+994</option>
-                                                                <option value="1242">+1242</option>
-                                                                <option value="973">+973</option>
-                                                                <option value="880">+880</option>
-                                                                <option value="1246">+1246</option>
-                                                                <option value="375">+375</option>
-                                                                <option value="32">+32</option>
-                                                                <option value="501">+501</option>
-                                                                <option value="229">+229</option>
-                                                                <option value="1441">+1441</option>
-                                                                <option value="975">+975</option>
-                                                                <option value="591">+591</option>
-                                                                <option  value="387">+387</option>
-                                                                <option  value="267">+267</option>
-                                                                <option  value="55">+55</option>
-                                                                <option  value="673">+673</option>
-                                                                <option  value="359">+359</option>
-                                                                <option  value="226">+226</option>
-                                                                <option  value="257">+257</option>
-                                                                <option  value="855">+855</option>
-                                                                <option  value="237">+237</option>
-                                                                <option  value="1">+1</option>
-                                                                <option  value="238">+238</option>
-                                                                <option  value="1345">+1345</option>
-                                                                <option  value="236">+236</option>
-                                                                <option  value="56">+56</option>
-                                                                <option  value="86">+86</option>
-                                                                <option  value="57">+57</option>
-                                                                <option  value="269">+269</option>
-                                                                <option  value="242">+242</option>
-                                                                <option  value="682">+682</option>
-                                                                <option  value="506">+506</option>
-                                                                <option  value="385">+385</option>
-                                                                <option  value="53">+53</option>
-                                                                <option  value="599">+599</option>
-                                                                <option  value="90392">+90392</option>
-                                                                <option  value="357">+357</option>
-                                                                <option  value="420">+420</option>
-                                                                <option  value="45">+45</option>
-                                                                <option  value="253">+253</option>
-                                                                <option  value="1809">+1809</option>
-                                                                <option  value="1809">+1809</option>
+                                                            <Select size="large" className="w-full" onChange={e => setNokPhoneCode(e.target.value)} >
+                                                                <Option value="234">+234</Option>
+                                                                <Option value="1">+1</Option>
+                                                                <Option value="44">+44</Option>
+                                                                <Option value="213">+213</Option>
+                                                                <Option value="376">+376</Option>
+                                                                <Option value="244">+244</Option>
+                                                                <Option value="1264">+1264</Option>
+                                                                <Option value="1268">+1268</Option>
+                                                                <Option value="54">+54</Option>
+                                                                <Option value="374">+374</Option>
+                                                                <Option value="297">+297</Option>
+                                                                <Option value="61">+61</Option>
+                                                                <Option value="43">+43</Option>
+                                                                <Option value="994">+994</Option>
+                                                                <Option value="1242">+1242</Option>
+                                                                <Option value="973">+973</Option>
+                                                                <Option value="880">+880</Option>
+                                                                <Option value="1246">+1246</Option>
+                                                                <Option value="375">+375</Option>
+                                                                <Option value="32">+32</Option>
+                                                                <Option value="501">+501</Option>
+                                                                <Option value="229">+229</Option>
+                                                                <Option value="1441">+1441</Option>
+                                                                <Option value="975">+975</Option>
+                                                                <Option value="591">+591</Option>
+                                                                <Option  value="387">+387</Option>
+                                                                <Option  value="267">+267</Option>
+                                                                <Option  value="55">+55</Option>
+                                                                <Option  value="673">+673</Option>
+                                                                <Option  value="359">+359</Option>
+                                                                <Option  value="226">+226</Option>
+                                                                <Option  value="257">+257</Option>
+                                                                <Option  value="855">+855</Option>
+                                                                <Option  value="237">+237</Option>
+                                                                <Option  value="1">+1</Option>
+                                                                <Option  value="238">+238</Option>
+                                                                <Option  value="1345">+1345</Option>
+                                                                <Option  value="236">+236</Option>
+                                                                <Option  value="56">+56</Option>
+                                                                <Option  value="86">+86</Option>
+                                                                <Option  value="57">+57</Option>
+                                                                <Option  value="269">+269</Option>
+                                                                <Option  value="242">+242</Option>
+                                                                <Option  value="682">+682</Option>
+                                                                <Option  value="506">+506</Option>
+                                                                <Option  value="385">+385</Option>
+                                                                <Option  value="53">+53</Option>
+                                                                <Option  value="599">+599</Option>
+                                                                <Option  value="90392">+90392</Option>
+                                                                <Option  value="357">+357</Option>
+                                                                <Option  value="420">+420</Option>
+                                                                <Option  value="45">+45</Option>
+                                                                <Option  value="253">+253</Option>
+                                                                <Option  value="1809">+1809</Option>
+                                                                <Option  value="1809">+1809</Option>
                                                                 
-                                                            </select>
+                                                            </Select>
 
                                                             <input defaultValue={nokDetails.length > 0 ? nokDetails[0].phoneNumber : ''} onChange={e => setNokPhone(e.target.value)} className="px-2  text-lg outline-white" placeholder="ex: 813 000 1111 OR 0813 000 1111" type="text" style={{border: 'none'}}/>
                                                         </div>                                                
@@ -1593,21 +1594,21 @@ const Profile = () => {
                                                     <div className='md:w-1/3 w-full'>
                                                         <div className='text-gray-700 mb-3 text-sm font-bold'>Relationship</div>
                                                         <div>
-                                                            <select onChange={e => setNokRelationship(e.target.value)} className='border border-gray-300 px-4 py-3 text-sm text-gray-700 outline-white rounded-lg w-full'>
-                                                                <option value={nokDetails.length > 0 ? nokDetails[0].relationship : ''}>{nokDetails.length > 0 ? nokDetails[0].relationship : ''}</option>
+                                                            <Select size="large" className="w-full" onChange={e => setNokRelationship(e.target.value)} >
+                                                                <Option value={nokDetails.length > 0 ? nokDetails[0].relationship : ''}>{nokDetails.length > 0 ? nokDetails[0].relationship : ''}</Option>
 
-                                                                <option value="">...</option>
+                                                                <Option value="">...</Option>
 
-                                                                <option value="SISTER" className={nokDetails.length > 0 ? (nokDetails[0].relationship === 'SISTER' ? 'hidden':''):''}>SISTER</option>
+                                                                <Option value="SISTER" className={nokDetails.length > 0 ? (nokDetails[0].relationship === 'SISTER' ? 'hidden':''):''}>SISTER</Option>
 
-                                                                <option value="BROTHER" className={nokDetails.length > 0 ? (nokDetails[0].relationship === 'BROTHER' ? 'hidden':''):''}>BROTHER</option>
+                                                                <Option value="BROTHER" className={nokDetails.length > 0 ? (nokDetails[0].relationship === 'BROTHER' ? 'hidden':''):''}>BROTHER</Option>
 
-                                                                <option value="SPOUSE" className={nokDetails.length > 0 ? (nokDetails[0].relationship === 'SPOUSE' ? 'hidden':''):''}>SPOUSE</option>
+                                                                <Option value="SPOUSE" className={nokDetails.length > 0 ? (nokDetails[0].relationship === 'SPOUSE' ? 'hidden':''):''}>SPOUSE</Option>
 
-                                                                <option value="DAUGHTER" className={nokDetails.length > 0 ? (nokDetails[0].relationship === 'DAUGHTER' ? 'hidden':''):''}>DAUGHTER</option>
+                                                                <Option value="DAUGHTER" className={nokDetails.length > 0 ? (nokDetails[0].relationship === 'DAUGHTER' ? 'hidden':''):''}>DAUGHTER</Option>
 
-                                                                <option value="OTHERS" className={nokDetails.length > 0 ? (nokDetails[0].relationship === 'OTHERS' ? 'hidden':''):''}>OTHERS</option>
-                                                            </select>
+                                                                <Option value="OTHERS" className={nokDetails.length > 0 ? (nokDetails[0].relationship === 'OTHERS' ? 'hidden':''):''}>OTHERS</Option>
+                                                            </Select>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1687,16 +1688,16 @@ const Profile = () => {
                                                 </div>
 
                                                 <div className={primaryBankDetails.length === 0 && bankDetails.length > 0 ? 'mb-3':'hidden'}>
-                                                    <select className='font-bold input px-5 py-3 border-1-d6 outline-white font-bold text-sm'id='bankList' onChange={selectBankDetails}>
-                                                        <option value="">Select your primary bank details
-                                                        </option>
+                                                    <Select size="large"  className="w-full" onChange={selectBankDetails}>
+                                                        <Option value="">Select your primary bank details
+                                                        </Option>
 
                                                         {
                                                             bankDetails.map((item :any, index: any) =>
-                                                            <option value={item.id} key={index}>{item.accountName} | {item.bankName} | {item.accountNumber}</option>
+                                                            <Option value={item.id} key={index}>{item.accountName} | {item.bankName} | {item.accountNumber}</Option>
                                                             )
                                                         }
-                                                    </select>
+                                                    </Select>
                                                 </div>
                                             </div>                                         
                                         </div>
