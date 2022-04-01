@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import { Form } from 'react-bootstrap';
 import UserAreaHeader from '../../components/Headers/UserAreaHeader';
 import Sidebar from '../../components/Sidebar';
 import BrowseFile from '../../assets/images/browse-file.svg';
