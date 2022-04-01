@@ -26,6 +26,7 @@ import { defaultToZeroIfNullOrUndefined, isNullOrUndefined } from '../../common/
 import { formatCurrencyWithDecimal } from '../../lib/helper';
 import DeleteCardIcon from '../../assets/images/delete-card.svg';
 import { Link, useNavigate } from 'react-router-dom';
+import { Input } from 'antd';
 
 const Portfolio = () => {
     document.title = "Portfolio - Anchoria";
@@ -545,7 +546,7 @@ const Portfolio = () => {
 
                         <div className="mt-20 flex-1 min-w-0 flex flex-col">
                             <div className='p-10 flex-1 bg-gray-100 overflow-y-auto'>
-                                <div className="text-3xl mb-6">
+                                <div className="text-3xl mb-3">
                                     <span className="font-bold text-green-900">Portfolio</span>
                                 </div>
 
@@ -558,7 +559,7 @@ const Portfolio = () => {
                                         <div className="py-3">
                                             <div className="flex justify-between w-full">
                                                 <div>
-                                                    <div className="mb-10 text-sm font-bold">Total Portfolio Value</div>
+                                                    <div className="mb-3 text-sm font-bold">Total Portfolio Value</div>
 
                                                     <div className="font-bold text-xl font-gotham-black-regular">
                                                         ₦ {formatCurrencyWithDecimal(totalPortfolioValue)}
@@ -566,7 +567,7 @@ const Portfolio = () => {
                                                 </div>
 
                                                 <div>
-                                                    <div className="mb-10 text-sm font-bold">Investment Amount</div>
+                                                    <div className="mb-3 text-sm font-bold">Investment Amount</div>
 
                                                     <div className="font-bold text-xl font-gotham-black-regular">
                                                         ₦ {formatCurrencyWithDecimal(investmentAmount)}
@@ -580,7 +581,7 @@ const Portfolio = () => {
                                         <div className="w-full py-3">
                                             <div className="flex justify-between w-full">
                                                 <div>
-                                                    <div className="mb-10 text-sm font-bold">Net Portfolio Returns</div>
+                                                    <div className="mb-3 text-sm font-bold">Net Portfolio Returns</div>
                                                     <div>
                                                         <img src={netPortfolioReturns >= 0 ? ArrowUpIcon : ArrowDownIcon} alt="" width="20" className="align-middle" />
                                                         <span className={netPortfolioReturns >= 0 ? "text-green-500 font-bold font-gotham-black-regular mx-2" : "text-red-500 font-bold font-gotham-black-regular mx-2"}>{netPortfolioReturns >= 0 ? '+' + formatCurrencyWithDecimal(netPortfolioReturns).replace("-","") : formatCurrencyWithDecimal(netPortfolioReturns).replace("-","")} | {formatCurrencyWithDecimal(netPortfolioReturnsPercentage).replace("-","")}%</span>
@@ -592,7 +593,7 @@ const Portfolio = () => {
                                                 </div>
 
                                                 <div>
-                                                    <div className="mb-10 text-sm font-bold">Number of Portfolio</div>
+                                                    <div className="mb-3 text-sm font-bold">Number of Portfolio</div>
 
                                                     <div className="font-bold text-xl font-gotham-black-regular">
                                                         {portfolioCount}
@@ -643,7 +644,7 @@ const Portfolio = () => {
                                     </div>
                                 </div>
 
-                                <div className="md:mb-10 mb-6">
+                                <div className="md:mb-3 mb-3">
                                     <div className="flex justify-between items-center">
                                         <div className="text-lg font-gotham-black-regular">My Portfolio List</div>
                                         <div>
@@ -654,28 +655,28 @@ const Portfolio = () => {
                                     </div>
                                 </div>
 
-                                <div className="mb-30">
+                                <div className="mb-3">
                                     <div className="md:grid md:grid-cols-2 md:gap-4">
                                         <div className={portfolioList.length === 0 ? '':'hidden' }>
                                             You have not created any portfolio.
                                         </div>
 
                                         {portfolioList.map((item :any, index :any)=>
-                                            <div onClick={viewPortfolioDetails} className="card-custom p-5 flex justify-between cursor-pointer md:mb-0 mb-6" id={item.uuid} key={index}>
+                                            <div onClick={viewPortfolioDetails} className="card-custom p-5 flex justify-between cursor-pointer md:mb-0 mb-3" id={item.uuid} key={index}>
                                             <div className="flex space-x-4" id={item.uuid}>
                                                 <div id={item.uuid}><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" id={item.uuid} /></div>
                 
                                                 <div className="text-sm" id={item.uuid}>
-                                                    <div className="mb-10 font-bold text-color-2" id={item.uuid}>{item.name}</div>
+                                                    <div className="mb-3 font-bold text-color-2" id={item.uuid}>{item.name}</div>
                                                     <div id={item.uuid} className={item.hasOwnProperty("listOfStocks") ? 'text-black':'hidden'}>Count: {item.hasOwnProperty("listOfStocks") ? item.listOfStocks.length : 0}</div>
                                                 </div>
                                             </div>
                 
                                             <div className="text-sm" id={item.uuid}> 
-                                                <div className="flex mb-10 justify-between" id={item.uuid}>
+                                                <div className="flex mb-3 justify-between" id={item.uuid}>
                                                     <div className="text-green-900 font-bold" id={item.uuid}>Portfolio Value</div>
                                                 </div>
-                                                <div className="font-gotham-black-regular text-green-900 text-24 mb-10" id={item.uuid}>₦ {formatCurrencyWithDecimal(item.currentValue)}</div>
+                                                <div className="font-gotham-black-regular text-green-900 text-24 mb-3" id={item.uuid}>₦ {formatCurrencyWithDecimal(item.currentValue)}</div>
                                                 <div id={item.uuid} className={item.hasOwnProperty("uuid") ? '':'hidden'}>
                                                     <span className={(item.portfolioReturn) >= 0 ? "text-green-500 text-24 font-bold" : "text-red-500 text-24 font-bold"} id={item.uuid}>
                                                         <span id={item.uuid}>{formatCurrencyWithDecimal(defaultToZeroIfNullOrUndefined(item.portfolioReturn)).replace("-","")}</span> |
@@ -686,7 +687,7 @@ const Portfolio = () => {
                                             </div>
                 
                                             <div className={item.hasOwnProperty("uuid") ? 'row d-flex justify-content-end align-items-end':'hidden'} id={item.uuid}>
-                                                <div id={item.uuid}>
+                                                <div id={item.uuid} className="mb-3">
                                                     <Link to={"details/"+item.uuid} id={item.uuid}><img src={ChevronRightIcon} alt="" id={item.uuid}/></Link>
                                                 </div>
                 
@@ -699,9 +700,9 @@ const Portfolio = () => {
                                     </div>
                                 </div>
 
-                                <div className={showCreatePortfolio ? "create-portfolio-modal" : "create-portfolio-modal hidden"}>
-                                    <div className="mb-20 flex justify-between">
-                                        <div className="font-bold text-25 opacity-0">Top Losers</div>
+                                <div className={showCreatePortfolio ? "create-portfolio-modal" : "hidden"}>
+                                    <div className="flex justify-between mb-5">
+                                        <div className="font-bold text-xl">Create New Portfolio</div>
 
                                         <div onClick={closeModal}>
                                             <img src={CloseIcon} alt="" className="cursor-pointer" />
@@ -710,28 +711,23 @@ const Portfolio = () => {
 
                                     <div>
                                         {/* Portfolio Error */}
-                                        <div className={apiResponseHasError ? "error-alert mb-20 p-2":"hidden"}>
+                                        <div className={apiResponseHasError ? "error-alert mb-3 p-2":"hidden"}>
                                             <div className="">
-                                                <div className="flex  items-center space-x-1">
-                                                    <div className='mt-2'>
-                                                        <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
-                                                        </svg>
-                                                    </div>
-
+                                                <div className="">
                                                     <div className="text-sm">{apiResponseHasMsg}</div>
                                                 </div>
                                             </div>
                                         </div>
                                         {/* End */}
 
-                                        <div className="text-3xl font-bold mb-30">Create New Portfolio</div>      
+                                              
 
                                         <form>
                                             <div>
-                                                <div className="mb-10">Name</div>
-                                                <div className="mb-30">
-                                                    <input value={portfolioName} onChange={e => setPortfolioName(e.target.value)} type="text" className="text-xl outline-white input-xsm p-3" />
+                                                <div className="mb-3 font-bold">Name</div>
+
+                                                <div className="mb-11">
+                                                    <Input size="large" value={portfolioName} onChange={e => setPortfolioName(e.target.value)}/>
                                                 </div>
 
                                                 <div className="flex space-x-5">
@@ -753,11 +749,11 @@ const Portfolio = () => {
                                         <img src={SuccessIcon} alt="success icon" className="w-full" />
                                     </div>
 
-                                    <div className="relative z-10 text-green-900 font-gotham-black-regular text-3xl text-center mb-20">Successful</div>
+                                    <div className="relative z-10 text-green-900 font-gotham-black-regular text-3xl text-center mb-3">Successful</div>
 
-                                    <div className="text-color-4 text-sm text-center mb-14">Your portfolio has been successfully created</div>
+                                    <div className="text-sm text-center mb-14">Your portfolio has been successfully created</div>
 
-                                    <div className="flex space-x-5 mb-30">
+                                    <div className="flex space-x-5 mb-3">
                                         <button onClick={closeModal} type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer">Close</button>
 
                                         <button onClick={closeModal} type="button" className="py-4 w-full font-bold bg-green-900 text-white rounded-lg border-0 cursor-pointer">Okay</button>
@@ -781,7 +777,7 @@ const Portfolio = () => {
 
                         {/* Delete Modal */}
                         <div className={showDeleteModal ? "set-price-alert-modal rounded-lg" : "hidden"}>
-                            <div className="mb-10 flex justify-between">
+                            <div className="mb-3 flex justify-between">
                                 <div className="font-bold text-3xl text-green-900 font-gotham-black-regular"></div>
 
                                 <div onClick={closeModal}>
@@ -791,17 +787,10 @@ const Portfolio = () => {
 
                             <div>
                                 {/* Delete Success */}
-                                <div className={isDeleteSuccess ? "otp-alert mb-20" : "hidden"}>
-                                    <div className="flex otp-validated justify-between space-x-1 pt-3">
-                                        <div className="flex">
-                                            <div>
-                                                <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062" />
-                                                    <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062" />
-                                                </svg>
-                                            </div>
-
-                                            <div className="pt-1 text-sm text-green-900">{apiResponseSuccessMsg}</div>
+                                <div className={isDeleteSuccess ? "otp-alert mb-3" : "hidden"}>
+                                    <div className="otp-validated p-3">
+                                        <div> 
+                                            <div className="text-sm text-green-900">{apiResponseSuccessMsg}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -809,30 +798,24 @@ const Portfolio = () => {
 
                                 {/* Delete Error */}
                                 <div className={apiResponseHasError ? "error-alert mb-20" : "hidden"}>
-                                    <div className="flex justify-between space-x-1 pt-3">
-                                        <div className="flex">
-                                            <div>
-                                                <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
-                                                </svg>
-                                            </div>
-
+                                    <div className="p-3">
+                                        <div className="">
                                             <div className="text-sm">{apiResponseErrorMsg}</div>
                                         </div>
                                     </div>
                                 </div>
                                 {/* End */}
 
-                                <div className='text-center mb-20'>
+                                <div className='text-center mb-3'>
                                     <img src={DeleteCardIcon} alt='' />
                                 </div>
 
-                                <div className='text-red-500 font-bold text-3xl text-center mb-30'>Delete this portfolio</div>           
+                                <div className='text-red-500 font-bold text-3xl text-center mb-3'>Delete this portfolio</div>           
                                 
 
                             </div>
 
-                            <div className="flex space-x-5 mb-10">
+                            <div className="flex space-x-5 mb-3">
                                 <button type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer" onClick={closeModal}>Cancel</button>
 
                                 <button onClick={deletePortfolio} type="button" className="py-4 w-full font-bold bg-red-500 text-white rounded-lg border-0 cursor-pointer">

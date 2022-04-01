@@ -1071,11 +1071,11 @@ const Profile = () => {
 
                     <div className="mt-20 flex-1 min-w-0 flex flex-col">
                         <div className='p-10 flex-1 bg-gray-100 overflow-y-auto'>
-                            <div className="text-xl mb-10">
+                            <div className="text-xl mb-3">
                                 <span className="text-lg sm:text-4xl md:text-2xl leading-snug font-semibold tracking-tight text-green-900 py-4">Profile</span>
                             </div>
 
-                            <div className="text-sm font-bold text-green-900 mb-30">Manage your information</div>
+                            <div className="text-sm font-bold text-green-900 mb-8">Manage your information</div>
 
                             {/*Switch */}
                             <div>
