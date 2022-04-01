@@ -782,3 +782,31 @@ iframe{
   border-color: #064E3B !important;
   background: #064E3B !important;
 }
+
+.ant-select:not(.ant-select-customize-input) .ant-select-selector{
+  border: none !important;
+}
+
+.ant-menu.ant-menu-dark, .ant-menu-dark .ant-menu-sub, .ant-menu.ant-menu-dark .ant-menu-sub{
+  background-color: #FFFFFF !important;
+}
+
+.ant-layout-header{
+  border-bottom: 1px solid #D6DDE0 !important;
+  background-color: #FFFFFF !important;
+}
+
+.ant-menu-item:hover{
+  background-color: #FFFFFF !important;
+}
+.menu-list-pl{
+  padding-left: 0 !important;
+}
+
+.menu-list-pr{
+  padding-right: 0 !important;
+}
+
+.ant-menu.ant-menu-dark .ant-menu-item-selected, .ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected{
+  background-color: #FFFFFF !important;
+}

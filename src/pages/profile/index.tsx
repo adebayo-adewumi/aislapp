@@ -1528,7 +1528,7 @@ const Profile = () => {
                                                         <div className='text-gray-700 mb-3 text-sm font-bold'>Phone number</div>
 
                                                         <div className='flex border-1-d6 rounded-lg px-2'>
-                                                            <Select size="large" className="w-full" onChange={e => setNokPhoneCode(e.target.value)} >
+                                                            <Select size="large" className="w-full" onChange={e => setNokPhoneCode(e.target.value)} style={{border: 'none !important'}}>
                                                                 <Option value="234">+234</Option>
                                                                 <Option value="1">+1</Option>
                                                                 <Option value="44">+44</Option>

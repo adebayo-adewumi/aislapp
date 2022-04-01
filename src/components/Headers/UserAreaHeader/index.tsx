@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import logo from '../../../assets/images/anchoria.svg';
 import notification from '../../../assets/images/notification.svg';
-import chevronDown from '../../../assets/images/chevron-down.svg';
 import { Link } from 'react-router-dom';
 import PhoneBlackIcon from '../../../assets/images/phone-black.svg';
 import SecurityIcon from '../../../assets/images/security.svg';
 import LogoutIcon from '../../../assets/images/logout.svg';
+import { Layout, Menu } from 'antd';
 
 const UserAreaHeader = () => {
     let authCustomerInfo = JSON.parse(localStorage.getItem('aislCustomerInfo') as string);
-    let authCustomerInitials = authCustomerInfo.firstName[0] + '' + authCustomerInfo.lastName[0];
     let authCustomerFullname = authCustomerInfo.firstName + ' ' + authCustomerInfo.lastName;
 
     const [showHeaderMenu, setShowHeaderMenu] = useState<boolean>(false);
+
+    const { Header } = Layout;
 
     function toggleHeaderMenu() {
 
@@ -24,105 +25,81 @@ const UserAreaHeader = () => {
         }
     }
 
-    function showHideSidebar() {
-        let showSidebar = localStorage.getItem("aislToggleSidebar");
-
-        if (showSidebar === 'show') {
-            localStorage.setItem("aislToggleSidebar","hide");            
-        }
-        else {
-            localStorage.setItem("aislToggleSidebar","show");
-        }
-
-        
-    }
+    
 
     const doLogout = () => {
         localStorage.clear();
     }
 
     return (
-        <div className="relative">
-            <div className="topbar py-3 pl-4 pr-20 z-10">
-                <div className="flex justify-between">
-                    <div>                
+        <Layout>
+            <Header className="header justify-between">
+                <div className="logo">
+                    <img src={logo} alt="Anchoria Logo" style={{height: '40px'}}/>
+                </div>
 
-                        <div className="logo-container flex w-96 items-center space-x-2">
-                            <div className='pt-6 lg:hidden block'>
-                                <button className="border-0 bg-transparent text-gray-600 hover:text-gray-700 cursor-pointer" onClick={showHideSidebar}>
-                                    <svg viewBox="0 0 24 24" fill="#888" className="h-6 w-6">
-                                        <path d="M3 6a1 1 0 011-1h16a1 1 0 110 2H4a1 1 0 01-1-1zM3 12a1 1 0 011-1h16a1 1 0 110 2H4a1 1 0 01-1-1zM4 17a1 1 0 100 2h7a1 1 0 100-2H4z"></path>
-                                    </svg>
-                                </button>
-                            </div>
+                <div>
 
-                            <div><img src={logo} alt="Anchoria Logo" width="120" /></div>
-                        </div>
-                    </div>
-
-                    <div className='md:block hidden'>
-                        <div className="flex space-x-8 items-center">
+                    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']} className="justify-end" style={{height: '0'}}>
+                        <Menu.Item key="1" className='hover:bg-white'>
                             <Link to="/profile?type=notification">
                                 <div>
                                     <img src={notification} alt="bell" style={{ width: '2rem' }} />
                                 </div>
                             </Link>
+                        </Menu.Item>
 
-                            <div className='relative cursor-pointer' onClick={toggleHeaderMenu}>
-                                <button className="border-0 bg-transparent relative flex items-center focus:outline-none cursor-pointer">
-                                    <img src={"https://ui-avatars.com/api/?name="+authCustomerFullname} className="rounded-full h-10 w-10" alt="" /> 
-                                    
-                                    <span className="hidden xl:block ml-2 font-medium text-sm">{authCustomerFullname}</span> 
-                                    
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="ml-1 h-5 w-5 fill-current text-gray-700"><path d="M15.3 9.3a1 1 0 0 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 1.4-1.4l3.3 3.29 3.3-3.3z"></path></svg>
-                                </button>
+                        <Menu.Item key="1" className='menu-list-pr' onClick={toggleHeaderMenu}>
+                            <div style={{paddingRight: '10px'}}>
+                                <img src={"https://ui-avatars.com/api/?name="+authCustomerFullname} className="rounded-full h-10 w-10" alt="" />
+                            </div> 
+                        </Menu.Item>
+                        
+                        <Menu.Item key="1" className='menu-list-pl menu-list-pr' onClick={toggleHeaderMenu}>
+                            <span style={{color: '#000000'}}>{authCustomerFullname}</span>
+                        </Menu.Item>
 
-                                <div className=" hidden flex space-x-4">
-                                    <div className="pt-1">
-                                        <div className='rounded-full w-10 h-10 bg-green-900 text-white '>
-                                            <div className='pt-3 pl-2 font-bold hidden'>{authCustomerInitials}</div>
-                                            <img src={"https://ui-avatars.com/api/?name="+authCustomerFullname} className="rounded-full h-10 w-10"  alt=""/>
-                                        </div>
-                                    </div>
+                        <Menu.Item key="1" className='menu-list-pl' style={{height: '.4rem'}} onClick={toggleHeaderMenu}>
+                            <div style={{marginTop: '4px', paddingLeft: '5px', height: '.4rem'}}>
+                                <svg fill="#777777" viewBox="0 0 20 20" style={{width: '20px', height: '20px'}}>
+                                    <path d="M10 14a1 1 0 0 1-.755-.349L5.329 9.182a1.367 1.367 0 0 1-.205-1.46A1.184 1.184 0 0 1 6.2 7h7.6a1.18 1.18 0 0 1 1.074.721 1.357 1.357 0 0 1-.2 1.457l-3.918 4.473A1 1 0 0 1 10 14z"></path>
+                                </svg> 
+                            </div>
 
-                                    <div className="font-bold text-green-900 pt-4">{authCustomerFullname}</div>
+                            
+                        </Menu.Item>
+                    </Menu>
 
-                                    <div className="pt-4">
-                                        <img src={chevronDown} alt="" />
-                                    </div>
+                    <div className={showHeaderMenu ? 'absolute bg-white rounded w-64 border border-gray-500 shadow-sm top-16 right-16' : 'hidden'}>
+                            <div className='px-3 py-2 text-sm'>
+                                <div className='hover:bg-gray-100 hover:font-bold px-3 rounded py-2'>
+                                    <Link to="/learn?type=contactus" className='flex space-x-3 text-black items-center'>
+                                        <img src={PhoneBlackIcon} alt="" style={{ width: '1.3rem' }} />
+
+                                        <div className='w-full' style={{color: '#000000'}}> Contact Us</div>
+                                    </Link>
                                 </div>
 
-                                <div className={showHeaderMenu ? 'absolute bg-white rounded w-full border border-gray-500 shadow-sm' : 'hidden'} style={{ top: '110%' }}>
-                                    <div className='px-3 py-2 text-sm'>
-                                        <div className='hover:bg-gray-100 hover:font-bold px-3 rounded py-2'>
-                                            <Link to="/learn?type=contactus" className='flex space-x-3 no-underline text-black items-center'>
-                                                <div style={{ marginTop: '6px' }}><img src={PhoneBlackIcon} alt="" style={{ width: '1.3rem' }} /></div>
+                                <div className='hover:bg-gray-100 hover:font-bold px-3 rounded py-2'>
+                                    <Link to="/profile?type=security" className='flex space-x-3 text-black items-center'>
+                                        <img src={SecurityIcon} alt="" style={{ width: '1.5rem' }} />
+                                        <div className='w-full' style={{color: '#000000'}}> Security</div>
+                                    </Link>
+                                </div>
 
-                                                <div> Contact Us</div>
-                                            </Link>
-                                        </div>
-
-                                        <div className='hover:bg-gray-100 hover:font-bold px-3 rounded py-2'>
-                                            <Link to="/profile?type=security" className='flex space-x-3 no-underline text-black items-center'>
-                                                <div><img src={SecurityIcon} alt="" style={{ width: '1.5rem' }} /></div>
-                                                <div className='mb-5'> Security</div>
-                                            </Link>
-                                        </div>
-
-                                        <div className='hover:bg-gray-100 hover:font-bold px-3 rounded py-2'>
-                                            <Link to="/" className='flex space-x-3 no-underline text-black items-center'>
-                                                <div><img src={LogoutIcon} alt="" style={{ width: '1.5rem' }} /></div>
-                                                <div className='mb-5' onClick={doLogout}> Logout</div>
-                                            </Link>
-                                        </div>
-                                    </div>
+                                <div className='hover:bg-gray-100 hover:font-bold px-3 rounded py-2'>
+                                    <Link to="/" className='flex space-x-3 text-black items-center'>
+                                        <img src={LogoutIcon} alt="" style={{ width: '1.5rem' }} />
+                                        <div className='w-full' onClick={doLogout} style={{color: '#000000'}}> Logout</div>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
-                    </div>
                 </div>
-            </div>
-        </div>
+
+                
+            </Header>
+        </Layout>
     );
 };
 
