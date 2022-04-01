@@ -256,7 +256,7 @@ const Trade = () => {
                             {/*End*/}
 
                             {/*Stocks List section*/}
-                            <div className='shadow-sm sm:rounded-lg'>
+                            <div className='shadow-sm sm:rounded-lg mb-5'>
                                 <table className={!showFilteredStocks && !showSearchedStocks ? "table-fixed w-full border-0 text-sm text-left text-gray-500":"hidden"} cellSpacing={0}>
                                     <thead className='text-sm text-gray-700 uppercase'>
                                         <tr className='bg-gray-100'>
