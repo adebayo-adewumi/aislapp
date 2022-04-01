@@ -66,79 +66,79 @@ const Account = () => {
                     {/* Main Content section */}
                     <div className="mt-20 flex-1 min-w-0 flex flex-col">
                         <div className='p-10 flex-1 bg-gray-100 overflow-y-auto'>
-                            <div className="text-3xl mb-10">
+                            <div className="text-3xl mb-3">
                                 <span className="font-bold text-green-900">Account Management</span>
                             </div> 
 
-                            <div className="text-sm font-bold text-color-2 mb-30">You can manage your account form here</div>
+                            <div className="text-sm font-bold text-color-2 mb-11">You can manage your account form here</div>
 
                             <div className='mt-12'>
                                 <div className='flex space-x-12 mb-14'>
                                     <div>
-                                        <div className='mb-20'>
+                                        <div className='mb-3'>
                                             <button onClick={showBalanceModal} type='button' className='cursor-pointer bg-green-900 py-10 px-12 border-0 focus:shadow-outline rounded-lg'>
                                                 <img src={AccountBalanceIcon} alt="" />
                                             </button>
                                         </div>
-                                        <div className='text-green-900 text-center text-24 font-bold'>Account Balances</div>
+                                        <div className='text-green-900 text-center text-sm font-bold'>Account Balances</div>
                                     </div>
 
                                     <div>
-                                        <div className='mb-20'>
+                                        <div className='mb-3'>
                                             <Link to='fund'>
                                                 <button type='button' className='cursor-pointer bg-green-900 py-10 px-12 border-0 focus:shadow-outline rounded-lg'>
                                                     <img src={FundAccountIcon} alt="" />
                                                 </button>
                                             </Link>
                                         </div>
-                                        <div className='text-green-900 text-center text-24 font-bold'>Fund Account</div>
+                                        <div className='text-green-900 text-center text-sm font-bold'>Fund Account</div>
                                     </div>
 
                                     <div>
-                                        <div className='mb-20'>
+                                        <div className='mb-3'>
                                             <Link to='withdraw'>
                                                 <button type='button' className='cursor-pointer bg-green-900 py-10 px-12 border-0 focus:shadow-outline rounded-lg'>
                                                     <img src={WithdrawFundIcon} alt="" />
                                                 </button>
                                             </Link>
                                         </div>
-                                        <div className='text-green-900 text-center text-24 font-bold'>Withdraw Funds</div>
+                                        <div className='text-green-900 text-center text-sm font-bold'>Withdraw Funds</div>
                                     </div>
                                 </div>
 
                                 <div className='flex space-x-12 mb-16'>                               
 
                                     <div>
-                                        <div className='mb-20'>
+                                        <div className='mb-3'>
                                             <Link to='trade-confirmations'>
                                                 <button type='button' className='cursor-pointer bg-green-900 py-10 px-12 border-0 focus:shadow-outline rounded-lg'>
                                                     <img src={TradeConfirmationIcon} alt="" />
                                                 </button>
                                             </Link>
                                         </div>
-                                        <div className='text-green-900 text-center text-24 font-bold'>Trade Confirmations</div>
+                                        <div className='text-green-900 text-center text-sm font-bold'>Trade Confirmations</div>
                                     </div>
 
                                     <div>
-                                        <div className='mb-20'>
+                                        <div className='mb-3'>
                                             <Link to='statement'>
                                                 <button type='button' className='cursor-pointer bg-green-900 py-10 px-12 border-0 focus:shadow-outline rounded-lg'>
                                                     <img src={AccountStatementIcon} alt="" />
                                                 </button>
                                             </Link>
                                         </div>
-                                        <div className='text-green-900 text-center text-24 font-bold'>Account Statement</div>
+                                        <div className='text-green-900 text-center text-sm font-bold'>Account Statement</div>
                                     </div>
 
                                     <div>
-                                        <div className='mb-20'>
+                                        <div className='mb-3'>
                                             <Link to='bank-card'>
                                                 <button type='button' className='cursor-pointer bg-green-900 py-10 px-12 border-0 focus:shadow-outline rounded-lg'>
                                                     <img src={CardBankIcon} alt="" />
                                                 </button>
                                             </Link>
                                         </div>
-                                        <div className='text-green-900 text-center text-24 font-bold'>Cards & Banks</div>
+                                        <div className='text-green-900 text-center text-sm font-bold'>Cards & Banks</div>
                                     </div>
                                 </div>
                             </div>
