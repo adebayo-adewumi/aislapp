@@ -20,6 +20,10 @@ import GreenBoxIcon from '../../assets/images/green-box.svg';
 import RedBoxIcon from '../../assets/images/red-box.svg';
 import BlueBoxIcon from '../../assets/images/blue-box.svg';
 import Pagination from '../../components/Pagination';
+import { Input } from 'antd';
+import { Select } from 'antd';
+
+const { Search } = Input;
 
 let PageSize = 10;
 
@@ -50,6 +54,9 @@ const Trade = () => {
     const [stocksDataList, setStocksDataList] = useState<any[]>([]);
 
     const [currentPage, setCurrentPage] = useState(1);
+
+    const { Option } = Select;
+
     
 
     useEffect(() => {
@@ -57,30 +64,30 @@ const Trade = () => {
         function getStocks() {
 
             getAxios(axios).get(getStocksEndpoint)
-            .then(function (response) {
-                let _sDataList: any[] = [];
+                .then(function (response) {
+                    let _sDataList: any[] = [];
 
-                setStocksListStore(response.data.data);
-                setStockKeys(Object.keys(response.data.data) as []);
-                setStocksList(Object.values(response.data.data) as []);
+                    setStocksListStore(response.data.data);
+                    setStockKeys(Object.keys(response.data.data) as []);
+                    setStocksList(Object.values(response.data.data) as []);
 
-                stocksList.map((item :any)=>{
-                    item.map((elem :any) => {
-                        _sDataList.push(elem);
+                    stocksList.map((item :any)=>{
+                        item.map((elem :any) => {
+                            _sDataList.push(elem);
+
+                            return 0;
+                        });
 
                         return 0;
                     });
 
-                    return 0;
+                    setStocksDataList(_sDataList);
+
+                    setShowPageLoader(false);
+                })
+                .catch(function (error) {
+                    ;
                 });
-
-                setStocksDataList(_sDataList);
-
-                setShowPageLoader(false);
-            })
-            .catch(function (error) {
-                ;
-            });
         }
 
         getStocks();
@@ -206,31 +213,23 @@ const Trade = () => {
                             {/*Quick Search*/}
                             <div className="mb-11">
                                 <div className="flex justify-between">
-                                    <div className='w-72'>  
-                                        <div className="relative">
-                                            <select id="bank_code" name="bank_code" data-vv-as="bank" className="block appearance-none w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white bg-white border-gray-400 focus:ring-indigo-500" onChange={e => filterStocksByCategory(e.target.value)}>
-                                                <option value="All">All</option>
-                                                {stockKeys.map((item: any) => <option value={item}>{item}</option>)}
-                                            </select> 
-                                            
-                                            <div className="pointer-events-none absolute inset-y-0 right-0 hidden items-center px-2 text-gray-700">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" className="fill-current h-4 w-4">
-                                                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path>
-                                                </svg>
-                                            </div>
-                                        </div>
+                                    <div className='w-64'>
+                                        <Select size="large" className='w-full' onChange={e => filterStocksByCategory(e.target.value)} placeholder="Filter">
+                                            <Option value="All">All</Option>
+                                            {stockKeys.map((item: any) => <Option value={item}>{item}</Option>)}
+                                        </Select>
                                     </div>                                    
 
-                                    <div className='w-80'> 
-                                        <div className="relative ml-3 w-full lg:ml-0">
-                                            <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
-                                                <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 text-gray-600">
-                                                    <path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                                </svg>
-                                            </span> 
-                                            
-                                            <input placeholder="Search" className="block rounded-md border border-gray-400 w-full text-gray-900 text-sm placeholder-gray-600 pl-10 pr-4 py-3" />
-                                        </div>
+                                    <div className='w-80'>
+                                        <Search
+                                        placeholder="Search stocks by name"
+                                        allowClear
+                                        enterButton="Search"
+                                        size="large"
+                                        value={searchQuery}
+                                        onSearch={searchForStocks}
+                                        onChange={e => setSearchQuery(e.target.value)}
+                                        />
 
                                         <div className="hidden flex items-center border rounded-lg pr-2 bg-white">
                                             <div className='w-full'>
@@ -406,7 +405,7 @@ const Trade = () => {
                             {/*End*/}
 
                             {/*Pagination section*/}
-                            <div className='mb-30'>
+                            <div className='mb-20'>
                             <Pagination                                
                                 currentPage={currentPage}
                                 totalCount={stocksDataList.length}
