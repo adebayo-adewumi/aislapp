@@ -391,10 +391,10 @@ const Watchlist = () => {
 
                                                     <td className='px-3 py-4 table-border-bottom'>
 
-                                                        <button onClick={displayRemoveStockModal} type='button' className="py-3 px-5 border-0 font-bold text-red-500 cursor-pointer bg-transparent mr-5" data-symbol={item.name}>Remove</button>
+                                                        <button onClick={displayRemoveStockModal} type='button' className="px-3 border-0 font-bold text-red-500 cursor-pointer bg-transparent mr-5" data-symbol={item.name}>Remove</button>
 
                                                         <Link to={"/stock?name=" + item.name + "&symbol=" + item.name + "&sign=" + (item.percentageChangeSinceAdded >= 0 ? 'positive' : 'negative') + "&currentPrice=" + item.currentPrice + "&tradeAction=buy"}>
-                                                            <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
+                                                            <button type='button' className="rounded-lg bg-green-800 py-2 px-3 border-0 font-bold text-white cursor-pointer">View</button></Link>
                                                     </td>
                                                 </tr>
                                             )}
