@@ -1396,28 +1396,16 @@ const Profile = () => {
                                     <div className='card p-10'>
                                         {/* Employee Deatils Success */}
                                         <div className={isEmployeeDetailsSuccessful ? "otp-alert mb-20":"hidden"}>
-                                            <div className="flex otp-validated justify-between space-x-1 pt-3">
+                                            <div className="otp-validated p-3">
                                                 <div className="flex">
-                                                    <div>
-                                                        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062"/>
-                                                            <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062"/>
-                                                        </svg>
-                                                    </div>
 
-                                                    <div className="pt-1 text-sm text-green-900">{apiResponseMessage}</div>
-                                                </div>
-                                                
-                                                <div className="cursor-pointer" onClick={closeModal}>
-                                                    <svg  className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50"/>
-                                                    </svg>
+                                                    <div className="p-1 text-sm text-green-900">{apiResponseMessage}</div>
                                                 </div>
                                             </div>
                                         </div>
                                         {/* End */}
 
-                                        <div className='font-gotham-black-regular text-green-900 text-xl mb-30'>Employment Details</div>
+                                        <div className='font-gotham-black-regular text-green-900 text-xl mb-5'>Employment Details</div>
 
                                         
                                         <div>
@@ -1425,21 +1413,21 @@ const Profile = () => {
                                                 <div className='md:flex md:justify-between md:space-x-10'>
                                                     <div className='md:w-1/2 w-full md:mb-0 mb-11'>
                                                         <div className='text-gray-700 font-bold mb-3 text-sm'>Name of employer</div>
-                                                        <div><input defaultValue={employmentDetails.length > 0 ?employmentDetails[0].employer : ''} onChange={e => setEmployer(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
+                                                        <div><Input size='large' defaultValue={employmentDetails.length > 0 ?employmentDetails[0].employer : ''} onChange={e => setEmployer(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
                                                     </div>
 
                                                     <div className='md:w-1/2 w-full'>
                                                         <div className='text-gray-700 font-bold  mb-3 text-sm'>Profession</div>
-                                                        <div><input defaultValue={employmentDetails.length > 0 ?employmentDetails[0].profession : ''} onChange={e => setProfession(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg outline-white rounded-lg w-full'/></div>
+                                                        <div><Input size='large' defaultValue={employmentDetails.length > 0 ?employmentDetails[0].profession : ''} onChange={e => setProfession(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg outline-white rounded-lg w-full'/></div>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div className='mb-11'>
-                                                <div className='mb-10 text-sm font-bold'>Transaction Pin</div>
+                                                <div className='mb-3 text-sm font-bold'>Transaction Pin</div>
                                                 <div>
                                                     <div>
-                                                        <input type='password' className='input p-3 border-1-d6 outline-white font-bold text-lg' onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
+                                                        <Input size='large' type='password' className='input p-3 border-1-d6 outline-white font-bold text-lg' onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1449,7 +1437,7 @@ const Profile = () => {
                                                     <div className='md:w-1/3 w-full md:mb-0 mb-11'>
                                                         <div className='text-gray-700 mb-3 text-sm font-bold'>Annual Salary Range</div>
                                                         <div>
-                                                            <select onChange={e => setSalary(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
+                                                            <select onChange={e => setSalary(e.target.value)} className='border border-gray-300 px-4 py-3 text-sm text-gray-700 outline-white rounded-lg w-full'>
                                                                 <option value={employmentDetails.length > 0 ? employmentDetails[0].salary : ''}>{employmentDetails.length > 0 ? employmentDetails[0].salary : ''}</option>
 
                                                                 <option value=''>...</option>
@@ -1468,7 +1456,7 @@ const Profile = () => {
                                                     <div className='md:w-1/3 w-full'>
                                                         <div className='text-gray-700 mb-3 text-sm font-bold'>Are you a politically exposed person?</div>
                                                         <div>
-                                                            <select onChange={e => setPolitical(e.target.value)} className='border border-gray-300 px-4 py-3 text-lg text-gray-700 outline-white rounded-lg w-full'>
+                                                            <select onChange={e => setPolitical(e.target.value)} className='border border-gray-300 px-4 py-3 text-sm text-gray-700 outline-white rounded-lg w-full'>
 
                                                                 <option value={employmentDetails.length > 0 ? employmentDetails[0].politicalAffiliation : ''}>{employmentDetails.length > 0 ? employmentDetails[0].politicalAffiliation : ''}</option>
 
@@ -1689,17 +1677,17 @@ const Profile = () => {
                                             <div>
                                                 <div className='text-gray-700 mb-3 text-sm font-bold'>Primary Bank Details</div>
 
-                                                <div className={bankDetails.length === 0 ? 'mb-20 text-gray-500 text-sm':'hidden'}>
+                                                <div className={bankDetails.length === 0 ? 'mb-3 text-gray-500 text-sm':'hidden'}>
                                                     <div>No bank details added</div>
                                                 </div>
 
-                                                <div className={primaryBankDetails.length > 0 ? 'mb-20':'hidden'}>
+                                                <div className={primaryBankDetails.length > 0 ? 'mb-3':'hidden'}>
                                                 {primaryBankDetails.map((item :any, index: any) =>
                                                     <Input className={item.primaryBank ? 'font-bold input px-5 py-3 border-1-d6 outline-white font-bold text-lg':'hidden'} id='bankList' size='large' readOnly value={item.accountName+ " | " +item.bankName +" | "+ item.accountNumber} key={index}/>
                                                 )}
                                                 </div>
 
-                                                <div className={primaryBankDetails.length === 0 && bankDetails.length > 0 ? 'mb-20':'hidden'}>
+                                                <div className={primaryBankDetails.length === 0 && bankDetails.length > 0 ? 'mb-3':'hidden'}>
                                                     <select className='font-bold input px-5 py-3 border-1-d6 outline-white font-bold text-sm'id='bankList' onChange={selectBankDetails}>
                                                         <option value="">Select your primary bank details
                                                         </option>
