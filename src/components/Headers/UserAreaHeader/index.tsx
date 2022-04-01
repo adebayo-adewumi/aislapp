@@ -33,7 +33,7 @@ const UserAreaHeader = () => {
 
     return (
         <Layout>
-            <Header className="header justify-between">
+            <Header className=" justify-between">
                 <div className="logo">
                     <img src={logo} alt="Anchoria Logo" style={{height: '40px'}}/>
                 </div>
