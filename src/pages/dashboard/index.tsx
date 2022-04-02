@@ -689,10 +689,15 @@ const Dashboard = () => {
                         {/* End */}
 
                         {/* Page Loader Section */}
-                        <div className={showPageLoader ? "page-loader-backdrop opacity-90 hidden" : "hidden"}>
-                            <div className='w-96 relative lg:ml-72'>
-                                <div className='absolute top-44pc left-46pt5pc'><img src={AnchoriaIcon} alt="" /></div>
-                                <div className='text-center'><img src={AnchoriaSpinner} alt="" /></div>
+                        <div className={showPageLoader ? "page-loader-backdrop opacity-90" : "hidden"}>
+                            <div className='relative'>
+                                <div className='ml-96 w-1/3 text-center relative'>
+                                    <img src={AnchoriaSpinner} alt="" />
+
+                                    <div className='absolute' style={{left : '15.2rem', top: '5.4rem'}}>
+                                        <img src={AnchoriaIcon} alt="" />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         {/* End */}
