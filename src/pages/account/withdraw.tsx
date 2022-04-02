@@ -278,7 +278,7 @@ const WithdrawFund = () => {
                                     </div>
 
                                     <div className='font-bold'>
-                                        <Link to='/account' className='no-underline text-green-900'>
+                                        <Link to='/account' className='hover:text-green-900 no-underline text-green-900 text-lg'>
                                             <img src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
                                         </Link>
                                     </div>

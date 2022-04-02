@@ -532,7 +532,7 @@ const FundAccount = () => {
                                 </div>
 
                                 <div className=''>                                    
-                                    <Link to='/account' className='text-lg no-underline text-green-900'>
+                                    <Link to='/account' className='hover:text-green-900 text-lg no-underline text-green-900'>
                                         <img src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
                                     </Link>
                                 </div>
