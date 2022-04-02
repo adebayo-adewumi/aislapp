@@ -94,7 +94,7 @@ const Dashboard = () => {
             getAxios(axios).get(url)
                 .then(function (response) {
                     const topmovers = response.data.data.map((el: any, index :any) =>
-                        <div className="card md:w-2/5 w-full md:p-5 px-3 py-3 md:mb-0 mb-3">
+                        <div className="bg-white rounded-lg shadow md:w-2/5 w-full md:p-5 px-3 py-3 md:mb-0 mb-3">
                             <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.stockCode + "&sign=" + (parseFloat(el.percentageChange) >= 0 ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose+"&tradeAction=buy"} className='' key={index}>
                                 <div className="mb-3">
                                     <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt=""/>
@@ -102,6 +102,7 @@ const Dashboard = () => {
 
                                 <div className="flex w-full justify-between space-x-5 md:mb-0 md:text-sm text-xs">
                                     <div className="font-bold text-gray-900 md:text-xs text-xs">{el.stockCode.substring(0, 5)}...</div>
+
                                     <div className="font-bold text-black md:text-xs text-xs">₦ {HelperFunctions.formatCurrencyWithDecimal(el.price)} </div>
                                 </div>
 
@@ -150,7 +151,7 @@ const Dashboard = () => {
 
                     const listTopGainers = takeGainers.map((el: any, index :any) =>
                         <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.stockCode + "&sign=positive&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose+"&tradeAction=buy"} className='' key={index}>
-                            <div className="card mb-3 md:px-3 px-3 py-3">
+                            <div className="bg-white shadow rounded-lg px-3 py-3 mb-3">
                                 <div className="flex justify-between w-full">
                                     <div className="flex md:space-x-5 space-x-3">
                                         <div>
@@ -158,7 +159,7 @@ const Dashboard = () => {
                                         </div>
 
                                         <div className="mt-1">
-                                            <div className="font-bold mb-5 text-black md:text-sm text-xs">{el.stockCode}</div>
+                                            <div className="font-bold mb-3 text-black md:text-sm text-xs">{el.stockCode}</div>
 
                                             <div className="md:mt-3 md:text-sm text-xs text-gray-500 md:block hidden">{el.name.substring(0,15)}...</div>
 
@@ -168,7 +169,7 @@ const Dashboard = () => {
 
                                     <div>
                                         <div className="mt-1">
-                                            <div className="font-bold mb-5 text-black text-right md:text-sm text-xs">₦ {HelperFunctions.formatCurrencyWithDecimal(parseFloat(el.price))}</div>
+                                            <div className="font-bold mb-3 text-black text-right md:text-sm text-xs">₦ {HelperFunctions.formatCurrencyWithDecimal(parseFloat(el.price))}</div>
 
                                             <div className={parseFloat(el.percentageChange) >= 0 ? "mt-3 text-green-500 md:text-sm text-xs" : "text-red-500 mt-3 md:text-sm text-xs"}> { HelperFunctions.formatCurrencyWithDecimal(el.percentageChange.replace('-',''))}%  </div>
                                         </div>
@@ -196,7 +197,7 @@ const Dashboard = () => {
 
                     const listTopLosers = takeLosers.map((item: any, index :any) =>
                         <Link to={"/stock?name=" + item.name + "&sector=" + item.sector + "&symbol=" + item.stockCode + "&sign=negative&change=" + item.change + "&close=" + item.close + "&open=" + item.open + "&high=" + item.high + "&low=" + item.low + "&wkhigh=" + item.weekHigh52 + "&wklow=" + item.weekLow52 + "&volume=" + item.volume + "&mktsegment=" + item.mktSegment + "&pclose=" + item.pclose+"&tradeAction=buy"} className='no-underline' key={index}>
-                            <div className="card mb-3 md:px-3 px-3 py-3">
+                            <div className="bg-white shadow rounded-lg px-3 py-3 mb-3">
                                 <div className="flex justify-between w-full">
                                     <div className="flex md:space-x-5 space-x-3">
                                         <div>
@@ -204,7 +205,7 @@ const Dashboard = () => {
                                         </div>
 
                                         <div className="mt-1">
-                                            <div className="font-bold text-black md:text-sm text-xs mb-5">{item.stockCode}</div>
+                                            <div className="font-bold text-black md:text-sm text-xs mb-3">{item.stockCode}</div>
 
                                             <div className="md:mt-3 text-gray-500 md:text-sm text-xs md:block hidden">{item.name.substring(0,15)}...</div>
 
@@ -214,7 +215,7 @@ const Dashboard = () => {
 
                                     <div>
                                         <div className="mt-1">
-                                            <div className="font-bold text-black mb-5 text-right md:text-sm text-xs">₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
+                                            <div className="font-bold text-black mb-3 text-right md:text-sm text-xs">₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
 
                                             <div className={parseFloat(item.percentageChange) >= 0 ? "mt-3 text-green-500 md:text-sm text-xs" : "text-red-500 mt-3 md:text-sm text-xs"}> { HelperFunctions.formatCurrencyWithDecimal(item.percentageChange.replace('-',''))}%  </div>
                                         </div>
@@ -376,13 +377,13 @@ const Dashboard = () => {
             .then(function (response) {
 
                 const topmovers = response.data.data.map((el: any, index :any) =>
-                    <div className="card md:w-2/5 w-full md:p-5 px-3 py-3 md:mb-0 mb-6" key={index}>
+                    <div className="bg-white rounded-lg shadow md:w-2/5 w-full md:p-5 px-3 py-3 md:mb-0 mb-6" key={index}>
                         <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.stockCode + "&sign=" + (parseFloat(el.percentageChange) >= 0 ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose+"&tradeAction=buy"} className='no-underline' >
-                            <div className="mb-10">
+                            <div className="mb-3">
                             <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" />
                             </div>
 
-                            <div className="flex w-full justify-between space-x-5 mb:mb-10 md:text-sm text-xs">
+                            <div className="flex w-full justify-between space-x-5 mb:mb-3 md:text-sm text-xs">
                                 <div className="font-bold text-gray-900 md:text-xs text-xs">{el.stockCode.substring(0,5)}...</div>
                                 <div className="font-bold text-black md:text-xs text-xs">₦ {HelperFunctions.formatCurrencyWithDecimal(el.price)} </div>
                             </div>
@@ -450,255 +451,253 @@ const Dashboard = () => {
 
             <UserAreaHeader />
 
-            <div>
-                <div className="h-screen flex">
-                    <Sidebar/>
+            <div className="h-screen flex">
+                <Sidebar/>
 
-                    <div className="flex-1 min-w-0 flex flex-col">
-                        <div className='p-10 flex-1 bg-gray-100 overflow-y-auto'>
-                            <div className="md:text-3xl text-xl mb-3">
-                                <span className="font-bold text-green-900">Hello {customer.firstName}</span> 👋🏾
+                <div className="flex-1 min-w-0 flex flex-col">
+                    <div className='px-10 py-24 flex-1 bg-gray-100 overflow-y-auto'>
+                        <div className="md:text-3xl text-xl mb-3">
+                            <span className="font-bold text-green-900">Hello {customer.firstName}</span> 👋🏾
+                        </div>
+
+                        <div className="text-sm font-bold mb-5">
+                            Overview of your account activities
+                        </div>
+
+                        {/* KYC Status Section */}
+                        <div className={JSON.parse(kycStatus).kycLevel === 'Level1' ? '':'hidden'}>
+                            <div className='bg-white p-7 border border-gray-500 rounded-lg updatekyc-bg md:bg-right-bottom shadow'>
+                                <div className='font-bold md:text-2xl text-xl font-gotham-black-regular mb-3'>Update your KYC</div>
+
+                                <div className='mb-3 leading-6 w-full md:w-6/12 text-sm'>Hello {customer.firstName}, as part of our onboarding process you are required to provide some additional information to complete your onboarding</div>
+
+                                <div>
+                                    <Link to="/profile">
+                                        <button className='cursor-pointer border-0 rounded-lg text-white bg-green-900 px-10 py-3'>Update KYC</button>
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                        {/* End */}
+
+                        <div className="md:flex mt-10 md:justify-between md:space-x-5 md:mb-8 mb-5">
+                            <div className="bg-white shadow p-5 rounded-lg md:w-1/2 md:mb-0 mb-6">
+                                <div className="w-full">
+                                    <div className="md:flex md:justify-between w-full">
+                                        <div>
+                                            <div className="mb-3 text-sm">Total Portfolio Balance</div>
+
+                                            <div className="font-bold text-xl font-gotham-black-regular mb-3">
+                                                <img src={WalletIcon} alt="" className='align-middle w-5' /> ₦ <span id='portfolio-balance'>{HelperFunctions.formatCurrencyWithDecimal(totalPortfolioValue)}</span>
+                                                
+                                                <img onClick={togglePortfolioBalanceDisplay} src={HidePasswordIcon} data-placeholder="XXXXXX.XX" data-amount={HelperFunctions.formatCurrencyWithDecimal(totalPortfolioValue)} alt="" width="20" className={isShowPortfolioBalance ? "cursor-pointer align-middle": "hidden"} data-type="portfolio-balance" />
+
+                                                <img onClick={togglePortfolioBalanceDisplay} data-placeholder="XXXXXX.XX" data-amount={HelperFunctions.formatCurrencyWithDecimal(totalPortfolioValue)} src={ShowPasswordIcon} data-type="portfolio-balance" alt="" width="20" className={isShowPortfolioBalance ? "hidden": "cursor-pointer align-middle ml-1"} />
+                                            </div>
+
+                                            <div className='md:mb-0 mb-4'>
+                                                <img src={netPortfolioReturns >= 0 ? ArrowUpIcon : ArrowDownIcon} alt="" width="20" className="align-middle" />
+                                                <span data-placeholder="" className={netPortfolioReturns >= 0 ? "text-green-500 font-bold font-gotham-black-regular mx-2" : "text-red-500 font-bold font-gotham-black-regular mx-2"}>{netPortfolioReturns >= 0 ? HelperFunctions.formatCurrencyWithDecimal(netPortfolioReturns).replace("-","") : HelperFunctions.formatCurrencyWithDecimal(netPortfolioReturns).replace("-","")} | {HelperFunctions.formatCurrencyWithDecimal(netPortfolioReturnsPercentage).replace("-","")}%</span>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <Link to="/portfolio">
+                                                <button className="bg-green-900 rounded-lg border-0 font-bold cursor-pointer p-3 text-white">View Portfolio</button>
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
 
-                            <div className="text-sm font-bold mb-5">
-                                Overview of your account activities
+                            <div className="bg-white shadow p-5 rounded-lg md:w-1/2 md:mb-0 mb-11">
+                                <div className="w-full">
+                                    <div className="md:flex md:justify-between w-full">
+                                        <div>
+                                            <div className="mb-3 text-sm">Total Wallet Balance</div>
+
+                                            <div className="font-bold text-xl font-gotham-black-regular md:mb-0 mb-4">
+                                                <img src={WalletIcon} alt="" className='align-middle w-5'/> ₦ <span id='wallet-balance'>{HelperFunctions.formatCurrencyWithDecimal(walletBalance)} </span>
+                                                
+                                                <img onClick={toggleWalletBalanceDisplay} src={HidePasswordIcon} data-placeholder="XXXXXX.XX" data-amount={HelperFunctions.formatCurrencyWithDecimal(walletBalance)} alt="" width="20" className={isShowWalletBalance ? "cursor-pointer align-middle": "hidden"} data-type="wallet-balance" />
+
+                                                <img onClick={toggleWalletBalanceDisplay} data-placeholder="XXXXXX.XX" data-amount={HelperFunctions.formatCurrencyWithDecimal(walletBalance)} src={ShowPasswordIcon} data-type="wallet-balance" alt="" width="20" className={isShowWalletBalance ? "hidden": "cursor-pointer align-middle ml-1"} />
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <button onClick={showBalanceModal} className="bg-green-900 rounded-lg border-0 font-bold cursor-pointer p-3 text-white">View Balances</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                        </div>
 
-                            {/* KYC Status Section */}
-                            <div className={JSON.parse(kycStatus).kycLevel === 'Level1' ? '':'hidden'}>
-                                <div className='bg-white p-7 border border-gray-500 rounded-lg updatekyc-bg md:bg-right-bottom'>
-                                    <div className='font-bold md:text-2xl text-xl font-gotham-black-regular mb-10'>Update your KYC</div>
+                        {/*Search Section*/}
+                        <div className="flex justify-between mb-0 items-center">
+                            <div>
+                                <div className="font-bold mb-3">Quick links</div>
 
-                                    <div className='mb-20 leading-6 w-full md:w-6/12 text-sm'>Hello {customer.firstName}, as part of our onboarding process you are required to provide some additional information to complete your onboarding</div>
+                                <div className="flex justify-between w-full md:space-x-10 space-x-3">
+                                    <div>
+                                        <Link to="/trade" className='hover:text-green-900  text-green-900'>
+                                            <div className="md:text-center mb-2">
+                                                <button className="bg-green-900 rounded-lg px-4 py-3 border-0 font-bold cursor-pointer text-white" type='button'>
+                                                    <img src={ArrowBidirectionalIcon} alt="" />
+                                                </button>
+                                            </div>
+
+                                            <div className="text-xs md:text-sm font-bold md:text-center md:ml-0">Buy Stocks</div>
+                                        </Link>
+                                    </div>
 
                                     <div>
-                                        <Link to="/profile">
-                                            <button className='cursor-pointer border-0 rounded-lg text-white bg-green-900 px-14 py-4'>Update KYC</button>
+                                        <Link to="/account/fund" className='hover:text-green-900  cursor-pointer text-green-900'>
+                                            <div className="text-center mb-2">
+                                                <button className="bg-green-900 rounded-lg px-4 py-3 border-0 font-bold cursor-pointer text-white">
+                                                    <img src={CommerceIcon} alt="" />
+                                                </button>
+                                            </div>
+
+                                            <div className="text-xs md:text-sm text-center font-bold">Fund Wallet</div>
+                                        </Link>
+                                    </div>
+
+                                    <div>
+                                        <Link to="/account/withdraw" className='hover:text-green-900  cursor-pointer text-green-900'>
+                                            <div className="text-center mb-2">
+                                                <button className="bg-green-900 rounded-lg px-4 py-3 border-0 font-bold cursor-pointer text-white">
+                                                    <img src={ArrowUpWhiteIcon} alt="" />
+                                                </button>
+                                            </div>
+
+                                            <div className="text-xs md:text-sm text-center font-bold">Withdraw Funds</div>
+                                        </Link>
+                                    </div>
+
+                                    <div>
+                                        <Link to="/learn" className='hover:text-green-900 cursor-pointer text-green-900'>
+                                            <div className="text-center mb-2">
+                                                <button className="bg-green-900 rounded-lg px-4 py-3 border-0 font-bold cursor-pointer text-white">
+                                                    <img src={LearnWhiteIcon} alt="" />
+                                                </button>
+                                            </div>
+
+                                            <div className="text-xs md:text-sm font-bold text-center">Learn</div>
                                         </Link>
                                     </div>
                                 </div>
                             </div>
-                            {/* End */}
 
-                            <div className="md:flex mt-10 md:justify-between md:space-x-5 md:mb-8 mb-3">
-                                <div className="card-lg md:w-1/2 md:mb-0 mb-6">
+                            <div className="w-490 hidden">
+                                <div className="items-center flex border_1 rounded-lg pr-3 bg-white w-full">
+                                    <div className="pl-3 py-2"><img src={SearchIcon} alt="" /></div>
+
                                     <div className="w-full">
-                                        <div className="md:flex md:justify-between w-full">
-                                            <div>
-                                                <div className="mb-3 text-sm">Total Portfolio Balance</div>
-
-                                                <div className="font-bold text-xl font-gotham-black-regular mb-3">
-                                                    <img src={WalletIcon} alt="" className='align-middle w-5' /> ₦ <span id='portfolio-balance'>{HelperFunctions.formatCurrencyWithDecimal(totalPortfolioValue)}</span>
-                                                    
-                                                    <img onClick={togglePortfolioBalanceDisplay} src={HidePasswordIcon} data-placeholder="XXXXXX.XX" data-amount={HelperFunctions.formatCurrencyWithDecimal(totalPortfolioValue)} alt="" width="20" className={isShowPortfolioBalance ? "cursor-pointer align-middle": "hidden"} data-type="portfolio-balance" />
-
-                                                    <img onClick={togglePortfolioBalanceDisplay} data-placeholder="XXXXXX.XX" data-amount={HelperFunctions.formatCurrencyWithDecimal(totalPortfolioValue)} src={ShowPasswordIcon} data-type="portfolio-balance" alt="" width="20" className={isShowPortfolioBalance ? "hidden": "cursor-pointer align-middle ml-1"} />
-                                                </div>
-
-                                                <div className='md:mb-0 mb-4'>
-                                                    <img src={netPortfolioReturns >= 0 ? ArrowUpIcon : ArrowDownIcon} alt="" width="20" className="align-middle" />
-                                                    <span data-placeholder="" className={netPortfolioReturns >= 0 ? "text-green-500 font-bold font-gotham-black-regular mx-2" : "text-red-500 font-bold font-gotham-black-regular mx-2"}>{netPortfolioReturns >= 0 ? HelperFunctions.formatCurrencyWithDecimal(netPortfolioReturns).replace("-","") : HelperFunctions.formatCurrencyWithDecimal(netPortfolioReturns).replace("-","")} | {HelperFunctions.formatCurrencyWithDecimal(netPortfolioReturnsPercentage).replace("-","")}%</span>
-                                                </div>
-                                            </div>
-
-                                            <div>
-                                                <Link to="/portfolio">
-                                                    <button className="button font-bold mt-2">View Portfolio</button>
-                                                </Link>
-                                            </div>
-                                        </div>
+                                        <input type="text" className="outline-white input p-2 w-full border-0" placeholder="Type the name of a stock and hit Enter" onChange={e => setSearchQuery(e.target.value)} onKeyDown={searchForStocks} value={searchQuery} />
                                     </div>
-
                                 </div>
 
-                                <div className="card-md md:w-1/2 md:mb-0 mb-11">
-                                    <div className="w-full">
-                                        <div className="md:flex md:justify-between w-full">
-                                            <div>
-                                                <div className="mb-3 text-sm">Total Wallet Balance</div>
-
-                                                <div className="font-bold text-xl font-gotham-black-regular md:mb-0 mb-4">
-                                                    <img src={WalletIcon} alt="" className='align-middle w-5'/> ₦ <span id='wallet-balance'>{HelperFunctions.formatCurrencyWithDecimal(walletBalance)} </span>
-                                                    
-                                                    <img onClick={toggleWalletBalanceDisplay} src={HidePasswordIcon} data-placeholder="XXXXXX.XX" data-amount={HelperFunctions.formatCurrencyWithDecimal(walletBalance)} alt="" width="20" className={isShowWalletBalance ? "cursor-pointer align-middle": "hidden"} data-type="wallet-balance" />
-
-                                                    <img onClick={toggleWalletBalanceDisplay} data-placeholder="XXXXXX.XX" data-amount={HelperFunctions.formatCurrencyWithDecimal(walletBalance)} src={ShowPasswordIcon} data-type="wallet-balance" alt="" width="20" className={isShowWalletBalance ? "hidden": "cursor-pointer align-middle ml-1"} />
-                                                </div>
-                                            </div>
-
-                                            <div>
-                                                <button onClick={showBalanceModal} className="button font-bold mt-2">View Balances</button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div className="flex justify-between space-x-2 text-12 h-1/3 hidden">
+                                    <div className="quick-search">FCMG</div>
+                                    <div className="quick-search">Healthcare</div>
+                                    <div className="quick-search">Oil & Gas</div>
+                                    <div className="quick-search">Technology</div>
+                                    <div className="quick-search">Energy</div>
                                 </div>
                             </div>
+                        </div>
+                        {/* End */}
 
-                            {/*Search Section*/}
-                            <div className="flex justify-between mb-0 items-center">
+                        <div className="border-bottom-1d my-10"></div>
+
+                        {/*Top Gainers and Losers Section */}
+                        <div className="md:flex w-full md:space-x-10 mb-16">
+                            {/*Top gainers section */}
+                            <div className="w-full md:mb-0 mb-3">
+                                <div className="flex justify-between w-full mb-3">
+                                    <div className="font-bold md:text-sm text-xs">Top Gainers</div>
+                                    <div onClick={showTopGainerModal} className="cursor-pointer text-green-900 md:text-sm text-xs">
+                                        See More
+                                    </div>
+                                </div>
+
                                 <div>
-                                    <div className="font-bold">Quick links</div>
-
-                                    <div className="flex justify-between w-full md:space-x-10 space-x-3">
-                                        <div>
-                                            <Link to="/trade" className=' text-green-900'>
-                                                <div className="md:text-center">
-                                                    <button className="button-xsm cursor-pointer" type='button'>
-                                                        <img src={ArrowBidirectionalIcon} alt="" />
-                                                    </button>
-                                                </div>
-
-                                                <div className="text-xs md:text-sm font-bold md:text-center md:ml-0">Buy Stocks</div>
-                                            </Link>
-                                        </div>
-
-                                        <div>
-                                            <Link to="/account/fund" className='cursor-pointer text-green-900'>
-                                                <div className="text-center">
-                                                    <button className="cursor-pointer button-xsm">
-                                                        <img src={CommerceIcon} alt="" />
-                                                    </button>
-                                                </div>
-
-                                                <div className="text-xs md:text-sm text-center font-bold">Fund Wallet</div>
-                                            </Link>
-                                        </div>
-
-                                        <div>
-                                            <Link to="/account/withdraw" className='cursor-pointer text-green-900'>
-                                                <div className="text-center">
-                                                    <button className="cursor-pointer button-xsm">
-                                                        <img src={ArrowUpWhiteIcon} alt="" />
-                                                    </button>
-                                                </div>
-
-                                                <div className="text-xs md:text-sm text-center font-bold">Withdraw Funds</div>
-                                            </Link>
-                                        </div>
-
-                                        <div>
-                                            <Link to="/learn" className='cursor-pointer text-green-900'>
-                                                <div className="text-center">
-                                                    <button className="cursor-pointer button-xsm">
-                                                        <img src={LearnWhiteIcon} alt="" />
-                                                    </button>
-                                                </div>
-
-                                                <div className="text-xs md:text-sm font-bold text-center">Learn</div>
-                                            </Link>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="w-490 hidden">
-                                    <div className="items-center flex border_1 rounded-lg pr-3 bg-white w-full">
-                                        <div className="pl-3 py-2"><img src={SearchIcon} alt="" /></div>
-
-                                        <div className="w-full">
-                                            <input type="text" className="outline-white input p-2 w-full border-0" placeholder="Type the name of a stock and hit Enter" onChange={e => setSearchQuery(e.target.value)} onKeyDown={searchForStocks} value={searchQuery} />
-                                        </div>
-                                    </div>
-
-                                    <div className="flex justify-between space-x-2 text-12 h-1/3 hidden">
-                                        <div className="quick-search">FCMG</div>
-                                        <div className="quick-search">Healthcare</div>
-                                        <div className="quick-search">Oil & Gas</div>
-                                        <div className="quick-search">Technology</div>
-                                        <div className="quick-search">Energy</div>
-                                    </div>
+                                    <div className={topGainersApiResponseSuccess ? 'hidden' : 'text-sm text-gray-400'}>Nothing to display</div>
+                                    {topGainersList}
                                 </div>
                             </div>
-                            {/* End */}
+                            {/*end */}
 
-                            <div className="border-bottom-1d my-10"></div>
-
-                            {/*Top Gainers and Losers Section */}
-                            <div className="md:flex w-full md:space-x-10 mb-16">
-                                {/*Top gainers section */}
-                                <div className="w-full md:mb-0 mb-3">
-                                    <div className="flex justify-between w-full mb-3">
-                                        <div className="font-bold md:text-sm text-xs">Top Gainers</div>
-                                        <div onClick={showTopGainerModal} className="cursor-pointer font-bold text-green-900 md:text-sm text-xs">
-                                            See More
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <div className={topGainersApiResponseSuccess ? 'hidden' : 'text-sm text-gray-400'}>Nothing to display</div>
-                                        {topGainersList}
-                                    </div>
-                                </div>
-                                {/*end */}
-
-                                {/*Top losers section */}
-                                <div className="w-full">
-                                    <div className="flex justify-between w-full mb-3">
-                                        <div className="font-bold md:text-sm text-xs">Top Losers</div>
-                                        <div onClick={showTopLoserModal} className="cursor-pointer font-bold text-green-900 md:text-sm text-xs">See More</div>
-                                    </div>
-
-                                    <div>
-                                        <div className={topLosersApiResponseSuccess ? 'hidden' : 'text-sm text-gray-400'}>Nothing to display</div>
-                                        {topLosersList}
-                                    </div>
-                                </div>
-                                {/*end */}
-                            </div>
-                            {/*End */}
-
-                            {/* Top Movers Section */}
-                            <div className='mb-16'>
-                                <div className="mb-3">
-                                    <div className="text-green-900 font-bold mb-3 md:text-sm text-xs">Top Movers</div>
-
-                                    <div className="bg-white flex md:justify-between md:w-96 w-60 rounded-lg p-1" style={{border: '1px solid rgb(209 213 219)'}}>
-                                        <div className='text-sm w-1/2'>
-                                            <button data-value="value" type='button' className={byValueActive ? "rounded-lg bg-green-900 text-white border-0 py-3 md:px-12 px-5 font-bold cursor-pointer w-full" : "cursor-pointer rounded-lg py-3 md:px-12 px-5 font-bold border-0 bg-transparent w-full"} onClick={getTopMovers}>By Value</button>
-                                        </div>
-
-                                        <div className='text-sm w-1/2'>
-                                            <button data-value="volume" type='button' className={byVolumeActive ? "rounded-lg bg-green-900 text-white border-0 py-3 md:px-12 px-5 font-bold cursor-pointer w-full" : "cursor-pointer rounded-lg py-3 md:px-12 px-5 font-bold border-0 bg-transparent w-full"} onClick={getTopMovers}>By Volume</button>
-                                        </div>
-                                    </div>
+                            {/*Top losers section */}
+                            <div className="w-full">
+                                <div className="flex justify-between w-full mb-3">
+                                    <div className="font-bold md:text-sm text-xs">Top Losers</div>
+                                    <div onClick={showTopLoserModal} className="cursor-pointer text-green-900 md:text-sm text-xs">See More</div>
                                 </div>
 
-                                <div className="w-full mb-3">
-                                    <div className={topMoversApiResponseSuccess ? 'hidden' : 'text-sm text-gray-400'}>Nothing to display</div>
-
-                                    <div className={topMoversApiResponseSuccess ? "md:flex md:justify-between md:space-x-5 md:overflow-x-scroll md:pr-12" : "hidden"}>
-                                        {topMoversList}
-                                    </div>
+                                <div>
+                                    <div className={topLosersApiResponseSuccess ? 'hidden' : 'text-sm text-gray-400'}>Nothing to display</div>
+                                    {topLosersList}
                                 </div>
                             </div>
-                            {/* End */}
+                            {/*end */}
+                        </div>
+                        {/*End */}
 
-
-                            {/* News Section */}
-                            <div className="flex justify-between font-bold mb-3">
-                                <div className="font-gotham-black-regular md:text-lg text-sm">News and Insights</div>
-                                <Link to="/news" className=''><div className="text-green-900 text-sm">See More</div></Link>
-                            </div>
-
+                        {/* Top Movers Section */}
+                        <div className='mb-16'>
                             <div className="mb-3">
-                                <div className={newsApiResponseSuccess ? 'hidden' : 'text-sm text-gray-400'}>Nothing to display</div>
+                                <div className="text-green-900 font-bold mb-3 md:text-sm text-xs">Top Movers</div>
 
-                                <div className="md:flex news-section md:justify-between md:space-x-10 w-full">
-                                    {newsList}
+                                <div className="bg-white flex md:justify-between md:w-96 w-60 rounded-lg p-1" style={{border: '1px solid rgb(209 213 219)'}}>
+                                    <div className='text-sm w-1/2'>
+                                        <button data-value="value" type='button' className={byValueActive ? "rounded-lg bg-green-900 text-white border-0 py-3 md:px-12 px-5 font-bold cursor-pointer w-full" : "cursor-pointer rounded-lg py-3 md:px-12 px-5 font-bold border-0 bg-transparent w-full"} onClick={getTopMovers}>By Value</button>
+                                    </div>
+
+                                    <div className='text-sm w-1/2'>
+                                        <button data-value="volume" type='button' className={byVolumeActive ? "rounded-lg bg-green-900 text-white border-0 py-3 md:px-12 px-5 font-bold cursor-pointer w-full" : "cursor-pointer rounded-lg py-3 md:px-12 px-5 font-bold border-0 bg-transparent w-full"} onClick={getTopMovers}>By Volume</button>
+                                    </div>
                                 </div>
                             </div>
-                            {/* End */}
 
-                            {/* Page Loader Section */}
-                            <div className={showPageLoader ? "page-loader-backdrop opacity-90 hidden" : "hidden"}>
-                                <div className='w-96 relative lg:ml-72'>
-                                    <div className='absolute top-44pc left-46pt5pc'><img src={AnchoriaIcon} alt="" /></div>
-                                    <div className='text-center'><img src={AnchoriaSpinner} alt="" /></div>
+                            <div className="w-full mb-3">
+                                <div className={topMoversApiResponseSuccess ? 'hidden' : 'text-sm text-gray-400'}>Nothing to display</div>
+
+                                <div className={topMoversApiResponseSuccess ? "md:flex md:justify-between md:space-x-5 md:overflow-x-scroll md:pr-12" : "hidden"}>
+                                    {topMoversList}
                                 </div>
                             </div>
-                            {/* End */}
+                        </div>
+                        {/* End */}
+
+
+                        {/* News Section */}
+                        <div className="flex justify-between font-bold mb-3">
+                            <div className="font-gotham-black-regular md:text-lg text-sm">News and Insights</div>
+                            <Link to="/news" className=''><div className="text-green-900 text-sm">See More</div></Link>
                         </div>
 
+                        <div className="mb-3">
+                            <div className={newsApiResponseSuccess ? 'hidden' : 'text-sm text-gray-400'}>Nothing to display</div>
+
+                            <div className="md:flex news-section md:justify-between md:space-x-10 w-full">
+                                {newsList}
+                            </div>
+                        </div>
+                        {/* End */}
+
+                        {/* Page Loader Section */}
+                        <div className={showPageLoader ? "page-loader-backdrop opacity-90 hidden" : "hidden"}>
+                            <div className='w-96 relative lg:ml-72'>
+                                <div className='absolute top-44pc left-46pt5pc'><img src={AnchoriaIcon} alt="" /></div>
+                                <div className='text-center'><img src={AnchoriaSpinner} alt="" /></div>
+                            </div>
+                        </div>
+                        {/* End */}
                     </div>
+
                 </div>
             </div>
 
@@ -738,7 +737,7 @@ const Dashboard = () => {
                         </div>
 
                         <div className="wallet-balance-card mb-3">
-                            <div className="italic text-green-950 mb-2">Reserved Balance</div>
+                            <div className="italic text-red-500 mb-2">Reserved Balance</div>
                             <div className="font-bold text-xl text-white mb-2">
                                 <svg width="19" height="20" viewBox="0 0 21 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M20.1787 6.06096C20.6317 6.06096 20.9989 5.67627 20.9989 5.20171V4.2995C20.9989 1.92875 19.1578 0 16.8948 0C16.8948 0 4.03797 0.00201923 4.00627 0.00592881C2.92406 0.0455401 1.88451 0.532046 1.13519 1.3546C0.36712 2.1977 -0.0332975 3.29427 0.00439032 4.44802C0.00283195 4.46989 0.00201176 16.8412 0.00201176 16.8412C0.00201176 19.6858 2.21103 22 4.92627 22H16.8948C19.1578 22 20.9989 20.0712 20.9989 17.7005V11.1767C20.9989 8.806 19.1578 6.87724 16.8948 6.87724H4.10292C2.78607 6.87724 1.70645 5.79898 1.64506 4.42246C1.61385 3.72252 1.85421 3.05437 2.3218 2.54105C2.79616 2.02035 3.46236 1.72176 4.14951 1.72176C4.17375 1.72176 16.8947 1.71849 16.8947 1.71849C18.2532 1.71849 19.3584 2.87633 19.3584 4.2995V5.20171C19.3585 5.67627 19.7257 6.06096 20.1787 6.06096ZM4.10292 8.59574H16.8948C18.2533 8.59574 19.3585 9.75358 19.3585 11.1767V17.7005C19.3585 19.1237 18.2533 20.2815 16.8948 20.2815H4.92627C3.11554 20.2815 1.64239 18.7382 1.64239 16.8412V7.73997C2.3284 8.27829 3.18078 8.59574 4.10292 8.59574ZM17.7181 14.4386C17.7181 15.0318 17.2591 15.5127 16.6929 15.5127C15.3329 15.4561 15.3333 13.4209 16.6929 13.3646C17.2591 13.3646 17.7181 13.8454 17.7181 14.4386ZM17.7181 4.2995C17.7181 3.82494 17.3509 3.44025 16.8979 3.44025H4.10297C3.01474 3.48562 3.01556 5.11377 4.10297 5.15875H16.8979C17.3509 5.15875 17.7181 4.77406 17.7181 4.2995Z" fill="white"/>
@@ -754,7 +753,7 @@ const Dashboard = () => {
             <div className={showTopGainer ? 'generic-modal' : 'hidden'}>
                 <div className='generic-modal-dialog'>
                     <div className="top-gainers-modal">
-                        <div className="mb-10 flex justify-between">
+                        <div className="mb-3 flex justify-between">
                             <div className="font-bold text-25">Top Gainers</div>
 
                             <div onClick={closeModal}>
@@ -762,27 +761,26 @@ const Dashboard = () => {
                             </div>
                         </div>
 
-                        <div className="border-1 mb-30"></div>
-
-                        <div className='overflow-y-auto max-h-96 p-5'>
+                        <div className='overflow-y-auto max-h-96'>
                             {topGainersSeeMore.map((item: any, index :any) =>
-                                <Link to={"/stock?name=" + item.name + "&sector=" + item.sector + "&symbol=" + item.stockCode + "&sign=positive&change=" + item.change + "&close=" + item.close + "&open=" + item.open + "&high=" + item.high + "&low=" + item.low + "&wkhigh=" + item.weekHigh52 + "&wklow=" + item.weekLow52 + "&volume=" + item.volume + "&mktsegment=" + item.mktSegment + "&pclose=" + item.pclose+"&tradeAction=buy"} className='no-underline' key={index}>
-                                    <div className="card mb-30 p-3">
+                                <Link to={"/stock?name=" + item.name + "&sector=" + item.sector + "&symbol=" + item.stockCode + "&sign=positive&change=" + item.change + "&close=" + item.close + "&open=" + item.open + "&high=" + item.high + "&low=" + item.low + "&wkhigh=" + item.weekHigh52 + "&wklow=" + item.weekLow52 + "&volume=" + item.volume + "&mktsegment=" + item.mktSegment + "&pclose=" + item.pclose+"&tradeAction=buy"} className='no-underline text-black hover:text-green-900' key={index}>
+                                    <div className="card p-3">
                                         <div className="flex justify-between w-full">
                                             <div className="flex space-x-5">
                                                 <div>
                                                 <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" />
                                                 </div>
 
-                                                <div className="mt-1">
-                                                    <div className="font-bold text-color-2 mb-5 text-sm">{item.stockCode}</div>
+                                                <div className="">
+                                                    <div className="font-bold mb-3 text-sm">{item.stockCode}</div>
+
                                                     <div className="mt-3 text-black text-sm">{item.name.substring(0,16)}...</div>
                                                 </div>
                                             </div>
 
                                             <div>
-                                                <div className="mt-1">
-                                                    <div className="font-bold text-color-2 mb-5 text-right">₦ {HelperFunctions.formatCurrencyWithDecimal(parseFloat(item.price))}</div>
+                                                <div className="">
+                                                    <div className="font-bold text-color-2 mb-3 text-right">₦ {HelperFunctions.formatCurrencyWithDecimal(parseFloat(item.price))}</div>
                                                     <div className={(parseFloat(item.price) - parseFloat(item.lclose)) >= 0 ? "mt-3 text-green-500" : "text-red-500 mt-3"}> { HelperFunctions.formatCurrencyWithDecimal(item.percentageChange)}%  </div>
                                                 </div>
                                             </div>
@@ -798,7 +796,7 @@ const Dashboard = () => {
             <div className={showTopLoser ? "generic-modal" : "hidden"}>
                 <div className='generic-modal-dialog'>
                     <div className="top-losers-modal">
-                        <div className="mb-10 flex justify-between">
+                        <div className="mb-3 flex justify-between">
                             <div className="font-bold text-25">Top Losers</div>
 
                             <div onClick={closeModal}>
@@ -806,11 +804,9 @@ const Dashboard = () => {
                             </div>
                         </div>
 
-                        <div className="border-1 mb-30"></div>
-
-                        <div className='overflow-y-auto max-h-96 p-5'>
+                        <div className='overflow-y-auto max-h-96'>
                             {topLosersSeeMore.map((item: any, index :any) =>
-                                <Link to={"/stock?name=" + item.name + "&sector=" + item.sector + "&symbol=" + item.stockCode + "&sign=negative&change=" + item.change + "&close=" + item.close + "&open=" + item.open + "&high=" + item.high + "&low=" + item.low + "&wkhigh=" + item.weekHigh52 + "&wklow=" + item.weekLow52 + "&volume=" + item.volume + "&mktsegment=" + item.mktSegment + "&pclose=" + item.pclose+"&tradeAction=buy"} className='no-underline' key={index}>
+                                <Link to={"/stock?name=" + item.name + "&sector=" + item.sector + "&symbol=" + item.stockCode + "&sign=negative&change=" + item.change + "&close=" + item.close + "&open=" + item.open + "&high=" + item.high + "&low=" + item.low + "&wkhigh=" + item.weekHigh52 + "&wklow=" + item.weekLow52 + "&volume=" + item.volume + "&mktsegment=" + item.mktSegment + "&pclose=" + item.pclose+"&tradeAction=buy"} className='no-underline text-black hover:text-green-900' key={index}>
                                     <div className="card mb-30 p-3">
                                         <div className="flex justify-between w-full">
                                             <div className="flex space-x-5">
@@ -818,15 +814,16 @@ const Dashboard = () => {
                                                 <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" />
                                                 </div>
 
-                                                <div className="mt-1">
-                                                    <div className="font-bold text-color-2 mb-5 text-sm">{item.stockCode}</div>
+                                                <div className="">
+                                                    <div className="font-bold mb-3 text-sm">{item.stockCode}</div>
                                                     <div className="mt-3 text-black text-sm">{item.name.substring(0,16)}...</div>
                                                 </div>
                                             </div>
 
                                             <div>
-                                                <div className="mt-1">
-                                                    <div className="font-bold text-color-2 mb-5 text-right">₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
+                                                <div className="">
+                                                    <div className="font-bold mb-3 text-right">₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
+
                                                     <div className={((parseFloat(item.price) - parseFloat(item.lclose))) >= 0 ? "mt-3 text-green-500" : "text-red-500 mt-3"}> { HelperFunctions.formatCurrencyWithDecimal(item.percentageChange.replace('-',''))}%  </div>
                                                 </div>
                                             </div>
@@ -839,7 +836,7 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            <div className={showModalBG ? "modal-backdrop opacity-40" : "modal-backdrop opacity-40 hidden"}>
+            <div className={showModalBG ? "modal-backdrop opacity-40" : "hidden"}>
             </div>
         </div>
     );
