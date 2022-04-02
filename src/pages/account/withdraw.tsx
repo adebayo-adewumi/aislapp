@@ -15,7 +15,7 @@ import { portfolioServiceBaseUrlUrl, walletAndAccountServiceBaseUrl } from '../.
 const WithdrawFund = () => {
     document.title = "Withdraw Funds - Anchoria";
 
-    const [showAmount, setShowAmount] = useState('');
+    const [showAmount, setShowAmount] = useState('0.00');
     const [showWithdraw, setShowWithdraw] = useState<boolean>(true);
     const [showWithdrawSummary, setShowWithdrawSummary] = useState<boolean>(false);
     const [showSuccess, setShowSuccess] = useState<boolean>(false);
@@ -269,22 +269,22 @@ const WithdrawFund = () => {
                         <div className='m-auto w-1/2 pt-12'>
 
                             {/*Withdraw Funds Header */}
-                            <div className={showWithdraw ? "flex justify-between mb-5" : 'hidden'} style={{ width: '35rem' }}>
+                            <div className={showWithdraw ? "flex justify-between mb-5 items-center" : 'hidden'} style={{ width: '40rem' }}>
                                 <div>
                                     <div className="text-3xl text-green-900 font-bold mb-3">Withdraw Funds</div>
                                     <div className="mb-3">Confirm bank and amount below</div>
                                 </div>
 
-                                <div className='font-bold'>
+                                <div className=''>
                                     <Link to='/account' className='hover:text-green-900 no-underline text-green-900 text-lg'>
-                                        <img src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
+                                        <img src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" width={20}/> Back
                                     </Link>
                                 </div>
                             </div>
                             {/*End*/}
 
                             {/*Withdraw Summary Header */}
-                            <div className={showWithdrawSummary ? "flex justify-between mb-30" : "hidden"} style={{ width: '35rem' }}>
+                            <div className={showWithdrawSummary ? "flex justify-between mb-30" : "hidden"} style={{ width: '40rem' }}>
                                 <div>
                                     <div className="text-3xl text-green-900 font-gotham-black-regular font-bold mb-10">Withdrawal Summary</div>
                                 </div>
@@ -299,7 +299,7 @@ const WithdrawFund = () => {
 
                             
 
-                            <div className='mb-3 rounded-lg border bg-white p-10' style={{ width: '35rem' }}>
+                            <div className='mb-3 rounded-lg border bg-white p-10' style={{ width: '40rem' }}>
                                 {/* Withdraw Section */}
                                 <div className={showWithdraw ? 'amount-section' : 'hidden'}>
                                     <div>
@@ -329,11 +329,11 @@ const WithdrawFund = () => {
 
                                         <div className='mb-3 flex'>
                                             <div>
-                                                <input type='text' readOnly className='input-custom w-20 font-gotham-black-regular font-black text-4xl text-center rounded-l-lg py-5 pl-5 border' placeholder='₦' />
+                                                <input type='text' readOnly className='input-custom w-20 font-black text-xl text-center rounded-l-lg py-3 pl-5 border' placeholder='₦' />
                                             </div>
 
                                             <div className='w-full'>
-                                                <input type='text' onChange={delineateAmount} className='w-full border font-black text-4xl py-5 px-5 outline-white rounded-r-lg ' data-type="currency" placeholder='0.00' value={showAmount} pattern="^\d{1,3}(,\d{3})*(\.\d+)?$"/>
+                                                <input type='text' onChange={delineateAmount} className='w-full border font-black text-xl py-3 px-3 outline-white rounded-r-lg ' data-type="currency" placeholder='0.00' value={showAmount} pattern="^\d{1,3}(,\d{3})*(\.\d+)?$"/>
                                             </div>
                                         </div>
 
