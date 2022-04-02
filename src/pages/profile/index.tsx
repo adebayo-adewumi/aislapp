@@ -289,8 +289,8 @@ const Profile = () => {
             { headers })
             .then(function (response) {
                 let logs = response.data.data.sort(compareNotificationLogsDate).map((item :any, index :any) =>
-                <div className={item.readFlag ? 'p-5 md:space-x-20  md:justify-between md:items-center md:flex border-bottom-1d cursor-pointer':'p-5 cursor-pointer md:space-x-20  md:justify-between md:flex border-bottom-1d bg-gray-100 md:items-center'} key={index} data-id={item.id}>
-                    <div className='rounded-full bg-B9F1B4 px-3 shadow-sm py-3 md:mb-0 mb-3 md:w-fit w-12' data-id={item.id}>
+                <div className={item.readFlag ? 'p-5 md:space-x-20  md:justify-between md:items-center md:flex cursor-pointer bg-gray-200':'p-5 cursor-pointer md:space-x-20  md:justify-between md:flex  bg-white md:items-center'} key={index} data-id={item.id}>
+                    <div className='rounded-full bg-green-100 px-3 shadow-sm py-3 md:mb-0 mb-3 md:w-fit w-12' data-id={item.id}>
                         <img src={BellIcon}  alt="" data-id={item.id}/>
                     </div>
 
@@ -300,12 +300,12 @@ const Profile = () => {
 
                     <div className='relative flex-1 md:mb-0 mb-3' data-id={item.id}>
                         <div data-id={item.id}>
-                            <button className='rounded-lg border-0 py-2 px-3 text-sm' style={{backgroundColor: '#B9F1B4'}} data-id={item.id}>
+                            <button className='rounded-lg bg-green-100 border-0 py-2 px-3 text-sm' data-id={item.id}>
                             {item.subject}</button> 
                         </div>
                     </div>
                     
-                    <div className={item.readFlag ? '':'font-bold text-sm'} data-id={item.id}>{moment(item.createdOn).format("MMM Do, YYYY hh:mm A")}</div>
+                    <div className={item.readFlag ? '':'text-sm'} data-id={item.id}>{moment(item.createdOn).format("MMM Do, YYYY hh:mm A")}</div>
 
                     <div data-id={item.id}>
                         <button onClick={displayNotificationDetailModal} type="button" className='cursor-pointer px-5 py-3 text-green-700 font-bold rounded-lg hover:bg-gray-300 border-0 hidden' data-id={item.id}>View</button>
@@ -1079,15 +1079,15 @@ const Profile = () => {
                                 <div className='mb-11 md:flex md:justify-between md:items-center'>
                                     <div className="bg-white md:flex rounded-lg p-1 md:w-1/2 w-full md:mb-0 mb-6" style={{border: '1px solid rgb(209 213 219)'}}>
                                         <div className='w-full'>
-                                            <button onClick={performSwitchToKYC} type='button' className={switchToKYC ? "rounded-lg bg-green-900 text-white border-0 px-5 py-3 font-bold cursor-pointer lg:text-xs w-full":"cursor-pointer rounded-lg py-3 px-5 font-bold border-0 bg-transparent lg:text-xs w-full"}>KYC Details</button>
+                                            <button onClick={performSwitchToKYC} type='button' className={switchToKYC ? "rounded-lg bg-green-900 text-white border-0 px-5 py-2 font-bold cursor-pointer lg:text-xs w-full":"cursor-pointer rounded-lg py-2 px-5 font-bold border-0 bg-transparent lg:text-xs w-full"}>KYC Details</button>
                                         </div>
 
                                         <div className='w-full'>
-                                            <button onClick={performSwitchToSecurity} type='button' className={switchToSecurity ? "rounded-lg bg-green-900 text-white border-0 py-3 px-5 font-bold cursor-pointer lg:text-xs w-full":"cursor-pointer rounded-lg py-3 px-5 font-bold border-0 bg-transparent lg:text-xs w-full"}>Security</button>
+                                            <button onClick={performSwitchToSecurity} type='button' className={switchToSecurity ? "rounded-lg bg-green-900 text-white border-0 py-2 px-5 font-bold cursor-pointer lg:text-xs w-full":"cursor-pointer rounded-lg py-2 px-5 font-bold border-0 bg-transparent lg:text-xs w-full"}>Security</button>
                                         </div>
 
                                         <div className='w-full'>
-                                            <button onClick={performSwitchToNotification}  type='button' className={switchToNotification ? "rounded-lg bg-green-900 text-white border-0 py-3 px-5 font-bold cursor-pointer w-full":"cursor-pointer rounded-lg py-3 px-5 font-bold border-0 bg-transparent lg:text-xs w-full"}>Notification</button>
+                                            <button onClick={performSwitchToNotification}  type='button' className={switchToNotification ? "rounded-lg bg-green-900 text-white border-0 py-2 px-5 font-bold cursor-pointer w-full":"cursor-pointer rounded-lg py-2 px-5 font-bold border-0 bg-transparent lg:text-xs w-full"}>Notification</button>
                                         </div>
                                     </div>
 
@@ -1657,7 +1657,7 @@ const Profile = () => {
                                         {/* End */}
 
                                         <div className='text-xl text-green-900 mb-3'>Bank Details</div>
-                                        <div className='font-bold text-green-900 mb-6 text-sm'>Proceeds from your stock sales would be deposited into this account</div>
+                                        <div className=' text-green-900 mb-6 text-sm'>Proceeds from your stock sales would be deposited into this account (commercial banks only)</div>
 
                                         <div>
                                             <div>
@@ -1705,54 +1705,36 @@ const Profile = () => {
                             {/*End */}
 
                             {/*Security section */}
-                            <div className={switchToSecurity ? 'mb-30':'hidden'}>
+                            <div className={switchToSecurity ? 'mb-3':'hidden'}>
 
                                 {/*Change Password */}
-                                <div className='card p-10 mb-11'>
+                                <div className='bg-white rounded-lg shadow px-10 py-5 mb-8'>
                                     {/* Change Password Success */}
-                                    <div className={isPasswordChangeSuccessful === 'true' ? "otp-alert mb-20":"hidden"}>
-                                        <div className="flex otp-validated justify-between space-x-1 pt-3">
+                                    <div className={isPasswordChangeSuccessful === 'true' ? "otp-alert mb-3":"hidden"}>
+                                        <div className="flex otp-validated justify-between space-x-1">
                                             <div className="flex">
-                                                <div>
-                                                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062"/>
-                                                        <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062"/>
-                                                    </svg>
-                                                </div>
-
-                                                <div className="pt-1 text-sm text-green-900">{apiResponseMessage}</div>
+                                                <div className="text-sm text-green-900">{apiResponseMessage}</div>
                                             </div>
                                             
-                                            <div className="cursor-pointer" onClick={closeModal}>
-                                                <svg  className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50"/>
-                                                </svg>
-                                            </div>
                                         </div>
                                     </div>
                                     {/* End */}
 
                                     {/* Change Password Error */}
-                                    <div className={isPasswordChangeSuccessful === 'false' ? "error-alert mb-20":"hidden" }>
+                                    <div className={isPasswordChangeSuccessful === 'false' ? "error-alert mb-3":"hidden" }>
                                         <div className="flex justify-between space-x-1">
                                             <div className="flex items-center">
-                                                <div className='pt-2'>
-                                                    <svg width="20" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
-                                                    </svg>
-                                                </div>
-
                                                 <div className="text-sm">{apiResponseMessage}</div>
                                             </div>
                                         </div>
                                     </div>
                                     {/* End */}
 
-                                    <div className='font-gotham-black-regular text-green-900 text-xl mb-2'>Change Password</div>
+                                    <div className=' text-green-900 text-xl mb-3'>Change Password</div>
 
                                     {/* Generate OTP Section */}
                                     <div className={showGeneratePasswordOTPCard ? '':'hidden'}>
-                                        <div className='font-bold text-sm mb-7'>Click the button below to send OTP to your registered email.</div>
+                                        <div className='text-sm mb-5'>Click the button below to send OTP to your registered email.</div>
 
                                         <div className='mb-3 text-sm font-bold hidden'>Email: </div>
                                         <div className='w-full mb-6 hidden'>
@@ -1769,23 +1751,23 @@ const Profile = () => {
 
                                     {/* Enter Password Section */}
                                     <div className={showEnterPasswordCard ? '':'hidden'}>
-                                        <div className="w-full mb-11">
+                                        <div className="w-full mb-8">
                                             <div className="mb-3 text-sm font-bold mt-6">Enter OTP</div>
                                             
-                                            <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
+                                            <div className='flex w-full items-center justify-between rounded-lg '>
                                                 <div className='w-full'>
-                                                    <input value={otp} onChange={e => setOTP(e.target.value)} className="outline-white p-3 input border-0 text-sm"  type='text' name="password"/>
+                                                    <input value={otp} onChange={e => setOTP(e.target.value)} className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500"  type='text' name="password"/>
                                                 </div>
                                             </div>                                
                                         </div>
 
-                                        <div className='mb-11'>
+                                        <div className='mb-8'>
                                             <div>
                                                 <div className='text-gray-700 mb-3 text-sm font-bold'>Old Password</div>
                                                 
-                                                <div className='flex w-full items-center justify-between border-1-d7 rounded-lg'>
+                                                <div className='flex w-full items-center justify-between  rounded-lg border p-1'>
                                                     <div className='w-full'>
-                                                        <input onChange={e => setOldPassword(e.target.value)}  className='border-0 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full' type={isShowOldPassword ? 'text' : 'password'}/>
+                                                        <input onChange={e => setOldPassword(e.target.value)}  className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 focus:bg-white focus:ring-indigo-500' type={isShowOldPassword ? 'text' : 'password'}/>
                                                     </div>
 
                                                     <div className='px-2 pt-1'>
@@ -1801,14 +1783,14 @@ const Profile = () => {
                                             </div>
                                         </div>                                       
 
-                                        <div className='mb-11'>
+                                        <div className='mb-8'>
                                             <div className='md:flex md:justify-between md:space-x-10'>
-                                                <div className="md:w-1/2 w-full md:mb-0 mb-11 relative">
+                                                <div className="md:w-1/2 w-full md:mb-0 mb-3 relative">
                                                     <div className="mb-3 text-sm font-bold">New Password</div>
                                                     
-                                                    <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
+                                                    <div className='flex w-full items-center justify-between  rounded-lg border p-1'>
                                                         <div className='w-full'>
-                                                            <input value={password} onChange={e => setPassword(e.target.value)} className="outline-white p-3 input border-0 text-sm"  type={isShowPassword ? 'text' : 'password'} name="password"/>
+                                                            <input value={password} onChange={e => setPassword(e.target.value)} className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900  focus:bg-white focus:ring-indigo-500"  type={isShowPassword ? 'text' : 'password'} name="password"/>
                                                         </div>
 
                                                         <div className='px-2 pt-1'>
@@ -1823,12 +1805,12 @@ const Profile = () => {
                                                     </div>                                
                                                 </div>
 
-                                                <div className="md:w-1/2 w-full md:mb-0 mb-11 relative">
-                                                    <div className="mb-10 text-sm font-bold">Confirm New Password</div>
+                                                <div className="md:w-1/2 w-full md:mb-0 mb-3 relative">
+                                                    <div className="mb-3 text-sm font-bold">Confirm New Password</div>
                                                     
-                                                    <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
+                                                    <div className='flex w-full items-center justify-between  rounded-lg border p-1'>
                                                         <div className='w-full'>
-                                                            <input value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="outline-white p-3 input border-0 text-sm"  type={isShowConfirmPassword ? 'text' : 'password'} name="password"/>
+                                                            <input value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900  focus:bg-white focus:ring-indigo-500"  type={isShowConfirmPassword ? 'text' : 'password'} name="password"/>
                                                         </div>
 
                                                         <div className='px-2 pt-1'>
@@ -1855,7 +1837,7 @@ const Profile = () => {
                                         </div>
 
                                         {/* Password Policy section */}
-                                        <div>
+                                        <div className='mb-8'>
                                             <div className="md:flex md:space-x-5 md:mb-5 mb-1">
                                                 <div className="flex text-sm space-x-1 text-gray-600">
                                                     <div>
@@ -1865,7 +1847,7 @@ const Profile = () => {
                                                         </svg>
                                                     </div>
 
-                                                    <div className={hasMinAndMaxCharacter ? "pt-20 text-color-2a font-bold": "pt-20"}>At least 8 characters strong</div>
+                                                    <div className={hasMinAndMaxCharacter ? "text-green-400 font-bold": ""}>At least 8 characters strong</div>
                                                 </div>
 
                                                 <div className="flex text-sm space-x-1 text-gray-600">
@@ -1876,7 +1858,7 @@ const Profile = () => {
                                                         </svg>
                                                     </div>
 
-                                                    <div className={hasLowerCaseCharacter ? "pt-20 font-bold text-color-2a":"pt-20"}>One or more lower case character</div>
+                                                    <div className={hasLowerCaseCharacter ? "font-bold text-green-400":""}>One or more lower case character</div>
                                                 </div>
                                             </div>
 
@@ -1889,7 +1871,7 @@ const Profile = () => {
                                                         </svg>
                                                     </div>
 
-                                                    <div className={hasUpperCaseCharacter ? "pt-20 font-bold text-color-2a":"pt-20"}>One or more upper case character</div>
+                                                    <div className={hasUpperCaseCharacter ? "font-bold text-green-400":""}>One or more upper case character</div>
                                                 </div>
 
                                                 <div className="flex text-sm space-x-1 text-gray-600">
@@ -1900,7 +1882,7 @@ const Profile = () => {
                                                         </svg>
                                                     </div>
 
-                                                    <div className={hasNumericCharacter ? "pt-20 font-bold text-color-2a":"pt-20"}>One or more numeric character</div>
+                                                    <div className={hasNumericCharacter ? " font-bold text-green-400":""}>One or more numeric character</div>
                                                 </div>
                                             </div>
                                             
@@ -1913,7 +1895,7 @@ const Profile = () => {
                                                         </svg>
                                                     </div>
 
-                                                    <div className={hasSpecialCharacter ? "pt-20 font-bold text-color-2a":"pt-20"}>A symbol or special character</div>
+                                                    <div className={hasSpecialCharacter ? " font-bold text-green-400":""}>A symbol or special character</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1924,51 +1906,32 @@ const Profile = () => {
                                 {/*End */}
 
                                 {/*Change Pin */}
-                                <div className='card p-10'>
+                                <div className='bg-white rounded-lg shadow px-10 py-5'>
                                     {/* Change Pin Success */}
                                     <div className={isPinChangeSuccessful ? "otp-alert mb-20":"hidden"}>
                                         <div className="flex otp-validated justify-between space-x-1 pt-3">
                                             <div className="flex">
-                                                <div>
-                                                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062"/>
-                                                        <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062"/>
-                                                    </svg>
-                                                </div>
-
-                                                <div className="pt-1 text-sm text-green-900">{apiResponseMessage}</div>
-                                            </div>
-                                            
-                                            <div className="cursor-pointer" onClick={closeModal}>
-                                                <svg  className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50"/>
-                                                </svg>
+                                                <div className="text-sm text-green-900">{apiResponseMessage}</div>
                                             </div>
                                         </div>
                                     </div>
                                     {/* End */}
 
                                     {/* Change pin Error */}
-                                    <div className={isPinChangeError ? "error-alert mb-20":"hidden" }>
+                                    <div className={isPinChangeError ? "error-alert mb-3":"hidden" }>
                                         <div className="flex justify-between space-x-1">
                                             <div className="flex items-center">
-                                                <div className='pt-2'>
-                                                    <svg width="20" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
-                                                    </svg>
-                                                </div>
-
                                                 <div className="text-sm">{apiResponseMessage}</div>
                                             </div>
                                         </div>
                                     </div>
                                     {/* End */}
 
-                                    <div className='font-gotham-black-regular text-green-900 mb-30'>Change Pin</div>
+                                    <div className='text-green-900 mb-3 text-xl'>Change Pin</div>
 
                                     {/* Generate OTP Section */}
                                     <div className={showGeneratePinOTPCard ? '':'hidden'}>
-                                        <div className='font-bold text-sm mb-7'>Click the button below to send OTP to your registered email.</div>
+                                        <div className=' text-sm mb-5'>Click the button below to send OTP to your registered email.</div>
 
                                         <div className='mb-3 text-sm font-bold hidden'>Email: </div>
                                         <div className='w-full mb-6 hidden'>
@@ -1985,23 +1948,23 @@ const Profile = () => {
                                     
                                     {/* Enter Pin Section */}
                                     <div className={showEnterPinCard ? '':'hidden'}>
-                                        <div className="w-full mb-11">
+                                        <div className="w-full mb-8">
                                             <div className="mb-3 text-sm font-bold mt-6">Enter OTP</div>
                                             
                                             <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
                                                 <div className='w-full'>
-                                                    <input value={otp} onChange={e => setOTP(e.target.value)} className="outline-white p-3 input border-0 text-sm"  type='text' name="password"/>
+                                                    <input value={otp} onChange={e => setOTP(e.target.value)} className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500"  type='text' name="password"/>
                                                 </div>
                                             </div>                                
                                         </div>
 
-                                        <div className='mb-11'>
+                                        <div className='mb-8'>
                                             <div>
                                                 <div className='text-gray-700 mb-3 font-bold text-sm'>Old Pin</div>
 
-                                                <div className='flex w-full items-center justify-between border-1-d7 rounded-lg'>
+                                                <div className='flex w-full items-center justify-between  rounded-lg border p-1'>
                                                     <div className='w-full'>
-                                                        <input value={oldPin} onChange={e => setOldPin(e.target.value)} className='border-0 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full' maxLength={4} type={isShowOldPin ? 'text' : 'password'}/>
+                                                        <input value={oldPin} onChange={e => setOldPin(e.target.value)} className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 focus:bg-white focus:ring-indigo-500' maxLength={4} type={isShowOldPin ? 'text' : 'password'}/>
                                                     </div>
 
                                                     <div className='px-2 pt-1'>
@@ -2017,13 +1980,13 @@ const Profile = () => {
                                             </div>
                                         </div>
 
-                                        <div className='md:flex md:justify-between md:space-x-10'>
+                                        <div className='md:flex md:justify-between md:space-x-10 mb-8'>
                                             <div className="md:w-1/3 w-full  md:mb-0 mb-11 relative">
                                                 <div className="mb-3 text-sm font-bold">New Pin</div>
                                                 
-                                                <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
+                                                <div className='flex w-full items-center justify-between  rounded-lg border p-1'>
                                                     <div className='w-full'>
-                                                        <input value={pin} onChange={e => setPin(e.target.value)} className="outline-white p-3 input border-0 text-sm" type={isShowPin ? 'text' : 'password'} name="password" maxLength={4}/>
+                                                        <input value={pin} onChange={e => setPin(e.target.value)} className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 focus:bg-white focus:ring-indigo-500" type={isShowPin ? 'text' : 'password'} name="password" maxLength={4}/>
                                                     </div>
 
                                                     <div className='px-2 pt-1'>
@@ -2041,9 +2004,9 @@ const Profile = () => {
                                             <div className="md:w-1/3 w-full relative">
                                                 <div className="mb-3 text-sm font-bold">Confirm New Pin</div>
                                                 
-                                                <div className='flex w-full items-center justify-between border-1-d7 rounded-lg '>
+                                                <div className='flex w-full items-center justify-between  rounded-lg border p-1'>
                                                     <div className='w-full'>
-                                                        <input value={confirmPin} onChange={e => setConfirmPin(e.target.value)} className="outline-white p-3 input border-0 text-sm"  type={isShowConfirmPin ? 'text' : 'password'} name="password" maxLength={4}/>
+                                                        <input value={confirmPin} onChange={e => setConfirmPin(e.target.value)} className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 focus:bg-white focus:ring-indigo-500"  type={isShowConfirmPin ? 'text' : 'password'} name="password" maxLength={4}/>
                                                     </div>
 
                                                     <div className='px-2 pt-1'>
@@ -2089,18 +2052,18 @@ const Profile = () => {
 
                             {/*Notification section */}
                             <div className={switchToNotification ? '':'hidden'}>
-                                <div className='flex justify-between bg-white font-bold border border-gray-500 rounded-t-lg p-5 text-green-900'>
+                                <div className='flex justify-between bg-white border rounded-t-lg p-5 text-green-900'>
                                     <div>
-                                        <div className='text-xl mb-3'>My Notifications</div>
+                                        <div className='text-xl mb-3 font-bold'>My Notifications</div>
                                         <div className='text-sm'>Manage your notifications</div>
                                     </div>
 
                                     <div>
-                                        <button type="button" className='cursor-pointer px-5 py-3 bg-red-500 text-white font-bold rounded-lg border border-red-800 hidden'>Mark all read</button>
+                                        <button type="button" className='cursor-pointer px-5 py-3 bg-red-500 text-white font-bold rounded-lg border hidden'>Mark all read</button>
                                     </div>
                                 </div>
 
-                                <div className='bg-white border border-gray-500 rounded-b-lg mb-30'>
+                                <div className='bg-white rounded-b-lg mb-30 border'>
                                     {notificationLogs}
                                 </div>
                             </div>
