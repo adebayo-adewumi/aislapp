@@ -20,6 +20,7 @@ import axios from 'axios';
 import { utilityServiceBaseUrlUrl } from '../../apiUrls';
 import ArrowBackIcon from '../../assets/images/arrow-back.svg';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 const Learn = () => {
     document.title = "Learn - Anchoria";
@@ -118,28 +119,28 @@ const Learn = () => {
                 <div className="h-screen flex">
                     <Sidebar />
 
-                    <div className="mt-20 flex-1 min-w-0 flex flex-col">
-                        <div className='p-10 flex-1 bg-gray-100 overflow-y-auto'>
-                            <div className="text-3xl mb-10">
+                    <div className=" flex-1 min-w-0 flex flex-col">
+                        <div className='px-10 py-24  flex-1 bg-gray-100 overflow-y-auto'>
+                            <div className="text-3xl mb-3">
                                 <span className="font-bold text-green-900">Learning Centre</span>
                             </div>
 
                             <div className="text-sm font-bold text-color-2 mb-12">Explore curated resources on how to trade stocks</div>
 
                             {/*Switch */}
-                            <div className='mb-14'>
-                                <div className='mb-30 flex justify-between items-center'>
-                                    <div className="border_1 flex rounded-lg p-02rem">
+                            <div className='mb-11'>
+                                <div className='mb-3 flex justify-between items-center'>
+                                    <div className="border flex rounded-lg p-1 bg-white">
                                         <div>
-                                            <button onClick={performSwitchToLearn} type='button' className={switchToLearn ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer":"cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Learn</button>
+                                            <button onClick={performSwitchToLearn} type='button' className={switchToLearn ? "rounded-lg bg-green-900 text-white border-0 py-2 px-12 font-bold cursor-pointer":"cursor-pointer rounded-lg py-2 px-12 font-bold border-0 bg-transparent"}>Learn</button>
                                         </div>
 
                                         <div className='hidden'>
-                                            <button onClick={performSwitchToSupport} type='button' className={switchToSupport ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer":"cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Support</button>
+                                            <button onClick={performSwitchToSupport} type='button' className={switchToSupport ? "rounded-lg bg-green-900 text-white border-0 py-2 px-12 font-bold cursor-pointer":"cursor-pointer rounded-lg py-2 px-12 font-bold border-0 bg-transparent"}>Support</button>
                                         </div>
 
                                         <div>
-                                            <button onClick={performSwitchToContactUs}  type='button' className={switchToContactUs ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer":"cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Contact Us</button>
+                                            <button onClick={performSwitchToContactUs}  type='button' className={switchToContactUs ? "rounded-lg bg-green-900 text-white border-0 py-2 px-12 font-bold cursor-pointer":"cursor-pointer rounded-lg py-2 px-12 font-bold border-0 bg-transparent"}>Contact Us</button>
                                         </div>
                                     </div>
                                 </div>
@@ -184,26 +185,26 @@ const Learn = () => {
 
                                 <div className={showLearningResource ? 'hidden':''}>
                                     <div className=''>
-                                        <div className='font-bold text-center w-full mb-30'>QUICK LINKS</div>
+                                        <div className='font-bold text-center w-full mb-3 text-lg'>QUICK LINKS</div>
                                     </div>      
 
-                                    <div className='flex mx-auto space-x-5 mb-28 cursor-pointer' style={{width: '15rem'}}>
-                                        <div onClick={displayLearningResource} className='rounded-lg px-12 py-5 w-72' style={{backgroundColor: '#FF0949'}}>
-                                            <div className='mb-10 text-center'><img src={DesignerSVG} alt=""/></div>
-                                            <div className='mb-10 font-bold text-white text-center'>Knowledge base</div>
-                                            <div className='mb-10 text-center text-white text-xs'>Read and learn from our curated articles and contents</div>
+                                    <div className='flex mx-auto space-x-5 mb-3 cursor-pointer' style={{width: '20rem'}}>
+                                        <div onClick={displayLearningResource} className='rounded-lg px-12 py-5 w-80' style={{backgroundColor: '#FF0949'}}>
+                                            <div className='mb-3 text-center'><img src={DesignerSVG} alt=""/></div>
+                                            <div className='mb-3 font-bold text-white text-center'>Knowledge base</div>
+                                            <div className='mb-3 text-center text-white text-sm'>Read and learn from our curated articles and contents</div>
                                         </div>
 
                                         <div className='rounded-lg px-12 py-5 w-72 hidden' style={{backgroundColor: '#144A22'}}>
-                                            <div className='mb-10 text-center'><img src={FAQsSVG} alt=""/></div>
-                                            <div className='mb-10 font-bold text-white text-center'>FAQs</div>
-                                            <div className='mb-10 text-center text-white text-xs'>Browse and learn more from our frequently asked questions </div>
+                                            <div className='mb-3 text-center'><img src={FAQsSVG} alt=""/></div>
+                                            <div className='mb-3 font-bold text-white text-center'>FAQs</div>
+                                            <div className='mb-3 text-center text-white text-xs'>Browse and learn more from our frequently asked questions </div>
                                         </div>
 
-                                        <div onClick={performSwitchToContactUs} className='hidden rounded-lg px-12 py-5 w-72 cursor-pointer' style={{backgroundColor: '#FFAF34'}}>
-                                            <div className='mb-10 text-center'><img src={VideoCallSVG} alt=""/></div>
-                                            <div className='mb-10 font-bold text-white text-center'>Live Support</div>
-                                            <div className='mb-10 text-center text-white text-xs'>Easily connect with one of our support representative for 24/7</div>
+                                        <div onClick={performSwitchToContactUs} className='hidden rounded-lg px-12 py-5 w-80 cursor-pointer' style={{backgroundColor: '#FFAF34'}}>
+                                            <div className='mb-3 text-center'><img src={VideoCallSVG} alt=""/></div>
+                                            <div className='mb-3 font-bold text-white text-center'>Live Support</div>
+                                            <div className='mb-3 text-center text-white text-sm'>Easily connect with one of our support representative for 24/7</div>
                                         </div>
                                     </div>
                                 </div>
@@ -212,17 +213,17 @@ const Learn = () => {
                                 <div className={showLearningResource ? '':'hidden'}>
                                     <div className=''>
                                         <div className='flex justify-between items-center text-center mx-auto w-96 mb-3'>
-                                            <div style={{fontSize : '30px'}} className='mb-10 font-gotham-black-regular text-green-900 text-center font-bold'>Knowledge Base</div>
+                                            <div className='text-3xl text-green-900 text-center font-bold'>Knowledge Base</div>
                                             
                                             <div className='cursor-pointer'>
-                                                <a href='/learn' className='no-underline text-green-900'>
+                                                <a href='/learn' className='text-lg no-underline text-green-900 hover:text-green-900'>
                                                     <img src={ArrowBackIcon} alt="" className="cursor-pointer align-middle w-6" /> Back
                                                 </a>
                                             </div>
                                         </div>
                                         
 
-                                        <div className='mb-30 text-sm text-green-900 text-center'>Browse articles to find answers and troubleshooting tips.</div>                               
+                                        <div className='mb-8 text-sm text-green-900 text-center'>Browse articles to find answers and troubleshooting tips.</div>                               
                                     </div>
 
                                     <div className="mb-11">
@@ -231,13 +232,13 @@ const Learn = () => {
                                         <div className={learningResourcesList.length > 0 ? 'grid grid-cols-4 gap-4 mb-28':'hidden'}>
                                             {learningResourcesList.sort(compareNotificationLogsDate).map((item :any, index :any)=>
                                                 <div className='rounded-lg px-12 py-5' style={{backgroundColor: '#EBEBEB'}} key={index}>
-                                                    <div className='mb-10 text-center'><img src={SpreadsheetIcon} alt=""/></div>
-                                                    <div className='mb-10 font-bold text-center'>{item.title}</div>
-                                                    <div className='mb-10 text-center text-xs'>{item.description}</div>
-                                                    <div className='mb-30 text-center text-xs'>{moment(item.createdOn).format("Do MMM, YYYY hh:mm")}</div>
+                                                    <div className='mb-3 text-center'><img src={SpreadsheetIcon} alt=""/></div>
+                                                    <div className='mb-3 font-bold text-center'>{item.title}</div>
+                                                    <div className='mb-3 text-center text-sm'>{item.description}</div>
+                                                    <div className='mb-3 text-center text-sm'>{moment(item.createdOn).format("Do MMM, YYYY hh:mm")}</div>
 
-                                                    <div className='mb-10 text-center text-xs font-bold'>
-                                                        <a href={item.link} className="text-green-900 no-underline hover:underline">Read article</a>
+                                                    <div className='mb-3 text-center text-sm font-bold'>
+                                                        <Link to={"/learn/details/"+item.id} className="text-green-900 no-underline hover:underline hover:text-green-900">Read article</Link>
                                                     </div>
                                                 </div>
                                             )}
@@ -340,9 +341,9 @@ const Learn = () => {
                                     <div>                                    
                                         <div className='md:px-10 md:py-10 px-5 py-4 bg-white shadow-sm rounded-lg mx-auto md:w-full w-80'>
 
-                                            <div className='font-bold md:text-2xl text-xl mb-10'>Contact Us</div>
+                                            <div className='font-bold md:text-2xl text-xl mb-3'>Contact Us</div>
 
-                                            <div className='mb-30 text-sm'>Address: 12th floor, Elephant House, 214 Broad Street, Marina, Lagos</div>
+                                            <div className='mb-8 text-sm'>Address: 12th floor, Elephant House, 214 Broad Street, Marina, Lagos</div>
 
                                             <div className='md:flex md:space-x-5 md:mx-auto md:w-2/3'>
 

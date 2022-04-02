@@ -58,7 +58,7 @@ const UserAreaHeader = () => {
                                 </svg>
                             </button> 
 
-                            <div className={showHeaderMenu ? 'absolute bg-white rounded w-full border border-gray-500 shadow-sm' : 'hidden'} style={{ top: '110%' }}>
+                            <div className={showHeaderMenu ? 'absolute bg-white rounded w-full border shadow-sm' : 'hidden'} style={{ top: '110%' }}>
                                 <div className='px-3 py-2 text-sm'>
                                     <div className='hover:bg-gray-100 hover:font-bold px-3 rounded py-2'>
                                         <Link to="/learn?type=contactus" className='flex space-x-3 no-underline text-black items-center hover:text-green-900'>

@@ -24,6 +24,7 @@ const Sidebar = (props :any) => {
     let routePath = useLocation().pathname;
 
     const regex = new RegExp('/account/*');
+    const learnRegex = new RegExp('/learn/*');
 
     useEffect(()=>{
 
@@ -75,7 +76,7 @@ const Sidebar = (props :any) => {
                         <span className="ml-2 text-gray-700">Watchlist</span></span>
                     </Link> 
                                        
-                    <Link to="/account" className={ urlPath === '/account' ? "-mx-3 px-3 py-2 mb-2 flex items-center justify-between text-sm font-medium rounded-lg hover:bg-green-100 bg-green-100 sidebar-active font-bold":"-mx-3 px-3 py-2 mb-2 flex items-center justify-between text-sm font-medium rounded-lg hover:bg-green-100"}><span className="inline-flex items-center">
+                    <Link to="/account" className={ regex.test(urlPath) ? "-mx-3 px-3 py-2 mb-2 flex items-center justify-between text-sm font-medium rounded-lg hover:bg-green-100 bg-green-100 sidebar-active font-bold":"-mx-3 px-3 py-2 mb-2 flex items-center justify-between text-sm font-medium rounded-lg hover:bg-green-100"}><span className="inline-flex items-center">
                         <img src={regex.test(urlPath) ? AccountActiveIcon : AccountIcon} alt="" className="h-6 w-6 transition-all ease-out transition-medium" />
 
                         <span className="ml-2 text-gray-700">Account</span></span>
@@ -87,64 +88,13 @@ const Sidebar = (props :any) => {
                         <span className="ml-2 text-gray-700">Profile</span></span>
                     </Link> 
 
-                    <Link to="/learn" className={ urlPath === '/learn' ? "-mx-3 px-3 py-2 mb-2 flex items-center justify-between text-sm font-medium rounded-lg hover:bg-green-100 bg-green-100 sidebar-active font-bold":"-mx-3 px-3 py-2 mb-2 flex items-center justify-between text-sm font-medium rounded-lg hover:bg-green-100"}><span className="inline-flex items-center">
-                        <img src={urlPath === '/learn' ? LearnActiveIcon : LearnIcon} alt="" className="h-6 w-6 transition-all ease-out transition-medium" />
+                    <Link to="/learn" className={learnRegex.test(urlPath) ? "-mx-3 px-3 py-2 mb-2 flex items-center justify-between text-sm font-medium rounded-lg hover:bg-green-100 bg-green-100 sidebar-active font-bold":"-mx-3 px-3 py-2 mb-2 flex items-center justify-between text-sm font-medium rounded-lg hover:bg-green-100"}><span className="inline-flex items-center">
+                        <img src={learnRegex.test(urlPath) ? LearnActiveIcon : LearnIcon} alt="" className="h-6 w-6 transition-all ease-out transition-medium" />
 
                         <span className="ml-2 text-gray-700">Learn</span></span>
                     </Link>                    
                 </div>   
             </nav>
-
-            <ul className='hidden'>
-                <li className="space-x-5">
-                    <Link to='/dashboard' className={ urlPath === '/dashboard' || urlPath === "/news" ? "items-center active w-full no-underline flex text-green-900" : "w-full no-underline flex text-gray-700 items-center"}> 
-                        <div><img src={urlPath === '/dashboard' || urlPath === "/news" ? PageActiveIcon : PageIcon} alt="" /></div>
-                        <div className="pl-5">Home</div>
-                    </Link>
-                </li>
-
-                <li className="space-x-5">
-                    <Link to="/trade" className={ urlPath === '/trade' ? "items-center active w-full no-underline flex text-green-900" : "w-full no-underline flex text-gray-700 items-center"}>
-                        <div><img src={urlPath === '/trade' ? TradeActiveIcon : TradeIcon} alt="" /></div>
-                        <div className="pl-5">Trade</div>
-                    </Link>
-                </li>
-
-                <li className="space-x-5">
-                    <Link to="/portfolio" className={ urlPath === '/portfolio' ? "items-center active w-full no-underline flex text-green-900" : "w-full no-underline flex text-gray-700 items-center"}>
-                        <div><img src={urlPath === '/portfolio' ? PortfolioActiveIcon : PortfolioIcon} alt="" /></div>
-                        <div className="pl-5">Portfolio</div>
-                    </Link>
-                </li>
-
-                <li className="space-x-5">
-                    <Link to="/watchlist" className={ urlPath === '/watchlist' ? "items-center active w-full no-underline flex text-green-900" : "w-full no-underline flex text-gray-700 items-center"}>
-                        <div><img src={urlPath === '/watchlist' ? StarGrayActiveIcon : StarGrayIcon} alt="" /></div>
-                        <div className="pl-5">Watchlist</div>
-                    </Link>
-                </li>
-
-                <li className="space-x-5">
-                    <Link to="/account" className={ regex.test(urlPath) ? "items-center active w-full no-underline flex text-green-900" : "w-full no-underline flex text-gray-700 items-center"}>
-                        <div><img src={regex.test(urlPath) ? AccountActiveIcon : AccountIcon} alt="" /></div>
-                        <div className="pl-5">Account</div>
-                    </Link>
-                </li>
-
-                <li className="space-x-5">
-                    <Link to="/profile" className={ urlPath === '/profile' ? "items-center active w-full no-underline flex text-green-900" : "w-full no-underline flex text-gray-700 items-center"}>
-                        <div><img src={urlPath === '/profile' ? ProfileActiveIcon : ProfileIcon} alt="" /></div>
-                        <div className="pl-5">Profile</div>
-                    </Link>
-                </li>
-
-                <li className="space-x-5">
-                    <Link to="/learn" className={ urlPath === '/learn' ? "items-center active w-full no-underline flex text-green-900" : "w-full no-underline flex text-gray-700 items-center"}>
-                        <div><img src={urlPath === '/learn' ? LearnActiveIcon : LearnIcon} alt="" /></div>
-                        <div className="pl-5">Learn</div>
-                    </Link>
-                </li>
-            </ul>
         </div>
     );
 };

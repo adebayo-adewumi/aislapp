@@ -130,7 +130,7 @@ const Main = () => {
                         <Learn />
                       </RequireAuth>
                     } />
-                    <Route path="learn" element={
+                    <Route path="learn/details/:learnId" element={
                       <RequireAuth>
                         <LearnDetails />
                       </RequireAuth>
