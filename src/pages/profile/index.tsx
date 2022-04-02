@@ -395,7 +395,7 @@ const Profile = () => {
 
         getNOKDetails();
 
-    },[nokDetails])
+    },[])
 
     useEffect(() => {
         function checkIfPersonalDetailsFieldsAreFilled(){
@@ -1036,7 +1036,7 @@ const Profile = () => {
         }
 
     
-        //getAxios(axios).get(authOnboardingServiceBaseUrl+'/customer/forgot-password/initiate?email='+customer.email)
+       
         getAxios(axios).post(utilityServiceBaseUrlUrl + '/otp/generate', 
         {
             "text": localStorage.getItem('genericCypher')
@@ -1509,8 +1509,8 @@ const Profile = () => {
                                                     <div className='md:w-1/3 w-full md:mb-0 mb-11'>
                                                         <div className='text-gray-700 mb-3 text-sm font-bold'>Phone number</div>
 
-                                                        <div className='flex border-1-d6 rounded-lg px-2'>
-                                                            <select  className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900  focus:bg-white focus:ring-indigo-500" onChange={e => setNokPhoneCode(e.target.value)} style={{border: 'none !important'}}>
+                                                        <div className='flex border rounded-lg px-2'>
+                                                            <select  className="bg-white text focus:outline-none px-2 py-3 rounded text-gray-900  focus:bg-white focus:ring-indigo-500 w-20" onChange={e => setNokPhoneCode(e.target.value)}>
                                                                 <option value="234">+234</option>
                                                                 <option value="1">+1</option>
                                                                 <option value="44">+44</option>
@@ -1576,7 +1576,7 @@ const Profile = () => {
                                                     <div className='md:w-1/3 w-full'>
                                                         <div className='text-gray-700 mb-3 text-sm font-bold'>Relationship</div>
                                                         <div>
-                                                            <select className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white mt-2 border-gray-400 focus:ring-indigo-500" onChange={e => setNokRelationship(e.target.value)} >
+                                                            <select className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white  focus:ring-indigo-500" onChange={e => setNokRelationship(e.target.value)} >
                                                                 <option value={nokDetails.length > 0 ? nokDetails[0].relationship : ''}>{nokDetails.length > 0 ? nokDetails[0].relationship : ''}</option>
 
                                                                 <option value="">...</option>
@@ -1625,7 +1625,7 @@ const Profile = () => {
                                                     <div className='md:w-1/2 w-full'>
                                                         <div className='text-gray-700 mb-3 text-sm font-bold'> </div>
 
-                                                        <button onClick={sendNextOfKin} type='button' className="mt-3 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full">
+                                                        <button onClick={sendNextOfKin} type='button' className=" rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full">
                                                             <span className={ showNokSpinner ? "hidden" : ""}>Update</span>
                                                             <img src={SpinnerIcon} alt="spinner icon" className={ showNokSpinner ? "" : "hidden"} width="15"/>
                                                         </button>
