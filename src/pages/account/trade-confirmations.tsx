@@ -531,312 +531,305 @@ const TradeConfirmations = () => {
 
     return (
         <div className="relative">
-            <div className={blurScreen ? 'opacity-0':''}><UserAreaHeader/></div>
+            <UserAreaHeader/>
 
-            <div className={blurScreen ? 'opacity-0':''}>
-                <div className="h-screen flex">
-                    <Sidebar />
+            <div className="h-screen flex">
+                <Sidebar />
 
-                    <div className="mt-20 flex-1 min-w-0 flex flex-col">
-                        <div className='p-10 flex-1 bg-gray-100 overflow-y-auto'>
-                            <div className="flex justify-between mb-10">
-                                <div className="font-bold text-green-900 text-3xl">Trade Confirmations</div>
-                                <div className="font-bold">
-                                    <Link to="/account" className='no-underline text-green-900'>
-                                        <img src={ArrowBackIcon} alt="" className="align-middle" /> Back
-                                    </Link>
-                                </div>
+                <div className="flex-1 min-w-0 flex flex-col">
+                    <div className='px-10 py-24 flex-1 bg-gray-100 overflow-y-auto'>
+                        <div className="flex justify-between mb-3">
+                            <div className="text-green-900 text-3xl">Trade Confirmations</div>
+
+                            <div className="">
+                                <Link to="/account" className='text-lg hover:text-green-900 no-underline text-green-900'>
+                                    <img src={ArrowBackIcon} alt="" className="align-middle" /> Back
+                                </Link>
                             </div>
+                        </div>
 
-                            <div className="text-sm font-bold  mb-30">Summary of all your trades</div>
+                        <div className="text-sm  mb-8">Summary of all your trades</div>
 
-                            {/*Switch Search*/}
-                            <div className="mb-20">
-                                <div className="md:flex md:justify-between w-full">
-                                    <div>
-                                        <div className="border_1 md:flex rounded-lg p-02rem">
-                                            <div>
-                                                <button onClick={performSwitchToAll} type='button' className={switchToAll ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bg-transparent w-full"}>All</button>
-                                            </div>
-
-                                            <div>
-                                                <button onClick={performSwitchToOpen} type='button' className={switchToOpen ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bg-transparent w-full"}>Purchased</button>
-                                            </div>
-
-                                            <div className='hidden'>
-                                                <button onClick={performSwitchToExecuted} type='button' className={switchToExecuted ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bg-transparent w-full"}>Executed</button>
-                                            </div>
-
-                                            <div className='hidden'>
-                                                <button onClick={performSwitchToRejected} type='button' className={switchToRejected ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bg-transparent w-full"}>Rejected</button>
-                                            </div>
-
-                                            <div className='hidden'>
-                                                <button onClick={performSwitchToCancelled} type='button' className={switchToCancelled ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bg-transparent w-full"}>Cancelled</button>
-                                            </div>
-
-                                            <div>
-                                                <button onClick={performSwitchToSold} type='button' className={switchToSold ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bg-transparent w-full"}>Sold</button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className='hidden'>
-                                        <div className="flex space-x-3">
-                                            <div>
-                                                <Link to="/trade" className='no-underline text-green-900'>
-                                                    <button type="button" className="border-0 rounded-lg py-2 px-3 button-filter  cursor-pointer">
-                                                        <img src={SlidersIcon} alt="" />
-                                                    </button>
-                                                </Link>
-                                            </div>
-
-                                            <div className="w-80 right-0 flex border_1 rounded-lg pr-3 bg-white">
-                                                <div className="pl-3 py-2"><img src={SearchIcon} alt="" /></div>
-
-                                                <div className='w-full'>
-                                                    <input type="text" className="outline-white p-2 input border-0" placeholder="Quick search"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {/*End*/}
-
-                            {/*Card section*/}
-                            <div>
-                                <div className="card mb-20 text-sm p-5">
-                                    <div className="md:flex md:justify-between md:items-center">
-                                        <div className="font-bold  flex-child opacity-0 md:block hidden">Blank</div>
-                                        <div className="font-bold  flex-child md:mb-0 mb-4">Code</div>
-                                        <div className="font-bold  flex-child md:mb-0 mb-4">Qty</div>
-                                        <div className="font-bold  flex-child md:mb-0 mb-4">Amount</div>
-                                        <div className="font-bold  flex-child md:mb-0 mb-4">Status</div>
-                                        <div className="font-bold  flex-child md:mb-0 mb-4">Date</div>
-                                        <div className="font-bold  flex-child md:block hidden opacity-0">Blank</div>
-                                        <div className="font-bold  flex-child md:block hidden opacity-0">Blank</div>
-                                    </div>
-                                </div>
-
-                                {/*All Section*/}
-                                <div className={switchToAll ? '':'hidden'}>
-                                    <div className={allTrade.length === 0 ? 'text-gray-500 text-center':'hidden'}>No trades to display</div>
-
-                                    <div>
-                                        {allTradeData.sort(compareTradeConfirmationDate).map((item :any, index :any)=>
-                                        <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
-                                            <div className="md:flex md:justify-between md:items-center text-sm">
-                                                <div className='flex-child md:mb-0 mb-4 text-xs'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
-
-                                                <div className=" flex-child md:mb-0 mb-4">
-                                                    <div className='font-bold text-xs'>{item.stockCode}</div>
-                                                </div>
-
-                                                <div className=" flex-child md:mb-0 mb-4">
-                                                    <div className='font-bold text-xs'>{parseInt(item.qty)}</div>
-                                                </div>
-
-                                                <div className=" flex-child md:mb-0 mb-4">
-                                                    <div className='font-bold text-xs'>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
-                                                </div>
-
-                                                <div className=" flex-child md:mb-0 mb-4">
-                                                    <div className='font-bold text-xs'>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
-                                                </div>
-
-                                                <div className=" flex-child md:mb-0 mb-4">
-                                                    <div className='font-bold text-xs'>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
-                                                </div> 
-
-                                                <div className=" flex-child md:mb-0 mb-4 text-right">                                
-                                                    <button data-order={item.id} onClick={displayTradeDetailsModal} type='button' className={item.status === 'AWAIT_EXECUTION' ? "py-2 px-3 text-xs border-0 font-bold text-red-500 cursor-pointer bg-transparent":"hidden"}>Cancel</button>
-                                                </div>
-
-                                                <div className=" flex-child md:mb-0 mb-4 text-xs text-right">
-                                                    <button data-order={item.id}  onClick={displayTradeDetailsModal} type='button' className="rounded-lg bg-green-800 py-2 px-3 border-0 font-bold text-white cursor-pointer text-xs">View</button>
-                                                </div> 
-                                                
-                                            </div>
-                                        </div>
-                                        )}
-                                    </div>
-                                </div>
-                                {/*End*/}
-
-                                {/*Open Section*/}
-                                <div className={switchToOpen ? '':'hidden'}>
-                                    <div className={orderOpen === '' ? 'text-gray-500 text-center':'hidden'}>No open trades to display</div>
-
-                                    <div>{buyTradeData.map((item :any, index :any)=>
-                                        <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
-                                            <div className="md:flex md:justify-between md:items-center text-sm">
-                                                <div className='flex-child md:mb-0 mb-4'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
-
-                                                <div className="flex-child md:mb-0 mb-4">
-                                                    <div className='font-bold text-xs'>{item.stockCode}</div>
-                                                </div>
-
-                                                <div className=" flex-child md:mb-0 mb-4">
-                                                    <div className='font-bold text-xs'>{parseInt(item.qty)}</div>
-                                                </div>
-
-                                                <div className=" flex-child md:mb-0 mb-4">
-                                                    <div className='font-bold text-xs'>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
-                                                </div>
-
-                                                <div className=" flex-child md:mb-0 mb-4">
-                                                    <div className='font-bold text-xs'>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
-                                                </div>
-
-                                                <div className=" flex-child md:mb-0 mb-4">
-                                                    <div className='font-bold text-xs'>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
-                                                </div> 
-
-                                                <div className=" flex-child md:mb-0 mb-4 text-right">                                                    
-                                                    <button data-order={item.id} onClick={displayTradeDetailsModal} type='button' className={item.status  === 'AWAIT_EXECUTION' ? "py-2 px-3 border-0 bg-transparent font-bold text-red-500 text-xs cursor-pointer":"hidden"}>Cancel</button>
-                                                </div>
-
-                                                <div className="flex-child md:mb-0 mb-4 text-right">
-                                                    <button data-order={item.id} onClick={displayTradeDetailsModal} type='button' className="rounded-lg bg-green-800 py-2 px-3 border-0 font-bold text-white cursor-pointer text-xs">View</button>
-                                                </div> 
-                                                
-                                            </div>
-                                        </div>
-                                        )}
-                                    </div>
-                                </div>
-                                {/*End*/}
-
-                                {/*Executed Section*/}
-                                <div className={switchToExecuted ? '':'hidden'}>
-                                    <div className={orderExecuted === '' ? 'text-gray-500 text-center':'hidden'}>No executed trades to display</div>
-
-                                    <div>{orderExecuted}</div>                                
-                                </div>
-                                {/*End*/}
-
-                                {/*Rejected Section*/}
-                                <div className={switchToRejected ? '':'hidden'}>
-                                    <div className={orderRejected === '' ? 'text-gray-500 text-center':'hidden'}>No rejected trades to display</div>
-
-                                    <div>{orderRejected}</div> 
-                                </div>
-                                {/*End*/}
-
-                                {/*Cancelled Section*/}
-                                <div className={switchToCancelled ? '':'hidden'}>
-                                    <div className={orderCancelled === '' ? 'text-gray-500 text-center':'hidden'}>No cancelled trades to display</div>
-
-                                    <div>{orderCancelled}</div> 
-                                    
-                                </div>
-                                {/*End*/}
-
-                                {/*Sold Section*/}
-                                <div className={switchToSold ? '':'hidden'}>
-                                    <div className={orderSold === '' ? 'text-gray-500 text-center':'hidden'}>No sold trades to display</div>
-
-                                    <div>{sellTradeData.map((item :any, index :any)=>
-                                        <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
-                                            <div className="md:flex md:justify-between md:items-center text-sm">
-                                                <div className='flex-child md:mb-0 mb-4'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
-
-                                                <div className="flex-child md:mb-0 mb-4">
-                                                    <div className='font-bold text-xs'>{item.stockCode}</div>
-                                                </div>
-
-                                                <div className=" flex-child md:mb-0 mb-4">
-                                                    <div className='font-bold text-xs'>{parseInt(item.qty)}</div>
-                                                </div>
-
-                                                <div className=" flex-child md:mb-0 mb-4">
-                                                    <div className='font-bold text-xs'>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
-                                                </div>
-
-                                                <div className=" flex-child md:mb-0 mb-4">
-                                                    <div className='font-bold text-xs'>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
-                                                </div>
-
-                                                <div className=" flex-child md:mb-0 mb-4">
-                                                    <div className='font-bold text-xs'>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
-                                                </div> 
-
-                                                <div className=" flex-child md:mb-0 mb-4 text-right">                                                    
-                                                    <button data-order={item.id} onClick={displayTradeDetailsModal} type='button' className={item.status  === 'AWAIT_EXECUTION' ? "py-3 px-3 border-0 bg-transparent text-xs font-bold text-red-500 cursor-pointer":"hidden"}>Cancel</button>
-                                                </div>
-
-                                                <div className="flex-child md:mb-0 mb-4 text-right">
-                                                    <button data-order={item.id} onClick={displayTradeDetailsModal} type='button' className="rounded-lg bg-green-800 py-3 px-3 border-0 font-bold text-white cursor-pointer text-xs">View</button>
-                                                </div> 
-                                                
-                                            </div>
-                                        </div>
-                                        )}
-                                    </div>
-                                    
-                                </div>
-                                {/*End*/}
-                            </div>
-                            {/*End*/}
-
-                            {/*Pagination section*/}
-                            {/* <div className='hidden'>
+                        {/*Switch Search*/}
+                        <div className="mb-5">
+                            <div className="md:flex md:justify-between w-full">
                                 <div>
-                                    <ul className='pagination list-none font-bold flex space-x-2 justify-end cursor-pointer text-sm'>
-                                        <li className='font-bold text-green-900 rounded-lg'>Previous</li>
-                                        <li className='text-color-9 rounded-lg'>1</li>
-                                        <li className='text-color-9 rounded-lg'>2</li>
-                                        <li className='text-color-9 rounded-lg active'>3</li>
-                                        <li className='text-color-9 rounded-lg'>4</li>
-                                        <li className='text-color-9 rounded-lg'>5</li>
-                                        <li className='font-bold text-green-900 rounded-lg'>Next</li>
-                                    </ul>
+                                    <div className="border md:flex rounded-lg p-1 bg-white">
+                                        <div>
+                                            <button onClick={performSwitchToAll} type='button' className={switchToAll ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bg-transparent w-full"}>All</button>
+                                        </div>
+
+                                        <div>
+                                            <button onClick={performSwitchToOpen} type='button' className={switchToOpen ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bg-transparent w-full"}>Purchased</button>
+                                        </div>
+
+                                        <div className='hidden'>
+                                            <button onClick={performSwitchToExecuted} type='button' className={switchToExecuted ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bg-transparent w-full"}>Executed</button>
+                                        </div>
+
+                                        <div className='hidden'>
+                                            <button onClick={performSwitchToRejected} type='button' className={switchToRejected ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bg-transparent w-full"}>Rejected</button>
+                                        </div>
+
+                                        <div className='hidden'>
+                                            <button onClick={performSwitchToCancelled} type='button' className={switchToCancelled ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bg-transparent w-full"}>Cancelled</button>
+                                        </div>
+
+                                        <div>
+                                            <button onClick={performSwitchToSold} type='button' className={switchToSold ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bg-transparent w-full"}>Sold</button>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div> */}
+
+                                <div className='hidden'>
+                                    <div className="flex space-x-3">
+                                        <div>
+                                            <Link to="/trade" className='no-underline text-green-900'>
+                                                <button type="button" className="border-0 rounded-lg py-2 px-3 button-filter  cursor-pointer">
+                                                    <img src={SlidersIcon} alt="" />
+                                                </button>
+                                            </Link>
+                                        </div>
+
+                                        <div className="w-80 right-0 flex border_1 rounded-lg pr-3 bg-white">
+                                            <div className="pl-3 py-2"><img src={SearchIcon} alt="" /></div>
+
+                                            <div className='w-full'>
+                                                <input type="text" className="outline-white p-2 input border-0" placeholder="Quick search"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {/*End*/}
+
+                        {/*Card section*/}
+                        <div>
+                            
+                            {/*All Section*/}
                             <div className={switchToAll ? '':'hidden'}>
+                                <div className={allTrade.length === 0 ? 'text-gray-500 text-center':'hidden'}>No trades to display</div>
+
+                                <div className='bg-white rounded shadow overflow-x-auto sm:rounded mb-5'>
+                                    <table className="w-full whitespace-no-wrap" cellSpacing={0}>
+                                        <tbody>
+                                            <tr className='' style={{borderBottom: '1px solid #e2e8f0'}}>
+                                                <th className='px-3 py-3'></th>
+                                                <th className='px-3 py-3 text-left'>Code</th>
+                                                <th   className='px-3 py-3 text-left'>Qty</th>
+                                                <th className='px-3 py-3 text-left'>Amount</th>
+                                                <th className='px-3 py-3 text-left'>Status</th>
+                                                <th  className='px-3 py-3 text-left'>Date</th>
+                                                <th  className='px-3 py-3 text-left'></th>
+                                                <th  className='px-3 py-3 text-left'></th>
+                                            </tr>
+
+                                            {allTradeData.sort(compareTradeConfirmationDate).map((item :any, index :any)=>
+                                                <tr className="hover:bg-gray-100 focus-within:bg-gray-100 tr-data" key={index}>
+                                                        <td className='px-3 py-4 table-border-bottom'>
+                                                            <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/>
+                                                        </td>
+
+                                                        <td className='px-3 py-4 table-border-bottom'>
+                                                            <div className=' text-xs'>{item.stockCode}</div>
+                                                        </td>
+
+                                                        <td className='px-3 py-4 table-border-bottom'>
+                                                            <div className=' text-xs'>{parseInt(item.qty)}</div>
+                                                        </td>
+
+                                                        <td className='px-3 py-4 table-border-bottom'>
+                                                            <div className=' text-xs'>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
+                                                        </td>
+
+                                                        <td className='px-3 py-4 table-border-bottom'>
+                                                            <div className=' text-xs'>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
+                                                        </td>
+
+                                                        <td className='px-3 py-4 table-border-bottom'>
+                                                            <div className=' text-xs'>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
+                                                        </td> 
+
+                                                        <td className='px-3 py-4 table-border-bottom'>
+                                                            <button data-order={item.id} onClick={displayTradeDetailsModal} type='button' className={item.status === 'AWAIT_EXECUTION' ? "py-2 px-3 text-xs border-0 text-red-500 cursor-pointer bg-transparent":"hidden"}>Cancel</button>
+                                                        </td>
+
+                                                        <td className='px-3 py-4 table-border-bottom'>
+                                                            <button data-order={item.id}  onClick={displayTradeDetailsModal} type='button' className="rounded-lg bg-green-800 py-2 px-3 border-0 font-bold text-white cursor-pointer text-xs">View</button>
+                                                        </td> 
+                                                </tr>
+                                            )}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            {/*End*/}
+
+                            {/*Open Section*/}
+                            <div className={switchToOpen ? '':'hidden'}>
+                                <div className={orderOpen === '' ? 'text-gray-500 text-center':'hidden'}>No open trades to display</div>
+
+                                <div>{buyTradeData.map((item :any, index :any)=>
+                                    <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
+                                        <div className="md:flex md:justify-between md:items-center text-sm">
+                                            <div className='flex-child md:mb-0 mb-4'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
+
+                                            <div className="flex-child md:mb-0 mb-4">
+                                                <div className='font-bold text-xs'>{item.stockCode}</div>
+                                            </div>
+
+                                            <div className=" flex-child md:mb-0 mb-4">
+                                                <div className='font-bold text-xs'>{parseInt(item.qty)}</div>
+                                            </div>
+
+                                            <div className=" flex-child md:mb-0 mb-4">
+                                                <div className='font-bold text-xs'>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
+                                            </div>
+
+                                            <div className=" flex-child md:mb-0 mb-4">
+                                                <div className='font-bold text-xs'>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
+                                            </div>
+
+                                            <div className=" flex-child md:mb-0 mb-4">
+                                                <div className='font-bold text-xs'>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
+                                            </div> 
+
+                                            <div className=" flex-child md:mb-0 mb-4 text-right">                                                    
+                                                <button data-order={item.id} onClick={displayTradeDetailsModal} type='button' className={item.status  === 'AWAIT_EXECUTION' ? "py-2 px-3 border-0 bg-transparent font-bold text-red-500 text-xs cursor-pointer":"hidden"}>Cancel</button>
+                                            </div>
+
+                                            <div className="flex-child md:mb-0 mb-4 text-right">
+                                                <button data-order={item.id} onClick={displayTradeDetailsModal} type='button' className="rounded-lg bg-green-800 py-2 px-3 border-0 font-bold text-white cursor-pointer text-xs">View</button>
+                                            </div> 
+                                            
+                                        </div>
+                                    </div>
+                                    )}
+                                </div>
+                            </div>
+                            {/*End*/}
+
+                            {/*Executed Section*/}
+                            <div className={switchToExecuted ? '':'hidden'}>
+                                <div className={orderExecuted === '' ? 'text-gray-500 text-center':'hidden'}>No executed trades to display</div>
+
+                                <div>{orderExecuted}</div>                                
+                            </div>
+                            {/*End*/}
+
+                            {/*Rejected Section*/}
+                            <div className={switchToRejected ? '':'hidden'}>
+                                <div className={orderRejected === '' ? 'text-gray-500 text-center':'hidden'}>No rejected trades to display</div>
+
+                                <div>{orderRejected}</div> 
+                            </div>
+                            {/*End*/}
+
+                            {/*Cancelled Section*/}
+                            <div className={switchToCancelled ? '':'hidden'}>
+                                <div className={orderCancelled === '' ? 'text-gray-500 text-center':'hidden'}>No cancelled trades to display</div>
+
+                                <div>{orderCancelled}</div> 
+                                
+                            </div>
+                            {/*End*/}
+
+                            {/*Sold Section*/}
+                            <div className={switchToSold ? '':'hidden'}>
+                                <div className={orderSold === '' ? 'text-gray-500 text-center':'hidden'}>No sold trades to display</div>
+
+                                <div>{sellTradeData.map((item :any, index :any)=>
+                                    <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
+                                        <div className="md:flex md:justify-between md:items-center text-sm">
+                                            <div className='flex-child md:mb-0 mb-4'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
+
+                                            <div className="flex-child md:mb-0 mb-4">
+                                                <div className='font-bold text-xs'>{item.stockCode}</div>
+                                            </div>
+
+                                            <div className=" flex-child md:mb-0 mb-4">
+                                                <div className='font-bold text-xs'>{parseInt(item.qty)}</div>
+                                            </div>
+
+                                            <div className=" flex-child md:mb-0 mb-4">
+                                                <div className='font-bold text-xs'>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
+                                            </div>
+
+                                            <div className=" flex-child md:mb-0 mb-4">
+                                                <div className='font-bold text-xs'>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
+                                            </div>
+
+                                            <div className=" flex-child md:mb-0 mb-4">
+                                                <div className='font-bold text-xs'>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
+                                            </div> 
+
+                                            <div className=" flex-child md:mb-0 mb-4 text-right">                                                    
+                                                <button data-order={item.id} onClick={displayTradeDetailsModal} type='button' className={item.status  === 'AWAIT_EXECUTION' ? "py-3 px-3 border-0 bg-transparent text-xs font-bold text-red-500 cursor-pointer":"hidden"}>Cancel</button>
+                                            </div>
+
+                                            <div className="flex-child md:mb-0 mb-4 text-right">
+                                                <button data-order={item.id} onClick={displayTradeDetailsModal} type='button' className="rounded-lg bg-green-800 py-3 px-3 border-0 font-bold text-white cursor-pointer text-xs">View</button>
+                                            </div> 
+                                            
+                                        </div>
+                                    </div>
+                                    )}
+                                </div>
+                                
+                            </div>
+                            {/*End*/}
+                        </div>
+                        {/*End*/}
+
+                        <div className={switchToAll ? '':'hidden'}>
+                        <Pagination                                
+                            currentPage={currentPage}
+                            totalCount={allTrade.length}
+                            pageSize={PageSize}
+                            onPageChange={(page: number) => setCurrentPage(page)}
+                        />
+                        </div>
+
+                        <div className={switchToOpen ? '':'hidden'}>
                             <Pagination                                
                                 currentPage={currentPage}
-                                totalCount={allTrade.length}
+                                totalCount={buyTrade.length}
                                 pageSize={PageSize}
                                 onPageChange={(page: number) => setCurrentPage(page)}
                             />
-                            </div>
+                        </div>
 
-                            <div className={switchToOpen ? '':'hidden'}>
-                                <Pagination                                
-                                    currentPage={currentPage}
-                                    totalCount={buyTrade.length}
-                                    pageSize={PageSize}
-                                    onPageChange={(page: number) => setCurrentPage(page)}
-                                />
-                            </div>
+                        <div className={switchToSold ? '':'hidden'}>
+                            <Pagination                                
+                                currentPage={currentPage}
+                                totalCount={sellTrade.length}
+                                pageSize={PageSize}
+                                onPageChange={(page: number) => setCurrentPage(page)}
+                            />
+                        </div>
+                        {/*End*/}
 
-                            <div className={switchToSold ? '':'hidden'}>
-                                <Pagination                                
-                                    currentPage={currentPage}
-                                    totalCount={sellTrade.length}
-                                    pageSize={PageSize}
-                                    onPageChange={(page: number) => setCurrentPage(page)}
-                                />
-                            </div>
-                            {/*End*/}
+                        {/* Page Loader Section */}
+                        <div className={showPageLoader ? "page-loader-backdrop opacity-90" : "hidden"}>
+                            <div className='relative'>
+                                <div className='ml-96 w-1/3 text-center relative'>
+                                    <img src={AnchoriaSpinner} alt="" />
 
-                            {/* Page Loader Section */}
-                            <div className={showPageLoader ? "page-loader-backdrop opacity-90":"hidden"}>
-                                <div className='w-96 relative lg:ml-72'>
-                                    <div className='absolute top-44pc left-46pt5pc'><img src={AnchoriaIcon} alt="" /></div>
-                                    <div className='text-center'><img src={AnchoriaSpinner} alt=""/></div>
+                                    <div className='absolute' style={{left : '15.2rem', top: '5.4rem'}}>
+                                        <img src={AnchoriaIcon} alt="" />
+                                    </div>
                                 </div>
                             </div>
-                            {/* End */}
                         </div>
-                        
-                    </div>                    
-                </div>
+                        {/* End */}
+                    </div>
+                    
+                </div>                    
             </div>
 
-            <div className={showRemoveStockModal ? "removeStock-modal" : "removeStock-modal hidden"}>
+            <div className={showRemoveStockModal ? "removeStock-modal" : "hidden"}>
                 <div className='text-center mb-10'><img src={RemoveStockIcon} alt="" /></div>
                 <div className='text-center text-3xl font-gotham-black-regular mb-10'>Remove Stocks</div>
                 <div className='text-center mb-30 text-sm leading-5'>
@@ -855,8 +848,8 @@ const TradeConfirmations = () => {
                 <div className='generic-modal-dialog'>
                     <div className="top-losers-modal">
                         <div className="mb-6 flex justify-between">
-                            <div className="font-bold">
-                                <div className='text-2xl mb-3 text-green-900 font-gotham-black-regular'>Transaction Details</div>
+                            <div className="">
+                                <div className='text-2xl font-bold mb-3 text-green-900'>Transaction Details</div>
                                 <div className='text-sm'>Preview your investment</div>
                             </div>
 

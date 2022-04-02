@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import UserAreaHeader from '../../components/Headers/UserAreaHeader';
 import ArrowBackIcon from '../../assets/images/arrow-back.svg';
 import SuccessCheckIcon from '../../assets/images/success-check.svg';
-import Form from 'react-bootstrap/Form';
 import Sidebar from '../../components/Sidebar';
 import * as HelperFunctions from '../../lib/helper';
 import axios from 'axios';
