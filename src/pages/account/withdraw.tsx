@@ -37,6 +37,7 @@ const WithdrawFund = () => {
 
     const [hasWithdrawError, setHasWithdrawError] = useState<boolean>(false);
     const [withdrawErrorMsg, setWithdrawErrorMsg] = useState('');
+    const [sliderBackgroundSize, setSliderBackgroundSize] = useState('');
 
 
 
@@ -150,7 +151,7 @@ const WithdrawFund = () => {
             'x-transaction-pin': JSON.stringify({ text : pinCypher})
         }
 
-        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/withdraw/',
+        getAxios(axios).post(walletAndAccountServiceBaseUrl + '/withdraw',
             {
                 "text": localStorage.getItem('genericCypher')
             },{headers})
@@ -245,6 +246,17 @@ const WithdrawFund = () => {
         setShowAmount(input_val);
     }
 
+    function slideToAmount(event: any) {
+        let amount = parseFloat(event.target.value) * 5000;
+        let formatAmount = HelperFunctions.formatCurrencyWithDecimal(amount);
+
+        let backgroundSize = (parseFloat(event.target.value) - 0) * 100 / (100 - 0) + '% 100%';
+
+        setSliderBackgroundSize(backgroundSize);
+
+        setShowAmount(formatAmount);
+    }
+
     return (
         <div className="relative">
             <UserAreaHeader />
@@ -254,14 +266,15 @@ const WithdrawFund = () => {
                     <Sidebar />
 
                     {/* Main Content section */}
-                    <div className="mt-20 flex-1 min-w-0 flex flex-col">
-                        <div className='p-10 flex-1 bg-gray-100 overflow-y-auto'>
+                    <div className="flex-1 min-w-0 flex flex-col">
+                        <div className='px-10 py-24 flex-1 bg-gray-100 overflow-y-auto'>
                             <div className='m-auto w-1/2 pt-12'>
+
                                 {/*Withdraw Funds Header */}
-                                <div className={showWithdraw ? "flex justify-between" : 'hidden'} style={{ width: '35rem' }}>
+                                <div className={showWithdraw ? "flex justify-between mb-5" : 'hidden'} style={{ width: '35rem' }}>
                                     <div>
-                                        <div className="text-3xl text-green-900 font-gotham-black-regular font-bold mb-10">Withdraw Funds</div>
-                                        <div className="font-bold mb-30">Confirm bank and amount below</div>
+                                        <div className="text-3xl text-green-900 font-bold mb-3">Withdraw Funds</div>
+                                        <div className="mb-3">Confirm bank and amount below</div>
                                     </div>
 
                                     <div className='font-bold'>
@@ -286,31 +299,26 @@ const WithdrawFund = () => {
                                 </div>
                                 {/*End*/}
 
-                                <div className={showWithdraw ? 'border-bottom-1d mb-30 hidden ' : "hidden"}></div>
+                                
 
-                                <div className='mb-30 rounded-lg border-1-d6 bg-white p-10' style={{ width: '35rem' }}>
+                                <div className='mb-3 rounded-lg border bg-white p-10' style={{ width: '35rem' }}>
                                     {/* Withdraw Section */}
                                     <div className={showWithdraw ? 'amount-section' : 'hidden'}>
                                         <div>
                                             {/* Withdraw Error */}
-                                            <div className={hasWithdrawError ? "error-alert mb-20" : "hidden"}>
-                                                <div className="flex justify-between space-x-1 pt-3">
+                                            <div className={hasWithdrawError ? "error-alert mb-3" : "hidden"}>
+                                                <div className="flex justify-between space-x-1 p-3">
                                                     <div className="flex">
-                                                        <div>
-                                                            <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
-                                                            </svg>
-                                                        </div>
-
                                                         <div className="text-sm">{withdrawErrorMsg}</div>
                                                     </div>
                                                 </div>
                                             </div>
                                             {/* End */}
 
-                                            <div className="wallet-balance-card mb-30">
-                                                <div className="italic text-green-500 mb-5">Available Balance</div>
-                                                <div className="font-bold text-3xl text-white mb-5">
+                                            <div className="wallet-balance-card mb-5">
+                                                <div className="italic text-green-500 mb-3">Available Balance</div>
+
+                                                <div className="font-bold text-3xl text-white mb-3">
                                                     <svg width="21" height="22" viewBox="0 0 21 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path d="M20.1787 6.06096C20.6317 6.06096 20.9989 5.67627 20.9989 5.20171V4.2995C20.9989 1.92875 19.1578 0 16.8948 0C16.8948 0 4.03797 0.00201923 4.00627 0.00592881C2.92406 0.0455401 1.88451 0.532046 1.13519 1.3546C0.36712 2.1977 -0.0332975 3.29427 0.00439032 4.44802C0.00283195 4.46989 0.00201176 16.8412 0.00201176 16.8412C0.00201176 19.6858 2.21103 22 4.92627 22H16.8948C19.1578 22 20.9989 20.0712 20.9989 17.7005V11.1767C20.9989 8.806 19.1578 6.87724 16.8948 6.87724H4.10292C2.78607 6.87724 1.70645 5.79898 1.64506 4.42246C1.61385 3.72252 1.85421 3.05437 2.3218 2.54105C2.79616 2.02035 3.46236 1.72176 4.14951 1.72176C4.17375 1.72176 16.8947 1.71849 16.8947 1.71849C18.2532 1.71849 19.3584 2.87633 19.3584 4.2995V5.20171C19.3585 5.67627 19.7257 6.06096 20.1787 6.06096ZM4.10292 8.59574H16.8948C18.2533 8.59574 19.3585 9.75358 19.3585 11.1767V17.7005C19.3585 19.1237 18.2533 20.2815 16.8948 20.2815H4.92627C3.11554 20.2815 1.64239 18.7382 1.64239 16.8412V7.73997C2.3284 8.27829 3.18078 8.59574 4.10292 8.59574ZM17.7181 14.4386C17.7181 15.0318 17.2591 15.5127 16.6929 15.5127C15.3329 15.4561 15.3333 13.4209 16.6929 13.3646C17.2591 13.3646 17.7181 13.8454 17.7181 14.4386ZM17.7181 4.2995C17.7181 3.82494 17.3509 3.44025 16.8979 3.44025H4.10297C3.01474 3.48562 3.01556 5.11377 4.10297 5.15875H16.8979C17.3509 5.15875 17.7181 4.77406 17.7181 4.2995Z" fill="white" />
                                                     </svg>
@@ -319,23 +327,23 @@ const WithdrawFund = () => {
                                                 <div className="text-gray-300 text-sm leading-5">Cash available in your wallet for trading or immediate withdrawal</div>
                                             </div>
 
-                                            <div className='text-lg mb-10'>Amount</div>
+                                            <div className='text-lg mb-3 font-bold'>Amount</div>
 
-                                            <div className='mb-30 flex'>
+                                            <div className='mb-3 flex'>
                                                 <div>
-                                                    <input type='text' readOnly className='input-custom w-20 font-gotham-black-regular font-black text-4xl text-center rounded-l-lg py-5 pl-5 border-left-gray border-top-gray border-bottom-gray border-r-0' placeholder='₦' />
+                                                    <input type='text' readOnly className='input-custom w-20 font-gotham-black-regular font-black text-4xl text-center rounded-l-lg py-5 pl-5 border' placeholder='₦' />
                                                 </div>
 
                                                 <div className='w-full'>
-                                                    <input type='text' onChange={delineateAmount} className='input-custom w-full font-gotham-black-regular border-r-0 font-black text-4xl py-5 pr-5 border-l-0 outline-white border-top-gray rounded-r-lg border-bottom-gray border-right-gray' placeholder='0.00' value={showAmount} />
+                                                    <input type='text' onChange={delineateAmount} className='w-full border font-black text-4xl py-5 px-5 outline-white rounded-r-lg ' data-type="currency" placeholder='0.00' value={showAmount} pattern="^\d{1,3}(,\d{3})*(\.\d+)?$"/>
                                                 </div>
                                             </div>
 
-                                            <div className='mb-30 hidden'>
-                                                <Form.Range />
+                                            <div className='my-8'>
+                                                <input type='range' style={{ backgroundSize: sliderBackgroundSize }} onChange={slideToAmount} defaultValue={0} />
                                             </div>
 
-                                            <div className='mb-30 flex space-x-3'>
+                                            <div className='mb-8 flex space-x-3'>
                                                 <button type='button' onClick={selectAmount} className='border border-gray-300 bg-gray-100 rounded-full amount-btn  text-lg px-5 py-3 cursor-pointer text-gray-400' data-value="5000">₦ 5,000</button>
 
                                                 <button type='button' onClick={selectAmount} className='border border-gray-300 bg-gray-100 rounded-full amount-btn  text-lg px-5 py-3 cursor-pointer text-gray-400' data-value="8000">₦ 8,000</button>
@@ -345,9 +353,9 @@ const WithdrawFund = () => {
                                                 <button data-value="15000" type='button' className='border border-gray-300 bg-gray-100 rounded-full amount-btn  text-lg px-5 py-3 cursor-pointer text-gray-400' onClick={selectAmount}>₦ 15,000</button>
                                             </div>
 
-                                            <div className='mb-30 bg-gray-100 p-3 rounded border-gray-500 border'>
+                                            <div className='mb-8'>
 
-                                                <select id='banksDetailsId' onChange={selectBankDetails} className='bg-gray-100 border-0 w-full text-xl cursor-pointer'>
+                                                <select id='banksDetailsId' onChange={selectBankDetails} className='block w-full focus:outline-none px-3 py-3 rounded text-gray-900 font-bold border focus:bg-white bg-white focus:ring-indigo-500'>
                                                     <option value="">Select Bank Account</option>
                                                     {bankDetailsList.map((item: any, index: number) =>
                                                         <option key={index} className='font-bold' value={item.id}>{item.accountName} | {item.bankName} | {item.accountNumber}</option>
@@ -355,15 +363,15 @@ const WithdrawFund = () => {
                                                 </select>
                                             </div>
 
-                                            <div className='mb-30'>
-                                                <div className='text-sm mb-10 font-bold'>Enter Transaction PIN</div>
+                                            <div className='mb-8'>
+                                                <div className='text-sm mb-3 font-bold'>Enter Transaction PIN</div>
 
                                                 <div>
-                                                    <input type='password' className='input p-3 border-1-d6 outline-white font-bold text-lg' onChange={e => setTransactionPIN(e.target.value)} maxLength={4}/>
+                                                    <input type='password' className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500' onChange={e => setTransactionPIN(e.target.value)} maxLength={4}/>
                                                 </div>
                                             </div>
 
-                                            <div className='mb-20'>
+                                            <div className='mb-3'>
                                                 <button onClick={withdrawFundFromWallet} type='button' className={isWithdrawDetailsFilled ? 'w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer':'w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer opacity-50'} disabled={!isWithdrawDetailsFilled}>
                                                     <span className={showSpinner ? "hidden" : ""}>Proceed</span>
                                                     <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
@@ -371,15 +379,9 @@ const WithdrawFund = () => {
                                             </div>
 
                                             {/* Withdraw Error */}
-                                            <div className={hasWithdrawError ? "error-alert mb-20" : "hidden"}>
-                                                <div className="flex justify-between space-x-1 pt-3">
+                                            <div className={hasWithdrawError ? "error-alert mb-3" : "hidden"}>
+                                                <div className="flex justify-between space-x-1 p-3">
                                                     <div className="flex">
-                                                        <div>
-                                                            <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
-                                                            </svg>
-                                                        </div>
-
                                                         <div className="text-sm">{withdrawErrorMsg}</div>
                                                     </div>
                                                 </div>
@@ -506,9 +508,11 @@ const WithdrawFund = () => {
                                             <div className="bg-white p-3 w-full -bottom-10 absolute"></div>
                                         </div>
 
-                                        <div className="relative z-10 text-green-900 font-gotham-black-regular text-3xl text-center mb-20">Successful</div>
-                                        <div className="text-color-4 text-sm text-center mb-14">Your withdralwal of <strong>₦ {showAmount}</strong> was successfully recieved and will be processed shortly</div>
-                                        <div className="mb-30 text-center">
+                                        <div className="relative z-10 text-green-900 text-3xl text-center mb-3">Successful</div>
+
+                                        <div className="text-sm text-center mb-8">Your withdralwal of <strong>₦ {showAmount}</strong> was successfully recieved and will be processed shortly</div>
+
+                                        <div className="mb-3 text-center">
                                             <button type='button' onClick={closeSuccess} className="bg-green-900 w-96 rounded-lg border-0 cursor-pointer text-white p-5 font-bold">Close</button>
                                         </div>
                                     </div>
