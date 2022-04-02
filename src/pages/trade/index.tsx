@@ -20,10 +20,6 @@ import GreenBoxIcon from '../../assets/images/green-box.svg';
 import RedBoxIcon from '../../assets/images/red-box.svg';
 import BlueBoxIcon from '../../assets/images/blue-box.svg';
 import Pagination from '../../components/Pagination';
-import { Input } from 'antd';
-import { Select } from 'antd';
-
-const { Search } = Input;
 
 let PageSize = 10;
 
@@ -54,9 +50,6 @@ const Trade = () => {
     const [stocksDataList, setStocksDataList] = useState<any[]>([]);
 
     const [currentPage, setCurrentPage] = useState(1);
-
-    const { Option } = Select;
-
     
 
     useEffect(() => {
@@ -208,32 +201,22 @@ const Trade = () => {
                                 <span className="font-bold text-green-900">Trade</span>
                             </div>
 
-                            <div className="text-sm font-bold mb-5">Buy stocks on the go</div>
+                            <div className="text-sm  mb-11">Buy stocks on the go</div>
 
                             {/*Quick Search*/}
-                            <div className="mb-11">
+                            <div className="mb-5">
                                 <div className="flex justify-between">
                                     <div className='w-64'>
-                                        <Select size="large" className='w-full' onChange={e => filterStocksByCategory(e.target.value)} placeholder="Filter">
-                                            <Option value="All">All</Option>
-                                            {stockKeys.map((item: any) => <Option value={item}>{item}</Option>)}
-                                        </Select>
+                                        <select className='block w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white bg-white focus:ring-indigo-500' onChange={e => filterStocksByCategory(e.target.value)} placeholder="Filter">
+                                            <option value="All">All</option>
+                                            {stockKeys.map((item: any) => <option value={item}>{item}</option>)}
+                                        </select>
                                     </div>                                    
 
-                                    <div className='w-80'>
-                                        <Search
-                                        placeholder="Search stocks by name"
-                                        allowClear
-                                        enterButton="Search"
-                                        size="large"
-                                        value={searchQuery}
-                                        onSearch={searchForStocks}
-                                        onChange={e => setSearchQuery(e.target.value)}
-                                        />
-
-                                        <div className="hidden flex items-center border rounded-lg pr-2 bg-white">
+                                    <div className='w-80 border'>
+                                        <div className="flex items-center rounded-lg pr-2 bg-white">
                                             <div className='w-full'>
-                                                <input value={searchQuery} onChange={e => setSearchQuery(e.target.value)} type="text" className="outline-white p-2 input border-0" placeholder="Search stocks by name" />
+                                                <input value={searchQuery} onChange={e => setSearchQuery(e.target.value)} type="text" className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 focus:bg-white focus:ring-indigo-500" placeholder="Search stocks by name" />
                                             </div>
 
                                             <div>
@@ -288,7 +271,7 @@ const Trade = () => {
                                                         </button>
 
                                                         <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.symbol + "&sign=" + (el.sign === '+' ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose + "&tradeAction=buy"}>
-                                                            <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
+                                                            <button type='button' className="rounded-lg bg-green-800 py-2 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
                                                     </div>
                                                 </td>
                                             </tr>
