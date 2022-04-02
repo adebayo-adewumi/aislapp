@@ -609,9 +609,9 @@ const TradeConfirmations = () => {
                             
                             {/*All Section*/}
                             <div className={switchToAll ? '':'hidden'}>
-                                <div className={allTrade.length === 0 ? 'text-gray-500 text-center':'hidden'}>No trades to display</div>
+                                <div className={allTrade.length === 0 ? 'text-gray-500':'hidden'}>No trades to display</div>
 
-                                <div className='bg-white rounded shadow overflow-x-auto sm:rounded mb-5'>
+                                <div className={allTrade.length > 0 ?'bg-white rounded shadow overflow-x-auto sm:rounded mb-5':'hidden'}>
                                     <table className="w-full whitespace-no-wrap" cellSpacing={0}>
                                         <tbody>
                                             <tr className='' style={{borderBottom: '1px solid #e2e8f0'}}>
@@ -669,44 +669,58 @@ const TradeConfirmations = () => {
 
                             {/*Open Section*/}
                             <div className={switchToOpen ? '':'hidden'}>
-                                <div className={orderOpen === '' ? 'text-gray-500 text-center':'hidden'}>No open trades to display</div>
+                                <div className={orderOpen === '' ? 'text-gray-500':'hidden'}>No open trades to display</div>
 
-                                <div>{buyTradeData.map((item :any, index :any)=>
-                                    <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
-                                        <div className="md:flex md:justify-between md:items-center text-sm">
-                                            <div className='flex-child md:mb-0 mb-4'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
+                                <div className={orderOpen !== '' ?'bg-white rounded shadow overflow-x-auto sm:rounded mb-5':'hidden'}>
+                                    <table className="w-full whitespace-no-wrap" cellSpacing={0}>
+                                        <tbody>
+                                            <tr className='' style={{borderBottom: '1px solid #e2e8f0'}}>
+                                                <th className='px-3 py-3'></th>
+                                                <th className='px-3 py-3 text-left'>Code</th>
+                                                <th   className='px-3 py-3 text-left'>Qty</th>
+                                                <th className='px-3 py-3 text-left'>Amount</th>
+                                                <th className='px-3 py-3 text-left'>Status</th>
+                                                <th  className='px-3 py-3 text-left'>Date</th>
+                                                <th  className='px-3 py-3 text-left'></th>
+                                                <th  className='px-3 py-3 text-left'></th>
+                                            </tr>
 
-                                            <div className="flex-child md:mb-0 mb-4">
-                                                <div className='font-bold text-xs'>{item.stockCode}</div>
-                                            </div>
+                                            {buyTradeData.map((item :any, index :any)=>
+                                            <tr className="hover:bg-gray-100 focus-within:bg-gray-100 tr-data" key={index}>
+                                                <td className='px-3 py-4 table-border-bottom'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></td>
 
-                                            <div className=" flex-child md:mb-0 mb-4">
-                                                <div className='font-bold text-xs'>{parseInt(item.qty)}</div>
-                                            </div>
+                                                <td className='px-3 py-4 table-border-bottom'>
+                                                    <div className=' text-xs'>{item.stockCode}</div>
+                                                </td>
 
-                                            <div className=" flex-child md:mb-0 mb-4">
-                                                <div className='font-bold text-xs'>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
-                                            </div>
+                                                <td className='px-3 py-4 table-border-bottom'>
+                                                    <div className=' text-xs'>{parseInt(item.qty)}</div>
+                                                </td>
 
-                                            <div className=" flex-child md:mb-0 mb-4">
-                                                <div className='font-bold text-xs'>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
-                                            </div>
+                                                <td className='px-3 py-4 table-border-bottom'>
+                                                    <div className=' text-xs'>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
+                                                </td>
 
-                                            <div className=" flex-child md:mb-0 mb-4">
-                                                <div className='font-bold text-xs'>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
-                                            </div> 
+                                                <td className='px-3 py-4 table-border-bottom'>
+                                                    <div className=' text-xs'>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
+                                                </td>
 
-                                            <div className=" flex-child md:mb-0 mb-4 text-right">                                                    
-                                                <button data-order={item.id} onClick={displayTradeDetailsModal} type='button' className={item.status  === 'AWAIT_EXECUTION' ? "py-2 px-3 border-0 bg-transparent font-bold text-red-500 text-xs cursor-pointer":"hidden"}>Cancel</button>
-                                            </div>
+                                                <td className='px-3 py-4 table-border-bottom'>
+                                                    <div className=' text-xs'>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
+                                                </td> 
 
-                                            <div className="flex-child md:mb-0 mb-4 text-right">
-                                                <button data-order={item.id} onClick={displayTradeDetailsModal} type='button' className="rounded-lg bg-green-800 py-2 px-3 border-0 font-bold text-white cursor-pointer text-xs">View</button>
-                                            </div> 
-                                            
-                                        </div>
-                                    </div>
-                                    )}
+                                                <td className='px-3 py-4 table-border-bottom'>                                                    
+                                                    <button data-order={item.id} onClick={displayTradeDetailsModal} type='button' className={item.status  === 'AWAIT_EXECUTION' ? "py-2 px-3 border-0 bg-transparent text-red-500 text-xs cursor-pointer":"hidden"}>Cancel</button>
+                                                </td>
+
+                                                <td className='px-3 py-4 table-border-bottom'>
+                                                    <button data-order={item.id} onClick={displayTradeDetailsModal} type='button' className="rounded-lg bg-green-800 py-2 px-3 border-0 font-bold text-white cursor-pointer text-xs">View</button>
+                                                </td>                                                    
+                                                
+                                            </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                             {/*End*/}
@@ -738,44 +752,59 @@ const TradeConfirmations = () => {
 
                             {/*Sold Section*/}
                             <div className={switchToSold ? '':'hidden'}>
-                                <div className={orderSold === '' ? 'text-gray-500 text-center':'hidden'}>No sold trades to display</div>
+                                <div className={orderSold === '' ? 'text-gray-500':'hidden'}>No sold trades to display</div>
 
-                                <div>{sellTradeData.map((item :any, index :any)=>
-                                    <div className="portfoliolist-card card mb-30 cursor-pointer" key={index}>
-                                        <div className="md:flex md:justify-between md:items-center text-sm">
-                                            <div className='flex-child md:mb-0 mb-4'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></div>
+                                <div className={orderSold !== '' ? 'bg-white rounded shadow overflow-x-auto sm:rounded mb-5':'hidden'}>
+                                    <table className="w-full whitespace-no-wrap" cellSpacing={0}>
+                                        <tbody>
+                                            <tr className='' style={{borderBottom: '1px solid #e2e8f0'}}>
+                                                <th className='px-3 py-3'></th>
+                                                <th className='px-3 py-3 text-left'>Code</th>
+                                                <th   className='px-3 py-3 text-left'>Qty</th>
+                                                <th className='px-3 py-3 text-left'>Amount</th>
+                                                <th className='px-3 py-3 text-left'>Status</th>
+                                                <th  className='px-3 py-3 text-left'>Date</th>
+                                                <th  className='px-3 py-3 text-left'></th>
+                                                <th  className='px-3 py-3 text-left'></th>
+                                            </tr>
 
-                                            <div className="flex-child md:mb-0 mb-4">
-                                                <div className='font-bold text-xs'>{item.stockCode}</div>
-                                            </div>
+                                            {sellTradeData.map((item :any, index :any)=>
+                                            <tr className="hover:bg-gray-100 focus-within:bg-gray-100 tr-data" key={index}>
+                                                
+                                                <td className='px-3 py-4 table-border-bottom'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" style={{width: '2rem'}}/></td>
 
-                                            <div className=" flex-child md:mb-0 mb-4">
-                                                <div className='font-bold text-xs'>{parseInt(item.qty)}</div>
-                                            </div>
+                                                <td className='px-3 py-4 table-border-bottom'>
+                                                    <div className='font-bold text-xs'>{item.stockCode}</div>
+                                                </td>
 
-                                            <div className=" flex-child md:mb-0 mb-4">
-                                                <div className='font-bold text-xs'>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
-                                            </div>
+                                                <td className='px-3 py-4 table-border-bottom'>
+                                                    <div className='font-bold text-xs'>{parseInt(item.qty)}</div>
+                                                </td>
 
-                                            <div className=" flex-child md:mb-0 mb-4">
-                                                <div className='font-bold text-xs'>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
-                                            </div>
+                                                <td className='px-3 py-4 table-border-bottom'>
+                                                    <div className='font-bold text-xs'>₦ {HelperFunctions.formatCurrencyWithDecimal(parseInt(item.qty) * item.quotePrice)}</div>
+                                                </td>
 
-                                            <div className=" flex-child md:mb-0 mb-4">
-                                                <div className='font-bold text-xs'>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
-                                            </div> 
+                                                <td className='px-3 py-4 table-border-bottom'>
+                                                    <div className='font-bold text-xs'>{item.status === 'AWAIT_EXECUTION' ? 'Open' : item.status}</div>
+                                                </td>
 
-                                            <div className=" flex-child md:mb-0 mb-4 text-right">                                                    
-                                                <button data-order={item.id} onClick={displayTradeDetailsModal} type='button' className={item.status  === 'AWAIT_EXECUTION' ? "py-3 px-3 border-0 bg-transparent text-xs font-bold text-red-500 cursor-pointer":"hidden"}>Cancel</button>
-                                            </div>
+                                                <td className='px-3 py-4 table-border-bottom'>
+                                                    <div className='font-bold text-xs'>{moment(item.orderDate).format("MMM Do, YYYY hh:mm A")}</div>
+                                                </td> 
 
-                                            <div className="flex-child md:mb-0 mb-4 text-right">
-                                                <button data-order={item.id} onClick={displayTradeDetailsModal} type='button' className="rounded-lg bg-green-800 py-3 px-3 border-0 font-bold text-white cursor-pointer text-xs">View</button>
-                                            </div> 
-                                            
-                                        </div>
-                                    </div>
-                                    )}
+                                                <td className='px-3 py-4 table-border-bottom'>                                                    
+                                                    <button data-order={item.id} onClick={displayTradeDetailsModal} type='button' className={item.status  === 'AWAIT_EXECUTION' ? "py-3 px-3 border-0 bg-transparent text-xs font-bold text-red-500 cursor-pointer":"hidden"}>Cancel</button>
+                                                </td>
+
+                                                <td className='px-3 py-4 table-border-bottom'>
+                                                    <button data-order={item.id} onClick={displayTradeDetailsModal} type='button' className="rounded-lg bg-green-800 py-3 px-3 border-0 font-bold text-white cursor-pointer text-xs">View</button>
+                                                </td>                                                    
+                                                
+                                            </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
                                 </div>
                                 
                             </div>
