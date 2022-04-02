@@ -1004,7 +1004,6 @@ const Profile = () => {
             setShowPasswordSpinner(false);
 
             setShowEnterPasswordCard(true);
-            setShowEnterPinCard(false);
             setShowGeneratePasswordOTPCard(false);
         })
         .catch(function (error) {
@@ -1047,7 +1046,6 @@ const Profile = () => {
             setShowPinSpinner(false);
 
             setShowEnterPinCard(true);
-            setShowEnterPasswordCard(false);
             setShowGeneratePinOTPCard(false);
         })
         .catch(function (error) {
