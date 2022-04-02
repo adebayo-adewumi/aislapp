@@ -558,9 +558,7 @@ const Watchlist = () => {
                         <img src={DeleteCardIcon} alt='' />
                     </div>
 
-                    <div className='text-red-500 text-2xl text-center mb-11'>Delete this price alert</div>           
-                    
-
+                    <div className='text-red-500 text-2xl text-center mb-11'>Delete this price alert</div>   
                 </div>
 
                 <div className="flex space-x-5">
