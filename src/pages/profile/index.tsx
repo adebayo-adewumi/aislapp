@@ -17,7 +17,6 @@ import moment from 'moment';
 import DeleteCardIcon from '../../assets/images/delete-card.svg';
 import { authOnboardingServiceBaseUrl, utilityServiceBaseUrlUrl, walletAndAccountServiceBaseUrl } from '../../apiUrls';
 import { getAxios } from '../../network/httpClientWrapper';
-import { Input, Select } from 'antd';
 
 const Profile = () => {   
     
@@ -91,7 +90,7 @@ const Profile = () => {
 
     const [idFile, setIdFile] = useState('');
     const [idBase64Img, setIdBase64Img] = useState('');
-    const [idType, setIdType] = useState('');
+    const [border, ] = useState('');
     const [idNumber, setIdNumber] = useState('');
 
     const [utilityBillFile, setUtilityBillFile] = useState('');
@@ -141,8 +140,6 @@ const Profile = () => {
     const [showEnterPinCard, setShowEnterPinCard] = useState<boolean>(false);
     const [countries, setCountries] = useState<any[]>([]);
     const [transactionPin, setTransactionPin] = useState('');
-
-    const { Option } = Select;
 
     useEffect(() => {
         function checkIfPasswordOrConfirmPasswordIsNullOrEmpty(){
@@ -402,7 +399,7 @@ const Profile = () => {
 
     useEffect(() => {
         function checkIfPersonalDetailsFieldsAreFilled(){
-            if(address === '' || city === '' || state === '' || country === '' || idBase64Img === '' || utilityBillBase64Img === '' || signatureBase64Img === '' || idType === '' || idNumber === ''){
+            if(address === '' || city === '' || state === '' || country === '' || idBase64Img === '' || utilityBillBase64Img === '' || signatureBase64Img === '' || border === '' || idNumber === ''){
                 setIsPersonalDetailsFilled(false);
             }
             else{
@@ -413,7 +410,7 @@ const Profile = () => {
         }
 
         checkIfPersonalDetailsFieldsAreFilled();
-    },[address,city,state,country,idBase64Img,utilityBillBase64Img,signatureBase64Img,idType,idNumber]);
+    },[address,city,state,country,idBase64Img,utilityBillBase64Img,signatureBase64Img,border,idNumber]);
 
     useEffect(() => {
         function checkIfEmploymentDetailsFieldsAreFilled(){
@@ -634,7 +631,7 @@ const Profile = () => {
             "idName":idBase64Img,
             "idDetails": {
                 "idNumber": idNumber,
-                "idType": idType,
+                "border": border,
                 "idCountry": country,
                 "dob":customer.dob
             }
@@ -1066,12 +1063,11 @@ const Profile = () => {
         <div className="relative">
             <UserAreaHeader />
 
-            <div>
                 <div className="h-screen flex">
                     <Sidebar />
 
-                    <div className="mt-20 flex-1 min-w-0 flex flex-col">
-                        <div className='p-10 flex-1 bg-gray-100 overflow-y-auto'>
+                    <div className="flex-1 min-w-0 flex flex-col">
+                        <div className='px-10 py-24 flex-1 bg-gray-100 overflow-y-auto'>
                             <div className="text-xl mb-3">
                                 <span className="text-lg sm:text-4xl md:text-2xl leading-snug font-semibold tracking-tight text-green-900 py-4">Profile</span>
                             </div>
@@ -1110,7 +1106,7 @@ const Profile = () => {
 
                                 {/*Personal details card */}
                                 <div className='mb-11'>
-                                    <div className='card p-10'>
+                                    <div className='bg-white rounded-lg shadow p-10'>
 
                                         {/* Personal Deatils Success */}
                                         <div className={isPersonalDetailsSuccessful ? "otp-alert mb-20":"hidden"}>
@@ -1118,8 +1114,7 @@ const Profile = () => {
                                                 <div className="">
 
                                                     <div className="text-sm text-green-900">{apiResponseMessage}</div>
-                                                </div>
-                                                
+                                                </div>                                               
                                                 
                                             </div>
                                         </div>
@@ -1154,13 +1149,18 @@ const Profile = () => {
                                                     <div className='md:w-1/2 w-full md:mb-0 mb-11'>
                                                         <div className='font-bold text-gray-700 mb-3 text-sm'>Address</div>
                                                         <div>
-                                                            <Input defaultValue={item.contactAddress} onChange={e => setAddress(e.target.value)} size="large"/>
+
+                                                            <input defaultValue={item.contactAddress} onChange={e => setAddress(e.target.value)}  type="text"  className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white border focus:ring-indigo-500" />
                                                         </div>
                                                     </div>
 
                                                     <div className='md:w-1/2 w-full'>
                                                         <div className='font-bold text-gray-700 mb-3 text-sm'>City</div>
-                                                        <div><Input value={city} onChange={e => setCity(e.target.value)} size="large"/></div>
+
+                                                        <div>
+
+                                                            <input value={city} onChange={e => setCity(e.target.value)}  type="text"  className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white border focus:ring-indigo-500" />
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1170,62 +1170,62 @@ const Profile = () => {
                                                     <div className='md:w-1/2 w-full md:mb-0 mb-11'>
                                                         <div className='font-bold  text-gray-700 mb-3 text-sm'>State</div>
                                                         <div>   
-                                                            <Select size="large" onChange={e => setState(e.target.value)} className="w-full">
-                                                                <Option value="" selected>Select a state</Option>
-                                                                <Option value="Abuja">Abuja</Option>
-                                                                <Option value="Abia">Abia</Option>
-                                                                <Option value="Adamawa">Adamawa</Option>
-                                                                <Option value="Akwa Ibom">Akwa Ibom</Option>
-                                                                <Option value="Anambra">Anambra</Option>
-                                                                <Option value="Bauchi">Bauchi</Option>
-                                                                <Option value="Bayelsa">Bayelsa</Option>
-                                                                <Option value="Benue">Benue</Option>
-                                                                <Option value="Borno">Borno</Option>
-                                                                <Option value="Cross River">Cross River</Option>
-                                                                <Option value="Delta">Delta</Option>
-                                                                <Option value="Ebonyi">Ebonyi</Option>
-                                                                <Option value="Edo">Edo</Option>
-                                                                <Option value="Ekiti">Ekiti</Option>
-                                                                <Option value="Enugu">Enugu</Option>
-                                                                <Option value="Gombe">Gombe</Option>
-                                                                <Option value="Imo">Imo</Option>
-                                                                <Option value="Jigawa">Jigawa</Option>
-                                                                <Option value="Kaduna">Kaduna</Option>
-                                                                <Option value="Kano">Kano</Option>
-                                                                <Option value="Katsina">Katsina</Option>
-                                                                <Option value="Kebbi">Kebbi</Option>
-                                                                <Option value="Kogi">Kogi</Option>
-                                                                <Option value="Kwara">Kwara</Option>
-                                                                <Option value="Lagos">Lagos</Option>
-                                                                <Option value="Niger">Niger</Option>
-                                                                <Option value="Ogun">Ogun</Option>
-                                                                <Option value="Ondo">Ondo</Option>
-                                                                <Option value="Osun">Osun</Option>
-                                                                <Option value="Oyo">Oyo</Option>
-                                                                <Option value="Plateau">Plateau</Option>
-                                                                <Option value="Rivers">Rivers</Option>
-                                                                <Option value="Sokoto">Sokoto</Option>
-                                                                <Option value="Taraba">Taraba</Option>
-                                                                <Option value="Yobe">Yobe</Option>
-                                                                <Option value="Zamfara">Zamfara</Option>
-                                                            </Select>
+                                                            <select onChange={e => setState(e.target.value)} className="block  w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white bg-white mt-2 border focus:ring-indigo-500">
+                                                                <option value="" selected>Select a state</option>
+                                                                <option value="Abuja">Abuja</option>
+                                                                <option value="Abia">Abia</option>
+                                                                <option value="Adamawa">Adamawa</option>
+                                                                <option value="Akwa Ibom">Akwa Ibom</option>
+                                                                <option value="Anambra">Anambra</option>
+                                                                <option value="Bauchi">Bauchi</option>
+                                                                <option value="Bayelsa">Bayelsa</option>
+                                                                <option value="Benue">Benue</option>
+                                                                <option value="Borno">Borno</option>
+                                                                <option value="Cross River">Cross River</option>
+                                                                <option value="Delta">Delta</option>
+                                                                <option value="Ebonyi">Ebonyi</option>
+                                                                <option value="Edo">Edo</option>
+                                                                <option value="Ekiti">Ekiti</option>
+                                                                <option value="Enugu">Enugu</option>
+                                                                <option value="Gombe">Gombe</option>
+                                                                <option value="Imo">Imo</option>
+                                                                <option value="Jigawa">Jigawa</option>
+                                                                <option value="Kaduna">Kaduna</option>
+                                                                <option value="Kano">Kano</option>
+                                                                <option value="Katsina">Katsina</option>
+                                                                <option value="Kebbi">Kebbi</option>
+                                                                <option value="Kogi">Kogi</option>
+                                                                <option value="Kwara">Kwara</option>
+                                                                <option value="Lagos">Lagos</option>
+                                                                <option value="Niger">Niger</option>
+                                                                <option value="Ogun">Ogun</option>
+                                                                <option value="Ondo">Ondo</option>
+                                                                <option value="Osun">Osun</option>
+                                                                <option value="Oyo">Oyo</option>
+                                                                <option value="Plateau">Plateau</option>
+                                                                <option value="Rivers">Rivers</option>
+                                                                <option value="Sokoto">Sokoto</option>
+                                                                <option value="Taraba">Taraba</option>
+                                                                <option value="Yobe">Yobe</option>
+                                                                <option value="Zamfara">Zamfara</option>
+                                                            </select>
                                                         </div>
                                                     </div>
 
                                                     <div className='md:w-1/2 w-full'>
                                                         <div className='font-bold  text-gray-700 mb-3 text-sm'>Country</div>
                                                         <div>
-                                                            <Select size="large" className="w-full" onChange={e => setCountry(e.target.value)}>
-                                                                <Option value={item.hasOwnProperty("idDetails") ? item.idDetails.idCountry : ""} className={item.hasOwnProperty("idDetails") ? "" : "hidden"}>
+                                                            <select className="block  w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white bg-white mt-2 border focus:ring-indigo-500" onChange={e => setCountry(e.target.value)}>
+                                                                <option value={item.hasOwnProperty("idDetails") ? item.idDetails.idCountry : ""} className={item.hasOwnProperty("idDetails") ? "" : "hidden"}>
                                                                     {item.hasOwnProperty("idDetails") ? item.idDetails.idCountry : ""}
-                                                                </Option>
+                                                                </option>
 
-                                                                <Option value=''>...</Option>
+                                                                <option value=''>...</option>
                                                                 
                                                                 {countries.map((el :any, ind :any)=>
-                                                                    <Option value={el.name} className={item.hasOwnProperty("idDetails") ? (el.name === item.idDetails.idCountry ? "hidden":"") : ""} key={ind}>{el.name}</Option>
+                                                                    <option value={el.name} className={item.hasOwnProperty("idDetails") ? (el.name === item.idDetails.idCountry ? "hidden":"") : ""} key={ind}>{el.name}</option>
                                                                 )}
-                                                            </Select>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1237,41 +1237,22 @@ const Profile = () => {
                                             <div className='font-bold mb-3'>Valid identification</div>
 
                                             <div className='md:flex md:justify-between mb-11 text-sm'>
-                                                <Select size="large" className="w-full" onChange={e => setCountry(e.target.value)} style={{width: '20rem'}} >
-                                                    <Option value={item.hasOwnProperty("idDetails") ? item.idDetails.idType : ""} className={item.hasOwnProperty("idDetails") ? "" : "hidden"}>
-                                                        {item.hasOwnProperty("idDetails") ? item.idDetails.idType : ""}
-                                                    </Option>
 
-                                                    <Option value=''>...</Option>
+                                                <select onChange={e => setCountry(e.target.value)} className="block  w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white bg-white border focus:ring-indigo-500" style={{width: '32rem'}}>
+                                                    <option value={item.hasOwnProperty("idDetails") ? item.idDetails.border : ""} className={item.hasOwnProperty("idDetails") ? "" : "hidden"}>
+                                                        {item.hasOwnProperty("idDetails") ? item.idDetails.border : ""}
+                                                    </option>
+
+                                                    <option value=''>...</option>
                                                     
-                                                    <Option value="Drivers License" className={item.hasOwnProperty("idDetails") ? (item.idDetails.idType === 'Drivers License' ? 'hidden':'') :''}>Drivers Licence</Option>
+                                                    <option value="Drivers License" className={item.hasOwnProperty("idDetails") ? (item.idDetails.border === 'Drivers License' ? 'hidden':'') :''}>Drivers Licence</option>
 
-                                                    <Option value="NIN" className={item.hasOwnProperty("idDetails") ? (item.idDetails.idType === 'NIN' ? 'hidden':'') : ''}>NIN</Option>
+                                                    <option value="NIN" className={item.hasOwnProperty("idDetails") ? (item.idDetails.border === 'NIN' ? 'hidden':'') : ''}>NIN</option>
 
-                                                    <Option value="Voters Card" className={item.hasOwnProperty("idDetails") ? (item.idDetails.idType === 'Voters Card' ? 'hidden':'') : ''}>Voters Card</Option>
-                                                </Select>
+                                                    <option value="Voters Card" className={item.hasOwnProperty("idDetails") ? (item.idDetails.border === 'Voters Card' ? 'hidden':'') : ''}>Voters Card</option>
+                                                </select>
 
-                                                <div className='hidden'>
-                                                    <div className='flex  space-x-1 items-end w-full md:mb-0 mb-3'>                                                
-                                                        <input type="radio" name="idtype" value="Drivers License"  checked={idType === 'Drivers License'} onChange={e => setIdType(e.target.value)} /> 
-                                                        <div className='text-gray-900'>Drivers License</div>
-                                                    </div>
-
-                                                    <div className='flex hidden space-x-1 items-end w-full md:mb-0 mb-3'>                                                
-                                                        <input type="radio" name="idtype" value="International Passport" checked={idType === "International Passport"} onChange={e => setIdType(e.target.value)}/> 
-                                                        <div className='text-gray-900'>Int'l Passport</div>
-                                                    </div>
-
-                                                    <div className='flex space-x-1 items-end w-full md:mb-0 mb-3'>                                                
-                                                        <input type="radio" name="idtype" value="NIN"  checked={idType === "NIN"} onChange={e => setIdType(e.target.value)}/> 
-                                                        <div className='text-gray-900'>NIN</div>
-                                                    </div>
-
-                                                    <div className='flex items-end space-x-1 w-full md:mb-0 mb-3'>                                                
-                                                        <input type="radio"  name="idtype" value="Voters Card"  checked={idType === "Voters Card"} onChange={e => setIdType(e.target.value)}/> 
-                                                        <div className='text-gray-900'>Voters Card</div>
-                                                    </div>
-                                                </div>
+                                                <div className="pointer-events-none absolute inset-y-0 right-0 hidden items-center px-2 text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" className="fill-current h-4 w-4"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path></svg></div>
                                             </div>
 
                                             <div>
@@ -1290,7 +1271,8 @@ const Profile = () => {
 
                                                     <div className='md:w-1/2 pb-0.5'>
                                                         <div className='text-gray-900 mb-3 text-sm font-bold'>ID Number</div>
-                                                        <Input type='number' value={item.hasOwnProperty("idDetails") ? item.idDetails.idNumber : ''} onChange={e => setIdNumber(e.target.value)} size="large"/>
+
+                                                        <input type='number' value={item.hasOwnProperty("idDetails") ? item.idDetails.idNumber : ''} onChange={e => setIdNumber(e.target.value)} className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white border focus:ring-indigo-500"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1300,22 +1282,22 @@ const Profile = () => {
                                                     <div className='mb-3 text-sm font-bold'>Utility Bill Type</div>
                                                     
                                                     <div>
-                                                        <Select size="large" className="w-full" onChange={e => setUtilityBillType(e.target.value)} >
+                                                        <select className="block  w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white bg-white mt-2 border focus:ring-indigo-500" onChange={e => setUtilityBillType(e.target.value)} >
 
-                                                            <Option value={item.utilityBillType}>{item.utilityBillType}</Option>
+                                                            <option value={item.utilityBillType}>{item.utilityBillType}</option>
 
-                                                            <Option value=''>...</Option>
+                                                            <option value=''>...</option>
 
-                                                            <Option value='Water Bills' className={item.utilityBillType === 'Water Bills' ? 'hidden':''}>Water Bills</Option>
+                                                            <option value='Water Bills' className={item.utilityBillType === 'Water Bills' ? 'hidden':''}>Water Bills</option>
 
-                                                            <Option value='PayTV Bills' className={item.utilityBillType === 'PayTV Bills' ? 'hidden':''}>PayTV Bills</Option>
+                                                            <option value='PayTV Bills' className={item.utilityBillType === 'PayTV Bills' ? 'hidden':''}>PayTV Bills</option>
 
-                                                            <Option value='Telecommunication Bills' className={item.utilityBillType === 'Telecommunication Bills' ? 'hidden':''}>Telecommunication Bills</Option>
+                                                            <option value='Telecommunication Bills' className={item.utilityBillType === 'Telecommunication Bills' ? 'hidden':''}>Telecommunication Bills</option>
 
-                                                            <Option value='Electricity Bills' className={item.utilityBillType === 'Electricity Bills' ? 'hidden':''}>Electricity Bills</Option>
+                                                            <option value='Electricity Bills' className={item.utilityBillType === 'Electricity Bills' ? 'hidden':''}>Electricity Bills</option>
 
-                                                            <Option value='Waste Bills' className={item.utilityBillType === 'Waste Bills' ? 'hidden':''}>Waste Bills</Option>
-                                                        </Select>
+                                                            <option value='Waste Bills' className={item.utilityBillType === 'Waste Bills' ? 'hidden':''}>Waste Bills</option>
+                                                        </select>
                                                     </div>
                                                 </div>
 
@@ -1323,7 +1305,7 @@ const Profile = () => {
                                                     <div className='mb-3 text-sm font-bold'>Transaction Pin</div>
                                                     <div>
                                                         <div>
-                                                            <Input type='password' size='large' onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
+                                                            <input type='password' className="block  w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white bg-white mt-2 border focus:ring-indigo-500" onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1393,7 +1375,7 @@ const Profile = () => {
 
                                 {/*Employment details card */}
                                 <div className='mb-11'>
-                                    <div className='card p-10'>
+                                    <div className='bg-white rounded-lg shadow p-10'>
                                         {/* Employee Deatils Success */}
                                         <div className={isEmployeeDetailsSuccessful ? "otp-alert mb-20":"hidden"}>
                                             <div className="otp-validated p-3">
@@ -1413,12 +1395,12 @@ const Profile = () => {
                                                 <div className='md:flex md:justify-between md:space-x-10'>
                                                     <div className='md:w-1/2 w-full md:mb-0 mb-11'>
                                                         <div className='text-gray-700 font-bold mb-3 text-sm'>Name of employer</div>
-                                                        <div><Input size='large' defaultValue={employmentDetails.length > 0 ?employmentDetails[0].employer : ''} onChange={e => setEmployer(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
+                                                        <div><input defaultValue={employmentDetails.length > 0 ?employmentDetails[0].employer : ''} onChange={e => setEmployer(e.target.value)} type='text' className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white  focus:ring-indigo-500'/></div>
                                                     </div>
 
                                                     <div className='md:w-1/2 w-full'>
                                                         <div className='text-gray-700 font-bold  mb-3 text-sm'>Profession</div>
-                                                        <div><Input size='large' defaultValue={employmentDetails.length > 0 ?employmentDetails[0].profession : ''} onChange={e => setProfession(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg outline-white rounded-lg w-full'/></div>
+                                                        <div><input  defaultValue={employmentDetails.length > 0 ?employmentDetails[0].profession : ''} onChange={e => setProfession(e.target.value)} type='text' className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white  focus:ring-indigo-500'/></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1427,7 +1409,7 @@ const Profile = () => {
                                                 <div className='mb-3 text-sm font-bold'>Transaction Pin</div>
                                                 <div>
                                                     <div>
-                                                        <Input size='large' type='password' className='input p-3 border-1-d6 outline-white font-bold text-lg' onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
+                                                        <input  type='passord' className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500' onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1437,35 +1419,35 @@ const Profile = () => {
                                                     <div className='md:w-1/3 w-full md:mb-0 mb-11'>
                                                         <div className='text-gray-700 mb-3 text-sm font-bold'>Annual Salary Range</div>
                                                         <div>
-                                                            <Select size="large" className="w-full" onChange={e => setSalary(e.target.value)} >
-                                                                <Option value={employmentDetails.length > 0 ? employmentDetails[0].salary : ''}>{employmentDetails.length > 0 ? employmentDetails[0].salary : ''}</Option>
+                                                            <select className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500" onChange={e => setSalary(e.target.value)} >
+                                                                <option value={employmentDetails.length > 0 ? employmentDetails[0].salary : ''}>{employmentDetails.length > 0 ? employmentDetails[0].salary : ''}</option>
 
-                                                                <Option value=''>...</Option>
+                                                                <option value=''>...</option>
 
-                                                                <Option value='Less than 250,000' className={employmentDetails.length > 0 ? (employmentDetails[0].salary === 'Less than 250,000' ? 'hidden':'') : ''}>Less than 250,000</Option>
+                                                                <option value='Less than 250,000' className={employmentDetails.length > 0 ? (employmentDetails[0].salary === 'Less than 250,000' ? 'hidden':'') : ''}>Less than 250,000</option>
 
-                                                                <Option value='250,000 - 1m' className={employmentDetails.length > 0 ? (employmentDetails[0].salary === '250,000 - 1m'? 'hidden':'') : ''}>250,000 - 1m</Option>
+                                                                <option value='250,000 - 1m' className={employmentDetails.length > 0 ? (employmentDetails[0].salary === '250,000 - 1m'? 'hidden':'') : ''}>250,000 - 1m</option>
 
-                                                                <Option value='1m - 5m' className={employmentDetails.length > 0 ? (employmentDetails[0].salary === '1m - 5m'? 'hidden':'') : ''}>1m - 5m</Option>
+                                                                <option value='1m - 5m' className={employmentDetails.length > 0 ? (employmentDetails[0].salary === '1m - 5m'? 'hidden':'') : ''}>1m - 5m</option>
 
-                                                                <Option value='Above 5m' className={employmentDetails.length > 0 ? (employmentDetails[0].salary === 'Above 5m'? 'hidden':'') : ''}>Above 5m</Option>
-                                                            </Select>
+                                                                <option value='Above 5m' className={employmentDetails.length > 0 ? (employmentDetails[0].salary === 'Above 5m'? 'hidden':'') : ''}>Above 5m</option>
+                                                            </select>
                                                         </div>
                                                     </div>
 
                                                     <div className='md:w-1/3 w-full'>
                                                         <div className='text-gray-700 mb-3 text-sm font-bold'>Are you a politically exposed person?</div>
                                                         <div>
-                                                            <Select size="large" className="w-full" onChange={e => setPolitical(e.target.value)} >
+                                                            <select className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500" onChange={e => setPolitical(e.target.value)} >
 
-                                                                <Option value={employmentDetails.length > 0 ? employmentDetails[0].politicalAffiliation : ''}>{employmentDetails.length > 0 ? employmentDetails[0].politicalAffiliation : ''}</Option>
+                                                                <option value={employmentDetails.length > 0 ? employmentDetails[0].politicalAffiliation : ''}>{employmentDetails.length > 0 ? employmentDetails[0].politicalAffiliation : ''}</option>
 
-                                                                <Option value=''>...</Option>
+                                                                <option value=''>...</option>
 
-                                                                <Option value='Yes' className={employmentDetails.length > 0 ? (employmentDetails[0].politicalAffiliation === 'Yes'? 'hidden':'') :''}>Yes</Option>
+                                                                <option value='Yes' className={employmentDetails.length > 0 ? (employmentDetails[0].politicalAffiliation === 'Yes'? 'hidden':'') :''}>Yes</option>
 
-                                                                <Option value='No' className={employmentDetails.length > 0 ? (employmentDetails[0].politicalAffiliation === 'No'? 'hidden':''):''}>No</Option>
-                                                            </Select>
+                                                                <option value='No' className={employmentDetails.length > 0 ? (employmentDetails[0].politicalAffiliation === 'No'? 'hidden':''):''}>No</option>
+                                                            </select>
                                                         </div>
                                                     </div>
 
@@ -1488,7 +1470,7 @@ const Profile = () => {
 
                                 {/*Next of Kin card */}
                                 <div className='mb-11'>
-                                    <div className='card p-10'>
+                                    <div className='bg-white rounded-lg shadow p-10'>
                                         {/* NOK Success */}
                                         <div className={isNokSuccessful ? "otp-alert mb-3":"hidden"}>
                                             <div className="otp-validated p-3">
@@ -1507,12 +1489,14 @@ const Profile = () => {
                                                 <div className='md:flex md:justify-between md:space-x-10'>
                                                     <div className='md:w-1/2 w-full md:mb-0 mb-11'>
                                                         <div className='text-gray-700 mb-3 text-sm font-bold'>Firstname</div>
-                                                        <div><Input size='large' defaultValue={nokDetails.length > 0 ? nokDetails[0].firstName : ''} onChange={e => setNokFirstname(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
+                                                        <div>
+                                                            <input  defaultValue={nokDetails.length > 0 ? nokDetails[0].firstName : ''} onChange={e => setNokFirstname(e.target.value)} type='text' className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500'/>
+                                                        </div>
                                                     </div>
 
                                                     <div className='md:w-1/2 w-full'>
                                                         <div className='text-gray-700 mb-3 text-sm font-bold'>Lastname</div>
-                                                        <div><Input size='large' defaultValue={nokDetails.length > 0 ? nokDetails[0].lastName : ''} onChange={e => setNokLastname(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
+                                                        <div><input defaultValue={nokDetails.length > 0 ? nokDetails[0].lastName : ''} onChange={e => setNokLastname(e.target.value)} type='text' className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500'/></div>
                                                     </div>                                            
                                                 </div>
                                             </div>
@@ -1521,94 +1505,94 @@ const Profile = () => {
                                                 <div className='md:flex md:justify-between md:space-x-10'>
                                                     <div className='md:w-1/3 w-full md:mb-0 mb-11'>
                                                         <div className='text-gray-700 mb-3 text-sm font-bold'>Email Address</div>
-                                                        <div><Input size='large' defaultValue={nokDetails.length > 0 ? nokDetails[0].email : ''} onChange={e => setNokEmail(e.target.value)} type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
+                                                        <div><input defaultValue={nokDetails.length > 0 ? nokDetails[0].email : ''} onChange={e => setNokEmail(e.target.value)} type='text' className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500'/></div>
                                                     </div>
 
                                                     <div className='md:w-1/3 w-full md:mb-0 mb-11'>
                                                         <div className='text-gray-700 mb-3 text-sm font-bold'>Phone number</div>
 
                                                         <div className='flex border-1-d6 rounded-lg px-2'>
-                                                            <Select size="large" className="w-full" onChange={e => setNokPhoneCode(e.target.value)} style={{border: 'none !important'}}>
-                                                                <Option value="234">+234</Option>
-                                                                <Option value="1">+1</Option>
-                                                                <Option value="44">+44</Option>
-                                                                <Option value="213">+213</Option>
-                                                                <Option value="376">+376</Option>
-                                                                <Option value="244">+244</Option>
-                                                                <Option value="1264">+1264</Option>
-                                                                <Option value="1268">+1268</Option>
-                                                                <Option value="54">+54</Option>
-                                                                <Option value="374">+374</Option>
-                                                                <Option value="297">+297</Option>
-                                                                <Option value="61">+61</Option>
-                                                                <Option value="43">+43</Option>
-                                                                <Option value="994">+994</Option>
-                                                                <Option value="1242">+1242</Option>
-                                                                <Option value="973">+973</Option>
-                                                                <Option value="880">+880</Option>
-                                                                <Option value="1246">+1246</Option>
-                                                                <Option value="375">+375</Option>
-                                                                <Option value="32">+32</Option>
-                                                                <Option value="501">+501</Option>
-                                                                <Option value="229">+229</Option>
-                                                                <Option value="1441">+1441</Option>
-                                                                <Option value="975">+975</Option>
-                                                                <Option value="591">+591</Option>
-                                                                <Option  value="387">+387</Option>
-                                                                <Option  value="267">+267</Option>
-                                                                <Option  value="55">+55</Option>
-                                                                <Option  value="673">+673</Option>
-                                                                <Option  value="359">+359</Option>
-                                                                <Option  value="226">+226</Option>
-                                                                <Option  value="257">+257</Option>
-                                                                <Option  value="855">+855</Option>
-                                                                <Option  value="237">+237</Option>
-                                                                <Option  value="1">+1</Option>
-                                                                <Option  value="238">+238</Option>
-                                                                <Option  value="1345">+1345</Option>
-                                                                <Option  value="236">+236</Option>
-                                                                <Option  value="56">+56</Option>
-                                                                <Option  value="86">+86</Option>
-                                                                <Option  value="57">+57</Option>
-                                                                <Option  value="269">+269</Option>
-                                                                <Option  value="242">+242</Option>
-                                                                <Option  value="682">+682</Option>
-                                                                <Option  value="506">+506</Option>
-                                                                <Option  value="385">+385</Option>
-                                                                <Option  value="53">+53</Option>
-                                                                <Option  value="599">+599</Option>
-                                                                <Option  value="90392">+90392</Option>
-                                                                <Option  value="357">+357</Option>
-                                                                <Option  value="420">+420</Option>
-                                                                <Option  value="45">+45</Option>
-                                                                <Option  value="253">+253</Option>
-                                                                <Option  value="1809">+1809</Option>
-                                                                <Option  value="1809">+1809</Option>
+                                                            <select  className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900  focus:bg-white focus:ring-indigo-500" onChange={e => setNokPhoneCode(e.target.value)} style={{border: 'none !important'}}>
+                                                                <option value="234">+234</option>
+                                                                <option value="1">+1</option>
+                                                                <option value="44">+44</option>
+                                                                <option value="213">+213</option>
+                                                                <option value="376">+376</option>
+                                                                <option value="244">+244</option>
+                                                                <option value="1264">+1264</option>
+                                                                <option value="1268">+1268</option>
+                                                                <option value="54">+54</option>
+                                                                <option value="374">+374</option>
+                                                                <option value="297">+297</option>
+                                                                <option value="61">+61</option>
+                                                                <option value="43">+43</option>
+                                                                <option value="994">+994</option>
+                                                                <option value="1242">+1242</option>
+                                                                <option value="973">+973</option>
+                                                                <option value="880">+880</option>
+                                                                <option value="1246">+1246</option>
+                                                                <option value="375">+375</option>
+                                                                <option value="32">+32</option>
+                                                                <option value="501">+501</option>
+                                                                <option value="229">+229</option>
+                                                                <option value="1441">+1441</option>
+                                                                <option value="975">+975</option>
+                                                                <option value="591">+591</option>
+                                                                <option  value="387">+387</option>
+                                                                <option  value="267">+267</option>
+                                                                <option  value="55">+55</option>
+                                                                <option  value="673">+673</option>
+                                                                <option  value="359">+359</option>
+                                                                <option  value="226">+226</option>
+                                                                <option  value="257">+257</option>
+                                                                <option  value="855">+855</option>
+                                                                <option  value="237">+237</option>
+                                                                <option  value="1">+1</option>
+                                                                <option  value="238">+238</option>
+                                                                <option  value="1345">+1345</option>
+                                                                <option  value="236">+236</option>
+                                                                <option  value="56">+56</option>
+                                                                <option  value="86">+86</option>
+                                                                <option  value="57">+57</option>
+                                                                <option  value="269">+269</option>
+                                                                <option  value="242">+242</option>
+                                                                <option  value="682">+682</option>
+                                                                <option  value="506">+506</option>
+                                                                <option  value="385">+385</option>
+                                                                <option  value="53">+53</option>
+                                                                <option  value="599">+599</option>
+                                                                <option  value="90392">+90392</option>
+                                                                <option  value="357">+357</option>
+                                                                <option  value="420">+420</option>
+                                                                <option  value="45">+45</option>
+                                                                <option  value="253">+253</option>
+                                                                <option  value="1809">+1809</option>
+                                                                <option  value="1809">+1809</option>
                                                                 
-                                                            </Select>
+                                                            </select>
 
-                                                            <input defaultValue={nokDetails.length > 0 ? nokDetails[0].phoneNumber : ''} onChange={e => setNokPhone(e.target.value)} className="px-2  text-lg outline-white" placeholder="ex: 813 000 1111 OR 0813 000 1111" type="text" style={{border: 'none'}}/>
+                                                            <input defaultValue={nokDetails.length > 0 ? nokDetails[0].phoneNumber : ''} onChange={e => setNokPhone(e.target.value)} className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500" placeholder="ex: 813 000 1111 OR 0813 000 1111" type="text" style={{border: 'none'}}/>
                                                         </div>                                                
                                                     </div>
 
                                                     <div className='md:w-1/3 w-full'>
                                                         <div className='text-gray-700 mb-3 text-sm font-bold'>Relationship</div>
                                                         <div>
-                                                            <Select size="large" className="w-full" onChange={e => setNokRelationship(e.target.value)} >
-                                                                <Option value={nokDetails.length > 0 ? nokDetails[0].relationship : ''}>{nokDetails.length > 0 ? nokDetails[0].relationship : ''}</Option>
+                                                            <select className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white mt-2 border-gray-400 focus:ring-indigo-500" onChange={e => setNokRelationship(e.target.value)} >
+                                                                <option value={nokDetails.length > 0 ? nokDetails[0].relationship : ''}>{nokDetails.length > 0 ? nokDetails[0].relationship : ''}</option>
 
-                                                                <Option value="">...</Option>
+                                                                <option value="">...</option>
 
-                                                                <Option value="SISTER" className={nokDetails.length > 0 ? (nokDetails[0].relationship === 'SISTER' ? 'hidden':''):''}>SISTER</Option>
+                                                                <option value="SISTER" className={nokDetails.length > 0 ? (nokDetails[0].relationship === 'SISTER' ? 'hidden':''):''}>SISTER</option>
 
-                                                                <Option value="BROTHER" className={nokDetails.length > 0 ? (nokDetails[0].relationship === 'BROTHER' ? 'hidden':''):''}>BROTHER</Option>
+                                                                <option value="BROTHER" className={nokDetails.length > 0 ? (nokDetails[0].relationship === 'BROTHER' ? 'hidden':''):''}>BROTHER</option>
 
-                                                                <Option value="SPOUSE" className={nokDetails.length > 0 ? (nokDetails[0].relationship === 'SPOUSE' ? 'hidden':''):''}>SPOUSE</Option>
+                                                                <option value="SPOUSE" className={nokDetails.length > 0 ? (nokDetails[0].relationship === 'SPOUSE' ? 'hidden':''):''}>SPOUSE</option>
 
-                                                                <Option value="DAUGHTER" className={nokDetails.length > 0 ? (nokDetails[0].relationship === 'DAUGHTER' ? 'hidden':''):''}>DAUGHTER</Option>
+                                                                <option value="DAUGHTER" className={nokDetails.length > 0 ? (nokDetails[0].relationship === 'DAUGHTER' ? 'hidden':''):''}>DAUGHTER</option>
 
-                                                                <Option value="OTHERS" className={nokDetails.length > 0 ? (nokDetails[0].relationship === 'OTHERS' ? 'hidden':''):''}>OTHERS</Option>
-                                                            </Select>
+                                                                <option value="OTHERS" className={nokDetails.length > 0 ? (nokDetails[0].relationship === 'OTHERS' ? 'hidden':''):''}>OTHERS</option>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1619,7 +1603,7 @@ const Profile = () => {
                                                     <div className='text-gray-700 mb-3 text-sm font-bold'>Other relationship type</div>
                                                     
                                                     <div>
-                                                        <Input size='large' value={nokRelationshipOtherValue} onChange={e => setNokRelationshipOtherValue(e.target.value)}  type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/>
+                                                        <input value={nokRelationshipOtherValue} onChange={e => setNokRelationshipOtherValue(e.target.value)}  type='text' className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500'/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1628,7 +1612,7 @@ const Profile = () => {
                                                 <div className='mb-3 text-sm font-bold'>Transaction Pin</div>
                                                 <div>
                                                     <div>
-                                                        <Input size='large' type='password' className='input p-3 border-1-d6 outline-white font-bold text-lg' onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
+                                                        <input type='password' className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500' onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1637,11 +1621,13 @@ const Profile = () => {
                                                 <div className='md:flex md:justify-between md:space-x-10'>
                                                     <div className='md:w-1/2 w-full md:mb-0 md-11'>
                                                         <div className='text-gray-700 mb-3 text-sm font-bold'>Next of Kin Address</div>
-                                                        <div><Input size='large' defaultValue={nokDetails.length > 0 ? nokDetails[0].address :''} onChange={e => setNokAddress(e.target.value)}  type='text' className='border border-gray-300 px-3 py-2 text-lg text-gray-700 outline-white rounded-lg w-full'/></div>
+                                                        <div><input defaultValue={nokDetails.length > 0 ? nokDetails[0].address :''} onChange={e => setNokAddress(e.target.value)}  type='text' className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500'/></div>
                                                     </div>
 
                                                     <div className='md:w-1/2 w-full'>
-                                                        <button onClick={sendNextOfKin} type='button' className="mt-9 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full">
+                                                        <div className='text-gray-700 mb-3 text-sm font-bold'> </div>
+
+                                                        <button onClick={sendNextOfKin} type='button' className="mt-3 rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer w-full">
                                                             <span className={ showNokSpinner ? "hidden" : ""}>Update</span>
                                                             <img src={SpinnerIcon} alt="spinner icon" className={ showNokSpinner ? "" : "hidden"} width="15"/>
                                                         </button>
@@ -1656,7 +1642,7 @@ const Profile = () => {
 
                                 {/*Bank Details */}
                                 <div>
-                                    <div className='card p-10'>
+                                    <div className='bg-white rounded-lg shadow p-10'>
                                         {/* Bank Details Success */}
                                         <div className={isBankDetailsSuccessful ? "otp-alert mb-20":"hidden"}>
                                             <div className="otp-validated p-3">
@@ -1670,7 +1656,7 @@ const Profile = () => {
                                         </div>
                                         {/* End */}
 
-                                        <div className='text-xl font-gotham-black-regular text-green-900 mb-3'>Bank Details</div>
+                                        <div className='text-xl text-green-900 mb-3'>Bank Details</div>
                                         <div className='font-bold text-green-900 mb-6 text-sm'>Proceeds from your stock sales would be deposited into this account</div>
 
                                         <div>
@@ -1683,21 +1669,21 @@ const Profile = () => {
 
                                                 <div className={primaryBankDetails.length > 0 ? 'mb-3':'hidden'}>
                                                 {primaryBankDetails.map((item :any, index: any) =>
-                                                    <Input className={item.primaryBank ? 'font-bold input px-5 py-3 border-1-d6 outline-white font-bold text-lg':'hidden'} id='bankList' size='large' readOnly value={item.accountName+ " | " +item.bankName +" | "+ item.accountNumber} key={index}/>
+                                                    <input className={item.primaryBank ? 'bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500':'hidden'} id='bankList' readOnly value={item.accountName+ " | " +item.bankName +" | "+ item.accountNumber} key={index}/>
                                                 )}
                                                 </div>
 
                                                 <div className={primaryBankDetails.length === 0 && bankDetails.length > 0 ? 'mb-3':'hidden'}>
-                                                    <Select size="large"  className="w-full" onChange={selectBankDetails}>
-                                                        <Option value="">Select your primary bank details
-                                                        </Option>
+                                                    <select  className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500" onChange={selectBankDetails}>
+                                                        <option value="">Select your primary bank details
+                                                        </option>
 
                                                         {
                                                             bankDetails.map((item :any, index: any) =>
-                                                            <Option value={item.id} key={index}>{item.accountName} | {item.bankName} | {item.accountNumber}</Option>
+                                                            <option value={item.id} key={index}>{item.accountName} | {item.bankName} | {item.accountNumber}</option>
                                                             )
                                                         }
-                                                    </Select>
+                                                    </select>
                                                 </div>
                                             </div>                                         
                                         </div>
@@ -2122,14 +2108,20 @@ const Profile = () => {
                         </div>
                     </div>                    
                 </div>
-            </div>
 
-            <div className={showPageLoader ? "page-loader-backdrop opacity-90":"hidden"}>
-                <div className='mx-auto w-96 my-56 relative'>
-                    <div className='absolute top-44pc left-46pt5pc'><img src={AnchoriaIcon} alt="" /></div>
-                    <div className='text-center'><img src={AnchoriaSpinner} alt=""/></div>
+            {/* Page Loader Section */}
+            <div className={showPageLoader ? "page-loader-backdrop opacity-90" : "hidden"}>
+                <div className='relative'>
+                    <div className='ml-96 w-1/3 text-center relative'>
+                        <img src={AnchoriaSpinner} alt="" />
+
+                        <div className='absolute' style={{left : '15.2rem', top: '5.4rem'}}>
+                            <img src={AnchoriaIcon} alt="" />
+                        </div>
+                    </div>
                 </div>
             </div>
+            {/* End */}
 
             <div className={showNotificationDetailModal ? 'generic-modal':'hidden'}>
                 <div className='generic-modal-dialog'>
