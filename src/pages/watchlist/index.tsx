@@ -14,7 +14,7 @@ import CloseIcon from '../../assets/images/close.svg';
 import SpinnerIcon from "../../assets/images/spinner.gif";
 import { encryptData } from '../../lib/encryptionHelper';
 import { generalEncKey } from '../../common/constants/globals';
-import SuccessIcon from '../../assets/images/success.gif';
+import SuccessIcon from '../../assets/images/success-check.svg';
 import GreenBoxIcon from '../../assets/images/green-box.svg';
 import RedBoxIcon from '../../assets/images/red-box.svg';
 import BlueBoxIcon from '../../assets/images/blue-box.svg';
@@ -301,154 +301,179 @@ const Watchlist = () => {
         <div className="relative">
             <UserAreaHeader />
 
-            <div>
-                <div className="h-screen flex">
-                    <Sidebar />
+            
+            <div className="h-screen flex">
+                <Sidebar />
 
-                    <div className="mt-20 flex-1 min-w-0 flex flex-col">
-                        <div className='p-10 flex-1 bg-gray-100 overflow-y-auto'>
-                            <div className='flex justify-between items-center'>
-                                <div>
-                                    <div className="text-3xl mb-3">
-                                        <span className="font-bold text-green-900">My Watchlist</span>
-                                    </div>
-
-                                    <div className="text-sm font-bold text-color-2 mb-8">Overview of your favourite stocks</div>
+                <div className="flex-1 min-w-0 flex flex-col">
+                    <div className='px-10 py-24 flex-1 bg-gray-100 overflow-y-auto'>
+                        <div className='flex justify-between items-center'>
+                            <div>
+                                <div className="text-3xl mb-3">
+                                    <span className="font-bold text-green-900">My Watchlist</span>
                                 </div>
 
-                                <div>
-                                    <button type='button' onClick={displayCreateWatchlistModal} className='hidden focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 cursor-pointer rounded bg-green-900 text-white font-bold px-10 py-3 border-0'>Create Watchlist</button>
-                                </div>
+                                <div className="text-sm font-bold text-color-2 mb-8">Overview of your favourite stocks</div>
                             </div>
 
-                            {/*Quick Search*/}
-                            <div className="mb-11">
-                                <div className="flex justify-between">
-                                    <div>
-                                        <div className="border_1 flex rounded-lg p-02rem">
-                                            <div className=''>
-                                                <button onClick={performSwitchToAll} type='button' className={switchToAll ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>All</button>
-                                            </div>
-
-                                            <div className=''>
-                                                <button onClick={performSwitchToAlert} type='button' className={switchToAlert ? "rounded-lg bg-green-900 text-white border-0 py-3 px-12 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-3 px-12 font-bold border-0 bgcolor-f"}>Alerts</button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className='hidden'>
-                                        <div className="flex space-x-3">
-                                            <div>
-                                                <Link to="/trade" className='no-underline text-green-900'>
-                                                    <button type="button" className="border-0 rounded-lg py-2 px-3 button-filter  cursor-pointer">
-                                                        <img src={SlidersIcon} alt="" />
-                                                    </button>
-                                                </Link>
-                                            </div>
-
-                                            <div className="w-80 right-0 flex border_1 rounded-lg pr-3 bg-white">
-                                                <div className="pl-3 py-2"><img src={SearchIcon} alt="" /></div>
-
-                                                <div className='w-full'>
-                                                    <input type="text" className="outline-white p-2 input border-0" placeholder="Quick search" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div>
+                                <button type='button' onClick={displayCreateWatchlistModal} className='hidden focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 cursor-pointer rounded bg-green-900 text-white font-bold px-10 py-3 border-0'>Create Watchlist</button>
                             </div>
-                            {/*End*/}
-
-                            {/*watchlist section*/}
-                            <div className={switchToAll ? '':'hidden'}>
-                                <div className='shadow-sm sm:rounded-lg'>
-                                    <table className="table-fixed w-full border-0 text-sm text-left text-gray-500 mb-11" cellSpacing={0}>
-                                        <thead className='text-sm text-gray-700 uppercase'>
-                                            <tr className='bg-gray-100'>
-                                                <th className='p-3 font-bold'></th>
-                                                <th className='p-3 font-bold'>Code</th>
-                                                <th   className='p-3 font-bold'>Name</th>
-                                                <th className='p-3 font-bold'>Price</th>
-                                                <th className='p-3 font-bold'>Returns (%)</th>
-                                                <th  className='p-3 font-bold'></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {watchlistData.length === 0 ? 'No stocks in your watchlist.' : watchlistData.map((item: any, index: number) =>
-                                                <tr key={index} className="bg-white">
-                                                    
-                                                    <td className='px-3 py-4 table-border-bottom'>
-                                                        <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" width={30}/>
-                                                    </td>
-
-                                                    <td className='px-3 py-4 table-border-bottom font-bold text-black'>{item.symbol}</td>
-
-                                                    <td className='px-3 py-4 table-border-bottom font-bold text-black'>{item.name}</td>
-
-                                                    <td className='px-3 py-4 table-border-bottom font-bold text-black'>₦ {HelperFunctions.formatCurrencyWithDecimal(item.currentPrice)}</td>
-
-                                                    <td className={item.percentageChangeSinceAdded >= 0 ? 'px-3 py-4 table-border-bottom font-bold text-green-500':"px-3 py-4 table-border-bottom font-bold text-red-500"}> {HelperFunctions.formatCurrencyWithDecimal(item.percentageChangeSinceAdded)}%  </td>
-
-                                                    <td className='px-3 py-4 table-border-bottom'>
-
-                                                        <button onClick={displayRemoveStockModal} type='button' className="px-3 border-0 font-bold text-red-500 cursor-pointer bg-transparent mr-5" data-symbol={item.name}>Remove</button>
-
-                                                        <Link to={"/stock?name=" + item.name + "&symbol=" + item.name + "&sign=" + (item.percentageChangeSinceAdded >= 0 ? 'positive' : 'negative') + "&currentPrice=" + item.currentPrice + "&tradeAction=buy"}>
-                                                            <button type='button' className="rounded-lg bg-green-800 py-2 px-3 border-0 font-bold text-white cursor-pointer">View</button></Link>
-                                                    </td>
-                                                </tr>
-                                            )}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            {/*End*/}
-
-                            {/*Alert section*/}
-                            <div className={switchToAlert ? '':'hidden'}>
-                                {priceAlerts.length === 0 ? 'No price alerts added.' : priceAlerts.sort(compareNotificationLogsDate).map((item: any, index: number) =>
-                                    <div className="card-15px mb-3" key={index}>
-                                        <div className="flex justify-between items-center">
-                                            <div><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" /></div>
-
-                                            <div className="font-bold text-sm">{item.symbol}</div>
-
-                                            <div className="text-sm font-bold text-right">₦ {HelperFunctions.formatCurrencyWithDecimal(item.value)}</div> 
-
-                                            <div className="text-sm text-right">{moment(item.createdOn).format("Do MMM, YYYY hh:mm")}</div> 
-
-                                            <div className="">
-                                                <button data-value={item.triggerId} onClick={displayDeleteModal} className='bg-red-500 text-white border-0 cursor-pointer font-bold px-5 py-3 rounded-lg'>Delete</button>
-                                            </div>                                            
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                            {/*End*/}
-
-                            {/*Pagination section*/}
-                            <div className={switchToAll ? '':'hidden'}>
-                            <Pagination                                
-                                currentPage={currentPage}
-                                totalCount={watchListStocks.length}
-                                pageSize={PageSize}
-                                onPageChange={(page: number) => setCurrentPage(page)}
-                            />
-                            </div>
-                            {/*End*/}
-
-                            {/* Page Loader Section */}
-                            <div className={showPageLoader ? "page-loader-backdrop opacity-90" : "hidden"}>
-                                <div className='w-96 relative lg:ml-72'>
-                                    <div className='absolute top-44pc left-46pt5pc'><img src={AnchoriaIcon} alt="" /></div>
-                                    <div className='text-center'><img src={AnchoriaSpinner} alt="" /></div>
-                                </div>
-                            </div>
-                            {/* End */}
                         </div>
+
+                        {/*Quick Search*/}
+                        <div className="mb-5">
+                            <div className="flex justify-between">
+                                <div>
+                                    <div className="bg-white flex rounded-lg p-1 border">
+                                        <div className=''>
+                                            <button onClick={performSwitchToAll} type='button' className={switchToAll ? "rounded-lg bg-green-900 text-white border-0 py-2 px-12 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-2 px-12 font-bold border-0 bg-transparent"}>All</button>
+                                        </div>
+
+                                        <div className=''>
+                                            <button onClick={performSwitchToAlert} type='button' className={switchToAlert ? "rounded-lg bg-green-900 text-white border-0 py-2 px-12 font-bold cursor-pointer" : "cursor-pointer rounded-lg py-2 px-12 font-bold border-0 bg-transparent"}>Alerts</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className='hidden'>
+                                    <div className="flex space-x-3">
+                                        <div>
+                                            <Link to="/trade" className='no-underline text-green-900'>
+                                                <button type="button" className="border-0 rounded-lg py-2 px-3 button-filter  cursor-pointer">
+                                                    <img src={SlidersIcon} alt="" />
+                                                </button>
+                                            </Link>
+                                        </div>
+
+                                        <div className="w-80 right-0 flex border_1 rounded-lg pr-3 bg-white">
+                                            <div className="pl-3 py-2"><img src={SearchIcon} alt="" /></div>
+
+                                            <div className='w-full'>
+                                                <input type="text" className="outline-white p-2 input border-0" placeholder="Quick search" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {/*End*/}
+
+                        {/*watchlist section*/}
+                        <div className={switchToAll ? '':'hidden'}>
+                            <div className='bg-white rounded shadow overflow-x-auto sm:rounded mb-5'>
+                                <table className="w-full whitespace-no-wrap" cellSpacing={0}>
+                                    
+                                    <tbody>
+                                        <tr className='' style={{borderBottom: '1px solid #e2e8f0'}}>
+                                            <th className='p-3 font-bold'></th>
+                                            <th className='px-3 py-3 text-left'>Code</th>
+                                            <th className='px-3 py-3 text-left'>Name</th>
+                                            <th className='px-3 py-3 text-left'>Price</th>
+                                            <th className='px-3 py-3 text-left'>Returns (%)</th>
+                                            <th className='px-3 py-3 text-left'>Date</th>
+                                            <th className='px-3 py-3 text-left'></th>
+                                        </tr>
+
+                                        {watchlistData.length === 0 ? 'No stocks in your watchlist.' : watchlistData.map((item: any, index: number) =>
+                                            <tr key={index} className="hover:bg-gray-100 focus-within:bg-gray-100 tr-data">
+                                                
+                                                <td className='px-3 py-4 table-border-bottom'>
+                                                    <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" width={30}/>
+                                                </td>
+
+                                                <td className='px-3 py-4 table-border-bottom font-bold text-black'>{item.symbol}</td>
+
+                                                <td className='px-3 py-4 table-border-bottom text-black'>{item.name}</td>
+
+                                                <td className='px-3 py-4 table-border-bottom font-bold text-black'>₦ {HelperFunctions.formatCurrencyWithDecimal(item.currentPrice)}</td>
+
+                                                
+
+                                                <td className={item.percentageChangeSinceAdded >= 0 ? 'px-3 py-4 table-border-bottom font-bold text-green-500':"px-3 py-4 table-border-bottom font-bold text-red-500"}> {HelperFunctions.formatCurrencyWithDecimal(item.percentageChangeSinceAdded)}%  </td>
+
+                                                <td className='px-3 py-4 table-border-bottom text-black'>{moment().format("Do MMM, YYYY hh:mm")}</td>
+
+                                                <td className='px-3 py-4 table-border-bottom'>
+
+                                                    <button onClick={displayRemoveStockModal} type='button' className="px-3 border-0  text-red-500 cursor-pointer bg-transparent mr-5" data-symbol={item.name}>Remove</button>
+
+                                                    <Link to={"/stock?name=" + item.name + "&symbol=" + item.name + "&sign=" + (item.percentageChangeSinceAdded >= 0 ? 'positive' : 'negative') + "&currentPrice=" + item.currentPrice + "&tradeAction=buy"}>
+                                                        <button type='button' className="rounded-lg bg-green-800 py-2 px-3 border-0 font-bold text-white cursor-pointer">View</button></Link>
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {/*End*/}
+
+                        {/*Alert section*/}
+                        <div className={switchToAlert ? '':'hidden'}>
+                            <div className='bg-white rounded shadow overflow-x-auto sm:rounded mb-5'>
+                                <table className="w-full whitespace-no-wrap" cellSpacing={0}>
+                                    
+                                    <tbody>
+                                        <tr className='' style={{borderBottom: '1px solid #e2e8f0'}}>
+                                            <th className='p-3 font-bold'></th>
+                                            <th className='px-3 py-3 text-left'>Code</th>
+                                            <th className='px-3 py-3 text-left'>Price</th>
+                                            <th className='px-3 py-3 text-left'>Date</th>
+                                            <th className='px-3 py-3 text-left'></th>
+                                        </tr>
+
+                                        {priceAlerts.length === 0 ? 'No price alerts added.' : priceAlerts.sort(compareNotificationLogsDate).map((item: any, index: number) =>
+                                            <tr key={index} className="hover:bg-gray-100 focus-within:bg-gray-100 tr-data">
+                                                
+                                                <td className='px-3 py-4 table-border-bottom'><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" width={30} /></td>
+
+                                                <td className="px-3 font-bold py-4 table-border-bottom text-black">{item.symbol}</td>
+
+                                                <td className="px-3 font-bold py-4 table-border-bottom text-black">₦ {HelperFunctions.formatCurrencyWithDecimal(item.value)}</td> 
+
+                                                <td className="px-3 py-4 table-border-bottom text-black">{moment(item.createdOn).format("Do MMM, YYYY hh:mm")}</td> 
+
+                                                <td className="px-3 py-4 table-border-bottom text-black">
+                                                    <button data-value={item.triggerId} onClick={displayDeleteModal} className='bg-red-500 text-white border-0 cursor-pointer font-bold px-5 py-2 rounded-lg'>Delete</button>
+                                                </td>                                            
+                                                
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>                            
+                        </div>
+                        {/*End*/}
+
+                        {/*Pagination section*/}
+                        <div className={switchToAll ? '':'hidden'}>
+                        <Pagination                                
+                            currentPage={currentPage}
+                            totalCount={watchListStocks.length}
+                            pageSize={PageSize}
+                            onPageChange={(page: number) => setCurrentPage(page)}
+                        />
+                        </div>
+                        {/*End*/}
+
+                        {/* Page Loader Section */}
+                        <div className={showPageLoader ? "page-loader-backdrop opacity-90" : "hidden"}>
+                            <div className='relative'>
+                                <div className='ml-96 w-1/3 text-center relative'>
+                                    <img src={AnchoriaSpinner} alt="" />
+
+                                    <div className='absolute' style={{left : '15.2rem', top: '5.4rem'}}>
+                                        <img src={AnchoriaIcon} alt="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* End */}
                     </div>
                 </div>
             </div>
+            
 
             {/*Create Watchlist Modal*/}
             <div className={showCreateWatchlistModal ? "create-portfolio-modal" : "create-portfolio-modal hidden"}>
@@ -485,16 +510,17 @@ const Watchlist = () => {
             {/*End */}
 
             <div className={showRemoveStockModal ? "removeStock-modal" : "removeStock-modal hidden"}>
-                <div className='text-center mb-10'><img src={RemoveStockIcon} alt="" /></div>
-                <div className='text-center text-3xl font-gotham-black-regular mb-10'>Remove Stocks</div>
-                <div className='text-center mb-30 text-sm leading-5'>
+                <div className='text-center mb-3'><img src={RemoveStockIcon} alt="" /></div>
+                <div className='text-center text-2xl font-bold mb-3'>Remove Stocks</div>
+
+                <div className='text-center mb-8 text-sm leading-5'>
                     Are you sure you want to remove this stocks from your watchlist?
                 </div>
 
                 <div className='flex space-x-3'>
-                    <button onClick={closeModal} type='button' className='cursor-pointer w-40 rounded-lg border-0 bg-gray-300 text-24 p-3 font-bold'>Cancel</button>
+                    <button onClick={closeModal} type='button' className='cursor-pointer w-40 rounded-lg border-0 bg-gray-300 p-3 font-bold'>Cancel</button>
 
-                    <button onClick={removeStockFromWatchlist} type='button' className='cursor-pointer rounded-lg border-0 bg-green-900 text-white text-24 p-3 font-bold w-96'>
+                    <button onClick={removeStockFromWatchlist} type='button' className='cursor-pointer rounded-lg border-0 bg-green-900 text-white p-3 font-bold w-96'>
                         <span className={showSpinner ? "hidden" : ""}>Confirm</span>
                         <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="30" />
                     </button>
@@ -513,7 +539,7 @@ const Watchlist = () => {
 
                 <div>
                     {/* Delete Success */}
-                    <div className={isDeleteSuccess ? "otp-alert mb-5" : "hidden"}>
+                    <div className={isDeleteSuccess ? "otp-alert mb-3" : "hidden"}>
                         <div className="otp-validated p-3">
                             <div className="text-sm text-green-900">{apiResponseSuccessMsg}</div>
                         </div>
@@ -521,7 +547,7 @@ const Watchlist = () => {
                     {/* End */}
 
                     {/* Delete Error */}
-                    <div className={apiResponseHasError ? "error-alert mb-5" : "hidden"}>
+                    <div className={apiResponseHasError ? "error-alert mb-3" : "hidden"}>
                         <div className="p-3">
                                 <div className="text-sm">{apiResponseErrorMsg}</div>
                         </div>
@@ -532,7 +558,7 @@ const Watchlist = () => {
                         <img src={DeleteCardIcon} alt='' />
                     </div>
 
-                    <div className='text-red-500 font-bold text-3xl text-center mb-11'>Delete this price alert</div>           
+                    <div className='text-red-500 text-2xl text-center mb-11'>Delete this price alert</div>           
                     
 
                 </div>
@@ -549,19 +575,18 @@ const Watchlist = () => {
             {/* End */}
 
             <div className={showSuccess ? "success-modal" : "success-modal hidden"}>
-                <div className="mx-auto h-64 relative">
-                    <img src={SuccessIcon} alt="success icon" className="w-96" />
-                    <div className="bg-white p-3 w-full -bottom-10 absolute"></div>
+                <div className="mx-auto w-1/2 mb-3">
+                    <img src={SuccessIcon} alt="success icon" className="w-full" />
                 </div>
 
-                <div className="relative z-10 text-green-900 font-gotham-black-regular text-3xl text-center mb-20">Successful</div>
+                <div className="relative z-10 text-green-900 font-gotham-black-regular text-3xl text-center mb-3">Successful</div>
 
-                <div className="text-color-4 text-sm text-center mb-14">{apiSuccessMsg}</div>
+                <div className="text-sm text-center mb-8">{apiSuccessMsg}</div>
 
-                <div className="flex space-x-5 mb-30">
-                    <button onClick={closeModal} type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer">Close</button>
+                <div className="flex space-x-5 mb-3">
+                    <button onClick={closeModal} type="button" className="py-3 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer">Close</button>
 
-                    <button onClick={closeModal} type="button" className="py-4 w-full font-bold bg-green-900 text-white rounded-lg border-0 cursor-pointer">Okay</button>
+                    <button onClick={closeModal} type="button" className="py-3 w-full font-bold bg-green-900 text-white rounded-lg border-0 cursor-pointer">Okay</button>
                 </div>
             </div>
 

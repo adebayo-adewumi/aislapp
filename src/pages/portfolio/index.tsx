@@ -26,7 +26,6 @@ import { defaultToZeroIfNullOrUndefined, isNullOrUndefined } from '../../common/
 import { formatCurrencyWithDecimal } from '../../lib/helper';
 import DeleteCardIcon from '../../assets/images/delete-card.svg';
 import { Link, useNavigate } from 'react-router-dom';
-import { Input } from 'antd';
 
 const Portfolio = () => {
     document.title = "Portfolio - Anchoria";
@@ -539,294 +538,298 @@ const Portfolio = () => {
     return (
             <div className="relative">
                 <UserAreaHeader />
-
-                <div>
-                    <div className="h-screen flex">
-                        <Sidebar />
-
-                        <div className="mt-20 flex-1 min-w-0 flex flex-col">
-                            <div className='p-10 flex-1 bg-gray-100 overflow-y-auto'>
-                                <div className="text-3xl mb-3">
-                                    <span className="font-bold text-green-900">Portfolio</span>
-                                </div>
-
-                                <div className="text-sm font-bold text-color-2 mb-11">
-                                    Overview of portfolio performance
-                                </div>
-
-                                <div className="md:flex md:space-x-10 mb-11 md:items-center">
-                                    <div className="card p-5 w-full md:mb-0 mb-6">
-                                        <div className="py-3">
-                                            <div className="flex justify-between w-full">
-                                                <div>
-                                                    <div className="mb-3 text-sm font-bold">Total Portfolio Value</div>
-
-                                                    <div className="font-bold text-xl font-gotham-black-regular">
-                                                        ₦ {formatCurrencyWithDecimal(totalPortfolioValue)}
-                                                    </div>
-                                                </div>
-
-                                                <div>
-                                                    <div className="mb-3 text-sm font-bold">Investment Amount</div>
-
-                                                    <div className="font-bold text-xl font-gotham-black-regular">
-                                                        ₦ {formatCurrencyWithDecimal(investmentAmount)}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="card p-5 w-full">
-                                        <div className="w-full py-3">
-                                            <div className="flex justify-between w-full">
-                                                <div>
-                                                    <div className="mb-3 text-sm font-bold">Net Portfolio Returns</div>
-                                                    <div>
-                                                        <img src={netPortfolioReturns >= 0 ? ArrowUpIcon : ArrowDownIcon} alt="" width="20" className="align-middle" />
-                                                        <span className={netPortfolioReturns >= 0 ? "text-green-500 font-bold font-gotham-black-regular mx-2" : "text-red-500 font-bold font-gotham-black-regular mx-2"}>{netPortfolioReturns >= 0 ? '+' + formatCurrencyWithDecimal(netPortfolioReturns).replace("-","") : formatCurrencyWithDecimal(netPortfolioReturns).replace("-","")} | {formatCurrencyWithDecimal(netPortfolioReturnsPercentage).replace("-","")}%</span>
-                                                    </div>
-
-                                                    <div className="hidden font-bold text-3xl font-gotham-black-regular">
-                                                        {netPortfolioReturns}
-                                                    </div>
-                                                </div>
-
-                                                <div>
-                                                    <div className="mb-3 text-sm font-bold">Number of Portfolio</div>
-
-                                                    <div className="font-bold text-xl font-gotham-black-regular">
-                                                        {portfolioCount}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className='hidden'>
-                                            <img src={ArrowUpIcon} alt="" width="20" className="align-middle" />
-                                            <span className="text-green-500 font-bold font-gotham-black-regular mx-2">+500 | 5.55%</span>  7days
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className='mb-16'>
-                                    <div className='card p-6'>
-                                        <div className='mb-30'>
-                                            <div className='md:flex md:justify-between md:items-center '>
-                                                <div className='w-1/2 md:mb-0 mb-6'>
-                                                    <div className='font-gotham-black-regular font-bold text-green-900 text-xl'>Total Portfolio Performance</div>
-
-                                                    <div className='text-lg'>Total Portfolio Value</div>
-
-                                                    <div className='font-gotham-black-regular font-bold text-green-900 text-xl'>₦ {formatCurrencyWithDecimal(totalPortfolioValue)}</div>
-                                                </div>
-
-                                                <div className='w-1/3 flex bg-gray-300 p-1 rounded justify-between'>
-                                                    <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn active hover:bg-green-900 hover:text-white' type='button' data-filter="1D">1D</button>
-
-                                                    <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0  cursor-pointer font-bold filter-btn inactive' type='button' data-filter="1W">1W</button>
-
-                                                    <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="1M">1M</button>
-
-                                                    <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="3M">3M</button>
-
-                                                    <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="6M">6M</button>
-
-                                                    <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="1Y">1Y</button>
-                                                </div>
-                                            </div>                                            
-                                        </div>
-
-                                        <div>
-                                            {/* <Line options={options} data={data} id='canvas'/> */}
-                                            <Chart options={options} series={series} type="area" height='490' />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="md:mb-3 mb-3">
-                                    <div className="flex justify-between items-center">
-                                        <div className="text-lg font-gotham-black-regular">My Portfolio List</div>
-                                        <div>
-                                            <button onClick={showCreatePorfolioModal} className="cursor-pointer bg-green-900 rounded-lg text-white border-0 py-3 px-5 font-bold focus:shadow-outline" type='button'>
-                                                Create new portfolio
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="mb-3">
-                                    <div className="md:grid md:grid-cols-2 md:gap-4">
-                                        <div className={portfolioList.length === 0 ? '':'hidden' }>
-                                            You have not created any portfolio.
-                                        </div>
-
-                                        {portfolioList.map((item :any, index :any)=>
-                                            <div onClick={viewPortfolioDetails} className="card-custom p-5 flex justify-between cursor-pointer md:mb-0 mb-3" id={item.uuid} key={index}>
-                                            <div className="flex space-x-4" id={item.uuid}>
-                                                <div id={item.uuid}><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" id={item.uuid} /></div>
                 
-                                                <div className="text-sm" id={item.uuid}>
-                                                    <div className="mb-3 font-bold text-color-2" id={item.uuid}>{item.name}</div>
-                                                    <div id={item.uuid} className={item.hasOwnProperty("listOfStocks") ? 'text-black':'hidden'}>Count: {item.hasOwnProperty("listOfStocks") ? item.listOfStocks.length : 0}</div>
-                                                </div>
-                                            </div>
-                
-                                            <div className="text-sm" id={item.uuid}> 
-                                                <div className="flex mb-3 justify-between" id={item.uuid}>
-                                                    <div className="text-green-900 font-bold" id={item.uuid}>Portfolio Value</div>
-                                                </div>
-                                                <div className="font-gotham-black-regular text-green-900 text-24 mb-3" id={item.uuid}>₦ {formatCurrencyWithDecimal(item.currentValue)}</div>
-                                                <div id={item.uuid} className={item.hasOwnProperty("uuid") ? '':'hidden'}>
-                                                    <span className={(item.portfolioReturn) >= 0 ? "text-green-500 text-24 font-bold" : "text-red-500 text-24 font-bold"} id={item.uuid}>
-                                                        <span id={item.uuid}>{formatCurrencyWithDecimal(defaultToZeroIfNullOrUndefined(item.portfolioReturn)).replace("-","")}</span> |
-                                                        <span className='ml-1' id={item.uuid}>{isNullOrUndefined(item.portfolioPercentageReturn)
-                                                            ? 0 : formatCurrencyWithDecimal(item.portfolioPercentageReturn).replace("-","")}</span>%</span>
-                                                    <span className='text-black hidden' id={item.uuid}> 7days</span>
-                                                </div>
-                                            </div>
-                
-                                            <div className={item.hasOwnProperty("uuid") ? 'row d-flex justify-content-end align-items-end':'hidden'} id={item.uuid}>
-                                                <div id={item.uuid} className="mb-3">
-                                                    <Link to={"details/"+item.uuid} id={item.uuid}><img src={ChevronRightIcon} alt="" id={item.uuid}/></Link>
-                                                </div>
-                
-                                                <div className='mr-2' id='deleteIcon' onClick={displayDeleteModal} data-value={item.id}>
-                                                    <img src={DeleteIcon} alt="" id='deleteIcon' data-value={item.uuid}/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        )}
-                                    </div>
-                                </div>
+                <div className="h-screen flex">
+                    <Sidebar />
 
-                                <div className={showCreatePortfolio ? "create-portfolio-modal" : "hidden"}>
-                                    <div className="flex justify-between mb-5">
-                                        <div className="font-bold text-xl">Create New Portfolio</div>
+                    <div className="flex-1 min-w-0 flex flex-col">
+                        <div className='px-10 py-24 flex-1 bg-gray-100 overflow-y-auto'>
+                            <div className="text-3xl mb-3">
+                                <span className="font-bold text-green-900">Portfolio</span>
+                            </div>
 
-                                        <div onClick={closeModal}>
-                                            <img src={CloseIcon} alt="" className="cursor-pointer" />
-                                        </div>
-                                    </div>
+                            <div className="text-sm font-bold mb-11">
+                                Overview of portfolio performance
+                            </div>
 
-                                    <div>
-                                        {/* Portfolio Error */}
-                                        <div className={apiResponseHasError ? "error-alert mb-3 p-2":"hidden"}>
-                                            <div className="">
-                                                <div className="">
-                                                    <div className="text-sm">{apiResponseHasMsg}</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {/* End */}
-
-                                              
-
-                                        <form>
+                            <div className="md:flex md:space-x-10 mb-11 md:items-center">
+                                <div className="bg-white shadow rounded-lg p-5 w-full md:mb-0 mb-6">
+                                    <div className="">
+                                        <div className="flex justify-between w-full">
                                             <div>
-                                                <div className="mb-3 font-bold">Name</div>
+                                                <div className="mb-3 text-sm font-bold">Total Portfolio Value</div>
 
-                                                <div className="mb-11">
-                                                    <Input size="large" value={portfolioName} onChange={e => setPortfolioName(e.target.value)}/>
-                                                </div>
-
-                                                <div className="flex space-x-5">
-                                                    <button onClick={closeModal} type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer">Cancel</button>
-
-                                                    <button disabled={portfolioIsNullOrEmpty} onClick={createPortfolio} className={portfolioIsNullOrEmpty
-                                                        ? "py-4 w-full font-bold bg-green-900 text-white rounded-lg border-0 cursor-pointer opacity-50" : "py-4 w-full font-bold bg-green-900 text-white rounded-lg border-0 cursor-pointer"} type='button'>
-                                                        <span className={showSpinner ? "hidden" : ""}>Add</span>
-                                                        <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="30" />
-                                                    </button>
+                                                <div className="font-bold text-xl font-gotham-black-regular">
+                                                    ₦ {formatCurrencyWithDecimal(totalPortfolioValue)}
                                                 </div>
                                             </div>
-                                        </form>
-                                    </div>
-                                </div>
 
-                                <div className={showSuccess ? "success-modal" : "success-modal hidden"}>
-                                    <div className="mx-auto w-1/2">
-                                        <img src={SuccessIcon} alt="success icon" className="w-full" />
-                                    </div>
+                                            <div>
+                                                <div className="mb-3 text-sm font-bold">Investment Amount</div>
 
-                                    <div className="relative z-10 text-green-900 font-gotham-black-regular text-3xl text-center mb-3">Successful</div>
-
-                                    <div className="text-sm text-center mb-14">Your portfolio has been successfully created</div>
-
-                                    <div className="flex space-x-5 mb-3">
-                                        <button onClick={closeModal} type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer">Close</button>
-
-                                        <button onClick={closeModal} type="button" className="py-4 w-full font-bold bg-green-900 text-white rounded-lg border-0 cursor-pointer">Okay</button>
-                                    </div>
-                                </div>
-
-                                <div className={showModalBG ? "modal-backdrop opacity-40" :  "hidden"}>
-                                </div>
-
-                                {/* Delete Modal */}
-                                <div className={showDeleteModal ? "success-modal" : "hidden"}>
-                                    <div className="mb-3 flex justify-between">
-                                        <div className="font-bold text-3xl text-green-900 font-gotham-black-regular"></div>
-
-                                        <div onClick={closeModal}>
-                                            <img src={CloseIcon} alt="" className="cursor-pointer" />
+                                                <div className="font-bold text-xl font-gotham-black-regular">
+                                                    ₦ {formatCurrencyWithDecimal(investmentAmount)}
+                                                </div>
+                                            </div>
                                         </div>
+                                    </div>
+                                </div>
+
+                                <div className="bg-white shadow rounded-lg p-5 w-full">
+                                    <div className="w-full">
+                                        <div className="flex justify-between w-full">
+                                            <div>
+                                                <div className="mb-3 text-sm font-bold">Net Portfolio Returns</div>
+                                                <div>
+                                                    <img src={netPortfolioReturns >= 0 ? ArrowUpIcon : ArrowDownIcon} alt="" width="20" className="align-middle" />
+                                                    <span className={netPortfolioReturns >= 0 ? "text-green-500 font-bold font-gotham-black-regular mx-2" : "text-red-500 font-bold font-gotham-black-regular mx-2"}>{netPortfolioReturns >= 0 ? '+' + formatCurrencyWithDecimal(netPortfolioReturns).replace("-","") : formatCurrencyWithDecimal(netPortfolioReturns).replace("-","")} | {formatCurrencyWithDecimal(netPortfolioReturnsPercentage).replace("-","")}%</span>
+                                                </div>
+
+                                                <div className="hidden font-bold text-3xl font-gotham-black-regular">
+                                                    {netPortfolioReturns}
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div className="mb-3 text-sm font-bold">Number of Portfolio</div>
+
+                                                <div className="font-bold text-xl font-gotham-black-regular">
+                                                    {portfolioCount}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className='hidden'>
+                                        <img src={ArrowUpIcon} alt="" width="20" className="align-middle" />
+                                        <span className="text-green-500 font-bold font-gotham-black-regular mx-2">+500 | 5.55%</span>  7days
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className='mb-16'>
+                                <div className='bg-white shadow rounded-lg  p-6'>
+                                    <div className='mb-30'>
+                                        <div className='md:flex md:justify-between md:items-center '>
+                                            <div className='w-1/2 md:mb-0 mb-6'>
+                                                <div className='font-gotham-black-regular font-bold text-green-900 text-xl'>Total Portfolio Performance</div>
+
+                                                <div className='text-lg'>Total Portfolio Value</div>
+
+                                                <div className='font-gotham-black-regular font-bold text-green-900 text-xl'>₦ {formatCurrencyWithDecimal(totalPortfolioValue)}</div>
+                                            </div>
+
+                                            <div className='w-1/3 flex bg-gray-300 p-1 rounded justify-between'>
+                                                <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn active hover:bg-green-900 hover:text-white' type='button' data-filter="1D">1D</button>
+
+                                                <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0  cursor-pointer font-bold filter-btn inactive' type='button' data-filter="1W">1W</button>
+
+                                                <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="1M">1M</button>
+
+                                                <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="3M">3M</button>
+
+                                                <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="6M">6M</button>
+
+                                                <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="1Y">1Y</button>
+                                            </div>
+                                        </div>                                            
                                     </div>
 
                                     <div>
-                                        {/* Delete Success */}
-                                        <div className={isDeleteSuccess ? "otp-alert mb-3" : "hidden"}>
-                                            <div className="otp-validated p-3">
-                                                <div> 
-                                                    <div className="text-sm text-green-900">{apiResponseSuccessMsg}</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {/* End */}
-
-                                        {/* Delete Error */}
-                                        <div className={apiResponseHasError ? "error-alert mb-20" : "hidden"}>
-                                            <div className="p-3">
-                                                <div className="">
-                                                    <div className="text-sm">{apiResponseErrorMsg}</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {/* End */}
-
-                                        <div className='text-center mb-3'>
-                                            <img src={DeleteCardIcon} alt='' />
-                                        </div>
-
-                                        <div className='text-red-500 font-bold text-3xl text-center mb-11'>Delete this portfolio</div>           
-                                        
-
+                                        {/* <Line options={options} data={data} id='canvas'/> */}
+                                        <Chart options={options} series={series} type="area" height='490' />
                                     </div>
+                                </div>
+                            </div>
 
-                                    <div className="flex space-x-5 mb-3">
-                                        <button type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer" onClick={closeModal}>Cancel</button>
-
-                                        <button onClick={deletePortfolio} type="button" className="py-4 w-full font-bold bg-red-500 text-white rounded-lg border-0 cursor-pointer">
-                                            <span className={showSpinner ? "hidden" : ""}>Delete</span>
-                                            <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
+                            <div className="md:mb-3 mb-3">
+                                <div className="flex justify-between items-center">
+                                    <div className="text-lg font-bold">My Portfolio List</div>
+                                    <div>
+                                        <button onClick={showCreatePorfolioModal} className="cursor-pointer bg-green-900 rounded-lg text-white border-0 py-3 px-5 font-bold focus:shadow-outline" type='button'>
+                                            Create new portfolio
                                         </button>
                                     </div>
                                 </div>
-                                {/* End */}
-
-                                {/* Page Loader Section */}
-                                <div className={showPageLoader ? "page-loader-backdrop opacity-90" : "hidden"}>
-                                    <div className='w-96 relative lg:ml-72'>
-                                        <div className='absolute top-44pc left-46pt5pc'><img src={AnchoriaIcon} alt="" /></div>
-                                        <div className='text-center'><img src={AnchoriaSpinner} alt="" /></div>
-                                    </div>
-                                </div>
-                                {/* End */}
                             </div>
 
+                            <div className="mb-3">
+                                <div className="md:grid md:grid-cols-2 md:gap-4">
+                                    <div className={portfolioList.length === 0 ? '':'hidden' }>
+                                        You have not created any portfolio.
+                                    </div>
+
+                                    {portfolioList.map((item :any, index :any)=>
+                                        <div onClick={viewPortfolioDetails} className="bg-white shadow rounded-lg  p-5 flex justify-between cursor-pointer md:mb-0 mb-3" id={item.uuid} key={index}>
+                                        <div className="flex space-x-4" id={item.uuid}>
+                                            <div id={item.uuid}><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" id={item.uuid} /></div>
+            
+                                            <div className="text-sm" id={item.uuid}>
+                                                <div className="mb-3 font-bold text-color-2" id={item.uuid}>{item.name}</div>
+                                                <div id={item.uuid} className={item.hasOwnProperty("listOfStocks") ? 'text-black':'hidden'}>Count: {item.hasOwnProperty("listOfStocks") ? item.listOfStocks.length : 0}</div>
+                                            </div>
+                                        </div>
+            
+                                        <div className="text-sm" id={item.uuid}> 
+                                            <div className="flex mb-3 justify-between" id={item.uuid}>
+                                                <div className="text-green-900" id={item.uuid}>Portfolio Value</div>
+                                            </div>
+                                            <div className="font-bold text-green-900 mb-3" id={item.uuid}>₦ {formatCurrencyWithDecimal(item.currentValue)}</div>
+                                            <div id={item.uuid} className={item.hasOwnProperty("uuid") ? '':'hidden'}>
+                                                <span className={(item.portfolioReturn) >= 0 ? "text-green-500 text-24 font-bold" : "text-red-500 text-24 font-bold"} id={item.uuid}>
+                                                    <span id={item.uuid}>{formatCurrencyWithDecimal(defaultToZeroIfNullOrUndefined(item.portfolioReturn)).replace("-","")}</span> |
+                                                    <span className='ml-1' id={item.uuid}>{isNullOrUndefined(item.portfolioPercentageReturn)
+                                                        ? 0 : formatCurrencyWithDecimal(item.portfolioPercentageReturn).replace("-","")}</span>%</span>
+                                                <span className='text-black hidden' id={item.uuid}> 7days</span>
+                                            </div>
+                                        </div>
+            
+                                        <div className={item.hasOwnProperty("uuid") ? 'row d-flex justify-content-end align-items-end':'hidden'} id={item.uuid}>
+                                            <div id={item.uuid} className="mb-3">
+                                                <Link to={"details/"+item.uuid} id={item.uuid}><img src={ChevronRightIcon} alt="" id={item.uuid}/></Link>
+                                            </div>
+            
+                                            <div className='mr-2' id='deleteIcon' onClick={displayDeleteModal} data-value={item.id}>
+                                                <img src={DeleteIcon} alt="" id='deleteIcon' data-value={item.uuid}/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            
                         </div>
                     </div>
                 </div>
+
+                <div className={showCreatePortfolio ? "create-portfolio-modal" : "hidden"}>
+                    <div className="flex justify-between mb-5">
+                        <div className="font-bold text-xl">Create New Portfolio</div>
+
+                        <div onClick={closeModal}>
+                            <img src={CloseIcon} alt="" className="cursor-pointer" />
+                        </div>
+                    </div>
+
+                    <div>
+                        {/* Portfolio Error */}
+                        <div className={apiResponseHasError ? "error-alert mb-3 p-2":"hidden"}>
+                            <div className="">
+                                <div className="">
+                                    <div className="text-sm">{apiResponseHasMsg}</div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* End */}
+
+                                
+
+                        <form>
+                            <div>
+                                <div className="mb-3 font-bold">Name</div>
+
+                                <div className="mb-5">
+                                    <input type="text" className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white border-gray-400 focus:ring-indigo-500" value={portfolioName} onChange={e => setPortfolioName(e.target.value)}/>
+                                </div>
+
+                                <div className="flex space-x-5">
+                                    <button onClick={closeModal} type="button" className="py-3 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer">Cancel</button>
+
+                                    <button disabled={portfolioIsNullOrEmpty} onClick={createPortfolio} className={portfolioIsNullOrEmpty
+                                        ? "py-3 w-full font-bold bg-green-900 text-white rounded-lg border-0 cursor-pointer opacity-50" : "py-3 w-full font-bold bg-green-900 text-white rounded-lg border-0 cursor-pointer"} type='button'>
+                                        <span className={showSpinner ? "hidden" : ""}>Add</span>
+                                        <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="30" />
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div className={showSuccess ? "success-modal" : "hidden"}>
+                    <div className="mx-auto w-1/2">
+                        <img src={SuccessIcon} alt="success icon" className="w-full" />
+                    </div>
+
+                    <div className="relative z-10 text-green-900 font-gotham-black-regular text-3xl text-center mb-3">Successful</div>
+
+                    <div className="text-sm text-center mb-14">Your portfolio has been successfully created</div>
+
+                    <div className="flex space-x-5 mb-3">
+                        <button onClick={closeModal} type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer">Close</button>
+
+                        <button onClick={closeModal} type="button" className="py-4 w-full font-bold bg-green-900 text-white rounded-lg border-0 cursor-pointer">Okay</button>
+                    </div>
+                </div>
+
+                <div className={showModalBG ? "modal-backdrop opacity-40" :  "hidden"}>
+                </div>
+
+                {/* Delete Modal */}
+                <div className={showDeleteModal ? "success-modal" : "hidden"}>
+                    <div className="mb-3 flex justify-between">
+                        <div className="font-bold text-3xl text-green-900 font-gotham-black-regular"></div>
+
+                        <div onClick={closeModal}>
+                            <img src={CloseIcon} alt="" className="cursor-pointer" />
+                        </div>
+                    </div>
+
+                    <div>
+                        {/* Delete Success */}
+                        <div className={isDeleteSuccess ? "otp-alert mb-3" : "hidden"}>
+                            <div className="otp-validated p-3">
+                                <div> 
+                                    <div className="text-sm text-green-900">{apiResponseSuccessMsg}</div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* End */}
+
+                        {/* Delete Error */}
+                        <div className={apiResponseHasError ? "error-alert mb-20" : "hidden"}>
+                            <div className="p-3">
+                                <div className="">
+                                    <div className="text-sm">{apiResponseErrorMsg}</div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* End */}
+
+                        <div className='text-center mb-3'>
+                            <img src={DeleteCardIcon} alt='' />
+                        </div>
+
+                        <div className='text-red-500 font-bold text-3xl text-center mb-11'>Delete this portfolio</div>           
+                        
+
+                    </div>
+
+                    <div className="flex space-x-5 mb-3">
+                        <button type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer" onClick={closeModal}>Cancel</button>
+
+                        <button onClick={deletePortfolio} type="button" className="py-4 w-full font-bold bg-red-500 text-white rounded-lg border-0 cursor-pointer">
+                            <span className={showSpinner ? "hidden" : ""}>Delete</span>
+                            <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
+                        </button>
+                    </div>
+                </div>
+                {/* End */}
+
+                {/* Page Loader Section */}
+                <div className={showPageLoader ? "page-loader-backdrop opacity-90" : "hidden"}>
+                    <div className='relative'>
+                        <div className='ml-96 w-1/3 text-center relative'>
+                            <img src={AnchoriaSpinner} alt="" />
+
+                            <div className='absolute' style={{left : '15.2rem', top: '5.4rem'}}>
+                                <img src={AnchoriaIcon} alt="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {/* End */}
             </div>
     );
 };

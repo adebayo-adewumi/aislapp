@@ -203,12 +203,12 @@ const Trade = () => {
                     <Sidebar /> 
 
                     <div className="flex-1 min-w-0 flex flex-col">
-                        <div className='p-10 flex-1 bg-gray-100 overflow-y-auto'>
+                        <div className='px-10 py-24 flex-1 bg-gray-100 overflow-y-auto'>
                             <div className="text-3xl mb-3">
                                 <span className="font-bold text-green-900">Trade</span>
                             </div>
 
-                            <div className="text-sm font-bold mb-11">Buy stocks on the go</div>
+                            <div className="text-sm font-bold mb-5">Buy stocks on the go</div>
 
                             {/*Quick Search*/}
                             <div className="mb-11">
@@ -246,55 +246,53 @@ const Trade = () => {
                             {/*End*/}
 
                             {/*Stocks List section*/}
-                            <div className='shadow-sm sm:rounded-lg mb-5'>
-                                <table className={!showFilteredStocks && !showSearchedStocks ? "table-fixed w-full border-0 text-sm text-left text-gray-500":"hidden"} cellSpacing={0}>
-                                    <thead className='text-sm text-gray-700 uppercase'>
-                                        <tr className='bg-gray-100'>
-                                            <th className='p-3 font-bold'></th>
-                                            <th className='p-3 font-bold'>Code</th>
-                                            <th   className='p-3 font-bold'>Name</th>
-                                            <th className='p-3 font-bold'>Price</th>
-                                            <th className='p-3 font-bold'>Returns (%)</th>
-                                            <th  className='p-3 font-bold'></th>
-                                        </tr>
-                                    </thead>
-
+                            <div className='bg-white rounded shadow overflow-x-auto sm:rounded mb-5'>
+                                <table className={!showFilteredStocks && !showSearchedStocks ? "w-full whitespace-no-wrap":"hidden"} cellSpacing={0}> 
                                     <tbody>
-                                    {tradeData.map((el: any, index :any) => 
-                                       
-                                        <tr key={index} className="bg-white">
-                                            <td className='px-3 py-4 table-border-bottom'>
-                                                <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt=""/>
-                                            </td>
-
-                                            <td className='px-3 py-4 table-border-bottom'>
-                                                <div className="font-bold">{el.symbol}</div>
-                                            </td>
-
-                                            <td className='px-3 py-4 table-border-bottom'>
-                                                <div className="">{el.name.substring(0,15)}...</div>
-                                            </td>
-
-                                            <td className='px-3 py-4 table-border-bottom'>
-                                                <div className="font-bold">₦ {formatCurrencyWithDecimal(el.close).replace("-","")}</div>
-                                            </td>
-
-                                            <td className='px-3 py-4 table-border-bottom'>
-                                                <div className={el.sign === "+" ? "text-green-500 font-bold md:mb-0 mb-3" : "text-red-500 font-bold md:mb-0 mb-3"}> {formatCurrencyWithDecimal(el.change).replace("-","")}%  </div>
-                                            </td>
-
-                                            <td className='px-3 py-4 table-border-bottom'>
-                                                <div className='flex justify-end space-x-5'>
-                                                    <button onClick={displayAddToWatchlistModal} type='button' className="rounded-lg bg-gray-200 py-2 px-5 border-0 font-bold cursor-pointer" data-symbol={el.symbol} >
-                                                        <img src={StarIcon} width='20' alt='' data-symbol={el.symbol} />
-                                                    </button>
-
-                                                    <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.symbol + "&sign=" + (el.sign === '+' ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose + "&tradeAction=buy"}>
-                                                        <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
-                                                </div>
-                                            </td>
+                                        <tr className=''>
+                                            <th className='px-3 py-3'></th>
+                                            <th className='px-3 py-3 text-left'>Code</th>
+                                            <th   className='px-3 py-3 text-left'>Name</th>
+                                            <th className='px-3 py-3 text-left'>Price</th>
+                                            <th className='px-3 py-3 text-left'>Returns (%)</th>
+                                            <th  className='px-3 py-3 text-left'></th>
                                         </tr>
-                                    )}
+
+                                        {tradeData.map((el: any, index :any) => 
+                                        
+                                            <tr key={index} className="hover:bg-gray-100 focus-within:bg-gray-100 tr-data">
+                                                <td className='border-t'>
+                                                    <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt=""/>
+                                                </td>
+
+                                                <td className='border-t'>
+                                                    <div className="font-bold">{el.symbol}</div>
+                                                </td>
+
+                                                <td className='border-t'>
+                                                    <div className="">{el.name.substring(0,15)}...</div>
+                                                </td>
+
+                                                <td className='border-t'>
+                                                    <div className="font-bold">₦ {formatCurrencyWithDecimal(el.close).replace("-","")}</div>
+                                                </td>
+
+                                                <td className='border-t'>
+                                                    <div className={el.sign === "+" ? "text-green-500 font-bold md:mb-0 mb-3" : "text-red-500 font-bold md:mb-0 mb-3"}> {formatCurrencyWithDecimal(el.change).replace("-","")}%  </div>
+                                                </td>
+
+                                                <td className='border-t'>
+                                                    <div className='flex justify-end space-x-5'>
+                                                        <button onClick={displayAddToWatchlistModal} type='button' className="rounded-lg bg-gray-200 py-2 px-5 border-0 font-bold cursor-pointer" data-symbol={el.symbol} >
+                                                            <img src={StarIcon} width='20' alt='' data-symbol={el.symbol} />
+                                                        </button>
+
+                                                        <Link to={"/stock?name=" + el.name + "&sector=" + el.sector + "&symbol=" + el.symbol + "&sign=" + (el.sign === '+' ? 'positive' : 'negative') + "&change=" + el.change + "&close=" + el.close + "&open=" + el.open + "&high=" + el.high + "&low=" + el.low + "&wkhigh=" + el.weekHigh52 + "&wklow=" + el.weekLow52 + "&volume=" + el.volume + "&mktsegment=" + el.mktSegment + "&pclose=" + el.pclose + "&tradeAction=buy"}>
+                                                            <button type='button' className="rounded-lg bg-green-800 py-3 px-5 border-0 font-bold text-white cursor-pointer">View</button></Link>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        )}
                                     </tbody>
                                 </table>
                                 
@@ -417,9 +415,14 @@ const Trade = () => {
 
                             {/* Page Loader Section */}
                             <div className={showPageLoader ? "page-loader-backdrop opacity-90" : "hidden"}>
-                                <div className='w-96 relative lg:ml-72'>
-                                    <div className='absolute top-44pc left-46pt5pc'><img src={AnchoriaIcon} alt="" /></div>
-                                    <div className='text-center'><img src={AnchoriaSpinner} alt="" /></div>
+                                <div className='relative'>
+                                    <div className='ml-96 w-1/3 text-center relative'>
+                                        <img src={AnchoriaSpinner} alt="" />
+
+                                        <div className='absolute' style={{left : '15.2rem', top: '5.4rem'}}>
+                                            <img src={AnchoriaIcon} alt="" />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             {/* End */}
@@ -463,7 +466,7 @@ const Trade = () => {
                 </div>
             </div>
 
-            <div className={showModalBG ? "modal-backdrop opacity-40" : "modal-backdrop opacity-40 hidden"}>
+            <div className={showModalBG ? "modal-backdrop opacity-40" : "hidden"}>
             </div>
 
         </div>
