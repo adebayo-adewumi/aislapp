@@ -90,7 +90,7 @@ const Profile = () => {
 
     const [idFile, setIdFile] = useState('');
     const [idBase64Img, setIdBase64Img] = useState('');
-    const [border, ] = useState('');
+    const [idType, setIdType] = useState('');
     const [idNumber, setIdNumber] = useState('');
 
     const [utilityBillFile, setUtilityBillFile] = useState('');
@@ -399,7 +399,7 @@ const Profile = () => {
 
     useEffect(() => {
         function checkIfPersonalDetailsFieldsAreFilled(){
-            if(address === '' || city === '' || state === '' || country === '' || idBase64Img === '' || utilityBillBase64Img === '' || signatureBase64Img === '' || border === '' || idNumber === ''){
+            if(address === '' || city === '' || state === '' || country === '' || idBase64Img === '' || utilityBillBase64Img === '' || signatureBase64Img === '' || idType === '' || idNumber === ''){
                 setIsPersonalDetailsFilled(false);
             }
             else{
@@ -410,7 +410,7 @@ const Profile = () => {
         }
 
         checkIfPersonalDetailsFieldsAreFilled();
-    },[address,city,state,country,idBase64Img,utilityBillBase64Img,signatureBase64Img,border,idNumber]);
+    },[address,city,state,country,idBase64Img,utilityBillBase64Img,signatureBase64Img,idType,idNumber]);
 
     useEffect(() => {
         function checkIfEmploymentDetailsFieldsAreFilled(){
@@ -631,7 +631,7 @@ const Profile = () => {
             "idName":idBase64Img,
             "idDetails": {
                 "idNumber": idNumber,
-                "border": border,
+                "idType": idType,
                 "idCountry": country,
                 "dob":customer.dob
             }
@@ -1236,18 +1236,18 @@ const Profile = () => {
 
                                             <div className='md:flex md:justify-between mb-11 text-sm'>
 
-                                                <select onChange={e => setCountry(e.target.value)} className="block  w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white bg-white border focus:ring-indigo-500" style={{width: '32rem'}}>
-                                                    <option value={item.hasOwnProperty("idDetails") ? item.idDetails.border : ""} className={item.hasOwnProperty("idDetails") ? "" : "hidden"}>
-                                                        {item.hasOwnProperty("idDetails") ? item.idDetails.border : ""}
+                                                <select onChange={e => setIdType(e.target.value)} className="block  w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white bg-white border focus:ring-indigo-500" style={{width: '32rem'}}>
+                                                    <option value={item.hasOwnProperty("idDetails") ? item.idDetails.idType : ""} className={item.hasOwnProperty("idDetails") ? "" : "hidden"}>
+                                                        {item.hasOwnProperty("idDetails") ? item.idDetails.idType : ""}
                                                     </option>
 
                                                     <option value=''>...</option>
                                                     
-                                                    <option value="Drivers License" className={item.hasOwnProperty("idDetails") ? (item.idDetails.border === 'Drivers License' ? 'hidden':'') :''}>Drivers Licence</option>
+                                                    <option value="Drivers License" className={item.hasOwnProperty("idDetails") ? (item.idDetails.idType === 'Drivers License' ? 'hidden':'') :''}>Drivers Licence</option>
 
-                                                    <option value="NIN" className={item.hasOwnProperty("idDetails") ? (item.idDetails.border === 'NIN' ? 'hidden':'') : ''}>NIN</option>
+                                                    <option value="NIN" className={item.hasOwnProperty("idDetails") ? (item.idDetails.idType === 'NIN' ? 'hidden':'') : ''}>NIN</option>
 
-                                                    <option value="Voters Card" className={item.hasOwnProperty("idDetails") ? (item.idDetails.border === 'Voters Card' ? 'hidden':'') : ''}>Voters Card</option>
+                                                    <option value="Voters Card" className={item.hasOwnProperty("idDetails") ? (item.idDetails.idType === 'Voters Card' ? 'hidden':'') : ''}>Voters Card</option>
                                                 </select>
 
                                                 <div className="pointer-events-none absolute inset-y-0 right-0 hidden items-center px-2 text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" className="fill-current h-4 w-4"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path></svg></div>

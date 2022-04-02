@@ -41,3 +41,17 @@
     z-index: 1100;
     margin: 1.75rem auto;
   }
+
+  .pagination li{
+    padding: 10px 20px;
+  }
+  
+  .pagination li:hover{
+    background-color: #144A22;
+    color: #aaa;
+  }
+  
+  .pagination li.active{
+    background-color: #144A22;
+    color: #FFFFFF;
+  }
