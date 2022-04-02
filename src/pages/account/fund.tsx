@@ -33,7 +33,7 @@ const FundAccount = () => {
     const [showTransactionSection, setShowTransactionSection] = useState<boolean>(false);
     const [showBankTransferSection, setShowBankTransferSection] = useState<boolean>(false);
 
-    const [showAmount, setShowAmount] = useState('');
+    const [showAmount, setShowAmount] = useState('0.00');
     const [sliderBackgroundSize, setSliderBackgroundSize] = useState('');
 
     const [cardNumber, setCardNumber] = useState('');
@@ -524,7 +524,7 @@ const FundAccount = () => {
                 <div className="flex-1 min-w-0 flex flex-col">
                     <div className='px-10 py-24 flex-1 bg-gray-100 overflow-y-auto'>
                         <div className='m-auto w-1/2 pt-5'>
-                            <div className="flex justify-between mb-3" style={{ width: '35rem' }}>
+                            <div className="flex justify-between mb-3 items-center" style={{ width: '40rem' }}>
                                 <div>
                                     <div className="text-2xl text-green-900 font-gotham-black-regular font-bold mb-3">Fund Account</div>
                                     <div className="hidden font-bold mb-30">Provide the details below</div>
@@ -538,7 +538,7 @@ const FundAccount = () => {
                                 </div>
                             </div>
 
-                            <div className='mb-30 rounded-lg border bg-white p-10' style={{ width: '35rem' }}>
+                            <div className='mb-30 rounded-lg border bg-white p-10' style={{ width: '40rem' }}>
                                 {/*Switch Section */}
                                 <div className='mb-5'>
                                     <div className='mb-3 font-bold text-green-900 text-xl hidden'>How much would like to fund</div>
@@ -569,11 +569,11 @@ const FundAccount = () => {
 
                                         <div className='mb-3 flex'>
                                             <div>
-                                                <input type='text' readOnly className='input-custom w-20 font-gotham-black-regular font-black text-4xl text-center rounded-l-lg py-5 pl-5 border' placeholder='₦' />
+                                                <input type='text' readOnly className='input-custom w-20 font-gotham-black-regular font-black text-xl text-center rounded-l-lg py-3 pl-5 border' placeholder='₦' />
                                             </div>
 
                                             <div className='w-full'>
-                                                <input type='text' onChange={delineateAmount} className='w-full border font-black text-4xl py-5 px-5 outline-white rounded-r-lg ' data-type="currency" placeholder='0.00' value={showAmount} pattern="^\d{1,3}(,\d{3})*(\.\d+)?$"/>
+                                                <input type='text' onChange={delineateAmount} className='w-full border font-black text-xl py-3 px-3 outline-white rounded-r-lg ' data-type="currency" placeholder='0.00' value={showAmount} pattern="^\d{1,3}(,\d{3})*(\.\d+)?$"/>
                                             </div>
                                         </div>
 
