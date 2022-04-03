@@ -253,8 +253,8 @@ const Forgot = () => {
                     <div className='relative h-full'>
 
                         {/* Forgot Password Section */}
-                        <div className='w-full relative'>
-                            <div className={showForgotPasswordCard ? "mx-auto forgot-password-form-container top-32" : "hidden"}>
+                        <div className={showForgotPasswordCard ? 'w-full relative':'hidden'}>
+                            <div className="mx-auto forgot-password-form-container top-32">
                                 <form>
                                     <div className="font-bold mb-3 text-xl text-green-900">Forgot Password</div>
                                     <p className="mb-8 text-sm">Type the email you used to sign up on Anchoria and we'll send you a password reset email.</p>
@@ -294,8 +294,8 @@ const Forgot = () => {
                         {/* End */}
 
                         {/* VERIFY OTP Section */}
-                        <div className='relative'>
-                            <div className={showVerifyOTPCard ? "mx-auto reset-password-link-confirmation-container mt-32" : "hidden"}>
+                        <div className={showVerifyOTPCard ? 'relative':'hidden'}>
+                            <div className="mx-auto reset-password-link-confirmation-container mt-32">
 
                                 {/* otp Error */}
                                 <div className={otpHasError ? "error-alert mb-3":"hidden"}>
@@ -330,8 +330,8 @@ const Forgot = () => {
 
 
                         {/* RESET PASSWORD Section */}
-                        <div className='relative'>
-                            <div className={showResetPasswordCard ? "mx-auto reset-password-link-confirmation-container mt-32" : "hidden"}>
+                        <div className={showResetPasswordCard ? 'relative':'hidden'}>
+                            <div className= "mx-auto reset-password-link-confirmation-container mt-32">
 
                                 {/* reset Error */}
                                 <div className={resetHasError ? "error-alert mb-3":"hidden"}>
