@@ -208,3 +208,42 @@ input[type="range"]::-ms-track {
   visibility: visible;
   opacity: 1;
 }
+
+.candle-stick-container {
+  position: relative;
+  width: 100%;
+}
+
+.candle-stick-box {
+  position: absolute;
+  width: 100%;
+  height: 284px;
+  left: 0px;
+  top: 100%;
+}
+
+.candle-stick {
+  position: absolute;
+  background: url(../src/assets/images/candlesticks.svg);
+  left: 7.08%;
+  right: 57.96%;
+  top: 13%;
+  opacity: 0.8;
+  height: 229px;
+  width: 503.3533325195px;
+  border-radius: 0px;
+}
+
+.smiling-lady {
+  position: absolute;
+  width: 267px;
+  height: 469px;
+  left: 240px;
+  top: -185px;
+  background: url(../src/assets/images/smiling-lady.png);
+  z-index: 1;
+}
+
+.border-none{
+  border: 0 !important;
+}

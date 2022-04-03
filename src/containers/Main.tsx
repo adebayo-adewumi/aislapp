@@ -40,7 +40,7 @@ const Main = () => {
       <GlobalProvider>
         <AuthProvider>
           <div className="">
-            <main className="">
+            <main className="border-none">
               <Suspense fallback="loading">
                 <BrowserRouter basename={process.env.PUBLIC_URL} >
                   <Routes>
