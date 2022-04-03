@@ -621,10 +621,6 @@ const Register = () => {
         setShowSuccess(true);
     }
 
-    function closePasswordValidated() {
-        setShowPasswordValidated(false);
-    }
-
     function triggerSelfieUpload() {
         document.getElementById("selfie")?.click();
     }
@@ -1256,7 +1252,7 @@ const Register = () => {
                                     {/*End */}
 
                                     {/*PIN Section */}
-                                    <div className={showPin ? "create-pin-container md:rounded-lg mx-auto md:mx-0 w-full md:w-4/12 md:absolute" : "create-pin-container md:rounded-lg mx-auto md:mx-0 w-full md:w-4/12 md:absolute"}>
+                                    <div className={showPin ? "create-pin-container md:rounded-lg mx-auto md:mx-0 w-full md:w-4/12 md:absolute" : "hidden"}>
                                         {/* Password Validated */}
                                         <div className={showPasswordValidated ? "otp-alert mb-3" : "hidden"}>
                                             <div className="flex justify-between space-x-1 p-3">
@@ -1345,15 +1341,15 @@ const Register = () => {
                                     {/*Success Section */}
                                     <div className={showSuccess ? "success-container md:rounded-lg mx-auto md:mx-0 w-full md:w-4/12 md:absolute" : "hidden"}>
 
-                                        <div className="mx-auto md:w-1/2 w-56 mb-6 mt-12 md:mt-0">
+                                        <div className="mx-auto md:w-1/2 w-56 mb-3 mt-12 md:mt-0">
                                             <img src={SuccessCheckIcon} alt="success icon" className="w-52" />
                                         </div>
 
-                                        <div className="text-green-900 mx-auto w-1/2 font-gotham-black-regular text-xl text-center mb-20">Successful</div>
+                                        <div className="text-green-900 mx-auto w-1/2 text-2xl text-center mb-3">Successful</div>
 
-                                        <div className="text-gray-600 text-sm text-center mb-14">Your registration was successful</div>
+                                        <div className="text-gray-600 text-sm text-center mb-8">Your registration was successful</div>
 
-                                        <div className="md:mb-6 mb-20 text-center">
+                                        <div className="text-center">
                                             <Link to="/"> 
                                                 <button className="bg-green-900 md:w-96 w-56 rounded-lg border-0 cursor-pointer text-white p-5 font-bold">Proceed to Login</button>
                                             </Link>
