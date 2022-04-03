@@ -139,11 +139,7 @@ const BankCard = () => {
 
     useEffect(()=>{
         function checkNameEnquiryOnBankDetails() {
-            if (accountNumber === '' || bankCode === '') {
-                setBankDetailsError('All fields are required.');
-                setIsBankDetailsFilled(false);
-            }
-            else {    
+            if (accountNumber !== '' || bankCode !== '') {
 
                 let bCode = bankCode.split("@")[0];
 
@@ -153,7 +149,7 @@ const BankCard = () => {
                 .then(function (response) {
 
                     if(response.data.statusCode !== 200){
-                        setBankDetailsError(response.data.message);
+                        setBankDetailsError('Provide a valid bank details.');
                         setAccountName('');
                         setIsBankDetailsFilled(false);
                     }
@@ -165,7 +161,7 @@ const BankCard = () => {
                     
                 })
                 .catch(function (error) {
-                    setBankDetailsError(error.response.data.message);
+                    setBankDetailsError("Provide a valid bank details.");
                     setAccountName('');
                     setIsBankDetailsFilled(false);
                 });
@@ -595,7 +591,7 @@ const BankCard = () => {
                             <div className='m-auto w-1/2 pt-12'>
 
                                 {/*Card Header */}
-                                <div className={showDebitCards ? "flex justify-between mb-8" : 'hidden'} style={{ width: '35rem' }}>
+                                <div className={showDebitCards ? "flex justify-between mb-5" : 'hidden'} style={{ width: '35rem' }}>
                                     <div>
                                         <div className="text-3xl text-green-900 font-gotham-black-regular font-bold">Bank and Cards</div>                                        
                                     </div>
@@ -635,13 +631,13 @@ const BankCard = () => {
                                 {/*End*/}
 
                                 {/*Add Bank Header */}
-                                <div className={showAddBankHeader ? "flex justify-between mb-3" : "hidden"}>
+                                <div className={showAddBankHeader ? "flex justify-between mb-3 items-center" : "hidden"} style={{ width: '35rem' }}>
                                     <div>
-                                        <div className="text-2xl text-green-900 font-bold mb-10">Add New Bank</div>
+                                        <div className="text-2xl text-green-900 font-bold mb-3">Add New Bank</div>
                                     </div>
 
-                                    <div className='font-bold' onClick={performSwitchToDebit}>
-                                            <img src={ArrowBackIcon} alt="" className="cursor-pointer align-middle text-lg" /> Back                                        
+                                    <div className='cursor-pointer' onClick={performSwitchToDebit}>
+                                        <img src={ArrowBackIcon} alt="" className="cursor-pointer align-middle text-lg " width={20}/> Back                                        
                                     </div>
                                 </div>
                                 {/*End*/}
@@ -672,7 +668,7 @@ const BankCard = () => {
                                 </div>
                                 {/*End*/}
 
-                                <div className='mb-3 rounded-lg border-1-d6 bg-white p-10' style={{ width: '35rem' }}>
+                                <div className='mb-3 rounded-lg border bg-white p-10' style={{ width: '35rem' }}>
                                     {/* Cards Section */}
                                     <div className={showDebitCards ? 'amount-section' : 'hidden'}>
                                         <div>
@@ -946,7 +942,7 @@ const BankCard = () => {
                                     <div className={showAddBank ? 'card-section' : 'hidden'}>
                                         <div>
                                             {/* Bank Details Error */}
-                                            <div className={bankDetailsError ? "error-alert mb-20" : "hidden"}>
+                                            <div className={bankDetailsError !== ''? "error-alert mb-3" : "hidden"}>
                                                 <div className="flex justify-between space-x-1">
                                                     <div className="flex py-2">
                                                         <div className="text-sm">{bankDetailsError}</div>
@@ -956,7 +952,7 @@ const BankCard = () => {
                                             {/* End */}
 
                                             {/* Add Bank Success */}
-                                            <div className={isAddBankSuccess === 'true' ? "otp-alert mb-20" : "hidden"}>
+                                            <div className={isAddBankSuccess === 'true' ? "otp-alert mb-3 " : "hidden"}>
                                                 <div className="flex otp-validated justify-between space-x-1 p-3">
                                                     <div className="flex">
 
@@ -967,12 +963,12 @@ const BankCard = () => {
                                             {/* End */}
 
 
-                                            <div className='mb-5 text-green-900 text-xl font-bold'>Enter your bank details below</div>
+                                            <div className='mb-3 text-green-900 text-xl font-bold'>Enter your bank details below</div>
 
-                                            <div className='mb-30 text-green-900 text-md'>We pay your withdrawal into your bank account </div>                                        
+                                            <div className='mb-8 text-green-900 text-md'>We pay your withdrawal into your bank account </div>                                        
 
-                                            <div className='mb-3'>
-                                                <div className='text-sm mb-5 font-bold'>Select Bank</div>
+                                            <div className='mb-8'>
+                                                <div className='text-sm mb-3 font-bold'>Select Bank</div>
 
                                                 <div>
                                                     <select onChange={e => setBankCode(e.target.value)} className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500' id='bankList' >
@@ -986,7 +982,7 @@ const BankCard = () => {
                                                 </div>
                                             </div>
 
-                                            <div className='mb-3'>
+                                            <div className='mb-8'>
                                                 <div className='text-sm mb-3 font-bold'>Account Number</div>
 
                                                 <div>
@@ -994,7 +990,7 @@ const BankCard = () => {
                                                 </div>
                                             </div>
 
-                                            <div className='mb-3'>
+                                            <div className='mb-8'>
                                                 <div className='text-sm mb-3 font-bold'>Account Name</div>
 
                                                 <div>
@@ -1002,7 +998,7 @@ const BankCard = () => {
                                                 </div>
                                             </div>
 
-                                            <div className='mb-3'>
+                                            <div className='mb-8'>
                                                 <div className='text-sm mb-3 font-bold'>PIN</div>
 
                                                 <div>
@@ -1010,7 +1006,7 @@ const BankCard = () => {
                                                 </div>
                                             </div>
 
-                                            <div className='mb-20'>
+                                            <div className='mb-3'>
                                                 <button onClick={addBankDetails} type='button' className={isBankDetailsFilled ? 'w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer':'w-full font-bold text-lg border-0 bg-green-900 text-white rounded-lg focus:shadow-outline px-5 py-3 cursor-pointer opacity-50'} disabled={!isBankDetailsFilled}>
                                                     <span className={showSpinner ? "hidden" : ""}>Proceed</span>
                                                     <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
@@ -1018,14 +1014,12 @@ const BankCard = () => {
                                             </div>
 
                                             {/* Bank Details Error */}
-                                            <div className={bankDetailsError ? "error-alert mb-20" : "hidden"}>
+                                            <div className={bankDetailsError !== '' ? "error-alert" : "hidden"}>
                                                 <div className="flex justify-between space-x-1 p-3">
                                                     <div className="flex">
 
                                                         <div className="text-sm">{bankDetailsError}</div>
-                                                    </div>
-
-                                                
+                                                    </div>                                                
                                                 </div>
                                             </div>
                                             {/* End */}
@@ -1035,9 +1029,7 @@ const BankCard = () => {
                                                 <div className="flex otp-validated justify-between space-x-1 p-3">
                                                     <div className="flex">
                                                         <div className="text-sm text-green-900">{apiResponseSuccessMsg}</div>
-                                                    </div>
-
-                                                    
+                                                    </div>                                                    
                                                 </div>
                                             </div>
                                             {/* End */}
