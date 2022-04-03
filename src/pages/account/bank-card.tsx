@@ -816,7 +816,7 @@ const BankCard = () => {
                                                         <div className='text-lg mb-3 text-sm font-bold'>CVV</div>
 
                                                         <div>
-                                                            <input value={cardCVV} onChange={maskCreditCardCVVInput} onKeyDown={handleCreditCardCVVInputSelection} type='text' className='cc-cvv-input bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border font-bold focus:bg-white focus:ring-indigo-500' maxLength={3} />
+                                                            <input value={cardCVV} onChange={maskCreditCardCVVInput} onKeyDown={handleCreditCardCVVInputSelection} type='text' className='cc-cvv-input bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border font-bold focus:bg-white focus:ring-indigo-500' maxLength={3} autoComplete="off" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -826,7 +826,7 @@ const BankCard = () => {
                                                 <div className='text-lg mb-3 text-sm font-bold'>PIN</div>
 
                                                 <div className=''>
-                                                    <input value={cardPIN} onChange={e => setCardPIN(e.target.value)} type='password' className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500' maxLength={4} />
+                                                    <input value={cardPIN} onChange={e => setCardPIN(e.target.value)} type='password' className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500' maxLength={4} autoComplete="off"/>
                                                 </div>
                                             </div>
 
