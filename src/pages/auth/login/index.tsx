@@ -105,16 +105,16 @@ const Login = () => {
     }
 
     return (
-        <div className='relative' style={{border: '0 !important'}}>
+        <div className='relative'>
             <GenericHeader />
 
-            <div className='h-screen m-0'>               
+            <div className='h-screen m-0'>              
 
                 <div className='min-w-0 h-full'>
                     <div className='relative h-full'>
 
                         <div className="candle-stick-container h-full overflow-y-auto">
-                            <div className='h-64 border relative'>
+                            <div className='h-64 relative'>
                                 <div className="candle-stick-box md:bg-green-900">
                                     <div className="smiling-lady hidden md:block"></div>
                                     <div className="candle-stick hidden md:block"></div>
