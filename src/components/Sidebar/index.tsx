@@ -58,7 +58,7 @@ const Sidebar = (props :any) => {
                         <span className="ml-2 text-gray-700">Home</span></span>
                     </Link>   
 
-                    <Link to="/trade" className={ urlPath === '/trade' ? "-mx-3 px-3 py-2 mb-2 flex items-center justify-between text-sm font-medium rounded-lg hover:bg-green-100 bg-green-100 sidebar-active font-bold":"-mx-3 px-3 py-2 mb-2 flex items-center justify-between text-sm font-medium rounded-lg hover:bg-green-100"}><span className="inline-flex items-center">
+                    <Link to="/trade" className={ urlPath === '/trade' || urlPath === "/stock"? "-mx-3 px-3 py-2 mb-2 flex items-center justify-between text-sm font-medium rounded-lg hover:bg-green-100 bg-green-100 sidebar-active font-bold":"-mx-3 px-3 py-2 mb-2 flex items-center justify-between text-sm font-medium rounded-lg hover:bg-green-100"}><span className="inline-flex items-center">
                         <img src={urlPath === '/trade' ? TradeActiveIcon : TradeIcon} alt="" className="h-6 w-6 transition-all ease-out transition-medium" />
 
                         <span className="ml-2 text-gray-700">Trade</span></span>

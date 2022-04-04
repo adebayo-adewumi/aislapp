@@ -299,11 +299,14 @@ const Stock = () => {
 
                     const newsItem = takeNews.map((item: any, index:any) =>
                         <div key={index}>
-                            <div className='mb-3'><img src={item.imageUrl} alt='' /></div>
-                            <div className='w-22rem'>
-                                <div className='font-bold mb-10 text-sm w-6/6'>{item.title}</div>
-                                <div className='mb-10 text-sm tracking-wider leading-5'>{item.snippet}</div>
-                                <div className='font-bold text-sm'>&middot; {moment(item.date).format("MMM Do YYYY, hh:ss a")}</div>
+                            <div>
+                                <div className='mb-3'><img src={item.imageUrl} alt='' /></div>
+
+                                <div>
+                                    <div className='font-bold mb-3 text-sm w-6/6'>{item.title}</div>
+                                    <div className='mb-3 text-sm tracking-wider leading-5'>{item.snippet}</div>
+                                    <div className='font-bold text-sm'>&middot; {moment(item.date).format("MMM Do YYYY, hh:ss a")}</div>
+                                </div>
                             </div>
                         </div>
                     ) as unknown as string;
@@ -1521,29 +1524,28 @@ const Stock = () => {
                                 </div>
                             </div>
 
-                            <div className="border-bottom-1 mb-3"></div>
 
-                            <div className='mt-10'>
-                                <div className='card-stock'>
-                                    <div className='font-gotham-black-regular mb-3 mt-5'>Statistics Overview</div>
+                            <div>
+                                <div className='bg-white rounded-lg shadow p-5'>
+                                    <div className='text-2xl text-green-900 mb-3'>Statistics Overview</div>
                                     
                                     <div className='flex justify-between mb-3'>
                                         <div>
-                                            <div className='font-gotham-black-regular text-sm mb-10'>Shares Outstanding</div>
+                                            <div className='text-sm mb-3 font-bold'>Shares Outstanding</div>
                                             <div className='text-sm'>{HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).sharesOutstanding)}</div>
                                         </div>
 
-                                        <div className='border-left-1'></div>
+                                        <div className='' style={{borderLeft: '1px solid #eee'}}></div>
 
                                         <div>
-                                            <div className='font-gotham-black-regular text-sm mb-10'>Registrar</div>
+                                            <div className='text-sm mb-3 font-bold'>Registrar</div>
                                             <div className='text-sm'>{stockInfo === ''?'':JSON.parse(stockInfo).registrar}</div>
                                         </div>
 
-                                        <div className='border-left-1'></div>
+                                        <div style={{borderLeft: '1px solid #eee'}}></div>
 
                                         <div className='w-72'>
-                                            <div className='font-gotham-black-regular text-sm mb-10'>Institutional Owership</div>
+                                            <div className='text-sm mb-3 font-bold'>Institutional Owership</div>
                                             <div className='text-sm'>{stockInfo === ''?'':JSON.parse(stockInfo).institutionalOwnerShip}</div>
                                         </div>
                                     </div>
@@ -1557,7 +1559,7 @@ const Stock = () => {
                         <div className={showNews ? 'mb-3 news-section' : 'mb-3 news-section hidden'}>
                             <div className='mb-3'><p className='font-bold font-gotham-black-regular'>News and Insights</p></div>
 
-                            <div className='flex justify-between mb-12'>
+                            <div className='grid grid-cols-3 gap-4 mb-12'>
                                 {newsList}
                             </div>
                         </div>
