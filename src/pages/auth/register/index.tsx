@@ -1484,7 +1484,7 @@ const Register = () => {
 
                                             <div>
                                                 <button className='bg-gray-300 border-0 cursor-pointer font-bold text-black px-5 py-2 rounded-lg mr-5' onClick={closeModal}>
-                                                    <span className={showSpinner ? "hidden" : ""}>Cancel</span>
+                                                    <span className={showSpinner ? "hidden" : ""}>Close</span>
                                                     <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
                                                 </button>
 
