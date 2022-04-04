@@ -2064,21 +2064,23 @@ const Stock = () => {
                                     <div>
                                         <div>
                                             <div className="mb-3">Enter Date</div>
-                                            <div className='flex justify-between items-center border rounded-lg'>
+                                            <div className='relative flex justify-between items-center border rounded-lg'>
                                                 <div className='w-full'>
                                                     <input type="text" className="font-bold outline-white border-0 p-3 input text-sm" placeholder="Enter end date for your order" defaultValue={showDate} />
                                                 </div>
                                                 <div className='p-3 cursor-pointer' onClick={e => displayCalendar()}>
                                                     <img src={CalendarIcon} alt="" width="20" />
                                                 </div>
+
+                                                <Calendar onChange={changeDate} value={dateState} className={showCalendar ? "absolute z-10" : "hidden"} />
                                             </div>
 
-                                            <Calendar onChange={changeDate} value={dateState} className={showCalendar ? "absolute z-10" : "hidden"} />
+                                            
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className={showStopLossDurationDropdown ? 'bg-white shadow top-10 p-3 absolute border right-0 rounded-lg w-1/2' : 'hidden'}>
+                                <div className={showStopLossDurationDropdown ? 'bg-white shadow -top-96 p-3 absolute border right-0 rounded-lg w-1/2 hidden' : 'hidden'}>
                                     <div className=' text-lg text-green-900 mb-3'>Duration</div>
 
                                     <ul className='list-none m-0 p-0'>
@@ -2387,7 +2389,7 @@ const Stock = () => {
 
                                 </div>
 
-                                <div className={showStopLossDurationDropdown ? 'bg-white shadow top-10 p-3 absolute border right-0 rounded-lg w-1/2' : 'hidden'}>
+                                <div className={showStopLossDurationDropdown ? 'bg-white shadow -top-96 p-3 absolute border right-0 rounded-lg w-1/2' : 'hidden'}>
                                     <div className=' text-lg text-green-900 mb-3'>Duration</div>
 
                                     <ul className='list-none m-0 p-0'>
