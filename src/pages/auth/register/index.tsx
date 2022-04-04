@@ -1433,14 +1433,8 @@ const Register = () => {
                                         <div className=''>
                                             {/* Validate User Id Error */}
                                             <div className={isUserIdValid === 'false' ? "error-alert mb-20":"hidden"}>
-                                                <div className="flex justify-between space-x-1 pt-3">
+                                                <div className="flex justify-between space-x-1 p-3">
                                                     <div className="flex">
-                                                        <div>
-                                                            <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
-                                                            </svg>
-                                                        </div>
-
                                                         <div className="text-sm">Invalid User ID</div>
                                                     </div>
                                                 </div>
@@ -1449,16 +1443,10 @@ const Register = () => {
 
                                             {/* Validate User ID Success */}
                                             <div className={isUserIdValid === 'true' ? "otp-alert mb-20" : "hidden"}>
-                                                <div className="flex otp-validated justify-between space-x-1 pt-3">
+                                                <div className="flex otp-validated justify-between space-x-1 p-3">
                                                     <div className="flex">
-                                                        <div>
-                                                            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062" />
-                                                                <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062" />
-                                                            </svg>
-                                                        </div>
 
-                                                        <div className="pt-1 text-sm text-green-900">User ID validated successfully</div>
+                                                        <div className="text-sm text-green-900">User ID validated successfully</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1495,6 +1483,11 @@ const Register = () => {
                                             </div>
 
                                             <div>
+                                                <button className='bg-gray-300 border-0 cursor-pointer font-bold text-black px-5 py-2 rounded-lg mr-5' onClick={closeModal}>
+                                                    <span className={showSpinner ? "hidden" : ""}>Cancel</span>
+                                                    <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
+                                                </button>
+
                                                 <button className={hasUserId === ''? 'bg-green-900 border-0 cursor-pointer text-white font-bold px-5 py-2 rounded-lg opacity-50':'bg-green-900 border-0 cursor-pointer text-white font-bold px-5 py-2 rounded-lg'} disabled={hasUserId === ''} onClick={validateUserId}>
                                                     <span className={showSpinner ? "hidden" : ""}>Proceed</span>
                                                     <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
