@@ -1212,7 +1212,7 @@ const Stock = () => {
 
                         <div className="mb-3 pb-5">
                             <div className="flex justify-between items-center">
-                                <div className="text-2xl font-bold text-green-900 font-gotham-black-regular">Stock Details</div>
+                                <div className="text-2xl font-bold text-green-900 ">Stock Details</div>
 
                                 <div className="">
                                     <Link to="/trade" className='hover:text-green-900 no-underline text-green-900 textlg'>
@@ -1277,7 +1277,7 @@ const Stock = () => {
                                     <div className={params.get('tradeAction') === 'buy' ? "card-stock flex justify-between space-x-2 w-96 h-24 text-sm hidden" : "card-stock flex justify-between space-x-2 w-96 h-24 text-sm"}>
                                         <div className=''>
                                             <div className="mb-5">Units Owned: </div>
-                                            <div className="font-gotham-black-regular">{params.get('units')} </div>
+                                            <div className="">{params.get('units')} </div>
                                         </div>
 
                                         <div className='border-left-1'></div>
@@ -1285,7 +1285,7 @@ const Stock = () => {
                                         
                                             <div className="w-44" >
                                                 <div className="mb-5">Total Value</div>
-                                                <div className="font-bold font-gotham-black-regular mb-5">₦ {(stockInfo === ''? '':JSON.parse(stockInfo).price) * parseInt(params.get("units") as string)}</div>
+                                                <div className="font-bold  mb-5">₦ {(stockInfo === ''? '':JSON.parse(stockInfo).price) * parseInt(params.get("units") as string)}</div>
 
                                                 <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-sm" : "font-bold text-red-500 text-sm"}>{stockInfo === '' ? '' : JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === '' ? '' : HelperFunctions.formatCurrencyWithDecimal(JSON.parse(stockInfo).percentageChange.replace('-',''))}%  </div>
                                             </div>
@@ -1317,7 +1317,7 @@ const Stock = () => {
                                                     <div className='w-1/3'>
                                                         <div className='text-lg font-bold'>Current Price</div>
                                                         <div>
-                                                            <div className='font-gotham-black-regular font-bold text-green-900 text-xl'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
+                                                            <div className=' font-bold text-green-900 text-xl'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
 
                                                             <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-sm" : "font-bold text-red-500 text-sm"}>
                                                                 {stockInfo === '' ? '' : JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === '' ? '' : HelperFunctions.formatCurrencyWithDecimal(JSON.parse(stockInfo).percentageChange.replace('-',''))}%
@@ -1390,12 +1390,12 @@ const Stock = () => {
                                             <div className='py-2'>
                                                 <div className='flex space-x-10 text-sm pb-6'>
                                                     <div className='w-1/2'>
-                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>Earnings per share</div>
+                                                        <div className='text-sm font-bold mb-3 '>Earnings per share</div>
                                                         <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).earningsPerShare)}</div>
                                                     </div>
 
                                                     <div className='w-1/2'>
-                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>Mkt Cap</div>
+                                                        <div className='text-sm font-bold mb-3 '>Mkt Cap</div>
                                                         <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).marketCap)}</div>
                                                     </div>
                                                 </div>
@@ -1404,12 +1404,12 @@ const Stock = () => {
                                             <div className='py-2'>
                                                 <div className='flex space-x-10 text-sm pb-6'>
                                                     <div className='w-1/2'>
-                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>High</div>
+                                                        <div className='text-sm font-bold mb-3 '>High</div>
                                                         <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).high)}</div>
                                                     </div>
 
                                                     <div className='w-1/2'>
-                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>Low</div>
+                                                        <div className='text-sm font-bold mb-3 '>Low</div>
                                                         <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).low)}</div>
                                                     </div>
                                                 </div>
@@ -1418,12 +1418,12 @@ const Stock = () => {
                                             <div className='py-2'>
                                                 <div className='flex space-x-10 text-sm pb-6'>
                                                     <div className='w-1/2'>
-                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>52 Week High</div>
+                                                        <div className='text-sm font-bold mb-3 '>52 Week High</div>
                                                         <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).weekHigh52)}</div>
                                                     </div>
 
                                                     <div className='w-1/2'>
-                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>52 Week Low</div>
+                                                        <div className='text-sm font-bold mb-3 '>52 Week Low</div>
                                                         <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).weekLow52)}</div>
                                                     </div>
                                                 </div>
@@ -1432,12 +1432,12 @@ const Stock = () => {
                                             <div className='py-2'>
                                                 <div className='flex space-x-10 text-sm pb-6'>
                                                     <div className='w-1/2'>
-                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>Volume</div>
+                                                        <div className='text-sm font-bold mb-3 '>Volume</div>
                                                         <div>{stockInfo === ''?'':JSON.parse(stockInfo).volume}</div>
                                                     </div>
 
                                                     <div className='w-1/2'>
-                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>Average Volume</div>
+                                                        <div className='text-sm font-bold mb-3 '>Average Volume</div>
                                                         <div>{HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).avgDailyVolume)}</div>
                                                     </div>
                                                 </div>
@@ -1446,12 +1446,12 @@ const Stock = () => {
                                             <div className='py-2'>
                                                 <div className='flex space-x-10 text-sm pb-6'>
                                                     <div className='w-1/2'>
-                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>Sector</div>
+                                                        <div className='text-sm font-bold mb-3 '>Sector</div>
                                                         <div>{stockInfo === ''?'':JSON.parse(stockInfo).sector}</div>
                                                     </div>
 
                                                     <div className='w-1/2'>
-                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>Risk Factor</div>
+                                                        <div className='text-sm font-bold mb-3 '>Risk Factor</div>
                                                         <div>{HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).riskFactor)}</div>
                                                     </div>
                                                 </div>
@@ -1460,12 +1460,12 @@ const Stock = () => {
                                             <div className='py-2'>
                                                 <div className='flex space-x-10 text-sm pb-6'>
                                                     <div className='w-1/2'>
-                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>Dividend Yield</div>
+                                                        <div className='text-sm font-bold mb-3 '>Dividend Yield</div>
                                                         <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).dividendYield)}</div>
                                                     </div>
 
                                                     <div className='w-1/2'>
-                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>Previous Close</div>
+                                                        <div className='text-sm font-bold mb-3 '>Previous Close</div>
                                                         <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).lclose)}</div>
                                                     </div>
                                                 </div>
@@ -1474,12 +1474,12 @@ const Stock = () => {
                                             <div className='py-2'>
                                                 <div className='flex space-x-10 text-sm pb-6'>
                                                     <div className='w-1/2'>
-                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>Nominal Value</div>
+                                                        <div className='text-sm font-bold mb-3 '>Nominal Value</div>
                                                         <div>{stockInfo === ''?'':JSON.parse(stockInfo).norminalValue}</div>
                                                     </div>
 
                                                     <div className='w-1/2'>
-                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>Trades</div>
+                                                        <div className='text-sm font-bold mb-3 '>Trades</div>
                                                         <div>{stockInfo === ''?'':JSON.parse(stockInfo).trades}</div>
                                                     </div>
                                                 </div>
@@ -1488,7 +1488,7 @@ const Stock = () => {
                                             <div className='py-2'>
                                                 <div className='flex space-x-10 text-sm pb-6'>
                                                     <div>
-                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>Value of Trades</div>
+                                                        <div className='text-sm font-bold mb-3 '>Value of Trades</div>
                                                         <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).valueOfTrades)}</div>
                                                     </div>
                                                 </div>
@@ -1503,21 +1503,21 @@ const Stock = () => {
 
                         {/* About Section */}
                         <div className={showAbout ? 'mb-3 about-section' : 'mb-3 about-section hidden'}>
-                            <div className='mb-10'>
+                            <div className='mb-3'>
                                 <div className='flex'>
                                     <div className='w-full'>
-                                        <p className='font-bold mb-3 font-gotham-black-regular'>About</p>
+                                        <p className='font-bold mb-3 '>About</p>
                                         <div className='tracking-widest text-sm leading-8 pr-10 mb-3'>{companyInfo}</div>
                                     </div>
 
                                     <div className='px-10 h-44 border-left-1 hidden'>
                                         <div className='mb-3'>
-                                            <p className='font-gotham-black-regular mb-10'>Group Managing Director</p>
+                                            <p className=' mb-3'>Group Managing Director</p>
                                             <p className='text-sm'></p>
                                         </div>
 
                                         <div>
-                                            <p className='font-gotham-black-regular mb-10'>Founded</p>
+                                            <p className=' mb-3'>Founded</p>
                                             <p className='text-sm'></p>
                                         </div>
                                     </div>
@@ -1557,7 +1557,7 @@ const Stock = () => {
 
                         {/* News Section */}
                         <div className={showNews ? 'mb-3 news-section' : 'mb-3 news-section hidden'}>
-                            <div className='mb-3'><p className='font-bold font-gotham-black-regular'>News and Insights</p></div>
+                            <div className='mb-3'><p className='font-bold '>News and Insights</p></div>
 
                             <div className='grid grid-cols-3 gap-4 mb-12'>
                                 {newsList}
@@ -1589,13 +1589,8 @@ const Stock = () => {
                     <div className="set-price-alert-modal rounded-lg">
                         {/* price Alert Error */}
                         <div className={priceAlertError === '' ? "hidden" : "error-alert mb-3"}>
-                            <div className="flex justify-between space-x-1">
+                            <div className="flex justify-between space-x-1 p-3">
                                 <div className="flex">
-                                    <div>
-                                        <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
-                                        </svg>
-                                    </div>
 
                                     <div className="text-sm">{priceAlertError}</div>
                                 </div>
@@ -1603,56 +1598,49 @@ const Stock = () => {
                         </div>
                         {/* End */}
 
-                        <div className="mb-10 flex justify-between">
-                            <div className="font-bold text-3xl text-green-900 font-gotham-black-regular">Set Price Alerts</div>
+                        <div className="mb-3 flex justify-between">
+                            <div className="text-2xl text-green-900">Set Price Alerts</div>
 
                             <div onClick={closeModal}>
                                 <img src={CloseIcon} alt="" className="cursor-pointer" />
                             </div>
                         </div>
 
-                        <div className="border-1 mb-3"></div>
-
-                        <div className='mb-6'>
+                        <div className='mb-3'>
                             <div>
-                                <div className='mb-10'>
-                                    <img src={AtlasIcon} alt="" className="align-middle border-1-d6 rounded-lg" />
-                                    <span className="font-bold font-gotham-black-regular mx-3 text-sm">{params.get('symbol')}</span> |
-                                    <span className="font-bold mx-3 text-sm">{String(params.get('name')).substring(0, 16)}...</span>
+                                <div className='mb-5'>
+                                    <img src={AtlasIcon} alt="" className="align-middle border rounded-lg" />
+                                    <span className="font-bold mx-3 text-sm">{params.get('symbol')}</span> |
+                                    <span className=" mx-3 text-sm">{String(params.get('name')).substring(0, 16)}...</span>
                                 </div>
 
-                                <div className="mb-3 w-32 bg-yellow-400 py-2 px-3 rounded-2xl text-sm">Manufacturing</div>
+                                <div className="mb-5 w-32 bg-yellow-400 py-2 px-3 rounded-2xl text-sm">Manufacturing</div>
 
                                 <div className="leading-6 text-sm mb-3">{companyInfo.length > 250 ? companyInfo.substring(0, 250) + "..." : companyInfo}</div>
 
-                                <div className='mb-10'>
-                                    <div className='mb-10 font-bold'>Current Price</div>
-                                    <div className='font-gotham-black-regular text-green-900 text-3xl'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
+                                <div className='mb-5'>
+                                    <div className='mb-3 font-bold'>Current Price</div>
+                                    <div className=' text-green-900 text-2xl'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
                                 </div>
 
-                                <div className='mb-3'>
+                                <div className='mb-5'>
                                     <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-sm" : "font-bold text-red-500 text-sm"}>
                                         {stockInfo === '' ? '' : JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === '' ? '' : HelperFunctions.formatCurrencyWithDecimal(JSON.parse(stockInfo).percentageChange.replace('-',''))}%
                                     </div>
                                 </div>
 
-                                <div className='mb-3 flex space-x-5'>
+                                <div className='mb-5 flex space-x-5'>
                                     <div className='w-full'>
-                                        <div className='font-bold mb-10 text-sm'>Enter Price</div>
-                                        <input type="text" value={priceAlert} onChange={delineatePriceAlert} className="input border p-2 outline-white w-full font-bold" />
+                                        <div className='font-bold mb-3 text-sm'>Enter Price</div>
+                                        <input type="text" value={priceAlert} onChange={delineatePriceAlert} className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500" />
                                     </div>
-
-                                    {/* <div className='w-1/2 hidden'>
-                                        <div className='font-bold mb-10'>Low</div>
-                                        <input type="text" value={lowPriceAlert} onChange={delineateLowPriceAlert} className="input border-1-d6 p-2 outline-white" />
-                                    </div> */}
                                 </div>
                                 
-                                <div className='mb-3'>
-                                    <div className='w-full font-bold mb-10 text-sm'>Price Condition</div>
+                                <div className='mb-5'>
+                                    <div className='w-full font-bold mb-3 text-sm'>Price Condition</div>
 
                                     <div className=''>
-                                        <select className='text-sm outline-white w-full p-3 rounded-lg border border-gray-500 font-bold' onChange={e => setPriceCondition(e.target.value)}>
+                                        <select className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500' onChange={e => setPriceCondition(e.target.value)}>
                                             <option value="">Select a Condition</option>
                                             <option value="GREATER_THAN">High</option>
                                             <option value="LESS_THAN">Low</option>
@@ -1660,15 +1648,15 @@ const Stock = () => {
                                     </div>
                                 </div>
 
-                                <div>
-                                    <div className='mb-10 font-bold text-sm'>Transaction Pin</div>
+                                <div className='mb-8'>
+                                    <div className='mb-3 font-bold text-sm'>Transaction Pin</div>
 
                                     <div>
-                                        <input type="password" className='text-lg outline-white mb-3 w-full font-bold px-3 py-2 rounded-lg border border-gray-500' value={transactionPin} onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
+                                        <input type="password" className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500' value={transactionPin} onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
                                     </div>
                                 </div>
 
-                                <div className="flex space-x-5 mb-10">
+                                <div className="flex space-x-5">
                                     <button type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer" onClick={closeModal}>Cancel</button>
 
                                     <button onClick={createPriceAlert} type="button" className="py-4 w-full font-bold bg-green-900 text-white rounded-lg border-0 cursor-pointer">
@@ -1680,14 +1668,9 @@ const Stock = () => {
                         </div>
 
                         {/* price Alert Error */}
-                        <div className={priceAlertError === '' ? "hidden" : "error-alert mb-3"}>
-                            <div className="flex justify-between space-x-1">
+                        <div className={priceAlertError === '' ? "hidden" : "error-alert"}>
+                            <div className="flex justify-between space-x-1 p-3">
                                 <div className="flex">
-                                    <div>
-                                        <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
-                                        </svg>
-                                    </div>
 
                                     <div className="text-sm">{priceAlertError}</div>
                                 </div>
@@ -1771,30 +1754,19 @@ const Stock = () => {
 
                         {/* Get Price Estimate Error */}
                         <div className={priceEstimateError === '' ? "hidden" : "error-alert mb-3"}>
-                            <div className="flex justify-between space-x-1 pt-3">
+                            <div className="flex justify-between space-x-1 p-3">
                                 <div className="flex">
-                                    <div>
-                                        <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
-                                        </svg>
-                                    </div>
 
-                                    <div className="pt-1 text-sm">{priceEstimateError}</div>
-                                </div>
-
-                                <div className="cursor-pointer" onClick={closeAlert}>
-                                    <svg className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50" />
-                                    </svg>
+                                    <div className="text-sm">{priceEstimateError}</div>
                                 </div>
                             </div>
                         </div>
                         {/* End */}
 
-                        <div className="mb-3 flex justify-between">
+                        <div className="mb-5 flex justify-between">
                             <div>
-                                <div className="font-bold text-3xl text-green-900 mb-10 font-gotham-black-regular">Buy Stock</div>
-                                <div className='font-bold text-green-900'>Provide the details below</div>
+                                <div className=" text-2xl text-green-900 mb-3">Buy Stock</div>
+                                <div className=' text-green-900'>Provide the details below</div>
                             </div>
 
                             <div onClick={closeModal} className='cursor-pointer'>
@@ -1804,8 +1776,8 @@ const Stock = () => {
 
                         <div className='mb-3'>
                             <div className="stock-balance-card">
-                                <div className="italic text-green-500 mb-5">Available Balance</div>
-                                <div className="font-bold text-3xl font-gotham-black-regular text-white">
+                                <div className="italic text-green-500 mb-3">Available Balance</div>
+                                <div className="font-bold text-2xl  text-white">
                                     <svg width="21" height="22" viewBox="0 0 21 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M20.1787 6.06096C20.6317 6.06096 20.9989 5.67627 20.9989 5.20171V4.2995C20.9989 1.92875 19.1578 0 16.8948 0C16.8948 0 4.03797 0.00201923 4.00627 0.00592881C2.92406 0.0455401 1.88451 0.532046 1.13519 1.3546C0.36712 2.1977 -0.0332975 3.29427 0.00439032 4.44802C0.00283195 4.46989 0.00201176 16.8412 0.00201176 16.8412C0.00201176 19.6858 2.21103 22 4.92627 22H16.8948C19.1578 22 20.9989 20.0712 20.9989 17.7005V11.1767C20.9989 8.806 19.1578 6.87724 16.8948 6.87724H4.10292C2.78607 6.87724 1.70645 5.79898 1.64506 4.42246C1.61385 3.72252 1.85421 3.05437 2.3218 2.54105C2.79616 2.02035 3.46236 1.72176 4.14951 1.72176C4.17375 1.72176 16.8947 1.71849 16.8947 1.71849C18.2532 1.71849 19.3584 2.87633 19.3584 4.2995V5.20171C19.3585 5.67627 19.7257 6.06096 20.1787 6.06096ZM4.10292 8.59574H16.8948C18.2533 8.59574 19.3585 9.75358 19.3585 11.1767V17.7005C19.3585 19.1237 18.2533 20.2815 16.8948 20.2815H4.92627C3.11554 20.2815 1.64239 18.7382 1.64239 16.8412V7.73997C2.3284 8.27829 3.18078 8.59574 4.10292 8.59574ZM17.7181 14.4386C17.7181 15.0318 17.2591 15.5127 16.6929 15.5127C15.3329 15.4561 15.3333 13.4209 16.6929 13.3646C17.2591 13.3646 17.7181 13.8454 17.7181 14.4386ZM17.7181 4.2995C17.7181 3.82494 17.3509 3.44025 16.8979 3.44025H4.10297C3.01474 3.48562 3.01556 5.11377 4.10297 5.15875H16.8979C17.3509 5.15875 17.7181 4.77406 17.7181 4.2995Z" fill="white" />
                                     </svg>
@@ -1815,28 +1787,25 @@ const Stock = () => {
                         </div>
 
                         <div className='mb-3'>
-                            <div className='mb-10'>
-                                <img src={AtlasIcon} alt="" className="align-middle border-1-d6 rounded-lg" />
-                                <span className="font-bold font-gotham-black-regular mx-3 text-lg">{params.get('symbol')}</span> |
-                                <span className="font-bold mx-3 text-sm">{params.get('name')?.substring(0, 10)}...</span>
+                            <div className='mb-3'>
+                                <img src={AtlasIcon} alt="" className="align-middle rounded-lg" />
+                                <span className="font-bold  mx-3 text-lg">{params.get('symbol')}</span> |
+                                <span className=" mx-3 text-sm">{params.get('name')?.substring(0, 10)}...</span>
                             </div>
                         </div>
 
                         
-                            <div className='mb-3' >
-                                <div className='mb-10 font-bold'>Current Price /Per Share</div>
-                                <div className='font-gotham-black-regular text-3xl font-bold text-green-900'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
-                            </div>
-                        
+                        <div className='mb-8' >
+                            <div className='mb-3'>Current Price /Per Share</div>
+                            <div className=' text-2xl font-bold text-green-900'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
+                        </div>
 
-                        <div className='border-bottom-1d mb-3'></div>
-
-                        <div className='mb-3'>
+                        <div className='mb-8'>
                             <div className='relative'>
                                 <div className='flex justify-between space-x-5 mb-3'>
 
                                     <div className='w-1/2 relative cursor-pointer' onClick={displayOrderTypeDropdown}>
-                                        <div className="mb-10">Order Type</div>
+                                        <div className="mb-3">Order Type</div>
 
                                         <div className='flex justify-between font-bold items-center border p-3 rounded-lg'>
                                             <div>{orderType}</div>
@@ -1845,10 +1814,10 @@ const Stock = () => {
                                     </div>
 
                                     <div className='w-1/2'>
-                                        <div className="mb-10">Unit</div>
+                                        <div className="mb-3">Unit</div>
 
                                         <div>
-                                            <input onChange={delineateStockUnit} type='text' className='font-bold input border-1-d6 p-2 outline-white' value={stockUnit} />
+                                            <input onChange={delineateStockUnit} type='text' className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500' value={stockUnit} />
                                         </div>
                                     </div>
 
@@ -1856,29 +1825,29 @@ const Stock = () => {
 
                                 {/* Order Type Description */}
                                 <div className={showOrderTypeDropdown ? 'generic-dropdown-card left-0 rounded-lg w-1/2' : 'hidden'}>
-                                    <div className='font-gotham-black-regular text-lg text-green-900 mb-10'>Order Type</div>
+                                    <div className=' text-lg text-green-900 mb-3'>Order Type</div>
 
                                     <ul className='list-none m-0 p-0'>
                                         <li className='order-type-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'>
-                                            <div className='font-gotham-black-regular mb-5'>Market</div>
+                                            <div className=' mb-5'>Market</div>
                                             <div className='text-xs'>Instantly buy units of shares.</div>
                                             <div onClick={selectOrderType} className='element-cover' data-value="Market"></div>
                                         </li>
 
                                         <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1'>
-                                            <div className='font-gotham-black-regular mb-5'>Limit</div>
+                                            <div className=' mb-5'>Limit</div>
                                             <div className='text-xs'>Place order based on preferred maximum amount to buy shares.</div>
                                             <div onClick={selectOrderType} className='element-cover' data-value="Limit"></div>
                                         </li>
 
                                         <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                            <div className='font-gotham-black-regular mb-5'>Stop Loss</div>
+                                            <div className=' mb-5'>Stop Loss</div>
                                             <div className='text-xs'>- Place order based on price tolerance for a buy. </div>
                                             <div onClick={selectOrderType} className='element-cover' data-value="Stop Loss"></div>
                                         </li>
 
                                         <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                            <div className='font-gotham-black-regular mb-5'>Stop Limit</div>
+                                            <div className=' mb-5'>Stop Limit</div>
                                             <div className='text-xs'>Place order based on maximum limit for buy.</div>
                                             <div onClick={selectOrderType} className='element-cover' data-value="Stop Limit"></div>
                                         </li>
@@ -1890,15 +1859,15 @@ const Stock = () => {
                             {/* Limit - Order Type */}
                             <div className={limitOrderType ? 'relative flex justify-between space-x-5 mb-3' : 'hidden'}>
                                 <div className='w-1/2'>
-                                    <div className="mb-10">Maximum Limit</div>
+                                    <div className="mb-3">Maximum Limit</div>
 
                                     <div>
-                                        <input onChange={delineatePriceToleranceAndLimit} type='text' className='font-bold input border-1-d6 p-2 outline-white' placeholder='Maximum price per share' value={priceToleranceAndLimit} />
+                                        <input onChange={delineatePriceToleranceAndLimit} type='text' className='font-bold input border p-2 outline-white' placeholder='Maximum price per share' value={priceToleranceAndLimit} />
                                     </div>
                                 </div>
 
                                 <div className='w-1/2 relative cursor-pointer' onClick={displayLimitDuration}>
-                                    <div className="mb-10">Duration</div>
+                                    <div className="mb-3">Duration</div>
 
                                     <div className='flex justify-between font-bold items-center border p-3 rounded-lg'>
                                         <div>{duration}</div>
@@ -1908,29 +1877,29 @@ const Stock = () => {
 
                                 {/*Duration Dropdown */}
                                 <div className={showLimitDurationDropdown ? 'generic-dropdown-card right-0 rounded-lg w-1/2' : 'hidden'}>
-                                    <div className='font-gotham-black-regular text-lg text-green-900 mb-10'>Duration</div>
+                                    <div className=' text-lg text-green-900 mb-3'>Duration</div>
 
                                     <ul className='list-none m-0 p-0'>
                                         <li className='duration-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'>
-                                            <div className='font-gotham-black-regular mb-5'>End of day</div>
+                                            <div className=' mb-5'>End of day</div>
                                             <div className='text-xs'>Order should be executed before end of  day, else, cancelled</div>
                                             <div onClick={selectDuration} className='element-cover' data-value="End of day"></div>
                                         </li>
 
                                         <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1'>
-                                            <div className='font-gotham-black-regular mb-5'>Fill or Kill</div>
+                                            <div className=' mb-5'>Fill or Kill</div>
                                             <div className='text-xs'>Order should be filled immediately, else, cancelled</div>
                                             <div onClick={selectDuration} className='element-cover' data-value="Fill or Kill"></div>
                                         </li>
 
                                         <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                            <div className='font-gotham-black-regular mb-5'>Immediate or Cancel</div>
+                                            <div className=' mb-5'>Immediate or Cancel</div>
                                             <div className='text-xs'>If number of units can not be filled immediately then cancel order</div>
                                             <div onClick={selectDuration} className='element-cover' data-value="Immediate or Cancel"></div>
                                         </li>
 
                                         <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                            <div className='font-gotham-black-regular mb-5'>Good till Cancelled</div>
+                                            <div className=' mb-5'>Good till Cancelled</div>
                                             <div className='text-xs'>Order should remain open in the market till set date</div>
                                             <div onClick={selectDuration} className='element-cover' data-value="Good till Cancelled"></div>
                                         </li>
@@ -1945,15 +1914,15 @@ const Stock = () => {
                             <div className='relative'>
                                 <div className={stopLossOrderType ? 'flex justify-between space-x-5 mb-3' : 'hidden'}>
                                     <div className='w-1/2'>
-                                        <div className="mb-10">Price Tolerance</div>
+                                        <div className="mb-3">Price Tolerance</div>
 
                                         <div>
-                                            <input type='text' onChange={delineatePriceToleranceAndLimit} className='font-bold input border-1-d6 p-2 outline-white' value={priceToleranceAndLimit} />
+                                            <input type='text' onChange={delineatePriceToleranceAndLimit} className='font-bold input border p-2 outline-white' value={priceToleranceAndLimit} />
                                         </div>
                                     </div>
 
                                     <div className='w-1/2 relative cursor-pointer' onClick={displayStopLossDuration}>
-                                        <div className="mb-10">Duration</div>
+                                        <div className="mb-3">Duration</div>
 
                                         <div className='flex justify-between font-bold items-center border p-3 rounded-lg'>
                                             <div>{duration}</div>
@@ -1964,29 +1933,29 @@ const Stock = () => {
                                 </div>
 
                                 <div className={showStopLossDurationDropdown ? 'generic-dropdown-card right-0 rounded-lg w-1/2' : 'hidden'}>
-                                    <div className='font-gotham-black-regular text-lg text-green-900 mb-10'>Duration</div>
+                                    <div className=' text-lg text-green-900 mb-3'>Duration</div>
 
                                     <ul className='list-none m-0 p-0'>
                                         <li className='duration-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'>
-                                            <div className='font-gotham-black-regular mb-5'>End of day</div>
+                                            <div className=' mb-5'>End of day</div>
                                             <div className='text-xs'>Order should be executed before end of  day, else, cancelled</div>
                                             <div onClick={selectDuration} className='element-cover' data-value="End of day"></div>
                                         </li>
 
                                         <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1'>
-                                            <div className='font-gotham-black-regular mb-5'>Fill or Kill</div>
+                                            <div className=' mb-5'>Fill or Kill</div>
                                             <div className='text-xs'>Order should be filled immediately, else, cancelled</div>
                                             <div onClick={selectDuration} className='element-cover' data-value="Fill or Kill"></div>
                                         </li>
 
                                         <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                            <div className='font-gotham-black-regular mb-5'>Immediate or Cancel</div>
+                                            <div className=' mb-5'>Immediate or Cancel</div>
                                             <div className='text-xs'>If number of units can not be filled immediately then cancel order</div>
                                             <div onClick={selectDuration} className='element-cover' data-value="Immediate or Cancel"></div>
                                         </li>
 
                                         <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                            <div className='font-gotham-black-regular mb-5'>Good till Cancelled</div>
+                                            <div className=' mb-5'>Good till Cancelled</div>
                                             <div className='text-xs'>Order should remain open in the market till set date</div>
                                             <div onClick={selectDuration} className='element-cover' data-value="Good till Cancelled"></div>
                                         </li>
@@ -2000,15 +1969,15 @@ const Stock = () => {
                                 <div className={stopLimitOrderType ? '' : 'hidden'}>
                                     <div className='flex justify-between space-x-5 mb-3'>
                                         <div className='w-1/2'>
-                                            <div className="mb-10">Price Tolerance and Limit</div>
+                                            <div className="mb-3">Price Tolerance and Limit</div>
 
                                             <div>
-                                                <input onChange={delineatePriceToleranceAndLimit} value={priceToleranceAndLimit} type='text' className='font-bold input border-1-d6 p-2 outline-white' />
+                                                <input onChange={delineatePriceToleranceAndLimit} value={priceToleranceAndLimit} type='text' className='font-bold input border p-2 outline-white' />
                                             </div>
                                         </div>
 
                                         <div className='w-1/2 relative cursor-pointer' onClick={displayStopLimitDuration}>
-                                            <div className="mb-10">Duration</div>
+                                            <div className="mb-3">Duration</div>
 
                                             <div className='flex justify-between font-bold items-center border p-3 rounded-lg'>
                                                 <div>{duration}</div>
@@ -2017,29 +1986,29 @@ const Stock = () => {
                                         </div>
 
                                         <div className={showStopLimitDurationDropdown ? 'generic-dropdown-card right-0 rounded-lg w-1/2' : 'hidden'}>
-                                            <div className='font-gotham-black-regular text-lg text-green-900 mb-10'>Duration</div>
+                                            <div className=' text-lg text-green-900 mb-3'>Duration</div>
 
                                             <ul className='list-none m-0 p-0'>
                                                 <li className='duration-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'>
-                                                    <div className='font-gotham-black-regular mb-5'>End of day</div>
+                                                    <div className=' mb-5'>End of day</div>
                                                     <div className='text-xs'>Order should be executed before end of  day, else, cancelled</div>
                                                     <div onClick={selectDuration} className='element-cover' data-value="End of day"></div>
                                                 </li>
 
                                                 <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1'>
-                                                    <div className='font-gotham-black-regular mb-5'>Fill or Kill</div>
+                                                    <div className=' mb-5'>Fill or Kill</div>
                                                     <div className='text-xs'>Order should be filled immediately, else, cancelled</div>
                                                     <div onClick={selectDuration} className='element-cover' data-value="Fill or Kill"></div>
                                                 </li>
 
                                                 <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                                    <div className='font-gotham-black-regular mb-5'>Immediate or Cancel</div>
+                                                    <div className=' mb-5'>Immediate or Cancel</div>
                                                     <div className='text-xs'>If number of units can not be filled immediately then cancel order</div>
                                                     <div onClick={selectDuration} className='element-cover' data-value="Immediate or Cancel"></div>
                                                 </li>
 
                                                 <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                                    <div className='font-gotham-black-regular mb-5'>Good till Cancelled</div>
+                                                    <div className=' mb-5'>Good till Cancelled</div>
                                                     <div className='text-xs'>Order should remain open in the market till set date</div>
                                                     <div onClick={selectDuration} className='element-cover' data-value="Good till Cancelled"></div>
                                                 </li>
@@ -2050,8 +2019,8 @@ const Stock = () => {
 
                                     <div>
                                         <div>
-                                            <div className="mb-10">Enter Date</div>
-                                            <div className='flex justify-between items-center border-1-d6 rounded-lg'>
+                                            <div className="mb-3">Enter Date</div>
+                                            <div className='flex justify-between items-center border rounded-lg'>
                                                 <div className='w-full'>
                                                     <input type="text" className="font-bold outline-white border-0 p-3 input text-sm" placeholder="Enter end date for your order" defaultValue={showDate} />
                                                 </div>
@@ -2066,29 +2035,29 @@ const Stock = () => {
                                 </div>
 
                                 <div className={showStopLossDurationDropdown ? 'generic-dropdown-card right-0 rounded-lg w-1/2' : 'hidden'}>
-                                    <div className='font-gotham-black-regular text-lg text-green-900 mb-10'>Duration</div>
+                                    <div className=' text-lg text-green-900 mb-3'>Duration</div>
 
                                     <ul className='list-none m-0 p-0'>
                                         <li className='duration-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'>
-                                            <div className='font-gotham-black-regular mb-5'>End of day</div>
+                                            <div className=' mb-5'>End of day</div>
                                             <div className='text-xs'>Order should be executed before end of  day, else, cancelled</div>
                                             <div onClick={selectDuration} className='element-cover' data-value="End of day"></div>
                                         </li>
 
                                         <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1'>
-                                            <div className='font-gotham-black-regular mb-5'>Fill or Kill</div>
+                                            <div className=' mb-5'>Fill or Kill</div>
                                             <div className='text-xs'>Order should be filled immediately, else, cancelled</div>
                                             <div onClick={selectDuration} className='element-cover' data-value="Fill or Kill"></div>
                                         </li>
 
                                         <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                            <div className='font-gotham-black-regular mb-5'>Immediate or Cancel</div>
+                                            <div className=' mb-5'>Immediate or Cancel</div>
                                             <div className='text-xs'>If number of units can not be filled immediately then cancel order</div>
                                             <div onClick={selectDuration} className='element-cover' data-value="Immediate or Cancel"></div>
                                         </li>
 
                                         <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                            <div className='font-gotham-black-regular mb-5'>Good till Cancelled</div>
+                                            <div className=' mb-5'>Good till Cancelled</div>
                                             <div className='text-xs'>Order should remain open in the market till set date</div>
                                             <div onClick={selectDuration} className='element-cover' data-value="Good till Cancelled"></div>
                                         </li>
@@ -2099,11 +2068,9 @@ const Stock = () => {
 
                         </div>
 
-                        <div className='border-bottom-1d mb-3'></div>
-
-                        <div className='mb-3'>
-                            <div className='mb-10'>Estimated cost</div>
-                            <div className='font-gotham-black-regular font-bold text-green-900 text-3xl'>{HelperFunctions.formatCurrencyWithDecimal(estimatedCost)}</div>
+                        <div className='mb-8'>
+                            <div className='mb-3'>Estimated cost</div>
+                            <div className=' font-bold text-green-900 text-3xl'>{HelperFunctions.formatCurrencyWithDecimal(estimatedCost)}</div>
                         </div>
 
                         <div>
@@ -2152,7 +2119,7 @@ const Stock = () => {
 
                         <div className="mb-3 flex justify-between">
                             <div>
-                                <div className="font-bold text-3xl text-green-900 mb-10 font-gotham-black-regular">Sell Stock</div>
+                                <div className="font-bold text-3xl text-green-900 mb-3 ">Sell Stock</div>
                                 <div className='font-bold text-green-900'>Provide the details below</div>
                             </div>
 
@@ -2164,7 +2131,7 @@ const Stock = () => {
                         <div className='mb-3'>
                             <div className="stock-balance-card">
                                 <div className="italic text-green-500 mb-5">Available Balance</div>
-                                <div className="font-bold text-3xl font-gotham-black-regular text-white">
+                                <div className="font-bold text-3xl  text-white">
                                     <svg width="21" height="22" viewBox="0 0 21 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M20.1787 6.06096C20.6317 6.06096 20.9989 5.67627 20.9989 5.20171V4.2995C20.9989 1.92875 19.1578 0 16.8948 0C16.8948 0 4.03797 0.00201923 4.00627 0.00592881C2.92406 0.0455401 1.88451 0.532046 1.13519 1.3546C0.36712 2.1977 -0.0332975 3.29427 0.00439032 4.44802C0.00283195 4.46989 0.00201176 16.8412 0.00201176 16.8412C0.00201176 19.6858 2.21103 22 4.92627 22H16.8948C19.1578 22 20.9989 20.0712 20.9989 17.7005V11.1767C20.9989 8.806 19.1578 6.87724 16.8948 6.87724H4.10292C2.78607 6.87724 1.70645 5.79898 1.64506 4.42246C1.61385 3.72252 1.85421 3.05437 2.3218 2.54105C2.79616 2.02035 3.46236 1.72176 4.14951 1.72176C4.17375 1.72176 16.8947 1.71849 16.8947 1.71849C18.2532 1.71849 19.3584 2.87633 19.3584 4.2995V5.20171C19.3585 5.67627 19.7257 6.06096 20.1787 6.06096ZM4.10292 8.59574H16.8948C18.2533 8.59574 19.3585 9.75358 19.3585 11.1767V17.7005C19.3585 19.1237 18.2533 20.2815 16.8948 20.2815H4.92627C3.11554 20.2815 1.64239 18.7382 1.64239 16.8412V7.73997C2.3284 8.27829 3.18078 8.59574 4.10292 8.59574ZM17.7181 14.4386C17.7181 15.0318 17.2591 15.5127 16.6929 15.5127C15.3329 15.4561 15.3333 13.4209 16.6929 13.3646C17.2591 13.3646 17.7181 13.8454 17.7181 14.4386ZM17.7181 4.2995C17.7181 3.82494 17.3509 3.44025 16.8979 3.44025H4.10297C3.01474 3.48562 3.01556 5.11377 4.10297 5.15875H16.8979C17.3509 5.15875 17.7181 4.77406 17.7181 4.2995Z" fill="white" />
                                     </svg>
@@ -2174,9 +2141,9 @@ const Stock = () => {
                         </div>
 
                         <div className='mb-3'>
-                            <div className='mb-10'>
-                                <img src={AtlasIcon} alt="" className="align-middle border-1-d6 rounded-lg" />
-                                <span className="font-bold font-gotham-black-regular mx-3 text-lg">{params.get('symbol')}</span> |
+                            <div className='mb-3'>
+                                <img src={AtlasIcon} alt="" className="align-middle border rounded-lg" />
+                                <span className="font-bold  mx-3 text-lg">{params.get('symbol')}</span> |
                                 <span className="font-bold mx-3">{params.get('name')?.substring(0,10)}...</span>
                             </div>
                         </div>
@@ -2184,7 +2151,7 @@ const Stock = () => {
                         <div className="mb-8">
                             <div className='flex justify-between space-x-10 mb-3'>
                                 <div className='w-2/3'>
-                                    <div className='mb-10 text-sm font-bold'>Portfolios</div>
+                                    <div className='mb-3 text-sm font-bold'>Portfolios</div>
 
                                     <div>
                                         <select className='text-sm outline-white w-full p-3 rounded-lg border border-gray-500' onChange={getPortfolioIdToSellStock}>
@@ -2197,7 +2164,7 @@ const Stock = () => {
                                 </div>
 
                                 <div className='w-1/3'>
-                                    <div className='text-sm font-bold mb-10'>Available Units</div>
+                                    <div className='text-sm font-bold mb-3'>Available Units</div>
 
                                     <div>   
                                         <div className=''>
@@ -2232,7 +2199,7 @@ const Stock = () => {
                         </div>
 
                         <div className="mb-3 hidden">
-                            <div className='text-sm font-bold mb-10'>Available Units</div>
+                            <div className='text-sm font-bold mb-3'>Available Units</div>
 
                             <div className='md:flex md:justify-between items-center mb-2'>
                                 <div className='w-2/3'>   
@@ -2251,18 +2218,18 @@ const Stock = () => {
                         </div>
                         
                         <div className='mb-3' >
-                            <div className='mb-10 font-bold'>Current Price /Per Share</div>
-                            <div className='font-gotham-black-regular text-2xl font-bold text-green-900'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
+                            <div className='mb-3 font-bold'>Current Price /Per Share</div>
+                            <div className=' text-2xl font-bold text-green-900'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
                         </div>                        
 
-                        <div className='border-bottom-1d mb-3'></div>
+                        <div className='border mb-3'></div>
 
                         <div className='mb-3'>
                             <div className='relative'>
                                 <div className='flex justify-between space-x-5 mb-3'>
 
                                     <div className='w-1/2 relative cursor-pointer' onClick={displayOrderTypeDropdown}>
-                                        <div className="mb-10 font-bold text-sm">Order Type</div>
+                                        <div className="mb-3 font-bold text-sm">Order Type</div>
 
                                         <div className='flex justify-between font-bold items-center border p-3 rounded-lg'>
                                             <div>{orderType}</div>
@@ -2271,10 +2238,10 @@ const Stock = () => {
                                     </div>
 
                                     <div className='w-1/2'>
-                                        <div className="mb-10 font-bold text-sm">Unit</div>
+                                        <div className="mb-3 font-bold text-sm">Unit</div>
 
                                         <div>
-                                            <input type='number' className='font-bold input border-1-d6 p-2 outline-white' value={totalUnitToSell} readOnly/>
+                                            <input type='number' className='font-bold input border p-2 outline-white' value={totalUnitToSell} readOnly/>
                                         </div>
                                     </div>
 
@@ -2282,29 +2249,29 @@ const Stock = () => {
 
                                 {/* Order Types Description */}
                                 <div className={showOrderTypeDropdown ? 'generic-dropdown-card left-0 rounded-lg w-1/2' : 'hidden'}>
-                                    <div className='font-gotham-black-regular text-lg text-green-900 mb-10'>Order Type</div>
+                                    <div className=' text-lg text-green-900 mb-3'>Order Type</div>
 
                                     <ul className='list-none m-0 p-0'>
                                         <li className='order-type-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'>
-                                            <div className='font-gotham-black-regular mb-5 font-bold text-sm'>Market</div>
+                                            <div className=' mb-5 font-bold text-sm'>Market</div>
                                             <div className='text-xs'>Instantly sell units of shares. </div>
                                             <div onClick={selectOrderType} className='element-cover' data-value="Market"></div>
                                         </li>
 
                                         <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1'>
-                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Limit</div>
+                                            <div className=' mb-5 text-sm font-bold'>Limit</div>
                                             <div className='text-xs'>- Place order based on preferred maximum amount to receive share.</div>
                                             <div onClick={selectOrderType} className='element-cover' data-value="Limit"></div>
                                         </li>
 
                                         <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Stop Loss</div>
+                                            <div className=' mb-5 text-sm font-bold'>Stop Loss</div>
                                             <div className='text-xs'>Place order based on price tolerance for a sell.</div>
                                             <div onClick={selectOrderType} className='element-cover' data-value="Stop Loss"></div>
                                         </li>
 
                                         <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Stop Limit</div>
+                                            <div className=' mb-5 text-sm font-bold'>Stop Limit</div>
                                             <div className='text-xs'>Place order based on minimum limit for sell.</div>
                                             <div onClick={selectOrderType} className='element-cover' data-value="Stop Limit"></div>
                                         </li>
@@ -2316,15 +2283,15 @@ const Stock = () => {
                             {/* Limit - Order Type */}
                             <div className={limitOrderType ? 'relative flex justify-between space-x-5 mb-3' : 'hidden'}>
                                 <div className='w-1/2'>
-                                    <div className="mb-10 text-sm font-bold">Maximum Limit</div>
+                                    <div className="mb-3 text-sm font-bold">Maximum Limit</div>
 
                                     <div>
-                                        <input onChange={delineatePriceToleranceAndLimit} type='text' className='font-bold input border-1-d6 p-2 outline-white' placeholder='Maximum price per share' value={priceToleranceAndLimit} />
+                                        <input onChange={delineatePriceToleranceAndLimit} type='text' className='font-bold input border p-2 outline-white' placeholder='Maximum price per share' value={priceToleranceAndLimit} />
                                     </div>
                                 </div>
 
                                 <div className='w-1/2 relative cursor-pointer' onClick={displayLimitDuration}>
-                                    <div className="mb-10 text-sm font-bold">Duration</div>
+                                    <div className="mb-3 text-sm font-bold">Duration</div>
 
                                     <div className='flex justify-between font-bold items-center border p-3 rounded-lg'>
                                         <div>{duration}</div>
@@ -2334,29 +2301,29 @@ const Stock = () => {
 
                                 {/*Duration Dropdown */}
                                 <div className={showLimitDurationDropdown ? 'generic-dropdown-card right-0 rounded-lg w-1/2' : 'hidden'}>
-                                    <div className='font-gotham-black-regular text-lg text-green-900 mb-10'>Duration</div>
+                                    <div className=' text-lg text-green-900 mb-3'>Duration</div>
 
                                     <ul className='list-none m-0 p-0'>
                                         <li className='duration-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'>
-                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>End of day</div>
+                                            <div className=' mb-5 text-sm font-bold'>End of day</div>
                                             <div className='text-xs'>Order should be executed before end of  day, else, cancelled</div>
                                             <div onClick={selectDuration} className='element-cover' data-value="End of day"></div>
                                         </li>
 
                                         <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1'>
-                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Fill or Kill</div>
+                                            <div className=' mb-5 text-sm font-bold'>Fill or Kill</div>
                                             <div className='text-xs'>Order should be filled immediately, else, cancelled</div>
                                             <div onClick={selectDuration} className='element-cover' data-value="Fill or Kill"></div>
                                         </li>
 
                                         <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Immediate or Cancel</div>
+                                            <div className=' mb-5 text-sm font-bold'>Immediate or Cancel</div>
                                             <div className='text-xs'>Order can be partly filled immediately, units not filled immediately should be cancelled</div>
                                             <div onClick={selectDuration} className='element-cover' data-value="Immediate or Cancel"></div>
                                         </li>
 
                                         <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Good till Cancelled</div>
+                                            <div className=' mb-5 text-sm font-bold'>Good till Cancelled</div>
                                             <div className='text-xs'>Order should remain open in the market till set date</div>
                                             <div onClick={selectDuration} className='element-cover' data-value="Good till Cancelled"></div>
                                         </li>
@@ -2371,15 +2338,15 @@ const Stock = () => {
                             <div className='relative'>
                                 <div className={stopLossOrderType ? 'flex justify-between space-x-5 mb-3' : 'hidden'}>
                                     <div className='w-1/2'>
-                                        <div className="mb-10 text-sm font-bold">Price Tolerance</div>
+                                        <div className="mb-3 text-sm font-bold">Price Tolerance</div>
 
                                         <div>
-                                            <input type='text' onChange={delineatePriceToleranceAndLimit} className='font-bold input border-1-d6 p-2 outline-white' value={priceToleranceAndLimit} />
+                                            <input type='text' onChange={delineatePriceToleranceAndLimit} className='font-bold input border p-2 outline-white' value={priceToleranceAndLimit} />
                                         </div>
                                     </div>
 
                                     <div className='w-1/2 relative cursor-pointer' onClick={displayStopLossDuration}>
-                                        <div className="mb-10 text-sm font-bold">Duration</div>
+                                        <div className="mb-3 text-sm font-bold">Duration</div>
 
                                         <div className='flex justify-between font-bold items-center border p-3 rounded-lg'>
                                             <div>{duration}</div>
@@ -2390,29 +2357,29 @@ const Stock = () => {
                                 </div>
 
                                 <div className={showStopLossDurationDropdown ? 'generic-dropdown-card right-0 rounded-lg w-1/2' : 'hidden'}>
-                                    <div className='font-gotham-black-regular text-lg text-green-900 mb-10'>Duration</div>
+                                    <div className=' text-lg text-green-900 mb-3'>Duration</div>
 
                                     <ul className='list-none m-0 p-0'>
                                         <li className='duration-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'>
-                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>End of day</div>
+                                            <div className=' mb-5 text-sm font-bold'>End of day</div>
                                             <div className='text-xs'>Order should be executed before end of  day, else, cancelled</div>
                                             <div onClick={selectDuration} className='element-cover' data-value="End of day"></div>
                                         </li>
 
                                         <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1'>
-                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Fill or Kill</div>
+                                            <div className=' mb-5 text-sm font-bold'>Fill or Kill</div>
                                             <div className='text-xs'>Order should be filled immediately, else, cancelled</div>
                                             <div onClick={selectDuration} className='element-cover' data-value="Fill or Kill"></div>
                                         </li>
 
                                         <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Immediate or Cancel</div>
+                                            <div className=' mb-5 text-sm font-bold'>Immediate or Cancel</div>
                                             <div className='text-xs'>Order can be partly filled immediately, units not filled immediately should be cancelled</div>
                                             <div onClick={selectDuration} className='element-cover' data-value="Immediate or Cancel"></div>
                                         </li>
 
                                         <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Good till Cancelled</div>
+                                            <div className=' mb-5 text-sm font-bold'>Good till Cancelled</div>
                                             <div className='text-xs'>Order should remain open in the market till set date</div>
                                             <div onClick={selectDuration} className='element-cover' data-value="Good till Cancelled"></div>
                                         </li>
@@ -2426,15 +2393,15 @@ const Stock = () => {
                                 <div className={stopLimitOrderType ? '' : 'hidden'}>
                                     <div className='flex justify-between space-x-5 mb-3'>
                                         <div className='w-1/2'>
-                                            <div className="mb-10 text-sm font-bold">Price Tolerance and Limit</div>
+                                            <div className="mb-3 text-sm font-bold">Price Tolerance and Limit</div>
 
                                             <div>
-                                                <input onChange={delineatePriceToleranceAndLimit} value={priceToleranceAndLimit} type='text' className='font-bold input border-1-d6 p-2 outline-white' />
+                                                <input onChange={delineatePriceToleranceAndLimit} value={priceToleranceAndLimit} type='text' className='font-bold input border p-2 outline-white' />
                                             </div>
                                         </div>
 
                                         <div className='w-1/2 relative cursor-pointer' onClick={displayStopLimitDuration}>
-                                            <div className="mb-10 text-sm font-bold">Duration</div>
+                                            <div className="mb-3 text-sm font-bold">Duration</div>
 
                                             <div className='flex justify-between font-bold items-center border p-3 rounded-lg'>
                                                 <div>{duration}</div>
@@ -2443,29 +2410,29 @@ const Stock = () => {
                                         </div>
 
                                         <div className={showStopLimitDurationDropdown ? 'generic-dropdown-card right-0 rounded-lg w-1/2' : 'hidden'}>
-                                            <div className='font-gotham-black-regular text-lg text-green-900 mb-10'>Duration</div>
+                                            <div className=' text-lg text-green-900 mb-3'>Duration</div>
 
                                             <ul className='list-none m-0 p-0'>
                                                 <li className='duration-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'>
-                                                    <div className='font-gotham-black-regular mb-5 text-sm font-bold'>End of day</div>
+                                                    <div className=' mb-5 text-sm font-bold'>End of day</div>
                                                     <div className='text-xs'>Order should be executed before end of  day, else, cancelled</div>
                                                     <div onClick={selectDuration} className='element-cover' data-value="End of day"></div>
                                                 </li>
 
                                                 <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1'>
-                                                    <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Fill or Kill</div>
+                                                    <div className=' mb-5 text-sm font-bold'>Fill or Kill</div>
                                                     <div className='text-xs'>Order should be filled immediately, else, cancelled</div>
                                                     <div onClick={selectDuration} className='element-cover' data-value="Fill or Kill"></div>
                                                 </li>
 
                                                 <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                                    <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Immediate or Cancel</div>
+                                                    <div className=' mb-5 text-sm font-bold'>Immediate or Cancel</div>
                                                     <div className='text-xs'>Order can be partly filled immediately, units not filled immediately should be cancelled</div>
                                                     <div onClick={selectDuration} className='element-cover' data-value="Immediate or Cancel"></div>
                                                 </li>
 
                                                 <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                                    <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Good till Cancelled</div>
+                                                    <div className=' mb-5 text-sm font-bold'>Good till Cancelled</div>
                                                     <div className='text-xs'>Order should remain open in the market till set date</div>
                                                     <div onClick={selectDuration} className='element-cover' data-value="Good till Cancelled"></div>
                                                 </li>
@@ -2476,8 +2443,8 @@ const Stock = () => {
 
                                     <div>
                                         <div>
-                                            <div className="mb-10 text-sm font-bold">Enter Date</div>
-                                            <div className='flex justify-between items-center border-1-d6 rounded-lg'>
+                                            <div className="mb-3 text-sm font-bold">Enter Date</div>
+                                            <div className='flex justify-between items-center border rounded-lg'>
                                                 <div className='w-full'>
                                                     <input type="text" className="font-bold outline-white border-0 p-3 input text-sm" placeholder="Enter end date for your order" defaultValue={showDate} />
                                                 </div>
@@ -2492,29 +2459,29 @@ const Stock = () => {
                                 </div>
 
                                 <div className={showStopLossDurationDropdown ? 'generic-dropdown-card right-0 rounded-lg w-1/2' : 'hidden'}>
-                                    <div className='font-gotham-black-regular text-lg text-green-900 mb-10'>Duration</div>
+                                    <div className=' text-lg text-green-900 mb-3'>Duration</div>
 
                                     <ul className='list-none m-0 p-0'>
                                         <li className='duration-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'>
-                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>End of day</div>
+                                            <div className=' mb-5 text-sm font-bold'>End of day</div>
                                             <div className='text-xs'>Order should be executed before end of  day, else, cancelled</div>
                                             <div onClick={selectDuration} className='element-cover' data-value="End of day"></div>
                                         </li>
 
                                         <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1'>
-                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Fill or Kill</div>
+                                            <div className=' mb-5 text-sm font-bold'>Fill or Kill</div>
                                             <div className='text-xs'>Order should be filled immediately, else, cancelled</div>
                                             <div onClick={selectDuration} className='element-cover' data-value="Fill or Kill"></div>
                                         </li>
 
                                         <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Immediate or Cancel</div>
+                                            <div className=' mb-5 text-sm font-bold'>Immediate or Cancel</div>
                                             <div className='text-xs'>Order can be partly filled immediately, units not filled immediately should be cancelled</div>
                                             <div onClick={selectDuration} className='element-cover' data-value="Immediate or Cancel"></div>
                                         </li>
 
                                         <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                            <div className='font-gotham-black-regular mb-5 text-sm font-bold'>Good till Cancelled</div>
+                                            <div className=' mb-5 text-sm font-bold'>Good till Cancelled</div>
                                             <div className='text-xs'>Order should remain open in the market till set date</div>
                                             <div onClick={selectDuration} className='element-cover' data-value="Good till Cancelled"></div>
                                         </li>
@@ -2525,11 +2492,11 @@ const Stock = () => {
 
                         </div>
 
-                        <div className='border-bottom-1d mb-3'></div>
+                        <div className='border mb-3'></div>
 
                         <div className='mb-3'>
-                            <div className='mb-10 text-sm font-bold'>Estimated cost</div>
-                            <div className='font-gotham-black-regular font-bold text-green-900 text-2xl'>{HelperFunctions.formatCurrencyWithDecimal(estimatedCost)}</div>
+                            <div className='mb-3 text-sm font-bold'>Estimated cost</div>
+                            <div className=' font-bold text-green-900 text-2xl'>{HelperFunctions.formatCurrencyWithDecimal(estimatedCost)}</div>
                         </div>
 
                         <div className='mb-3'>
@@ -2578,13 +2545,8 @@ const Stock = () => {
 
                         {/* Buy Stock Error */}
                         <div className={buyStockError === '' ? "hidden" : "error-alert mb-3"}>
-                            <div className="flex justify-between space-x-1">
+                            <div className="flex justify-between space-x-1 p-3">
                                 <div className="flex">
-                                    <div>
-                                        <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
-                                        </svg>
-                                    </div>
 
                                     <div className="text-sm">{buyStockError}</div>
                                 </div>
@@ -2594,7 +2556,7 @@ const Stock = () => {
 
                         <div className="mb-3 flex justify-between">
                             <div>
-                                <div className="font-bold text-3xl text-green-900 mb-10 font-gotham-black-regular">Order Summary</div>
+                                <div className="font-bold text-3xl text-green-900 mb-3">Order Summary</div>
                                 <div className='font-bold text-green-900'>Preview your investment</div>
                             </div>
 
@@ -2604,22 +2566,22 @@ const Stock = () => {
                         </div>
 
                         <div className='mb-3'>
-                            <div className='mb-10'>
-                                <img src={AtlasIcon} alt="" className="align-middle border-1-d6 rounded-lg" />
-                                <span className="font-bold font-gotham-black-regular mx-3 text-xl">{params.get('symbol')}</span> |
+                            <div className='mb-3'>
+                                <img src={AtlasIcon} alt="" className="align-middle border rounded-lg" />
+                                <span className="font-bold mx-3 text-xl">{params.get('symbol')}</span> |
                                 <span className="font-bold mx-3">{params.get('name')}</span>
                             </div>
                         </div>
 
                         
                         <div className='mb-3' >
-                            <div className='mb-10 font-bold'>Current Price /Per Share</div>
-                            <div className='font-gotham-black-regular text-3xl font-bold text-green-900'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
+                            <div className='mb-3 font-bold'>Current Price /Per Share</div>
+                            <div className=' text-3xl font-bold text-green-900'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
                         </div>
                         
 
                         <div className={params.get("tradeAction") === 'buy' ? '' : 'hidden'} >
-                            <div className='mb-10'>Add this stocks to a portfolio <span className='text-yellow-700'>(Optional)</span></div>
+                            <div className='mb-3'>Add this stocks to a portfolio <span className='text-yellow-700'>(Optional)</span></div>
 
                             <div>
                                 <select className='text-lg outline-white mb-3 w-full font-bold p-5 rounded-lg border border-gray-500' onChange={getPortfolioIdToAddStock}>
@@ -2630,14 +2592,14 @@ const Stock = () => {
                         </div>
 
                         <div>
-                            <div className='mb-10'>Transaction Pin</div>
+                            <div className='mb-3'>Transaction Pin</div>
 
                             <div>
-                                <input type="password" className='text-lg outline-white mb-3 w-full font-bold px-3 py-4 rounded-lg border border-gray-500' value={transactionPin} onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
+                                <input type="password" className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500' value={transactionPin} onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
                             </div>
                         </div>
 
-                        <div className='border-bottom-1d'></div>
+                        <div className='border'></div>
 
                         <div className='py-3'>
                             <div className='flex justify-between text-lg'>
@@ -2646,7 +2608,7 @@ const Stock = () => {
                             </div>
                         </div>
 
-                        <div className='border-bottom-1d '></div>
+                        <div className='border'></div>
 
                         <div className='py-3'>
                             <div className='flex justify-between text-lg'>
@@ -2655,7 +2617,7 @@ const Stock = () => {
                             </div>
                         </div>
 
-                        <div className='border-bottom-1d '></div>
+                        <div className='border'></div>
 
                         <div className={orderType !== 'Market' ? 'py-3' : 'hidden'}>
                             <div className='flex justify-between text-lg'>
@@ -2664,7 +2626,7 @@ const Stock = () => {
                             </div>
                         </div>
 
-                        <div className={orderType !== 'Market' ? 'border-bottom-1d' : 'hidden'}></div>
+                        <div className={orderType !== 'Market' ? 'border' : 'hidden'}></div>
 
                         <div className={orderType !== 'Market' ? 'py-3' : 'hidden'}>
                             <div className='flex justify-between text-lg'>
@@ -2673,7 +2635,7 @@ const Stock = () => {
                             </div>
                         </div>
 
-                        <div className={orderType !== 'Market' ? 'border-bottom-1d' : 'hidden'}></div>
+                        <div className={orderType !== 'Market' ? 'border' : 'hidden'}></div>
 
                         <div className={orderType !== 'Market' ? 'py-3' : 'hidden'}>
                             <div className='flex justify-between text-lg'>
@@ -2682,7 +2644,7 @@ const Stock = () => {
                             </div>
                         </div>
 
-                        <div className={orderType !== 'Market' ? 'border-bottom-1d' : 'hidden'}></div>
+                        <div className={orderType !== 'Market' ? 'border' : 'hidden'}></div>
 
                         <div className={orderType !== 'Market' ? 'py-3' : 'hidden'}>
                             <div className='flex justify-between text-lg'>
@@ -2691,7 +2653,7 @@ const Stock = () => {
                             </div>
                         </div>
 
-                        <div className={orderType !== 'Market' ? 'border-bottom-1d' : 'hidden'}></div>
+                        <div className={orderType !== 'Market' ? 'border' : 'hidden'}></div>
 
                         
                             <div className='py-3' >
@@ -2702,7 +2664,7 @@ const Stock = () => {
                             </div>
                         
 
-                        <div className='border-bottom-1d'></div>
+                        <div className='border'></div>
 
                         
                             <div className='py-3' >
@@ -2713,7 +2675,7 @@ const Stock = () => {
                             </div>
                         
 
-                        <div className='border-bottom-1d'></div>
+                        <div className='border'></div>
 
                         <div className='py-3'>
                             <div className='font-bold flex justify-between text-lg'>
@@ -2722,7 +2684,7 @@ const Stock = () => {
                             </div>
                         </div>
 
-                        <div className='border-bottom-1d mb-3'></div>
+                        <div className='border mb-3'></div>
 
 
                         <div className='flex space-x-5 mb-3'>
@@ -2735,14 +2697,9 @@ const Stock = () => {
                         </div>
 
                         {/* Buy Stock Error */}
-                        <div className={buyStockError === '' ? "hidden" : "error-alert mb-10"}>
-                            <div className="flex justify-between space-x-1">
+                        <div className={buyStockError === '' ? "hidden" : "error-alert mb-3"}>
+                            <div className="flex justify-between space-x-1 p-3">
                                 <div className="flex">
-                                    <div>
-                                        <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
-                                        </svg>
-                                    </div>
 
                                     <div className="text-sm">{buyStockError}</div>
                                 </div>
@@ -2756,16 +2713,16 @@ const Stock = () => {
             {/* End */}
 
             {/* Success Modal */}
-            <div className={showSuccessModal ? "stock-success-modal w-32rem" : "hidden"}>
-                <div className="mx-auto w-1/2 mb-6">
+            <div className={showSuccessModal ? "stock-success-modal w-96" : "hidden"}>
+                <div className="mx-auto w-1/2 mb-3">
                     <img src={SuccessCheckIcon} alt="success icon" className="w-full" />
                 </div>
 
-                <div className="relative z-10 text-green-900 font-gotham-black-regular text-3xl text-center mb-10">Successful</div>
+                <div className="relative z-10 text-green-900 text-3xl text-center mb-3">Successful</div>
 
-                <div className="text-color-4 text-sm text-center mb-14 leading-5">{apiResponseSuccessMsg}</div>
+                <div className="text-sm text-center mb-8 leading-5">{apiResponseSuccessMsg}</div>
 
-                <div className="mb-10">
+                <div className="">
 
                     <button onClick={closeModal} type="button" className="py-4 w-full font-bold bg-green-900 text-white rounded-lg border-0 cursor-pointer">Close</button>
                 </div>
@@ -2790,22 +2747,10 @@ const Stock = () => {
                         <div className='p-5'>
                             {/* Pin Success */}
                             <div className={isPinValid === 'true' ? "otp-alert mb-3" : "hidden"}>
-                                <div className="flex otp-validated justify-between space-x-1 pt-3">
+                                <div className="flex otp-validated justify-between space-x-1 p-3">
                                     <div className="flex">
-                                        <div>
-                                            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062" />
-                                                <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062" />
-                                            </svg>
-                                        </div>
 
-                                        <div className="pt-1 text-sm text-green-900">{apiResponseSuccessMsg}</div>
-                                    </div>
-
-                                    <div className="cursor-pointer" onClick={closeModal}>
-                                        <svg className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50" />
-                                        </svg>
+                                        <div className=" text-sm text-green-900">{apiResponseSuccessMsg}</div>
                                     </div>
                                 </div>
                             </div>
@@ -2813,29 +2758,18 @@ const Stock = () => {
 
                             {/* Pin Error */}
                             <div className={isPinValid !== 'false' ? "hidden" : "error-alert mb-3"}>
-                                <div className="flex justify-between space-x-1 pt-3">
+                                <div className="flex justify-between space-x-1 p-3">
                                     <div className="flex">
-                                        <div>
-                                            <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
-                                            </svg>
-                                        </div>
 
-                                        <div className="pt-1 text-sm">{apiResponseSuccessMsg}</div>
-                                    </div>
-
-                                    <div className="cursor-pointer">
-                                        <svg className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50" />
-                                        </svg>
+                                        <div className=" text-sm">{apiResponseSuccessMsg}</div>
                                     </div>
                                 </div>
                             </div>
                             {/* End */}
 
-                            <div className='font-bold mb-10'>Enter PIN</div>
+                            <div className='font-bold mb-3'>Enter PIN</div>
 
-                            <div className='mb-3'><input maxLength={4} type="password" className="w-full rounded-lg p-5 border border-gray-100 outline-white" onChange={e => setPin(e.target.value)} /> </div>
+                            <div className='mb-3'><input maxLength={4} type="password" className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500" onChange={e => setPin(e.target.value)} /> </div>
 
                             <div><button type='button' className='px-16 py-3 bg-green-900 text-white rounded-lg font-bold border-0 w-full cursor-pointer' onClick={validatePin}>
                                 <span className={showSpinner ? "hidden" : ""}>Validate</span>
