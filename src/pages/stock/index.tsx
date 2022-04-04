@@ -2584,7 +2584,7 @@ const Stock = () => {
             {/* End */}
 
             {/* Order Summary Modal */}
-            <div className={showOrderSummaryModal ? 'generic-modal' : 'hidden'}>
+            <div className={showOrderSummaryModal ? 'generic-modal' : 'generic-modal'}>
                 <div className='generic-modal-dialog'>
                     <div className="buy-stocks-modal rounded-lg">
 
@@ -2601,8 +2601,8 @@ const Stock = () => {
 
                         <div className="mb-3 flex justify-between">
                             <div>
-                                <div className="font-bold text-3xl text-green-900 mb-3">Order Summary</div>
-                                <div className='font-bold text-green-900'>Preview your investment</div>
+                                <div className="text-2xl text-green-900 mb-3">Order Summary</div>
+                                <div className='text-green-900'>Preview your investment</div>
                             </div>
 
                             <div onClick={closeModal} className='cursor-pointer'>
@@ -2614,7 +2614,7 @@ const Stock = () => {
                             <div className='mb-3'>
                                 <img src={AtlasIcon} alt="" className="align-middle border rounded-lg" />
                                 <span className="font-bold mx-3 text-xl">{params.get('symbol')}</span> |
-                                <span className="font-bold mx-3">{params.get('name')}</span>
+                                <span className=" mx-3">{params.get('name')}</span>
                             </div>
                         </div>
 
@@ -2625,18 +2625,18 @@ const Stock = () => {
                         </div>
                         
 
-                        <div className={params.get("tradeAction") === 'buy' ? '' : 'hidden'} >
+                        <div className={params.get("tradeAction") === 'buy' ? 'mb-5' : 'hidden'} >
                             <div className='mb-3'>Add this stocks to a portfolio <span className='text-yellow-700'>(Optional)</span></div>
 
                             <div>
-                                <select className='text-lg outline-white mb-3 w-full font-bold p-5 rounded-lg border border-gray-500' onChange={getPortfolioIdToAddStock}>
+                                <select className='block w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white bg-white focus:ring-indigo-500' onChange={getPortfolioIdToAddStock}>
                                     <option value="qazsw">Select portfolio</option>
                                     {portfolioList}
                                 </select>
                             </div>
                         </div>
 
-                        <div>
+                        <div className='mb-5'>
                             <div className='mb-3'>Transaction Pin</div>
 
                             <div>
@@ -2644,27 +2644,21 @@ const Stock = () => {
                             </div>
                         </div>
 
-                        <div className='border'></div>
-
-                        <div className='py-3'>
+                        <div className='py-3 mb-5'>
                             <div className='flex justify-between text-lg'>
                                 <div>Order Type</div>
                                 <div className='font-bold'>{orderType}</div>
                             </div>
                         </div>
 
-                        <div className='border'></div>
-
-                        <div className='py-3'>
+                        <div className='py-3 mb-5'>
                             <div className='flex justify-between text-lg'>
                                 <div>Number of Shares</div>
                                 <div className='font-bold'>{stockUnit}</div>
                             </div>
                         </div>
 
-                        <div className='border'></div>
-
-                        <div className={orderType !== 'Market' ? 'py-3' : 'hidden'}>
+                        <div className={orderType !== 'Market' ? 'py-3 mb-5' : 'hidden'}>
                             <div className='flex justify-between text-lg'>
                                 <div>Maximum Limit</div>
                                 <div className='font-bold'>₦ {priceToleranceAndLimit}</div>
@@ -2673,7 +2667,7 @@ const Stock = () => {
 
                         <div className={orderType !== 'Market' ? 'border' : 'hidden'}></div>
 
-                        <div className={orderType !== 'Market' ? 'py-3' : 'hidden'}>
+                        <div className={orderType !== 'Market' ? 'py-3 mb-5' : 'hidden'}>
                             <div className='flex justify-between text-lg'>
                                 <div>Price Tolerance</div>
                                 <div className='font-bold'>₦ {priceToleranceAndLimit}</div>
@@ -2682,7 +2676,7 @@ const Stock = () => {
 
                         <div className={orderType !== 'Market' ? 'border' : 'hidden'}></div>
 
-                        <div className={orderType !== 'Market' ? 'py-3' : 'hidden'}>
+                        <div className={orderType !== 'Market' ? 'py-3 mb-6' : 'hidden'}>
                             <div className='flex justify-between text-lg'>
                                 <div>Date</div>
                                 <div className='font-bold'>₦ {priceToleranceAndLimit}</div>
@@ -2691,7 +2685,7 @@ const Stock = () => {
 
                         <div className={orderType !== 'Market' ? 'border' : 'hidden'}></div>
 
-                        <div className={orderType !== 'Market' ? 'py-3' : 'hidden'}>
+                        <div className={orderType !== 'Market' ? 'py-3 mb-5' : 'hidden'}>
                             <div className='flex justify-between text-lg'>
                                 <div>Duration</div>
                                 <div className='font-bold'>{duration}</div>
@@ -2701,38 +2695,31 @@ const Stock = () => {
                         <div className={orderType !== 'Market' ? 'border' : 'hidden'}></div>
 
                         
-                            <div className='py-3' >
-                                <div className='flex justify-between text-lg'>
-                                    <div>Cost</div>
-                                    <div className='font-bold'>₦ {(stockInfo === '' ? '' : JSON.parse(stockInfo).price) * parseInt(stockUnit)}</div>
-                                </div>
+                        <div className='py-3 mb-5' >
+                            <div className='flex justify-between text-lg'>
+                                <div>Cost</div>
+                                <div className='font-bold'>₦ {(stockInfo === '' ? '' : JSON.parse(stockInfo).price) * parseInt(stockUnit)}</div>
                             </div>
+                        </div>
                         
 
-                        <div className='border'></div>
-
                         
-                            <div className='py-3' >
-                                <div className='flex justify-between text-lg'>
-                                    <div>Fees</div>
-                                    <div className='font-bold'>₦ {HelperFunctions.formatCurrencyWithDecimal(estimatedCost - (parseFloat(stockInfo === ''?'':JSON.parse(stockInfo).price) * parseInt(stockUnit))).replace('-','')}</div>
-                                </div>
+                        <div className='py-3 mb-5' >
+                            <div className='flex justify-between text-lg'>
+                                <div>Fees</div>
+                                <div className='font-bold'>₦ {HelperFunctions.formatCurrencyWithDecimal(estimatedCost - (parseFloat(stockInfo === ''?'':JSON.parse(stockInfo).price) * parseInt(stockUnit))).replace('-','')}</div>
                             </div>
-                        
+                        </div>
 
-                        <div className='border'></div>
-
-                        <div className='py-3'>
+                        <div className='py-3 mb-5'>
                             <div className='font-bold flex justify-between text-lg'>
                                 <div>Total Cost</div>
                                 <div>₦ {HelperFunctions.formatCurrencyWithDecimal(estimatedCost)}</div>
                             </div>
                         </div>
 
-                        <div className='border mb-3'></div>
 
-
-                        <div className='flex space-x-5 mb-3'>
+                        <div className='flex space-x-5 mb-5'>
                             <button type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer" onClick={closeModal}>Cancel</button>
 
                             <button onClick={tradeStock} className='w-full bg-green-900 rounded-lg text-white p-4 font-bold text-lg border-0 focus:shadow-outline cursor-pointer'>
