@@ -1,9 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {Link, useParams} from "react-router-dom";
 import '../stock/index.scss';
 import ArrowBackIcon from '../../assets/images/arrow-back.svg';
-import CementFactory from '../../assets/images/cement-factory.jpg';
-import Refinery from '../../assets/images/refinery.jpg';
 import UserAreaHeader from '../../components/Headers/UserAreaHeader';
 import Sidebar from '../../components/Sidebar';
 import moment from 'moment';
@@ -16,6 +14,8 @@ const LearnDetails = () => {
 
     const { learnId } = useParams<string>();
 
+    const [learnDetails, setLearnDetails] = useState<any[]>([]);
+
     let queryParams = new URLSearchParams(window.location.search);
 
     useEffect(() => {
@@ -24,8 +24,15 @@ const LearnDetails = () => {
 
             getAxios(axios).get(utilityServiceBaseUrlUrl+"/learn/resource/"+learnId)
             .then(function (response) {
+                let lDetails :any[] = [];
+
+                lDetails.push(response.data.data);
+
+                setLearnDetails(lDetails);
             })
-            .catch(function (error) {});
+            .catch(function (error) {
+
+            });
         }  
         
         getLearnDetails();
@@ -43,53 +50,37 @@ const LearnDetails = () => {
                     <div className='px-10 py-24  flex-1 bg-gray-100 overflow-y-auto'>
                         <div className="mb-3 pb-5">
                             <div className="flex justify-between items-center">
-                                <div className="text-3xl font-bold text-green-900 font-gotham-black-regular">Learn Resource Details</div>
+                                <div className="text-2xl font-bold text-green-900 font-gotham-black-regular">Learn Resource Details</div>
                                 <div className="">
                                     <Link to="/learn" className='text-xl no-underline text-green-900 hover:text-green-900'>
-                                        <img src={ArrowBackIcon} alt="" className="align-middle" /> Back
+                                        <img src={ArrowBackIcon} alt="" className="align-middle" width={20} /> Back
                                     </Link>
                                 </div>
                             </div>
                         </div>
 
                         <div className='mt-12'>
-                            <div className='mx-auto w-2/3'>
-                                <div className='mb-30 w-full font-bold font-gotham-black-regular text-xl'>{queryParams.get("title")}</div>
+                            <div className={learnDetails.length === 0 ? 'text-lg':'hidden'}>Nothing to display</div>
 
-                                <div className='w-full mb-10'>
-                                    <img src={queryParams.get("imageUrl") as string} alt="" />
-                                </div>
+                            <div className={learnDetails.length > 0 ? '':'hidden'}> 
+                                {learnDetails.map((item :any, index :any)=>
+                                   <div key={index}>
+                                       <div className='mb-3 w-full font-bold text-xl'>{item.title}</div>
 
-                                <div className='font-bold text-sm'>Author: {queryParams.get("author")}</div>
-                                <div className='font-bold text-sm text-gray-500'>{moment(queryParams.get("date")).format("Do MMM YYYY hh:mm A")}</div>
-
-                                <div className='leading-8 py-6 break-words' style={{width: "730px"}}>
-                                    <p>{queryParams.get("snippet")}</p>                                    
-                                </div>
-
-                                <div className='mt-5 hidden'>
-                                    <div className='font-gotham-black-regular font-bold text-xl mb-20'>More News</div>
-
-                                    <div className='flex justify-between mb-12'>
-                                        <div>
-                                            <div className='mb-20'><img src={CementFactory} alt=''/></div>
-                                            <div className='w-22rem'>
-                                                <div className='font-bold mb-10 text-sm w-6/6'>Dangote Cement posts nine months’ impressive sales volume</div>
-                                                <div className='mb-10 text-sm tracking-wider leading-5'>Dangote Cement has announced a 6.6 percent increase in Group sales volume which rose from 18.02 million tonnes in 2019 to 19.21 million tonnes in the nine months.</div>
-                                                <div className='font-bold text-sm'>&middot; 27 Aug, 2020</div>
-                                            </div>
+                                        <div className='w-full mb-3'>
+                                            {item.description}
                                         </div>
 
-                                        <div>
-                                            <div className='mb-20'><img src={Refinery} alt=''/></div>
-                                            <div className='w-22rem'>
-                                                <div className='font-bold mb-10 text-sm w-6/6'>Dangote Cement posts nine months’ impressive sales volume</div>
-                                                <div className='mb-10 text-sm tracking-wider leading-5'>Dangote Cement has announced a 6.6 percent increase in Group sales volume which rose from 18.02 million tonnes in 2019 to 19.21 million tonnes in the nine months.</div>
-                                                <div className='font-bold text-sm'>&middot; 27 Aug, 2020</div>
-                                            </div>
+                                        <div className='mb-3text-sm'>{item.content}</div>
+                                        <div className='mb-3 text-sm'>{item.link}</div>
+                                        <div className='mb-3 font-bold text-sm text-gray-500'>{moment(item.createdOn).format("Do MMM, YYYY hh:mm A")}</div>
+
+                                        <div className='leading-8 py-6 break-words' style={{width: "730px"}}>
+                                            <p>{queryParams.get("snippet")}</p>                                    
                                         </div>
-                                    </div>
-                                </div>
+
+                                   </div>
+                                )}
                             </div>
                         </div>
                     </div>                        
