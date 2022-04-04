@@ -956,9 +956,6 @@ const Stock = () => {
         }
     }
 
-    const closeAlert = () => {
-        setPriceEstimateError("");
-    }
 
     function addStockToWatchlist() {
         let watchlist = JSON.parse(localStorage.getItem("aislUserWatchlist") as string);
@@ -1824,31 +1821,31 @@ const Stock = () => {
                                 </div>
 
                                 {/* Order Type Description */}
-                                <div className={showOrderTypeDropdown ? 'generic-dropdown-card left-0 rounded-lg w-1/2' : 'hidden'}>
-                                    <div className=' text-lg text-green-900 mb-3'>Order Type</div>
+                                <div className={showOrderTypeDropdown ? 'absolute  bg-white p-3 left-0 rounded-lg w-1/2 border shadow top-0 z-10' : 'hidden'}>
+                                    <div className=' text-sm text-green-900 mb-3 font-bold'>Order Type</div>
 
                                     <ul className='list-none m-0 p-0'>
-                                        <li className='order-type-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'>
-                                            <div className=' mb-5'>Market</div>
-                                            <div className='text-xs'>Instantly buy units of shares.</div>
+                                        <li className='order-type-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative' onClick={selectOrderType} data-value="Market">
+                                            <div className=' mb-2 font-bold' onClick={selectOrderType} data-value="Market">Market</div>
+                                            <div className='text-xs' onClick={selectOrderType} data-value="Market">Instantly buy units of shares.</div>
                                             <div onClick={selectOrderType} className='element-cover' data-value="Market"></div>
                                         </li>
 
-                                        <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1'>
-                                            <div className=' mb-5'>Limit</div>
-                                            <div className='text-xs'>Place order based on preferred maximum amount to buy shares.</div>
+                                        <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1' onClick={selectOrderType} data-value="Limit">
+                                            <div className=' mb-2 font-bold' onClick={selectOrderType} data-value="Limit">Limit</div>
+                                            <div className='text-xs' onClick={selectOrderType} data-value="Limit">Place order based on preferred maximum amount to buy shares.</div>
                                             <div onClick={selectOrderType} className='element-cover' data-value="Limit"></div>
                                         </li>
 
-                                        <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                            <div className=' mb-5'>Stop Loss</div>
-                                            <div className='text-xs'>- Place order based on price tolerance for a buy. </div>
+                                        <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1' onClick={selectOrderType} data-value="Stop Loss">
+                                            <div className=' mb-2 font-bold' onClick={selectOrderType} data-value="Stop Loss">Stop Loss</div>
+                                            <div className='text-xs' onClick={selectOrderType} data-value="Stop Loss">Place order based on price tolerance for a buy. </div>
                                             <div onClick={selectOrderType} className='element-cover' data-value="Stop Loss"></div>
                                         </li>
 
-                                        <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                            <div className=' mb-5'>Stop Limit</div>
-                                            <div className='text-xs'>Place order based on maximum limit for buy.</div>
+                                        <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1' onClick={selectOrderType} data-value="Stop Limit">
+                                            <div className=' mb-2 font-bold' onClick={selectOrderType} data-value="Stop Limit">Stop Limit</div>
+                                            <div className='text-xs' onClick={selectOrderType} data-value="Stop Limit">Place order based on maximum limit for buy.</div>
                                             <div onClick={selectOrderType} className='element-cover' data-value="Stop Limit"></div>
                                         </li>
                                     </ul>
@@ -1857,12 +1854,12 @@ const Stock = () => {
                             </div>
 
                             {/* Limit - Order Type */}
-                            <div className={limitOrderType ? 'relative flex justify-between space-x-5 mb-3' : 'hidden'}>
+                            <div className={limitOrderType ? 'relative flex justify-between space-x-5 mb-5' : 'hidden'}>
                                 <div className='w-1/2'>
                                     <div className="mb-3">Maximum Limit</div>
 
                                     <div>
-                                        <input onChange={delineatePriceToleranceAndLimit} type='text' className='font-bold input border p-2 outline-white' placeholder='Maximum price per share' value={priceToleranceAndLimit} />
+                                        <input onChange={delineatePriceToleranceAndLimit} type='text' className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500' placeholder='Maximum price per share' value={priceToleranceAndLimit} />
                                     </div>
                                 </div>
 
@@ -1876,7 +1873,7 @@ const Stock = () => {
                                 </div>
 
                                 {/*Duration Dropdown */}
-                                <div className={showLimitDurationDropdown ? 'generic-dropdown-card right-0 rounded-lg w-1/2' : 'hidden'}>
+                                <div className={showLimitDurationDropdown ? 'bg-white shadow top-10 p-3 absolute border right-0 rounded-lg w-1/2' : 'hidden'}>
                                     <div className=' text-lg text-green-900 mb-3'>Duration</div>
 
                                     <ul className='list-none m-0 p-0'>
@@ -1917,7 +1914,7 @@ const Stock = () => {
                                         <div className="mb-3">Price Tolerance</div>
 
                                         <div>
-                                            <input type='text' onChange={delineatePriceToleranceAndLimit} className='font-bold input border p-2 outline-white' value={priceToleranceAndLimit} />
+                                            <input type='text' onChange={delineatePriceToleranceAndLimit} className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500' value={priceToleranceAndLimit} />
                                         </div>
                                     </div>
 
@@ -1932,7 +1929,7 @@ const Stock = () => {
 
                                 </div>
 
-                                <div className={showStopLossDurationDropdown ? 'generic-dropdown-card right-0 rounded-lg w-1/2' : 'hidden'}>
+                                <div className={showStopLossDurationDropdown ? 'bg-white shadow top-10 p-3 absolute border right-0 rounded-lg w-1/2' : 'hidden'}>
                                     <div className=' text-lg text-green-900 mb-3'>Duration</div>
 
                                     <ul className='list-none m-0 p-0'>
@@ -1972,7 +1969,7 @@ const Stock = () => {
                                             <div className="mb-3">Price Tolerance and Limit</div>
 
                                             <div>
-                                                <input onChange={delineatePriceToleranceAndLimit} value={priceToleranceAndLimit} type='text' className='font-bold input border p-2 outline-white' />
+                                                <input onChange={delineatePriceToleranceAndLimit} value={priceToleranceAndLimit} type='text' className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500' />
                                             </div>
                                         </div>
 
@@ -1985,7 +1982,7 @@ const Stock = () => {
                                             </div>
                                         </div>
 
-                                        <div className={showStopLimitDurationDropdown ? 'generic-dropdown-card right-0 rounded-lg w-1/2' : 'hidden'}>
+                                        <div className={showStopLimitDurationDropdown ? 'bg-white shadow top-10 p-3 absolute border right-0 rounded-lg w-1/2' : 'hidden'}>
                                             <div className=' text-lg text-green-900 mb-3'>Duration</div>
 
                                             <ul className='list-none m-0 p-0'>
@@ -2034,7 +2031,7 @@ const Stock = () => {
                                     </div>
                                 </div>
 
-                                <div className={showStopLossDurationDropdown ? 'generic-dropdown-card right-0 rounded-lg w-1/2' : 'hidden'}>
+                                <div className={showStopLossDurationDropdown ? 'bg-white shadow top-10 p-3 absolute border right-0 rounded-lg w-1/2' : 'hidden'}>
                                     <div className=' text-lg text-green-900 mb-3'>Duration</div>
 
                                     <ul className='list-none m-0 p-0'>
@@ -2097,30 +2094,19 @@ const Stock = () => {
 
                         {/* Get Price Estimate Error */}
                         <div className={priceEstimateError === '' ? "hidden" : "error-alert mb-3"}>
-                            <div className="flex justify-between space-x-1 pt-3">
+                            <div className="flex justify-between space-x-1 p-3">
                                 <div className="flex">
-                                    <div>
-                                        <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
-                                        </svg>
-                                    </div>
 
-                                    <div className="pt-1 text-sm">{priceEstimateError}</div>
-                                </div>
-
-                                <div className="cursor-pointer" onClick={closeAlert}>
-                                    <svg className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50" />
-                                    </svg>
+                                    <div className="text-sm">{priceEstimateError}</div>
                                 </div>
                             </div>
                         </div>
                         {/* End */}
 
-                        <div className="mb-3 flex justify-between">
+                        <div className="mb-8 flex justify-between">
                             <div>
-                                <div className="font-bold text-3xl text-green-900 mb-3 ">Sell Stock</div>
-                                <div className='font-bold text-green-900'>Provide the details below</div>
+                                <div className=" text-2xl text-green-900 mb-3 ">Sell Stock</div>
+                                <div className='text-green-900'>Provide the details below</div>
                             </div>
 
                             <div onClick={closeModal} className='cursor-pointer'>
@@ -2128,9 +2114,9 @@ const Stock = () => {
                             </div>
                         </div>
 
-                        <div className='mb-3'>
+                        <div className='mb-5'>
                             <div className="stock-balance-card">
-                                <div className="italic text-green-500 mb-5">Available Balance</div>
+                                <div className="italic text-green-500 mb-3">Available Balance</div>
                                 <div className="font-bold text-3xl  text-white">
                                     <svg width="21" height="22" viewBox="0 0 21 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M20.1787 6.06096C20.6317 6.06096 20.9989 5.67627 20.9989 5.20171V4.2995C20.9989 1.92875 19.1578 0 16.8948 0C16.8948 0 4.03797 0.00201923 4.00627 0.00592881C2.92406 0.0455401 1.88451 0.532046 1.13519 1.3546C0.36712 2.1977 -0.0332975 3.29427 0.00439032 4.44802C0.00283195 4.46989 0.00201176 16.8412 0.00201176 16.8412C0.00201176 19.6858 2.21103 22 4.92627 22H16.8948C19.1578 22 20.9989 20.0712 20.9989 17.7005V11.1767C20.9989 8.806 19.1578 6.87724 16.8948 6.87724H4.10292C2.78607 6.87724 1.70645 5.79898 1.64506 4.42246C1.61385 3.72252 1.85421 3.05437 2.3218 2.54105C2.79616 2.02035 3.46236 1.72176 4.14951 1.72176C4.17375 1.72176 16.8947 1.71849 16.8947 1.71849C18.2532 1.71849 19.3584 2.87633 19.3584 4.2995V5.20171C19.3585 5.67627 19.7257 6.06096 20.1787 6.06096ZM4.10292 8.59574H16.8948C18.2533 8.59574 19.3585 9.75358 19.3585 11.1767V17.7005C19.3585 19.1237 18.2533 20.2815 16.8948 20.2815H4.92627C3.11554 20.2815 1.64239 18.7382 1.64239 16.8412V7.73997C2.3284 8.27829 3.18078 8.59574 4.10292 8.59574ZM17.7181 14.4386C17.7181 15.0318 17.2591 15.5127 16.6929 15.5127C15.3329 15.4561 15.3333 13.4209 16.6929 13.3646C17.2591 13.3646 17.7181 13.8454 17.7181 14.4386ZM17.7181 4.2995C17.7181 3.82494 17.3509 3.44025 16.8979 3.44025H4.10297C3.01474 3.48562 3.01556 5.11377 4.10297 5.15875H16.8979C17.3509 5.15875 17.7181 4.77406 17.7181 4.2995Z" fill="white" />
@@ -2140,11 +2126,11 @@ const Stock = () => {
                             </div>
                         </div>
 
-                        <div className='mb-3'>
+                        <div className='mb-5'>
                             <div className='mb-3'>
                                 <img src={AtlasIcon} alt="" className="align-middle border rounded-lg" />
                                 <span className="font-bold  mx-3 text-lg">{params.get('symbol')}</span> |
-                                <span className="font-bold mx-3">{params.get('name')?.substring(0,10)}...</span>
+                                <span className=" mx-3">{params.get('name')?.substring(0,10)}...</span>
                             </div>
                         </div>
 
@@ -2154,7 +2140,7 @@ const Stock = () => {
                                     <div className='mb-3 text-sm font-bold'>Portfolios</div>
 
                                     <div>
-                                        <select className='text-sm outline-white w-full p-3 rounded-lg border border-gray-500' onChange={getPortfolioIdToSellStock}>
+                                        <select className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500' onChange={getPortfolioIdToSellStock}>
                                             <option value="null&0">Select portfolio</option>
                                             {portfolioWithCurrentStock.map((item :any) =>
                                                 <option value={item.uuid+"&"+item.units}>{item.name}</option>
@@ -2178,10 +2164,10 @@ const Stock = () => {
                         <div className="mb-8">
                             <div className='flex justify-between space-x-3 items-end  mb-3'>
                                 <div className='w-2/3'>
-                                    <div className='mb-2 text-sm font-bold'>Number of units to sell</div>
+                                    <div className='mb-3 text-sm font-bold'>Number of units to sell</div>
 
                                     <div>
-                                        <input id="desiredUnitToSell" type="text" className='text-lg font-bold outline-white w-full px-3 py-2 rounded-lg border border-gray-500' onChange={calculateDesiredUnitToSell} placeholder="0"/>
+                                        <input id="desiredUnitToSell" type="text" className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500' onChange={calculateDesiredUnitToSell} placeholder="0"/>
                                            
                                     </div>
                                 </div>
@@ -2204,7 +2190,7 @@ const Stock = () => {
                             <div className='md:flex md:justify-between items-center mb-2'>
                                 <div className='w-2/3'>   
                                     <div className='font-bold text-xl'>
-                                        <input type="number" className='text-lg outline-white w-full font-bold p-3 rounded-lg border border-gray-500' value={unitToSell} onChange={e => setUnitToSell(e.target.value)}  />
+                                        <input type="number" className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500' value={unitToSell} onChange={e => setUnitToSell(e.target.value)}  />
                                     </div>
                                 </div>
 
@@ -2217,14 +2203,12 @@ const Stock = () => {
                             
                         </div>
                         
-                        <div className='mb-3' >
+                        <div className='mb-5' >
                             <div className='mb-3 font-bold'>Current Price /Per Share</div>
                             <div className=' text-2xl font-bold text-green-900'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
-                        </div>                        
+                        </div>       
 
-                        <div className='border mb-3'></div>
-
-                        <div className='mb-3'>
+                        <div className='mb-5'>
                             <div className='relative'>
                                 <div className='flex justify-between space-x-5 mb-3'>
 
@@ -2241,36 +2225,36 @@ const Stock = () => {
                                         <div className="mb-3 font-bold text-sm">Unit</div>
 
                                         <div>
-                                            <input type='number' className='font-bold input border p-2 outline-white' value={totalUnitToSell} readOnly/>
+                                            <input type='number' className='font-bold bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500' value={totalUnitToSell} readOnly/>
                                         </div>
                                     </div>
 
                                 </div>
 
                                 {/* Order Types Description */}
-                                <div className={showOrderTypeDropdown ? 'generic-dropdown-card left-0 rounded-lg w-1/2' : 'hidden'}>
+                                <div className={showOrderTypeDropdown ? 'bg-white shadow top-10 p-3 absolute border left-0 rounded-lg w-1/2' : 'hidden'}>
                                     <div className=' text-lg text-green-900 mb-3'>Order Type</div>
 
-                                    <ul className='list-none m-0 p-0'>
-                                        <li className='order-type-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'>
-                                            <div className=' mb-5 font-bold text-sm'>Market</div>
+                                    <ul className='list-none m-0 p-0 rounded-lg'>
+                                        <li className='order-type-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative' style={{borderBottom:'1px solid rgba(243, 244, 246, 1)'}}>
+                                            <div className=' mb-3 font-bold text-sm'>Market</div>
                                             <div className='text-xs'>Instantly sell units of shares. </div>
                                             <div onClick={selectOrderType} className='element-cover' data-value="Market"></div>
                                         </li>
 
-                                        <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1'>
-                                            <div className=' mb-5 text-sm font-bold'>Limit</div>
+                                        <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1' style={{borderBottom:'1px solid rgba(243, 244, 246, 1)'}}>
+                                            <div className=' mb-3 text-sm font-bold'>Limit</div>
                                             <div className='text-xs'>- Place order based on preferred maximum amount to receive share.</div>
                                             <div onClick={selectOrderType} className='element-cover' data-value="Limit"></div>
                                         </li>
 
-                                        <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
+                                        <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1' style={{borderBottom:'1px solid rgba(243, 244, 246, 1)'}}>
                                             <div className=' mb-5 text-sm font-bold'>Stop Loss</div>
                                             <div className='text-xs'>Place order based on price tolerance for a sell.</div>
                                             <div onClick={selectOrderType} className='element-cover' data-value="Stop Loss"></div>
                                         </li>
 
-                                        <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
+                                        <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1' >
                                             <div className=' mb-5 text-sm font-bold'>Stop Limit</div>
                                             <div className='text-xs'>Place order based on minimum limit for sell.</div>
                                             <div onClick={selectOrderType} className='element-cover' data-value="Stop Limit"></div>
@@ -2286,7 +2270,7 @@ const Stock = () => {
                                     <div className="mb-3 text-sm font-bold">Maximum Limit</div>
 
                                     <div>
-                                        <input onChange={delineatePriceToleranceAndLimit} type='text' className='font-bold input border p-2 outline-white' placeholder='Maximum price per share' value={priceToleranceAndLimit} />
+                                        <input onChange={delineatePriceToleranceAndLimit} type='text' className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500" placeholder='Maximum price per share' value={priceToleranceAndLimit} />
                                     </div>
                                 </div>
 
@@ -2300,7 +2284,7 @@ const Stock = () => {
                                 </div>
 
                                 {/*Duration Dropdown */}
-                                <div className={showLimitDurationDropdown ? 'generic-dropdown-card right-0 rounded-lg w-1/2' : 'hidden'}>
+                                <div className={showLimitDurationDropdown ? 'bg-white shadow top-10 p-3 absolute border right-0 rounded-lg w-1/2' : 'hidden'}>
                                     <div className=' text-lg text-green-900 mb-3'>Duration</div>
 
                                     <ul className='list-none m-0 p-0'>
@@ -2341,7 +2325,7 @@ const Stock = () => {
                                         <div className="mb-3 text-sm font-bold">Price Tolerance</div>
 
                                         <div>
-                                            <input type='text' onChange={delineatePriceToleranceAndLimit} className='font-bold input border p-2 outline-white' value={priceToleranceAndLimit} />
+                                            <input type='text' onChange={delineatePriceToleranceAndLimit} className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white  focus:ring-indigo-500' value={priceToleranceAndLimit} />
                                         </div>
                                     </div>
 
@@ -2356,7 +2340,7 @@ const Stock = () => {
 
                                 </div>
 
-                                <div className={showStopLossDurationDropdown ? 'generic-dropdown-card right-0 rounded-lg w-1/2' : 'hidden'}>
+                                <div className={showStopLossDurationDropdown ? 'bg-white shadow top-10 p-3 absolute border right-0 rounded-lg w-1/2' : 'hidden'}>
                                     <div className=' text-lg text-green-900 mb-3'>Duration</div>
 
                                     <ul className='list-none m-0 p-0'>
@@ -2396,7 +2380,7 @@ const Stock = () => {
                                             <div className="mb-3 text-sm font-bold">Price Tolerance and Limit</div>
 
                                             <div>
-                                                <input onChange={delineatePriceToleranceAndLimit} value={priceToleranceAndLimit} type='text' className='font-bold input border p-2 outline-white' />
+                                                <input onChange={delineatePriceToleranceAndLimit} value={priceToleranceAndLimit} type='text' className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white  focus:ring-indigo-500' />
                                             </div>
                                         </div>
 
@@ -2409,7 +2393,7 @@ const Stock = () => {
                                             </div>
                                         </div>
 
-                                        <div className={showStopLimitDurationDropdown ? 'generic-dropdown-card right-0 rounded-lg w-1/2' : 'hidden'}>
+                                        <div className={showStopLimitDurationDropdown ? ' right-0 rounded-lg w-1/2 bg-white shadow top-10 p-3 absolute border' : 'hidden'}>
                                             <div className=' text-lg text-green-900 mb-3'>Duration</div>
 
                                             <ul className='list-none m-0 p-0'>
@@ -2458,7 +2442,7 @@ const Stock = () => {
                                     </div>
                                 </div>
 
-                                <div className={showStopLossDurationDropdown ? 'generic-dropdown-card right-0 rounded-lg w-1/2' : 'hidden'}>
+                                <div className={showStopLossDurationDropdown ? 'bg-white shadow top-10 p-3 absolute border right-0 rounded-lg w-1/2' : 'hidden'}>
                                     <div className=' text-lg text-green-900 mb-3'>Duration</div>
 
                                     <ul className='list-none m-0 p-0'>
@@ -2492,9 +2476,7 @@ const Stock = () => {
 
                         </div>
 
-                        <div className='border mb-3'></div>
-
-                        <div className='mb-3'>
+                        <div className='mb-8'>
                             <div className='mb-3 text-sm font-bold'>Estimated cost</div>
                             <div className=' font-bold text-green-900 text-2xl'>{HelperFunctions.formatCurrencyWithDecimal(estimatedCost)}</div>
                         </div>
@@ -2513,22 +2495,12 @@ const Stock = () => {
 
                         {/* Get Price Estimate Error */}
                         <div className={priceEstimateError === '' ? "hidden" : "error-alert"}>
-                            <div className="flex justify-between space-x-1 pt-3">
+                            <div className="flex justify-between space-x-1 p-3">
                                 <div className="flex">
-                                    <div>
-                                        <svg width="30" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path fillRule="evenodd" clipRule="evenodd" d="M52.5 8.75C76.6625 8.75 96.25 28.3375 96.25 52.5C96.25 76.6625 76.6625 96.25 52.5 96.25C28.3375 96.25 8.75 76.6625 8.75 52.5C8.75 28.3375 28.3375 8.75 52.5 8.75ZM52.5 17.5C33.17 17.5 17.5 33.17 17.5 52.5C17.5 71.83 33.17 87.5 52.5 87.5C71.83 87.5 87.5 71.83 87.5 52.5C87.5 33.17 71.83 17.5 52.5 17.5ZM52.5 43.75C54.9162 43.75 56.875 45.7088 56.875 48.125V74.375C56.875 76.7912 54.9162 78.75 52.5 78.75C50.0838 78.75 48.125 76.7912 48.125 74.375V48.125C48.125 45.7088 50.0838 43.75 52.5 43.75ZM52.5 26.25C54.9162 26.25 56.875 28.2088 56.875 30.625C56.875 33.0412 54.9162 35 52.5 35C50.0838 35 48.125 33.0412 48.125 30.625C48.125 28.2088 50.0838 26.25 52.5 26.25Z" fill="#FF0949" />
-                                        </svg>
-                                    </div>
 
-                                    <div className="pt-1 text-sm">{priceEstimateError}</div>
+                                    <div className=" text-sm">{priceEstimateError}</div>
                                 </div>
 
-                                <div className="cursor-pointer" onClick={closeAlert}>
-                                    <svg className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50" />
-                                    </svg>
-                                </div>
                             </div>
                         </div>
                         {/* End */}
