@@ -1701,8 +1701,8 @@ const Stock = () => {
 
             {/* Add To Watchlist Modal */}
             <div className={showAddToWatchListModal ? "add-to-watchlist-modal rounded-lg" : "add-to-watchlist-modal rounded-lg hidden"}>
-                <div className="mb-10 flex justify-between">
-                    <div className="font-bold text-3xl text-green-900 font-gotham-black-regular">Add To Watchlist</div>
+                <div className="mb-3 flex justify-between">
+                    <div className="text-2xl text-green-900">Add To Watchlist</div>
 
                     <div onClick={closeModal}>
                         <img src={CloseIcon} alt="" className="cursor-pointer" />
@@ -1715,10 +1715,11 @@ const Stock = () => {
                     <div>
                         
                         <div >
-                            <div className='mb-10'>
-                                <img src={AtlasIcon} alt="" className="align-middle border-1-d6 rounded-lg" />
-                                <span className="font-bold font-gotham-black-regular mx-3 text-xl">{params.get('symbol')}</span> |
-                                <span className="font-bold mx-3">{stockInfo === ''?'':JSON.parse(stockInfo).name}</span>
+                            <div className='mb-3'>
+                                <img src={AtlasIcon} alt="" className="align-middle border rounded-lg" />
+                                <span className="font-bold mx-3 text-xl">{params.get('symbol')}</span> 
+                                <span className=" mx-3 text-xl">|</span>
+                                <span className=" mx-3">{stockInfo === ''?'':JSON.parse(stockInfo).name}</span>
                             </div>
 
                             <div className="mb-3 py-1">
@@ -1727,32 +1728,30 @@ const Stock = () => {
 
                             <div className="leading-6 text-sm mb-3">{companyInfo.length > 250 ? companyInfo.substring(0, 250) + "..." : companyInfo}</div>
 
-
-
                             <div className='mb-3' >
-                                <div className='mb-10 font-bold'>Current Price</div>
-                                <div className='font-gotham-black-regular text-green-900 text-3xl'>₦ {stockInfo === ''?'':JSON.parse(stockInfo).price}</div>
+                                <div className='mb-3 font-bold'>Current Price</div>
+                                <div className='text-green-900 text-2xl'>₦ {stockInfo === ''?'':JSON.parse(stockInfo).price}</div>
                             </div>
 
 
-                            <div className='mb-3'>
+                            <div className='mb-8'>
                                 <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-sm" : "font-bold text-red-500 text-sm"}>{stockInfo === ''?'':JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === ''?'':JSON.parse(stockInfo).percentageChange.replace('-','')}%  </div>
                             </div>
                         </div>
 
                         <div className={showHighLow ? 'mb-3 flex space-x-5' : 'mb-3 flex space-x-5 hidden'}>
                             <div className='w-1/2'>
-                                <div className='font-bold mb-10'>High</div>
-                                <input type="number" className="input border-1-d6 p-2" />
+                                <div className='font-bold mb-3'>High</div>
+                                <input type="number" className="input border p-2" />
                             </div>
 
                             <div className='w-1/2'>
-                                <div className='font-bold mb-10'>Low</div>
-                                <input type="number" className="input border-1-d6 p-2" />
+                                <div className='font-bold mb-3'>Low</div>
+                                <input type="number" className="input border p-2" />
                             </div>
                         </div>
 
-                        <div className="flex space-x-5 mb-10">
+                        <div className="flex space-x-5">
                             <button type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer" onClick={closeModal}>Cancel</button>
 
                             <button onClick={addStockToWatchlist} type="button" className="py-4 w-full font-bold bg-green-900 text-white rounded-lg border-0 cursor-pointer">
