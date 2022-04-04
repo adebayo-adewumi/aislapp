@@ -6,7 +6,6 @@ import StarIcon from '../../assets/images/star.svg';
 import CloseIcon from '../../assets/images/close.svg';
 import SuccessCheckIcon from '../../assets/images/success-check.svg';
 import UserAreaHeader from '../../components/Headers/UserAreaHeader';
-import Form from 'react-bootstrap/Form';
 import Sidebar from '../../components/Sidebar';
 import Chart from "react-apexcharts";
 import Calendar from 'react-calendar';
@@ -46,7 +45,7 @@ const Stock = () => {
     const [showTradeStockModal, setShowTradeStockModal] = useState<boolean>(false);
     const [showSetPriceAlertModal, setShowSetPriceAlertModal] = useState<boolean>(false);
 
-    const [showHighLow, setShowHighLow] = useState<boolean>(false);
+    const [showHighLow, ] = useState<boolean>(false);
     const [enablePriceAlert, setEnablePriceAlert] = useState<boolean>(false);
 
     const [orderType, setOrderType] = useState('Market');
@@ -250,7 +249,7 @@ const Stock = () => {
                 .then(function (response) {
                     if(response.data.data.length > 0){
                         const bidsItem = response.data.data.map((item: any, index:any) =>
-                            <div key={index} className='flex bid-offer justify-between border-bottom-e py-4'>
+                            <div key={index} className='flex bid-offer justify-between py-4' style={{borderBottom: '1px solid #eee'}}>
                                 <div>{HelperFunctions.formatCurrencyWithDecimal(item.volume)}</div>
                                 <div className='text-green-500'>₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
                             </div>
@@ -271,7 +270,7 @@ const Stock = () => {
 
                     if(response.data.data.length > 0){
                         const offersItem = response.data.data.map((item: any, index:any) =>
-                            <div key={index} className='flex offers justify-between border-bottom-e py-4'>
+                            <div key={index} className='flex offers justify-between py-4' style={{borderBottom: '1px solid #eee'}}>
                                 <div>{HelperFunctions.formatCurrencyWithDecimal(item.volume)}</div>
                                 <div className='text-green-500'>₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
                             </div>
@@ -300,7 +299,7 @@ const Stock = () => {
 
                     const newsItem = takeNews.map((item: any, index:any) =>
                         <div key={index}>
-                            <div className='mb-20'><img src={item.imageUrl} alt='' /></div>
+                            <div className='mb-3'><img src={item.imageUrl} alt='' /></div>
                             <div className='w-22rem'>
                                 <div className='font-bold mb-10 text-sm w-6/6'>{item.title}</div>
                                 <div className='mb-10 text-sm tracking-wider leading-5'>{item.snippet}</div>
@@ -843,10 +842,6 @@ const Stock = () => {
         HelperFunctions.removeOverflowAndPaddingFromModalBody();
     }
 
-    function displayHighLow() {
-        setShowHighLow(true);
-    }
-
     function selectOrderType(event: any) {
         const elem = event.target;
         setOrderType(elem.getAttribute("data-value"));
@@ -1205,381 +1200,393 @@ const Stock = () => {
             <div className='hidden'>{immediateOrCancelDuration}</div>
             <div className='hidden'>{goodTillCancelledDuration}</div>
 
-            <div>
-                <div className="h-screen flex">
-                    <Sidebar />
+            
+            <div className="h-screen flex">
+                <Sidebar />
 
-                    <div className="mt-20 flex-1 min-w-0 flex flex-col">
-                        <div className='p-10 flex-1 bg-gray-100 overflow-y-auto'>
+                <div className="flex-1 min-w-0 flex flex-col">
+                    <div className='px-10 py-24 flex-1 bg-gray-100 overflow-y-auto'>
 
-                            <div className="mb-10 pb-5">
-                                <div className="flex justify-between items-center">
-                                    <div className="text-2xl font-bold text-green-900 font-gotham-black-regular">Stock Details</div>
+                        <div className="mb-3 pb-5">
+                            <div className="flex justify-between items-center">
+                                <div className="text-2xl font-bold text-green-900 font-gotham-black-regular">Stock Details</div>
 
-                                    <div className="font-bold">
-                                        <Link to="/trade" className='no-underline text-green-900'>
-                                            <img src={ArrowBackIcon} alt="" className="align-middle" /> Back
-                                        </Link>
-                                    </div>
+                                <div className="">
+                                    <Link to="/trade" className='hover:text-green-900 no-underline text-green-900 textlg'>
+                                        <img src={ArrowBackIcon} alt="" className="align-middle" width={20}/> Back
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="mb-3" style={{borderBottom: '1px solid #eee'}}></div>
+
+                        {/* Company Name section */}
+                        <div className='mb-3'>
+                            <div className="md:flex md:justify-between mb-3">
+                                
+                                <div className='md:flex md:items-center mb-3'>
+                                    <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" className='align-middle'/>
+
+                                    <span className="font-bold mx-3 text-xl lg:text-sm">{params.get('symbol')}</span>
+
+                                    <span>|</span>
+
+                                    <span className="font-bold mx-3 lg:text-xs">{params.get('name')}</span>
+
+                                    <span>|</span>
+
+                                    <span className="bg-yellow-500 py-2 px-3 rounded-2xl mx-3 text-sm lg:text-xs">{stockInfo === '' ? '' : JSON.parse(stockInfo).sector}</span>
+                                </div>                                
+
+                                <div>
+                                    <button onClick={displayAddToWatchListModal} className={params.get('tradeAction') === 'buy'? "cursor-pointer focus:shadow-outline rounded-lg bg-gray-300 py-3 px-5 border-0 font-bold lg:text-sm":"hidden"} type='button' data-symbol={params.get('symbol')}>
+                                        <img src={StarIcon} alt="" className="align-bottom mr-2" width="20" data-symbol={params.get('symbol')}/>
+                                        Add to watchlist
+                                    </button>
+
+                                    <button onClick={displayBuyStockModal} className="cursor-pointer focus:shadow-outline text-white rounded-lg bg-green-800 pb-3 pt-4 px-7 lg:pt-3 lg:px-5 border-0 font-bold ml-3 lg:text-sm" type='button'>
+                                        Buy
+                                    </button>
+
+                                    <button onClick={displaySellStockModal} className={params.get("tradeAction") !== 'buy' ? "cursor-pointer focus:shadow-outline text-white rounded-lg bg-red-500 pb-3 pt-4 px-7 lg:pt-3 lg:px-5 border-0 font-bold ml-3 lg:text-sm":"hidden"} type='button'>
+                                        Sell
+                                    </button>
                                 </div>
                             </div>
 
-                            <div className="border-bottom-1d mb-30"></div>
+                            <div>
+                                <div className="flex justify-between">
+                                    <div className="w-3/6">
+                                        <div className='mb-6 leading-5 text-sm'>{companyInfo.length > 250 ? companyInfo.substring(0, 250) + "..." : companyInfo}</div>
 
-                            {/* Company Name section */}
-                            <div className='mb-30'>
-                                <div className="md:flex md:justify-between mb-20">
-                                    
-                                    <div className='md:flex md:items-center'>
-                                        <img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" className='align-middle'/>
+                                        <div className="font-bold flex ">
+                                            <div className='mr-3'>Enable price alerts</div>
 
-                                        <span className="font-bold font-gotham-black-regular mx-3 text-xl lg:text-sm">{params.get('symbol')} | </span>
-                                        <span className="font-bold mx-3 lg:text-xs">{params.get('name')} | </span>
-                                        <span className="bg-yellow-500 py-2 px-3 rounded-2xl mx-3 text-sm lg:text-xs">{stockInfo === '' ? '' : JSON.parse(stockInfo).sector}</span>
+                                            <div onClick={toggleEnablePriceAlert} className={enablePriceAlert ? 'flex rounded-3xl p-1 bg-green-900 ease-in-out transition delay-75 duration-75' : 'flex knob-container rounded-3xl p-1 hover:bg-gray-200 ease-in-out transition delay-75 duration-75'}>
+                                                <button className={enablePriceAlert ? "rounded-3xl knob border-0 cursor-pointer opacity-0" : "rounded-3xl knob border-0 cursor-pointer ease-in-out transition delay-75 duration-75"} type="button"></button>
+
+                                                <button className={enablePriceAlert ? "ml-0.5 p-1.5 rounded-3xl knob items-center border-0 cursor-pointer ease-in-out transition delay-75 duration-75" : "ml-0.5 p-1.5 rounded-3xl knob items-center border-0 cursor-pointer opacity-0 ease-in-out transition delay-75 duration-75"} type="button"></button>
+                                            </div>
+                                        </div>
                                     </div>
-                                    
 
-                                    <div>
-                                        <button onClick={displayAddToWatchListModal} className={params.get('tradeAction') === 'buy'? "cursor-pointer focus:shadow-outline rounded-lg bg-gray-300 py-3 px-5 border-0 font-bold lg:text-sm":"hidden"} type='button' data-symbol={params.get('symbol')}>
-                                            <img src={StarIcon} alt="" className="align-bottom mr-2" width="20" data-symbol={params.get('symbol')}/>
-                                            Add to watchlist
-                                        </button>
+                                    <div className={params.get('tradeAction') === 'buy' ? "card-stock flex justify-between space-x-2 w-96 h-24 text-sm hidden" : "card-stock flex justify-between space-x-2 w-96 h-24 text-sm"}>
+                                        <div className=''>
+                                            <div className="mb-5">Units Owned: </div>
+                                            <div className="font-gotham-black-regular">{params.get('units')} </div>
+                                        </div>
 
-                                        <button onClick={displayBuyStockModal} className="cursor-pointer focus:shadow-outline text-white rounded-lg bg-green-800 pb-3 pt-4 px-7 lg:pt-3 lg:px-5 border-0 font-bold ml-3 lg:text-sm" type='button'>
-                                            Buy
-                                        </button>
+                                        <div className='border-left-1'></div>
 
-                                        <button onClick={displaySellStockModal} className={params.get("tradeAction") !== 'buy' ? "cursor-pointer focus:shadow-outline text-white rounded-lg bg-red-500 pb-3 pt-4 px-7 lg:pt-3 lg:px-5 border-0 font-bold ml-3 lg:text-sm":"hidden"} type='button'>
-                                            Sell
-                                        </button>
+                                        
+                                            <div className="w-44" >
+                                                <div className="mb-5">Total Value</div>
+                                                <div className="font-bold font-gotham-black-regular mb-5">₦ {(stockInfo === ''? '':JSON.parse(stockInfo).price) * parseInt(params.get("units") as string)}</div>
+
+                                                <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-sm" : "font-bold text-red-500 text-sm"}>{stockInfo === '' ? '' : JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === '' ? '' : HelperFunctions.formatCurrencyWithDecimal(JSON.parse(stockInfo).percentageChange.replace('-',''))}%  </div>
+                                            </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* End */}
+
+                        {/* Summary, About, News Tab section */}
+                        <div className='flex space-x-5 mb-3' style={{borderBottom: '1px solid #eee'}}>
+                            <div onClick={displaySummary} className={showSummary ? 'pr-5 py-3 font-bold border-b-black cursor-pointer' : 'pr-5 py-3 font-bold cursor-pointer'}>Summary</div>
+
+                            <div onClick={displayAbout} className={showAbout ? 'pr-5 py-3 font-bold border-b-black cursor-pointer' : 'pr-5 py-3 font-bold cursor-pointer'}>About</div>
+
+                            <div onClick={displayNews} className={showNews ? 'pr-5 py-3 font-bold border-b-black cursor-pointer' : 'pr-5 py-3 font-bold cursor-pointer'}>News</div>
+                        </div>
+                        {/* End */}
+
+                        {/* Summary Section */}
+                        <div className={showSummary ? 'mb-3 about-section' : 'mb-3 summary-section hidden'}>
+                            <div className="flex justify-between lg:space-x-5">
+                                <div className='w-4/6'>
+                                    <div className='mb-3'>
+                                        <div className='bg-white rounded-lg shadow p-5'>
+                                            <div className='mb-3'>
+                                                <div className='flex justify-between items-center'>
+                                                    <div className='w-1/3'>
+                                                        <div className='text-lg font-bold'>Current Price</div>
+                                                        <div>
+                                                            <div className='font-gotham-black-regular font-bold text-green-900 text-xl'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
+
+                                                            <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-sm" : "font-bold text-red-500 text-sm"}>
+                                                                {stockInfo === '' ? '' : JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === '' ? '' : HelperFunctions.formatCurrencyWithDecimal(JSON.parse(stockInfo).percentageChange.replace('-',''))}%
+                                                                </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className='w-2/3 flex bg-gray-300 p-1 rounded justify-between'>
+                                                        <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn active hover:bg-green-900 hover:text-white' type='button' data-filter="1D">1D</button>
+
+                                                        <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0  cursor-pointer font-bold filter-btn inactive' type='button' data-filter="1W">1W</button>
+
+                                                        <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="1M">1M</button>
+
+                                                        <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="3M">3M</button>
+
+                                                        <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="6M">6M</button>
+
+                                                        <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="1Y">1Y</button>
+                                                    </div>
+                                                </div>                                                
+                                            
+                                            </div>
+
+                                            <div>
+                                                {/* <Line options={options} data={data} id='canvas'/> */}
+                                                <Chart options={options} series={series} type="area" height='489' />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className='flex justify-between space-x-5'>
+                                        <div className='card-unpadded'>
+                                            <div className='flex justify-between px-6 py-4' style={{borderBottom: '1px solid #eee'}}>
+                                                <div className='font-bold'>Bids</div>
+                                                <div className='text-green-900 font-bold hidden'>View all</div>
+                                            </div>
+
+                                            <div className={bidsList === '' ? 'text-sm':'hidden'}>
+                                                <div className='py-5 text-gray-500 px-6'>Nothing to display</div>
+                                            </div>
+
+                                            <div className='px-6 bid-offer text-sm'>
+                                                {bidsList }
+                                            </div>
+                                        </div>
+
+                                        <div className='card-unpadded'>
+                                            <div className='flex justify-between px-6 py-4' style={{borderBottom: '1px solid #eee'}}>
+                                                <div className='font-bold'>Offers</div>
+                                                <div className='text-green-900 font-bold hidden'>View all</div>
+                                            </div>
+
+                                            <div className={offersList === '' ? 'text-sm':'hidden'}>
+                                                <div className='py-5 text-gray-500 px-6'>Nothing to display</div>
+                                            </div>
+
+                                            <div className='px-6 offers text-sm'>
+                                                <div>{offersList}</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div>
-                                    <div className="flex justify-between">
-                                        <div className="w-3/6">
-                                            <div className='mb-6 leading-5 text-sm'>{companyInfo.length > 250 ? companyInfo.substring(0, 250) + "..." : companyInfo}</div>
+                                    <div className='bg-white rounded-lg shadow p-5'>
+                                        <div className='text-2xl text-green-900 mb-3'>Statistics Overview</div>
 
-                                            <div className="font-bold flex ">
-                                                <div className='mr-3'>Enable price alerts</div>
-
-                                                <div onClick={toggleEnablePriceAlert} className={enablePriceAlert ? 'flex rounded-3xl p-1 bg-green-900 ease-in-out transition delay-75 duration-75' : 'flex knob-container rounded-3xl p-1 hover:bg-gray-200 ease-in-out transition delay-75 duration-75'}>
-                                                    <button className={enablePriceAlert ? "rounded-3xl knob border-0 cursor-pointer opacity-0" : "rounded-3xl knob border-0 cursor-pointer ease-in-out transition delay-75 duration-75"} type="button"></button>
-
-                                                    <button className={enablePriceAlert ? "ml-0.5 p-1.5 rounded-3xl knob items-center border-0 cursor-pointer ease-in-out transition delay-75 duration-75" : "ml-0.5 p-1.5 rounded-3xl knob items-center border-0 cursor-pointer opacity-0 ease-in-out transition delay-75 duration-75"} type="button"></button>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className={params.get('tradeAction') === 'buy' ? "card-stock flex justify-between space-x-2 w-96 h-24 text-sm hidden" : "card-stock flex justify-between space-x-2 w-96 h-24 text-sm"}>
-                                            <div className=''>
-                                                <div className="mb-5">Units Owned: </div>
-                                                <div className="font-gotham-black-regular">{params.get('units')} </div>
-                                            </div>
-
-                                            <div className='border-left-1'></div>
-
-                                            
-                                                <div className="w-44" >
-                                                    <div className="mb-5">Total Value</div>
-                                                    <div className="font-bold font-gotham-black-regular mb-5">₦ {(stockInfo === ''? '':JSON.parse(stockInfo).price) * parseInt(params.get("units") as string)}</div>
-
-                                                    <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-sm" : "font-bold text-red-500 text-sm"}>{stockInfo === '' ? '' : JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === '' ? '' : HelperFunctions.formatCurrencyWithDecimal(JSON.parse(stockInfo).percentageChange.replace('-',''))}%  </div>
-                                                </div>
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* End */}
-
-                            {/* Summary, About, News Tab section */}
-                            <div className='flex border-bottom-1 space-x-5 mb-30'>
-                                <div onClick={displaySummary} className={showSummary ? 'pr-5 py-3 font-bold border-bottom-2 cursor-pointer' : 'pr-5 py-3 font-bold cursor-pointer'}>Summary</div>
-                                <div onClick={displayAbout} className={showAbout ? 'pr-5 py-3 font-bold border-bottom-2 cursor-pointer' : 'pr-5 py-3 font-bold cursor-pointer'}>About</div>
-                                <div onClick={displayNews} className={showNews ? 'pr-5 py-3 font-bold border-bottom-2 cursor-pointer' : 'pr-5 py-3 font-bold cursor-pointer'}>News</div>
-                            </div>
-                            {/* End */}
-
-                            {/* Summary Section */}
-                            <div className={showSummary ? 'mb-30 about-section' : 'mb-30 summary-section hidden'}>
-                                <div className="flex justify-between lg:space-x-5">
-                                    <div className='w-4/6'>
-                                        <div className='mb-30'>
-                                            <div className='card p-5'>
-                                                <div className='mb-30'>
-                                                    <div className='flex justify-between items-center'>
-                                                        <div className='w-1/3'>
-                                                            <div className='text-lg font-bold'>Current Price</div>
-                                                            <div>
-                                                                <div className='font-gotham-black-regular font-bold text-green-900 text-xl'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
-
-                                                                <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-sm" : "font-bold text-red-500 text-sm"}>
-                                                                    {stockInfo === '' ? '' : JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === '' ? '' : HelperFunctions.formatCurrencyWithDecimal(JSON.parse(stockInfo).percentageChange.replace('-',''))}%
-                                                                    </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div className='w-2/3 flex bg-gray-300 p-1 rounded justify-between'>
-                                                            <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn active hover:bg-green-900 hover:text-white' type='button' data-filter="1D">1D</button>
-
-                                                            <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0  cursor-pointer font-bold filter-btn inactive' type='button' data-filter="1W">1W</button>
-
-                                                            <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="1M">1M</button>
-
-                                                            <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="3M">3M</button>
-
-                                                            <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="6M">6M</button>
-
-                                                            <button onClick={filterGraph} className='py-3 px-5 lg:py-2 lg:px-3 rounded border-0 cursor-pointer font-bold filter-btn inactive' type='button' data-filter="1Y">1Y</button>
-                                                        </div>
-                                                    </div>                                                
-                                                
-                                                </div>
-
-                                                <div>
-                                                    {/* <Line options={options} data={data} id='canvas'/> */}
-                                                    <Chart options={options} series={series} type="area" height='489' />
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className='flex justify-between space-x-5'>
-                                            <div className='card-unpadded'>
-                                                <div className='flex justify-between px-6 py-4 border-bottom-e'>
-                                                    <div className='font-bold'>Bids</div>
-                                                    <div className='text-green-900 font-bold hidden'>View all</div>
-                                                </div>
-
-                                                <div className={bidsList === '' ? 'text-sm':'hidden'}>
-                                                    <div className='py-5 text-gray-500 px-6'>Nothing to display</div>
-                                                </div>
-
-                                                <div className='px-6 bid-offer text-sm'>
-                                                    {bidsList }
-                                                </div>
-                                            </div>
-
-                                            <div className='card-unpadded'>
-                                                <div className='flex justify-between px-6 py-4 border-bottom-e'>
-                                                    <div className='font-bold'>Offers</div>
-                                                    <div className='text-green-900 font-bold hidden'>View all</div>
-                                                </div>
-
-                                                <div className={offersList === '' ? 'text-sm':'hidden'}>
-                                                    <div className='py-5 text-gray-500 px-6'>Nothing to display</div>
-                                                </div>
-
-                                                <div className='px-6 offers text-sm'>
-                                                    <div>{offersList}</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <div className='card p-5'>
-                                            <div className='font-bold font-gotham-black-regular mb-20 pt-5'>Statistics Overview</div>
-
-                                            <div >
-                                                <div className='py-3'>
-                                                    <div className='flex space-x-10 text-sm pb-6'>
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Earnings per share</div>
-                                                            <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).earningsPerShare)}</div>
-                                                        </div>
-
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Mkt Cap</div>
-                                                            <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).marketCap)}</div>
-                                                        </div>
+                                        <div >
+                                            <div className='py-2'>
+                                                <div className='flex space-x-10 text-sm pb-6'>
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>Earnings per share</div>
+                                                        <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).earningsPerShare)}</div>
                                                     </div>
-                                                </div>
 
-                                                <div className='py-3'>
-                                                    <div className='flex space-x-10 text-sm pb-6'>
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>High</div>
-                                                            <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).high)}</div>
-                                                        </div>
-
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Low</div>
-                                                            <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).low)}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className='py-3'>
-                                                    <div className='flex space-x-10 text-sm pb-6'>
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>52 Week High</div>
-                                                            <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).weekHigh52)}</div>
-                                                        </div>
-
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>52 Week Low</div>
-                                                            <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).weekLow52)}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className='py-3'>
-                                                    <div className='flex space-x-10 text-sm pb-6'>
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Volume</div>
-                                                            <div>{stockInfo === ''?'':JSON.parse(stockInfo).volume}</div>
-                                                        </div>
-
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Average Volume</div>
-                                                            <div>{HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).avgDailyVolume)}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className='py-3'>
-                                                    <div className='flex space-x-10 text-sm pb-6'>
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Sector</div>
-                                                            <div>{stockInfo === ''?'':JSON.parse(stockInfo).sector}</div>
-                                                        </div>
-
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Risk Factor</div>
-                                                            <div>{HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).riskFactor)}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className='py-3'>
-                                                    <div className='flex space-x-10 text-sm pb-6'>
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Dividend Yield</div>
-                                                            <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).dividendYield)}</div>
-                                                        </div>
-
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Previous Close</div>
-                                                            <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).lclose)}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className='py-3'>
-                                                    <div className='flex space-x-10 text-sm pb-6'>
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Nominal Value</div>
-                                                            <div>{stockInfo === ''?'':JSON.parse(stockInfo).norminalValue}</div>
-                                                        </div>
-
-                                                        <div className='w-1/2'>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Trades</div>
-                                                            <div>{stockInfo === ''?'':JSON.parse(stockInfo).trades}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className='py-3'>
-                                                    <div className='flex space-x-10 text-sm pb-6'>
-                                                        <div>
-                                                            <div className='text-sm font-bold mb-20 font-gotham-black-regular'>Value of Trades</div>
-                                                            <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).valueOfTrades)}</div>
-                                                        </div>
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>Mkt Cap</div>
+                                                        <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).marketCap)}</div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* End */}
 
-                            {/* About Section */}
-                            <div className={showAbout ? 'mb-30 about-section' : 'mb-30 about-section hidden'}>
-                                <div className='mb-10'>
-                                    <div className='flex'>
-                                        <div className='w-full'>
-                                            <p className='font-bold mb-20 font-gotham-black-regular'>About</p>
-                                            <div className='tracking-widest text-sm leading-8 pr-10 mb-30'>{companyInfo}</div>
-                                        </div>
+                                            <div className='py-2'>
+                                                <div className='flex space-x-10 text-sm pb-6'>
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>High</div>
+                                                        <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).high)}</div>
+                                                    </div>
 
-                                        <div className='px-10 h-44 border-left-1 hidden'>
-                                            <div className='mb-30'>
-                                                <p className='font-gotham-black-regular mb-10'>Group Managing Director</p>
-                                                <p className='text-sm'></p>
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>Low</div>
+                                                        <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).low)}</div>
+                                                    </div>
+                                                </div>
                                             </div>
 
-                                            <div>
-                                                <p className='font-gotham-black-regular mb-10'>Founded</p>
-                                                <p className='text-sm'></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                            <div className='py-2'>
+                                                <div className='flex space-x-10 text-sm pb-6'>
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>52 Week High</div>
+                                                        <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).weekHigh52)}</div>
+                                                    </div>
 
-                                <div className="border-bottom-1 mb-30"></div>
-
-                                <div className='mt-10'>
-                                    <div className='card-stock'>
-                                        <div className='font-gotham-black-regular mb-30 mt-5'>Statistics Overview</div>
-                                        
-                                        <div className='flex justify-between mb-20'>
-                                            <div>
-                                                <div className='font-gotham-black-regular text-sm mb-10'>Shares Outstanding</div>
-                                                <div className='text-sm'>{HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).sharesOutstanding)}</div>
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>52 Week Low</div>
+                                                        <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).weekLow52)}</div>
+                                                    </div>
+                                                </div>
                                             </div>
 
-                                            <div className='border-left-1'></div>
+                                            <div className='py-2'>
+                                                <div className='flex space-x-10 text-sm pb-6'>
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>Volume</div>
+                                                        <div>{stockInfo === ''?'':JSON.parse(stockInfo).volume}</div>
+                                                    </div>
 
-                                            <div>
-                                                <div className='font-gotham-black-regular text-sm mb-10'>Registrar</div>
-                                                <div className='text-sm'>{stockInfo === ''?'':JSON.parse(stockInfo).registrar}</div>
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>Average Volume</div>
+                                                        <div>{HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).avgDailyVolume)}</div>
+                                                    </div>
+                                                </div>
                                             </div>
 
-                                            <div className='border-left-1'></div>
+                                            <div className='py-2'>
+                                                <div className='flex space-x-10 text-sm pb-6'>
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>Sector</div>
+                                                        <div>{stockInfo === ''?'':JSON.parse(stockInfo).sector}</div>
+                                                    </div>
 
-                                            <div className='w-72'>
-                                                <div className='font-gotham-black-regular text-sm mb-10'>Institutional Owership</div>
-                                                <div className='text-sm'>{stockInfo === ''?'':JSON.parse(stockInfo).institutionalOwnerShip}</div>
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>Risk Factor</div>
+                                                        <div>{HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).riskFactor)}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className='py-2'>
+                                                <div className='flex space-x-10 text-sm pb-6'>
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>Dividend Yield</div>
+                                                        <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).dividendYield)}</div>
+                                                    </div>
+
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>Previous Close</div>
+                                                        <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).lclose)}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className='py-2'>
+                                                <div className='flex space-x-10 text-sm pb-6'>
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>Nominal Value</div>
+                                                        <div>{stockInfo === ''?'':JSON.parse(stockInfo).norminalValue}</div>
+                                                    </div>
+
+                                                    <div className='w-1/2'>
+                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>Trades</div>
+                                                        <div>{stockInfo === ''?'':JSON.parse(stockInfo).trades}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className='py-2'>
+                                                <div className='flex space-x-10 text-sm pb-6'>
+                                                    <div>
+                                                        <div className='text-sm font-bold mb-3 font-gotham-black-regular'>Value of Trades</div>
+                                                        <div>₦ {HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).valueOfTrades)}</div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         
                                     </div>
                                 </div>
                             </div>
-                            {/* End */}
-
-                            {/* News Section */}
-                            <div className={showNews ? 'mb-30 news-section' : 'mb-30 news-section hidden'}>
-                                <div className='mb-30'><p className='font-bold font-gotham-black-regular'>News and Insights</p></div>
-
-                                <div className='flex justify-between mb-12'>
-                                    {newsList}
-                                </div>
-                            </div>
-                            {/* End */}
-
-                            {/* Page Loader Section */}
-                            <div className={showPageLoader ? "page-loader-backdrop opacity-90" : "hidden"}>
-                                <div className='w-96 relative lg:ml-72'>
-                                    <div className='absolute top-44pc left-46pt5pc'><img src={AnchoriaIcon} alt="" /></div>
-                                    <div className='text-center'><img src={AnchoriaSpinner} alt="" /></div>
-                                </div>
-                            </div>
-                            {/* End */}
                         </div>
+                        {/* End */}
+
+                        {/* About Section */}
+                        <div className={showAbout ? 'mb-3 about-section' : 'mb-3 about-section hidden'}>
+                            <div className='mb-10'>
+                                <div className='flex'>
+                                    <div className='w-full'>
+                                        <p className='font-bold mb-3 font-gotham-black-regular'>About</p>
+                                        <div className='tracking-widest text-sm leading-8 pr-10 mb-3'>{companyInfo}</div>
+                                    </div>
+
+                                    <div className='px-10 h-44 border-left-1 hidden'>
+                                        <div className='mb-3'>
+                                            <p className='font-gotham-black-regular mb-10'>Group Managing Director</p>
+                                            <p className='text-sm'></p>
+                                        </div>
+
+                                        <div>
+                                            <p className='font-gotham-black-regular mb-10'>Founded</p>
+                                            <p className='text-sm'></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="border-bottom-1 mb-3"></div>
+
+                            <div className='mt-10'>
+                                <div className='card-stock'>
+                                    <div className='font-gotham-black-regular mb-3 mt-5'>Statistics Overview</div>
+                                    
+                                    <div className='flex justify-between mb-3'>
+                                        <div>
+                                            <div className='font-gotham-black-regular text-sm mb-10'>Shares Outstanding</div>
+                                            <div className='text-sm'>{HelperFunctions.formatCurrencyWithDecimal(stockInfo === ''?'':JSON.parse(stockInfo).sharesOutstanding)}</div>
+                                        </div>
+
+                                        <div className='border-left-1'></div>
+
+                                        <div>
+                                            <div className='font-gotham-black-regular text-sm mb-10'>Registrar</div>
+                                            <div className='text-sm'>{stockInfo === ''?'':JSON.parse(stockInfo).registrar}</div>
+                                        </div>
+
+                                        <div className='border-left-1'></div>
+
+                                        <div className='w-72'>
+                                            <div className='font-gotham-black-regular text-sm mb-10'>Institutional Owership</div>
+                                            <div className='text-sm'>{stockInfo === ''?'':JSON.parse(stockInfo).institutionalOwnerShip}</div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        {/* End */}
+
+                        {/* News Section */}
+                        <div className={showNews ? 'mb-3 news-section' : 'mb-3 news-section hidden'}>
+                            <div className='mb-3'><p className='font-bold font-gotham-black-regular'>News and Insights</p></div>
+
+                            <div className='flex justify-between mb-12'>
+                                {newsList}
+                            </div>
+                        </div>
+                        {/* End */}
+
+                        {/* Page Loader Section */}
+                        <div className={showPageLoader ? "page-loader-backdrop opacity-90" : "hidden"}>
+                            <div className='relative'>
+                                <div className='ml-96 w-1/3 text-center relative'>
+                                    <img src={AnchoriaSpinner} alt="" />
+
+                                    <div className='absolute' style={{left : '15.2rem', top: '5.4rem'}}>
+                                        <img src={AnchoriaIcon} alt="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* End */}
                     </div>
                 </div>
             </div>
+            
 
             {/* Set Price Alert Modal */}
             <div className={showSetPriceAlertModal ?  'generic-modal' : 'hidden'}>
                 <div className='generic-modal-dialog'>
                     <div className="set-price-alert-modal rounded-lg">
                         {/* price Alert Error */}
-                        <div className={priceAlertError === '' ? "hidden" : "error-alert mb-20"}>
+                        <div className={priceAlertError === '' ? "hidden" : "error-alert mb-3"}>
                             <div className="flex justify-between space-x-1">
                                 <div className="flex">
                                     <div>
@@ -1602,7 +1609,7 @@ const Stock = () => {
                             </div>
                         </div>
 
-                        <div className="border-1 mb-30"></div>
+                        <div className="border-1 mb-3"></div>
 
                         <div className='mb-6'>
                             <div>
@@ -1612,22 +1619,22 @@ const Stock = () => {
                                     <span className="font-bold mx-3 text-sm">{String(params.get('name')).substring(0, 16)}...</span>
                                 </div>
 
-                                <div className="mb-20 w-32 bg-yellow-400 py-2 px-3 rounded-2xl text-sm">Manufacturing</div>
+                                <div className="mb-3 w-32 bg-yellow-400 py-2 px-3 rounded-2xl text-sm">Manufacturing</div>
 
-                                <div className="leading-6 text-sm mb-20">{companyInfo.length > 250 ? companyInfo.substring(0, 250) + "..." : companyInfo}</div>
+                                <div className="leading-6 text-sm mb-3">{companyInfo.length > 250 ? companyInfo.substring(0, 250) + "..." : companyInfo}</div>
 
                                 <div className='mb-10'>
                                     <div className='mb-10 font-bold'>Current Price</div>
                                     <div className='font-gotham-black-regular text-green-900 text-3xl'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
                                 </div>
 
-                                <div className='mb-20'>
+                                <div className='mb-3'>
                                     <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-sm" : "font-bold text-red-500 text-sm"}>
                                         {stockInfo === '' ? '' : JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === '' ? '' : HelperFunctions.formatCurrencyWithDecimal(JSON.parse(stockInfo).percentageChange.replace('-',''))}%
                                     </div>
                                 </div>
 
-                                <div className='mb-30 flex space-x-5'>
+                                <div className='mb-3 flex space-x-5'>
                                     <div className='w-full'>
                                         <div className='font-bold mb-10 text-sm'>Enter Price</div>
                                         <input type="text" value={priceAlert} onChange={delineatePriceAlert} className="input border p-2 outline-white w-full font-bold" />
@@ -1639,7 +1646,7 @@ const Stock = () => {
                                     </div> */}
                                 </div>
                                 
-                                <div className='mb-30'>
+                                <div className='mb-3'>
                                     <div className='w-full font-bold mb-10 text-sm'>Price Condition</div>
 
                                     <div className=''>
@@ -1655,7 +1662,7 @@ const Stock = () => {
                                     <div className='mb-10 font-bold text-sm'>Transaction Pin</div>
 
                                     <div>
-                                        <input type="password" className='text-lg outline-white mb-30 w-full font-bold px-3 py-2 rounded-lg border border-gray-500' value={transactionPin} onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
+                                        <input type="password" className='text-lg outline-white mb-3 w-full font-bold px-3 py-2 rounded-lg border border-gray-500' value={transactionPin} onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
                                     </div>
                                 </div>
 
@@ -1671,7 +1678,7 @@ const Stock = () => {
                         </div>
 
                         {/* price Alert Error */}
-                        <div className={priceAlertError === '' ? "hidden" : "error-alert mb-20"}>
+                        <div className={priceAlertError === '' ? "hidden" : "error-alert mb-3"}>
                             <div className="flex justify-between space-x-1">
                                 <div className="flex">
                                     <div>
@@ -1700,44 +1707,38 @@ const Stock = () => {
                     </div>
                 </div>
 
-                <div className="border-1 mb-30"></div>
+                <div className="border-1 mb-3"></div>
 
                 <div>
                     <div>
                         
-                            <div >
-                                <div className='mb-10'>
-                                    <img src={AtlasIcon} alt="" className="align-middle border-1-d6 rounded-lg" />
-                                    <span className="font-bold font-gotham-black-regular mx-3 text-xl">{params.get('symbol')}</span> |
-                                    <span className="font-bold mx-3">{stockInfo === ''?'':JSON.parse(stockInfo).name}</span>
-                                </div>
-
-                                <div className="mb-20 py-1">
-                                    <span className='bg-yellow-400 py-2 px-3 rounded-2xl text-sm'>{stockInfo === ''?'':JSON.parse(stockInfo).sector}</span>
-                                </div>
-
-                                <div className="leading-6 text-sm mb-20">{companyInfo.length > 250 ? companyInfo.substring(0, 250) + "..." : companyInfo}</div>
-
-
-
-                                <div className='mb-20' >
-                                    <div className='mb-10 font-bold'>Current Price</div>
-                                    <div className='font-gotham-black-regular text-green-900 text-3xl'>₦ {stockInfo === ''?'':JSON.parse(stockInfo).price}</div>
-                                </div>
-
-
-                                <div className='mb-20'>
-                                    <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-sm" : "font-bold text-red-500 text-sm"}>{stockInfo === ''?'':JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === ''?'':JSON.parse(stockInfo).percentageChange.replace('-','')}%  </div>
-                                </div>
+                        <div >
+                            <div className='mb-10'>
+                                <img src={AtlasIcon} alt="" className="align-middle border-1-d6 rounded-lg" />
+                                <span className="font-bold font-gotham-black-regular mx-3 text-xl">{params.get('symbol')}</span> |
+                                <span className="font-bold mx-3">{stockInfo === ''?'':JSON.parse(stockInfo).name}</span>
                             </div>
-                        
 
-                        <div className='mb-30 font-bold flex'>
-                            <Form.Check onChange={displayHighLow} type='radio' className='portfoliolist-checkbox' />
-                            <span className='mt-1 ml-2'>Set Price Alert?</span>
+                            <div className="mb-3 py-1">
+                                <span className='bg-yellow-400 py-2 px-3 rounded-2xl text-sm'>{stockInfo === ''?'':JSON.parse(stockInfo).sector}</span>
+                            </div>
+
+                            <div className="leading-6 text-sm mb-3">{companyInfo.length > 250 ? companyInfo.substring(0, 250) + "..." : companyInfo}</div>
+
+
+
+                            <div className='mb-3' >
+                                <div className='mb-10 font-bold'>Current Price</div>
+                                <div className='font-gotham-black-regular text-green-900 text-3xl'>₦ {stockInfo === ''?'':JSON.parse(stockInfo).price}</div>
+                            </div>
+
+
+                            <div className='mb-3'>
+                                <div className={params.get('sign') === 'positive' ? "font-bold text-green-500 text-sm" : "font-bold text-red-500 text-sm"}>{stockInfo === ''?'':JSON.parse(stockInfo).change.replace('-','')} | {stockInfo === ''?'':JSON.parse(stockInfo).percentageChange.replace('-','')}%  </div>
+                            </div>
                         </div>
 
-                        <div className={showHighLow ? 'mb-30 flex space-x-5' : 'mb-30 flex space-x-5 hidden'}>
+                        <div className={showHighLow ? 'mb-3 flex space-x-5' : 'mb-3 flex space-x-5 hidden'}>
                             <div className='w-1/2'>
                                 <div className='font-bold mb-10'>High</div>
                                 <input type="number" className="input border-1-d6 p-2" />
@@ -1768,7 +1769,7 @@ const Stock = () => {
                     <div className="buy-stocks-modal rounded-lg">
 
                         {/* Get Price Estimate Error */}
-                        <div className={priceEstimateError === '' ? "hidden" : "error-alert mb-20"}>
+                        <div className={priceEstimateError === '' ? "hidden" : "error-alert mb-3"}>
                             <div className="flex justify-between space-x-1 pt-3">
                                 <div className="flex">
                                     <div>
@@ -1789,7 +1790,7 @@ const Stock = () => {
                         </div>
                         {/* End */}
 
-                        <div className="mb-20 flex justify-between">
+                        <div className="mb-3 flex justify-between">
                             <div>
                                 <div className="font-bold text-3xl text-green-900 mb-10 font-gotham-black-regular">Buy Stock</div>
                                 <div className='font-bold text-green-900'>Provide the details below</div>
@@ -1800,7 +1801,7 @@ const Stock = () => {
                             </div>
                         </div>
 
-                        <div className='mb-20'>
+                        <div className='mb-3'>
                             <div className="stock-balance-card">
                                 <div className="italic text-green-500 mb-5">Available Balance</div>
                                 <div className="font-bold text-3xl font-gotham-black-regular text-white">
@@ -1812,7 +1813,7 @@ const Stock = () => {
                             </div>
                         </div>
 
-                        <div className='mb-30'>
+                        <div className='mb-3'>
                             <div className='mb-10'>
                                 <img src={AtlasIcon} alt="" className="align-middle border-1-d6 rounded-lg" />
                                 <span className="font-bold font-gotham-black-regular mx-3 text-lg">{params.get('symbol')}</span> |
@@ -1821,17 +1822,17 @@ const Stock = () => {
                         </div>
 
                         
-                            <div className='mb-20' >
+                            <div className='mb-3' >
                                 <div className='mb-10 font-bold'>Current Price /Per Share</div>
                                 <div className='font-gotham-black-regular text-3xl font-bold text-green-900'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
                             </div>
                         
 
-                        <div className='border-bottom-1d mb-20'></div>
+                        <div className='border-bottom-1d mb-3'></div>
 
-                        <div className='mb-20'>
+                        <div className='mb-3'>
                             <div className='relative'>
-                                <div className='flex justify-between space-x-5 mb-30'>
+                                <div className='flex justify-between space-x-5 mb-3'>
 
                                     <div className='w-1/2 relative cursor-pointer' onClick={displayOrderTypeDropdown}>
                                         <div className="mb-10">Order Type</div>
@@ -1886,7 +1887,7 @@ const Stock = () => {
                             </div>
 
                             {/* Limit - Order Type */}
-                            <div className={limitOrderType ? 'relative flex justify-between space-x-5 mb-30' : 'hidden'}>
+                            <div className={limitOrderType ? 'relative flex justify-between space-x-5 mb-3' : 'hidden'}>
                                 <div className='w-1/2'>
                                     <div className="mb-10">Maximum Limit</div>
 
@@ -1941,7 +1942,7 @@ const Stock = () => {
 
                             {/* Stop Loss - Order Type */}
                             <div className='relative'>
-                                <div className={stopLossOrderType ? 'flex justify-between space-x-5 mb-30' : 'hidden'}>
+                                <div className={stopLossOrderType ? 'flex justify-between space-x-5 mb-3' : 'hidden'}>
                                     <div className='w-1/2'>
                                         <div className="mb-10">Price Tolerance</div>
 
@@ -1996,7 +1997,7 @@ const Stock = () => {
                             {/* Stop Limit - Order Type */}
                             <div className='relative'>
                                 <div className={stopLimitOrderType ? '' : 'hidden'}>
-                                    <div className='flex justify-between space-x-5 mb-20'>
+                                    <div className='flex justify-between space-x-5 mb-3'>
                                         <div className='w-1/2'>
                                             <div className="mb-10">Price Tolerance and Limit</div>
 
@@ -2097,9 +2098,9 @@ const Stock = () => {
 
                         </div>
 
-                        <div className='border-bottom-1d mb-20'></div>
+                        <div className='border-bottom-1d mb-3'></div>
 
-                        <div className='mb-20'>
+                        <div className='mb-3'>
                             <div className='mb-10'>Estimated cost</div>
                             <div className='font-gotham-black-regular font-bold text-green-900 text-3xl'>{HelperFunctions.formatCurrencyWithDecimal(estimatedCost)}</div>
                         </div>
@@ -2127,7 +2128,7 @@ const Stock = () => {
                     <div className="buy-stocks-modal rounded-lg">
 
                         {/* Get Price Estimate Error */}
-                        <div className={priceEstimateError === '' ? "hidden" : "error-alert mb-20"}>
+                        <div className={priceEstimateError === '' ? "hidden" : "error-alert mb-3"}>
                             <div className="flex justify-between space-x-1 pt-3">
                                 <div className="flex">
                                     <div>
@@ -2148,7 +2149,7 @@ const Stock = () => {
                         </div>
                         {/* End */}
 
-                        <div className="mb-20 flex justify-between">
+                        <div className="mb-3 flex justify-between">
                             <div>
                                 <div className="font-bold text-3xl text-green-900 mb-10 font-gotham-black-regular">Sell Stock</div>
                                 <div className='font-bold text-green-900'>Provide the details below</div>
@@ -2159,7 +2160,7 @@ const Stock = () => {
                             </div>
                         </div>
 
-                        <div className='mb-20'>
+                        <div className='mb-3'>
                             <div className="stock-balance-card">
                                 <div className="italic text-green-500 mb-5">Available Balance</div>
                                 <div className="font-bold text-3xl font-gotham-black-regular text-white">
@@ -2171,7 +2172,7 @@ const Stock = () => {
                             </div>
                         </div>
 
-                        <div className='mb-30'>
+                        <div className='mb-3'>
                             <div className='mb-10'>
                                 <img src={AtlasIcon} alt="" className="align-middle border-1-d6 rounded-lg" />
                                 <span className="font-bold font-gotham-black-regular mx-3 text-lg">{params.get('symbol')}</span> |
@@ -2226,10 +2227,10 @@ const Stock = () => {
                                 </div>
                             </div>
 
-                            <div className='text-red-500 text-xs mb-30'>{unitToSellError}</div>
+                            <div className='text-red-500 text-xs mb-3'>{unitToSellError}</div>
                         </div>
 
-                        <div className="mb-30 hidden">
+                        <div className="mb-3 hidden">
                             <div className='text-sm font-bold mb-10'>Available Units</div>
 
                             <div className='md:flex md:justify-between items-center mb-2'>
@@ -2248,16 +2249,16 @@ const Stock = () => {
                             
                         </div>
                         
-                        <div className='mb-20' >
+                        <div className='mb-3' >
                             <div className='mb-10 font-bold'>Current Price /Per Share</div>
                             <div className='font-gotham-black-regular text-2xl font-bold text-green-900'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
                         </div>                        
 
-                        <div className='border-bottom-1d mb-20'></div>
+                        <div className='border-bottom-1d mb-3'></div>
 
-                        <div className='mb-20'>
+                        <div className='mb-3'>
                             <div className='relative'>
-                                <div className='flex justify-between space-x-5 mb-30'>
+                                <div className='flex justify-between space-x-5 mb-3'>
 
                                     <div className='w-1/2 relative cursor-pointer' onClick={displayOrderTypeDropdown}>
                                         <div className="mb-10 font-bold text-sm">Order Type</div>
@@ -2312,7 +2313,7 @@ const Stock = () => {
                             </div>
 
                             {/* Limit - Order Type */}
-                            <div className={limitOrderType ? 'relative flex justify-between space-x-5 mb-30' : 'hidden'}>
+                            <div className={limitOrderType ? 'relative flex justify-between space-x-5 mb-3' : 'hidden'}>
                                 <div className='w-1/2'>
                                     <div className="mb-10 text-sm font-bold">Maximum Limit</div>
 
@@ -2367,7 +2368,7 @@ const Stock = () => {
 
                             {/* Stop Loss - Order Type */}
                             <div className='relative'>
-                                <div className={stopLossOrderType ? 'flex justify-between space-x-5 mb-30' : 'hidden'}>
+                                <div className={stopLossOrderType ? 'flex justify-between space-x-5 mb-3' : 'hidden'}>
                                     <div className='w-1/2'>
                                         <div className="mb-10 text-sm font-bold">Price Tolerance</div>
 
@@ -2422,7 +2423,7 @@ const Stock = () => {
                             {/* Stop Limit - Order Type */}
                             <div className='relative'>
                                 <div className={stopLimitOrderType ? '' : 'hidden'}>
-                                    <div className='flex justify-between space-x-5 mb-20'>
+                                    <div className='flex justify-between space-x-5 mb-3'>
                                         <div className='w-1/2'>
                                             <div className="mb-10 text-sm font-bold">Price Tolerance and Limit</div>
 
@@ -2523,14 +2524,14 @@ const Stock = () => {
 
                         </div>
 
-                        <div className='border-bottom-1d mb-20'></div>
+                        <div className='border-bottom-1d mb-3'></div>
 
-                        <div className='mb-20'>
+                        <div className='mb-3'>
                             <div className='mb-10 text-sm font-bold'>Estimated cost</div>
                             <div className='font-gotham-black-regular font-bold text-green-900 text-2xl'>{HelperFunctions.formatCurrencyWithDecimal(estimatedCost)}</div>
                         </div>
 
-                        <div className='mb-20'>
+                        <div className='mb-3'>
                             <button onClick={calculateSellStockOrderEstimate} className={estimatedCost === 0 ? 'w-full bg-green-900 rounded-lg text-white p-4 font-bold text-lg border-0 focus:shadow-outline cursor-pointer' : 'hidden'}>
                                 <span className={showSpinner ? "hidden" : ""}>Get Estimated Cost</span>
                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="30" />
@@ -2575,7 +2576,7 @@ const Stock = () => {
                     <div className="buy-stocks-modal rounded-lg">
 
                         {/* Buy Stock Error */}
-                        <div className={buyStockError === '' ? "hidden" : "error-alert mb-20"}>
+                        <div className={buyStockError === '' ? "hidden" : "error-alert mb-3"}>
                             <div className="flex justify-between space-x-1">
                                 <div className="flex">
                                     <div>
@@ -2590,7 +2591,7 @@ const Stock = () => {
                         </div>
                         {/* End */}
 
-                        <div className="mb-20 flex justify-between">
+                        <div className="mb-3 flex justify-between">
                             <div>
                                 <div className="font-bold text-3xl text-green-900 mb-10 font-gotham-black-regular">Order Summary</div>
                                 <div className='font-bold text-green-900'>Preview your investment</div>
@@ -2601,7 +2602,7 @@ const Stock = () => {
                             </div>
                         </div>
 
-                        <div className='mb-30'>
+                        <div className='mb-3'>
                             <div className='mb-10'>
                                 <img src={AtlasIcon} alt="" className="align-middle border-1-d6 rounded-lg" />
                                 <span className="font-bold font-gotham-black-regular mx-3 text-xl">{params.get('symbol')}</span> |
@@ -2610,7 +2611,7 @@ const Stock = () => {
                         </div>
 
                         
-                        <div className='mb-20' >
+                        <div className='mb-3' >
                             <div className='mb-10 font-bold'>Current Price /Per Share</div>
                             <div className='font-gotham-black-regular text-3xl font-bold text-green-900'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
                         </div>
@@ -2620,7 +2621,7 @@ const Stock = () => {
                             <div className='mb-10'>Add this stocks to a portfolio <span className='text-yellow-700'>(Optional)</span></div>
 
                             <div>
-                                <select className='text-lg outline-white mb-30 w-full font-bold p-5 rounded-lg border border-gray-500' onChange={getPortfolioIdToAddStock}>
+                                <select className='text-lg outline-white mb-3 w-full font-bold p-5 rounded-lg border border-gray-500' onChange={getPortfolioIdToAddStock}>
                                     <option value="qazsw">Select portfolio</option>
                                     {portfolioList}
                                 </select>
@@ -2631,7 +2632,7 @@ const Stock = () => {
                             <div className='mb-10'>Transaction Pin</div>
 
                             <div>
-                                <input type="password" className='text-lg outline-white mb-30 w-full font-bold px-3 py-4 rounded-lg border border-gray-500' value={transactionPin} onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
+                                <input type="password" className='text-lg outline-white mb-3 w-full font-bold px-3 py-4 rounded-lg border border-gray-500' value={transactionPin} onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
                             </div>
                         </div>
 
@@ -2720,10 +2721,10 @@ const Stock = () => {
                             </div>
                         </div>
 
-                        <div className='border-bottom-1d mb-20'></div>
+                        <div className='border-bottom-1d mb-3'></div>
 
 
-                        <div className='flex space-x-5 mb-20'>
+                        <div className='flex space-x-5 mb-3'>
                             <button type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer" onClick={closeModal}>Cancel</button>
 
                             <button onClick={tradeStock} className='w-full bg-green-900 rounded-lg text-white p-4 font-bold text-lg border-0 focus:shadow-outline cursor-pointer'>
@@ -2787,7 +2788,7 @@ const Stock = () => {
 
                         <div className='p-5'>
                             {/* Pin Success */}
-                            <div className={isPinValid === 'true' ? "otp-alert mb-20" : "hidden"}>
+                            <div className={isPinValid === 'true' ? "otp-alert mb-3" : "hidden"}>
                                 <div className="flex otp-validated justify-between space-x-1 pt-3">
                                     <div className="flex">
                                         <div>
@@ -2810,7 +2811,7 @@ const Stock = () => {
                             {/* End */}
 
                             {/* Pin Error */}
-                            <div className={isPinValid !== 'false' ? "hidden" : "error-alert mb-20"}>
+                            <div className={isPinValid !== 'false' ? "hidden" : "error-alert mb-3"}>
                                 <div className="flex justify-between space-x-1 pt-3">
                                     <div className="flex">
                                         <div>
@@ -2833,7 +2834,7 @@ const Stock = () => {
 
                             <div className='font-bold mb-10'>Enter PIN</div>
 
-                            <div className='mb-30'><input maxLength={4} type="password" className="w-full rounded-lg p-5 border border-gray-100 outline-white" onChange={e => setPin(e.target.value)} /> </div>
+                            <div className='mb-3'><input maxLength={4} type="password" className="w-full rounded-lg p-5 border border-gray-100 outline-white" onChange={e => setPin(e.target.value)} /> </div>
 
                             <div><button type='button' className='px-16 py-3 bg-green-900 text-white rounded-lg font-bold border-0 w-full cursor-pointer' onClick={validatePin}>
                                 <span className={showSpinner ? "hidden" : ""}>Validate</span>
