@@ -706,7 +706,7 @@ const PortfolioDetails = () => {
 
                         <div className="mb-3">
                             <div className="flex justify-between items-center">
-                                <div className="text-lg ">My Assest</div>
+                                <div className="text-lg ">My Assets</div>
                                 <div className='flex space-x-3'>
                                     <button className="hidden cursor-pointer bg-gray-300 rounded-lg border-0 py-3 px-5 font-bold focus:shadow-outline" type='button'>
                                         Move stocks
