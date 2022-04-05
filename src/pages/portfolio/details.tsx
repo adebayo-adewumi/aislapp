@@ -26,7 +26,6 @@ import { getAxios } from '../../network/httpClientWrapper';
 import GreenBoxIcon from '../../assets/images/green-box.svg';
 import RedBoxIcon from '../../assets/images/red-box.svg';
 import BlueBoxIcon from '../../assets/images/blue-box.svg';
-import { Accordion, Form } from 'react-bootstrap';
 import AnchoriaIcon from '../../assets/images/anchoria-icon.svg';
 import AnchoriaSpinner from '../../assets/images/anchoria-spinner.svg';
 
@@ -197,7 +196,7 @@ const PortfolioDetails = () => {
                                             <img src={AtlasIcon} alt="" />
                                         </td>
                                         <td className='px-3 py-4 border-b border-b-gray-700 table-border-bottom'>
-                                            <div className='font-bold mb-10 text-sm'>{item.symbol}</div>
+                                            <div className='font-bold mb-3 text-sm'>{item.symbol}</div>
                                             <div className='text-sm'>{item.name.substring(0,10)}...</div>
                                         </td>
                                         <td className='px-3 py-4 table-border-bottom'>
@@ -624,13 +623,14 @@ const PortfolioDetails = () => {
                                     <span className="font-bold text-green-900">Portfolio Details</span>
                                 </div>
 
-                                <div className="text-sm font-bold">
+                                <div className="text-sm">
                                     Overview of portfolio performance
                                 </div>
                             </div>
 
                             <div className='cursor-pointer text-xl'>
-                                <Link to="/portfolio" className='no-underline'><img width="20" src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back</Link>
+                                <Link to="/portfolio" className='no-underline text-green-900 hover:text-green-900'>
+                                    <img width="20" src={ArrowBackIcon} alt="" className="cursor-pointer align-middle " /> Back</Link>
                             </div>
                         </div>
 
@@ -649,15 +649,15 @@ const PortfolioDetails = () => {
                         </div>
 
                         <div className='mb-5'>
-                            <div className='bg-black rounded-lg shadow w-1/2 flex justify-between'>
+                            <div className='bg-black rounded-lg shadow p-5 w-1/2 flex justify-between'>
                                 <div className='text-white'>
-                                    <div className='mb-10 font-bold'>Total Portfolio Value</div>
+                                    <div className='mb-3 font-bold'>Total Portfolio Value</div>
                                     <div className='font-bold text-xl'>₦ {formatCurrencyWithDecimal(parseFloat(portfolioDetails.currentValue as string))}</div>
                                 </div>
 
                                 <div className='text-white'>
-                                    <div className='mb-10 font-bold'>Portfolio Returns</div>
-                                    <div className='font-bold text-xl mb-10'>
+                                    <div className='mb-3 font-bold'>Portfolio Returns</div>
+                                    <div className='font-bold text-xl mb-3'>
                                         <img src={portfolioDetails.portfolioReturn >= 0 ? ArrowUpIcon : ArrowDownIcon} alt="" width="30" className="align-middle mr-3" />
 
                                         <span className={portfolioDetails.portfolioReturn >= 0 ? 'text-green-500' : 'text-red-500'}>₦ {String(formatCurrencyWithDecimal(portfolioDetails.portfolioReturn)).replace("-","")}</span>
@@ -669,16 +669,16 @@ const PortfolioDetails = () => {
                             </div>
                         </div>
 
-                        <div className='mb-3'>
+                        <div className='mb-8'>
                             <div className='bg-white rounded-lg shadow p-10'>
                                 <div className='mb-3'>
                                     <div className='md:flex md:justify-between md:items-center '>
                                         <div className='w-1/2 md:mb-0 mb-6'>
-                                            <div className='font-gotham-black-regular font-bold text-green-900 text-xl'>Total Portfolio Performance</div>
+                                            <div className='font-bold text-green-900 text-xl'>Total Portfolio Performance</div>
 
                                             <div className='text-lg'>Portfolio Value</div>
 
-                                            <div className='font-gotham-black-regular font-bold text-green-900 text-xl'>₦ {formatCurrencyWithDecimal(parseFloat(portfolioDetails.currentValue))}</div>
+                                            <div className='font-bold text-green-900 text-xl'>₦ {formatCurrencyWithDecimal(parseFloat(portfolioDetails.currentValue))}</div>
                                         </div>
 
                                         <div className='w-1/3 flex bg-gray-300 p-1 rounded justify-between'>
@@ -706,7 +706,7 @@ const PortfolioDetails = () => {
 
                         <div className="mb-3">
                             <div className="flex justify-between items-center">
-                                <div className="text-lg font-gotham-black-regular">My Assest</div>
+                                <div className="text-lg ">My Assest</div>
                                 <div className='flex space-x-3'>
                                     <button className="hidden cursor-pointer bg-gray-300 rounded-lg border-0 py-3 px-5 font-bold focus:shadow-outline" type='button'>
                                         Move stocks
@@ -731,7 +731,7 @@ const PortfolioDetails = () => {
 
                         {/*Add New Stocks Modal */}
                         <div className={showAddNewStockModal ? "add-stock-modal" : "add-stock-modal hidden"}>
-                            <div className="mb-20 flex justify-between">
+                            <div className="3 flex justify-between">
                                 <div className="font-bold text-25 opacity-0">Top Losers</div>
 
                                 <div onClick={closeModal}>
@@ -740,39 +740,39 @@ const PortfolioDetails = () => {
                             </div>
 
                             <div>
-                                <div className="text-3xl text-green-900 font-gotham-black-regular font-bold mb-10">Add new stocks</div>
-                                <div className="font-bold mb-30">Choose where you want to add stocks from</div>
+                                <div className="text-3xl text-green-900 font-bold mb-3">Add new stocks</div>
+                                <div className=" mb-5">Choose where you want to add stocks from</div>
 
                                 <div>
-                                    <div onClick={displayPortfolioListModal} className='flex space-x-10 selectbox-border p-5 rounded-lg border-1 hover:bg-gray-100 cursor-pointer mb-30'>
+                                    <div onClick={displayPortfolioListModal} className='flex space-x-10 p-5 rounded-lg border hover:bg-gray-100 cursor-pointer mb-3'>
                                         <div>
                                             <img src={BriefcaseIcon} alt="" width='50' />
                                         </div>
                                         <div>
-                                            <div className='font-bold mb-10'>Other Portfolio</div>
+                                            <div className='font-bold mb-3'>Other Portfolio</div>
                                             <div className='text-sm'>Move stocks from your list of created portfolio</div>
                                         </div>
                                     </div>
 
-                                    <div className='flex space-x-10 selectbox-border p-5 rounded-lg border-1 hover:bg-gray-100 cursor-pointer mb-30 hidden' onClick={displayWatchlistModal}>
+                                    <div className='flex space-x-10 p-5 rounded-lg border hover:bg-gray-100 cursor-pointer mb-3 hidden' onClick={displayWatchlistModal}>
                                         <div>
                                                 <img src={SaveTagIcon} alt="" width='50' />
                                         </div>
                                         <div>
                                             <div className='no-underline text-gray-900'>
-                                                <div className='font-bold mb-10'>My Watchlist</div>
+                                                <div className='font-bold mb-3'>My Watchlist</div>
                                                 <div className='text-sm'>Select from your added watchlist</div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div className='flex space-x-10 selectbox-border p-5 rounded-lg border-1 hover:bg-gray-100 cursor-pointer' onClick={displayMarketplaceModal}>
+                                    <div className='flex space-x-10 p-5 rounded-lg border hover:bg-gray-100 cursor-pointer' onClick={displayMarketplaceModal}>
                                         <div>
                                                 <img src={ChartIcon} alt="" width='50' />
                                         </div>
                                         <div>
                                             <div className='no-underline text-gray-900'>
-                                                <div className='font-bold mb-10'>Marketplace</div>
+                                                <div className='font-bold mb-3'>Marketplace</div>
                                                 <div className='text-sm'>Explore market place and buy a new stocks </div>
                                             </div>
                                         </div>
@@ -786,8 +786,8 @@ const PortfolioDetails = () => {
 
                         {/*Watchlist Modal */}
                         <div className={showWatchlistModal ? "add-stock-modal hidden":"hidden"}>
-                            <div className="mb-20 flex items-center justify-between">
-                                <div className="text-2xl text-green-900 font-gotham-black-regular font-bold mb-10">My Watchlists</div>
+                            <div className="3 flex items-center justify-between">
+                                <div className="text-2xl text-green-900 font-bold mb-3">My Watchlists</div>
 
                                 <div className='cursor-pointer' onClick={displayAddNewStockModal}>
                                     <img width="20" src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
@@ -796,18 +796,18 @@ const PortfolioDetails = () => {
 
                             <div>
                                 {watchListStocks.length === 0 ? 'No stocks in your watchlist.' : watchListStocks.map((item: any, index: number) =>
-                                    <div className="card mb-20 p-3" key={index}>
+                                    <div className="card 3 p-3" key={index}>
                                         <div className="flex justify-between items-center">
                                             <div><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" width="25"/></div>
 
-                                            <div className="font-bold text-color-2 text-sm">{item.name}</div>
+                                            <div className="font-bold text-sm">{item.name}</div>
 
                                             <div className="text-ellipsis overflow-hidden text-sm">{item.name}</div>
 
-                                            <div className="font-bold text-color-2 text-right text-sm">₦ {HelperFunctions.formatCurrencyWithDecimal(parseFloat(item.currentPrice))}</div>
+                                            <div className="font-bold text-right text-sm">₦ {HelperFunctions.formatCurrencyWithDecimal(parseFloat(item.currentPrice))}</div>
 
                                             <div className='flex justify-between space-x-2 cursor-pointer'>
-                                                <Form.Check onChange={selectStockToMove} data-value={item.id} type="checkbox" className='portfoliolist-checkbox cursor-pointer' />
+                                                <input onChange={selectStockToMove} data-value={item.id} type="checkbox" className='portfoliolist-checkbox cursor-pointer' />
                                             </div>
                                         </div>
                                     </div>
@@ -824,8 +824,8 @@ const PortfolioDetails = () => {
 
                         {/*Marketplace Modal */}
                         <div className={showMarketplaceModal ? "add-stock-modal":"hidden"}>
-                            <div className="mb-20 flex items-center justify-between">
-                                <div className="text-2xl text-green-900 font-gotham-black-regular font-bold mb-10">Market Place</div>
+                            <div className="3 flex items-center justify-between">
+                                <div className="text-2xl text-green-900 font-bold mb-3">Market Place</div>
 
                                 <div className='cursor-pointer' onClick={displayAddNewStockModal}>
                                     <img width="20" src={ArrowBackIcon} alt="" className="cursor-pointer align-middle" /> Back
@@ -835,15 +835,15 @@ const PortfolioDetails = () => {
                             <div style={{overflowY:'scroll', maxHeight: '20rem'}}>
                                 {stocksList.map((el: any, ind: number) =>
                                     el.map((item: any, index: any) =>
-                                        <div className="card mb-20 p-5" key={index}>
+                                        <div className="card 3 p-5" key={index}>
                                             <div className="flex justify-between items-center">
                                                 <div><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" width="25"/></div>
 
-                                                <div className="font-bold text-color-2 text-sm">{item.symbol}</div>
+                                                <div className="font-bold text-sm">{item.symbol}</div>
 
                                                 <div className="text-ellipsis overflow-hidden text-sm">{item.name}</div>
 
-                                                <div className="font-bold text-color-2 text-right text-sm">₦ {HelperFunctions.formatCurrencyWithDecimal(item.close)}</div>
+                                                <div className="font-bold text-right text-sm">₦ {HelperFunctions.formatCurrencyWithDecimal(item.close)}</div>
 
                                                 <div className='flex justify-between space-x-2 cursor-pointer'>
                                                     <Link to={"/stock?name=" + item.name + "&sector=" + item.sector + "&symbol=" + item.symbol + "&sign=" + (item.sign === '+' ? 'positive' : 'negative') + "&change=" + item.change + "&close=" + item.close + "&open=" + item.open + "&high=" + item.high + "&low=" + item.low + "&wkhigh=" + item.weekHigh52 + "&wklow=" + item.weekLow52 + "&volume=" + item.volume + "&mktsegment=" + item.mktSegment + "&pclose=" + item.pclose + "&tradeAction=buy"}>
@@ -866,7 +866,7 @@ const PortfolioDetails = () => {
                         {/*Portfolio List Modal */}
                         <div className={showPortfolioListModal ? "portfoliolist-modal" : "portfoliolist-modal hidden"}>
                             {/* Stock add  Success */}
-                            <div className={isStockAddToPortfolioSuccessful ? "otp-alert mb-20" : "hidden"}>
+                            <div className={isStockAddToPortfolioSuccessful ? "otp-alert 3" : "hidden"}>
                                 <div className="flex otp-validated justify-between space-x-1 pt-3">
                                     <div className="flex">
                                         <div>
@@ -882,7 +882,7 @@ const PortfolioDetails = () => {
                             </div>
                             {/* End */}
 
-                            <div className={showloader ? 'absolute w-full z-10 top-1/3' : 'absolute w-full z-10 top-1/3 hidden'}>
+                            <div className={showloader ? 'absolute w-full z-10 top-1/3' : ' hidden'}>
                                 <div className='relative text-center w-90pc'>
                                     <img src={SpinnerHolderIcon} alt="" width='120' />
                                     <img src={SpinnerIcon} alt="" width='50' className='absolute left-47pc top-1/4' />
@@ -892,10 +892,10 @@ const PortfolioDetails = () => {
                             <div>
                                 <div className='flex justify-between '>
                                     <div>
-                                        <div className="text-xl text-green-900 font-gotham-black-regular font-bold mb-10">
+                                        <div className="text-xl text-green-900 font-bold mb-3">
                                             Portfolio List
                                         </div>
-                                        <div className="font-bold mb-30">Select the stocks you want to move to this porfolio</div>
+                                        <div className=" mb-5">Select the stocks you want to move to this porfolio</div>
                                     </div>
 
                                     <div className='cursor-pointer' onClick={displayAddNewStockModal}>
@@ -903,17 +903,19 @@ const PortfolioDetails = () => {
                                     </div>
                                 </div>
 
-                                <div className='mb-20'>
-                                    <div className='overscroll-y-auto max-h-96 overflow-y-auto px-5'>
+                                <div className='mb-5'>
+                                    <div className='overscroll-y-auto max-h-96 overflow-y-auto'>
                                         {portfolioList.map((item :any, index :any) =>
-                                        <div className={portfolioDetails.name === item.name ? 'hidden':''}>
-                                            <Accordion defaultActiveKey="0" className='mb-30 portfoliolist-accordion'>
-                                                <Accordion.Item eventKey="0">
-                                                    <Accordion.Header className='portfoliolist-accordion-header m-0 bg-transparent font-bold'>{item.name}</Accordion.Header>
+                                        <div className={portfolioDetails.name === item.name ? 'hidden':'border mb-3 rounded-lg shadow-sm'}>
+                                            <div className='mb-3'>
+                                                <div>
+                                                    <div className='m-0 bg-transparent font-bold p-3' style={{borderBottom: '1px solid #eee'}}>
+                                                        {item.name}
+                                                    </div>
 
-                                                    <Accordion.Body>
+                                                    <div className='p-3'>
                                                         {item.listOfStocks.map((item :any, index :any) =>
-                                                            <div className="card mb-20 p-3" key={index}>
+                                                            <div className="p-3 mb-3" key={index}>
                                                                 <div className="flex justify-between items-center">
                                                                     <div><img src={Math.floor(Math.random() * 4) === 1 ? GreenBoxIcon : Math.floor(Math.random() * 4) === 2 ? RedBoxIcon : BlueBoxIcon} alt="" width="25"/></div>
                     
@@ -924,15 +926,15 @@ const PortfolioDetails = () => {
                                                                     <div className="font-bold text-color-2 text-right text-sm">₦ {HelperFunctions.formatCurrencyWithDecimal(item.price)}</div>
                     
                                                                     <div className='flex justify-between space-x-2 cursor-pointer'>
-                                                                        <Form.Check onChange={selectStockToMove} data-value={item.id} type="checkbox" className='portfoliolist-checkbox cursor-pointer' />
+                                                                        <input onChange={selectStockToMove} data-value={item.id} type="checkbox" className='cursor-pointer' />
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         )}
-                                                    </Accordion.Body>
+                                                    </div>
 
-                                                </Accordion.Item>
-                                            </Accordion>
+                                                </div>
+                                            </div>
                                         </div>
                                         )}
                                     </div>
@@ -958,11 +960,11 @@ const PortfolioDetails = () => {
                                 <div className="bg-white p-3 w-full -bottom-10 absolute"></div>
                             </div>
 
-                            <div className="relative z-10 text-green-900 font-gotham-black-regular text-3xl text-center mb-20">Successful</div>
+                            <div className="relative z-10 text-green-900 text-3xl text-center 3">Successful</div>
 
-                            <div className="text-color-4 text-sm text-center mb-14">Your portfolio has been successfully created</div>
+                            <div className="text-color-4 text-sm text-center mb-3">Your portfolio has been successfully created</div>
 
-                            <div className="flex space-x-5 mb-30">
+                            <div className="flex space-x-5 mb-3">
                                 <button onClick={closeModal} type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer">Close</button>
 
                                 <button onClick={closeModal} type="button" className="py-4 w-full font-bold bg-green-900 text-white rounded-lg border-0 cursor-pointer">Okay</button>
@@ -971,8 +973,8 @@ const PortfolioDetails = () => {
 
                         {/*Delete Modal */}
                         <div className="set-price-alert-modal rounded-lg hidden">
-                            <div className="mb-10 flex justify-between">
-                                <div className="font-bold text-3xl text-green-900 font-gotham-black-regular"></div>
+                            <div className="mb-3 flex justify-between">
+                                <div className="font-bold text-3xl text-green-900 "></div>
 
                                 <div onClick={closeModal}>
                                     <img src={CloseIcon} alt="" className="cursor-pointer" />
@@ -982,31 +984,19 @@ const PortfolioDetails = () => {
                             <div>
                                 {/* Delete Success */}
                                 <div >
-                                    <div className="flex otp-validated justify-between space-x-1 pt-3">
+                                    <div className="flex otp-validated justify-between space-x-1 p-3">
                                         <div className="flex">
-                                            <div>
-                                                <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM12 20C7.589 20 4 16.411 4 12C4 7.589 7.589 4 12 4C16.411 4 20 7.589 20 12C20 16.411 16.411 20 12 20Z" fill="#2AD062"/>
-                                                    <path d="M9.99909 13.587L7.70009 11.292L6.28809 12.708L10.0011 16.413L16.7071 9.70697L15.2931 8.29297L9.99909 13.587Z" fill="#2AD062"/>
-                                                </svg>
-                                            </div>
 
-                                            <div className="pt-1 text-sm text-green-900">{apiResponseSuccessMsg}</div>
-                                        </div>
-                                        
-                                        <div className="cursor-pointer">
-                                            <svg  className="" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path fillRule="evenodd" clipRule="evenodd" d="M13.4143 12.0002L18.7072 6.70725C19.0982 6.31625 19.0982 5.68425 18.7072 5.29325C18.3162 4.90225 17.6842 4.90225 17.2933 5.29325L12.0002 10.5862L6.70725 5.29325C6.31625 4.90225 5.68425 4.90225 5.29325 5.29325C4.90225 5.68425 4.90225 6.31625 5.29325 6.70725L10.5862 12.0002L5.29325 17.2933C4.90225 17.6842 4.90225 18.3162 5.29325 18.7072C5.48825 18.9022 5.74425 19.0002 6.00025 19.0002C6.25625 19.0002 6.51225 18.9022 6.70725 18.7072L12.0002 13.4143L17.2933 18.7072C17.4882 18.9022 17.7443 19.0002 18.0002 19.0002C18.2562 19.0002 18.5122 18.9022 18.7072 18.7072C19.0982 18.3162 19.0982 17.6842 18.7072 17.2933L13.4143 12.0002Z" fill="#353F50"/>
-                                            </svg>
+                                            <div className="text-sm text-green-900">{apiResponseSuccessMsg}</div>
                                         </div>
                                     </div>
                                 </div>
                                 {/* End */}
 
-                                <div className='text-center mb-20'>
+                                <div className='text-center 3'>
                                     <img  alt='' />
                                 </div>
-                                <div className='text-red-500 font-bold text-3xl text-center mb-30'>Delete Portfolio</div>
+                                <div className='text-red-500 font-bold text-3xl text-center mb-3'>Delete Portfolio</div>
                                 <div className='text-center my-8 hidden'>Enter your transaction to PIN confirm</div>
                                 <div className='font-bold text-center my-5 hidden'>Enter PIN</div>
                                 <div className='flex space-x-3 my-10 hidden'>
@@ -1017,7 +1007,7 @@ const PortfolioDetails = () => {
                                 </div>
                             </div>
 
-                            <div className="flex space-x-5 mb-10">
+                            <div className="flex space-x-5 mb-3">
                                 <button type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer" onClick={closeModal}>Cancel</button>
 
                                 <button  type="button" className="py-4 w-full font-bold bg-red-500 text-white rounded-lg border-0 cursor-pointer">
@@ -1029,15 +1019,20 @@ const PortfolioDetails = () => {
                         {/*End */}
 
                         {/* Modal BG*/}
-                        <div className={showModalBG ? "modal-backdrop opacity-40" : "modal-backdrop opacity-40 hidden"}>
+                        <div className={showModalBG ? "modal-backdrop opacity-40" : " hidden"}>
                         </div>
                         {/* End */}
 
                         {/* Page Loader Section */}
                         <div className={showPageLoader ? "page-loader-backdrop opacity-90" : "hidden"}>
-                            <div className='w-96 relative lg:ml-72'>
-                                <div className='absolute top-44pc left-46pt5pc'><img src={AnchoriaIcon} alt="" /></div>
-                                <div className='text-center'><img src={AnchoriaSpinner} alt="" /></div>
+                            <div className='relative'>
+                                <div className='ml-96 w-1/3 text-center relative'>
+                                    <img src={AnchoriaSpinner} alt="" />
+
+                                    <div className='absolute' style={{left : '15.2rem', top: '5.4rem'}}>
+                                        <img src={AnchoriaIcon} alt="" />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         {/* End */}
