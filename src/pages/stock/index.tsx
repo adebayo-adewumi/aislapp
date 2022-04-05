@@ -553,7 +553,7 @@ const Stock = () => {
     function calculateBuyStockOrderEstimate() {
         let customer = HelperFunctions.getCustomerInfo();
 
-        let durationArr = ["End of day", "Fill or Kill", "Immediate or Cancel", "Good till Cancelled"];
+        let durationArr = ["End of day", "Fill or Kill", "Immediate or Cancel", "Good till Date"];
         let tradeActionArr = ["0", "4", "3", "1"];
         let durationIndex = durationArr.indexOf(duration);
 
@@ -610,7 +610,7 @@ const Stock = () => {
     function calculateSellStockOrderEstimate() {
         let customer = HelperFunctions.getCustomerInfo();
 
-        let durationArr = ["End of day", "Fill or Kill", "Immediate or Cancel", "Good till Cancelled"];
+        let durationArr = ["End of day", "Fill or Kill", "Immediate or Cancel", "Good till Date"];
         let tradeActionArr = ["0", "4", "3", "1"];
         let durationIndex = durationArr.indexOf(duration);
 
@@ -668,7 +668,7 @@ const Stock = () => {
     function tradeStock() {
         let customer = HelperFunctions.getCustomerInfo();
 
-        let durationArr = ["End of day", "Fill or Kill", "Immediate or Cancel", "Good till Cancelled"];
+        let durationArr = ["End of day", "Fill or Kill", "Immediate or Cancel", "Good till Date"];
         let tradeActionArr = ["0", "4", "3", "1"];
         let durationIndex = durationArr.indexOf(duration);
 
@@ -1927,7 +1927,7 @@ const Stock = () => {
                                         <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
                                             <div className=' mb-3 font-bold' onClick={selectDuration} data-value="Good till Date">Good till Date</div>
 
-                                            <div className='text-xs' onClick={selectDuration} data-value="Good till Cancelled">Order should remain open in the market till set date</div>
+                                            <div className='text-xs' onClick={selectDuration} data-value="Good till Date">Order should remain open in the market till set date</div>
                                             
                                             <div onClick={selectDuration} className='element-cover' data-value="Good till Date"></div>
                                         </li>
@@ -1989,11 +1989,11 @@ const Stock = () => {
                                         </li>
 
                                         <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                            <div className=' mb-3 font-bold' onClick={selectDuration} data-value="Good till Cancelled">Good till Cancelled</div>
+                                            <div className=' mb-3 font-bold' onClick={selectDuration} data-value="Good till Date">Good till Date</div>
 
-                                            <div className='text-xs' onClick={selectDuration} data-value="Good till Cancelled">Order should remain open in the market till set date</div>
+                                            <div className='text-xs' onClick={selectDuration} data-value="Good till Date">Order should remain open in the market till set date</div>
                                             
-                                            <div onClick={selectDuration} className='element-cover' data-value="Good till Cancelled"></div>
+                                            <div onClick={selectDuration} className='element-cover' data-value="Good till Date"></div>
                                         </li>
                                     </ul>
                                 </div>
@@ -2050,11 +2050,11 @@ const Stock = () => {
                                                 </li>
 
                                                 <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                                    <div className=' mb-3 font-bold' onClick={selectDuration} data-value="Good till Cancelled">Good till Cancelled</div>
+                                                    <div className=' mb-3 font-bold' onClick={selectDuration} data-value="Good till Date">Good till Date</div>
 
-                                                    <div className='text-xs' onClick={selectDuration} data-value="Good till Cancelled">Order should remain open in the market till set date</div>
+                                                    <div className='text-xs' onClick={selectDuration} data-value="Good till Date">Order should remain open in the market till set date</div>
                                                     
-                                                    <div onClick={selectDuration} className='element-cover' data-value="Good till Cancelled"></div>
+                                                    <div onClick={selectDuration} className='element-cover' data-value="Good till Date"></div>
                                                 </li>
                                             </ul>
                                         </div>
@@ -2103,9 +2103,9 @@ const Stock = () => {
                                         </li>
 
                                         <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                            <div className=' mb-5 text-sm font-bold'>Good till Cancelled</div>
+                                            <div className=' mb-5 text-sm font-bold'>Good till Date</div>
                                             <div className='text-xs'>Order should remain open in the market till set date</div>
-                                            <div onClick={selectDuration} className='element-cover' data-value="Good till Cancelled"></div>
+                                            <div onClick={selectDuration} className='element-cover' data-value="Good till Date"></div>
                                         </li>
                                     </ul>
                                 </div>
@@ -2281,30 +2281,34 @@ const Stock = () => {
                                 </div>
 
                                 {/* Order Types Description */}
-                                <div className={showOrderTypeDropdown ? 'bg-white shadow top-10 p-3 absolute border left-0 rounded-lg w-1/2' : 'hidden'}>
+                                <div className={showOrderTypeDropdown ? 'bg-white shadow -top-48 p-3 absolute border left-0 rounded-lg w-1/2' : 'hidden'}>
                                     <div className=' text-lg text-green-900 mb-3'>Order Type</div>
 
                                     <ul className='list-none m-0 p-0 rounded-lg'>
                                         <li className='order-type-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative' style={{borderBottom:'1px solid rgba(243, 244, 246, 1)'}}>
-                                            <div className=' mb-3 font-bold text-sm'>Market</div>
-                                            <div className='text-xs'>Instantly sell units of shares. </div>
+                                            <div className=' mb-3 font-bold text-sm' onClick={selectOrderType} data-value="Market">Market</div>
+                                            
+                                            <div className='text-xs' onClick={selectOrderType} data-value="Market">Instantly sell units of shares. </div>
+                                            
                                             <div onClick={selectOrderType} className='element-cover' data-value="Market"></div>
                                         </li>
 
                                         <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1' style={{borderBottom:'1px solid rgba(243, 244, 246, 1)'}}>
-                                            <div className=' mb-3 text-sm font-bold'>Limit</div>
-                                            <div className='text-xs'>- Place order based on preferred maximum amount to receive share.</div>
+                                            <div className=' mb-3 text-sm font-bold' data-value="Limit" onClick={selectOrderType}>Limit</div>
+                                            
+                                            <div className='text-xs' onClick={selectOrderType} data-value="Limit">- Place order based on preferred maximum amount to receive share.</div>
+
                                             <div onClick={selectOrderType} className='element-cover' data-value="Limit"></div>
                                         </li>
 
-                                        <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1' style={{borderBottom:'1px solid rgba(243, 244, 246, 1)'}}>
+                                        <li className='order-type-list hidden relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1' style={{borderBottom:'1px solid rgba(243, 244, 246, 1)'}}>
                                             <div className=' mb-5 text-sm font-bold'>Stop Loss</div>
                                             <div className='text-xs'>Place order based on price tolerance for a sell.</div>
                                             <div onClick={selectOrderType} className='element-cover' data-value="Stop Loss"></div>
                                         </li>
 
-                                        <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1' >
-                                            <div className=' mb-5 text-sm font-bold'>Stop Limit</div>
+                                        <li className='order-type-list hidden relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1' >
+                                            <div className=' mb-3 text-sm font-bold'>Stop Limit</div>
                                             <div className='text-xs'>Place order based on minimum limit for sell.</div>
                                             <div onClick={selectOrderType} className='element-cover' data-value="Stop Limit"></div>
                                         </li>
@@ -2333,32 +2337,38 @@ const Stock = () => {
                                 </div>
 
                                 {/*Duration Dropdown */}
-                                <div className={showLimitDurationDropdown ? 'bg-white shadow top-10 p-3 absolute border right-0 rounded-lg w-1/2' : 'hidden'}>
+                                <div className={showLimitDurationDropdown ? 'bg-white shadow -top-56 p-3 absolute border right-0 rounded-lg w-1/2' : 'hidden'}>
                                     <div className=' text-lg text-green-900 mb-3'>Duration</div>
 
                                     <ul className='list-none m-0 p-0'>
                                         <li className='duration-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative' style={{borderBottom:'1px solid rgba(243, 244, 246, 1)'}}>
-                                            <div className=' mb-5 text-sm font-bold'>End of day</div>
-                                            <div className='text-xs'>Order should be executed before end of  day, else, cancelled</div>
+                                            <div className=' mb-5 text-sm font-bold' onClick={selectDuration} data-value="End of day">End of day</div>
+                                            
+                                            <div className='text-xs' onClick={selectDuration} data-value="End of day">Order should be executed before end of  day, else, cancelled</div>
+                                            
                                             <div onClick={selectDuration} className='element-cover' data-value="End of day"></div>
                                         </li>
 
-                                        <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1' style={{borderBottom:'1px solid rgba(243, 244, 246, 1)'}}>
+                                        <li className='duration-list relative  hidden cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1' style={{borderBottom:'1px solid rgba(243, 244, 246, 1)'}}>
                                             <div className=' mb-5 text-sm font-bold'>Fill or Kill</div>
+                                            
                                             <div className='text-xs'>Order should be filled immediately, else, cancelled</div>
+                                            
                                             <div onClick={selectDuration} className='element-cover' data-value="Fill or Kill"></div>
                                         </li>
 
-                                        <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1' style={{borderBottom:'1px solid rgba(243, 244, 246, 1)'}}>
+                                        <li className='duration-list relative hidden cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1' style={{borderBottom:'1px solid rgba(243, 244, 246, 1)'}}>
                                             <div className=' mb-5 text-sm font-bold'>Immediate or Cancel</div>
                                             <div className='text-xs'>Order can be partly filled immediately, units not filled immediately should be cancelled</div>
                                             <div onClick={selectDuration} className='element-cover' data-value="Immediate or Cancel"></div>
                                         </li>
 
                                         <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                            <div className=' mb-5 text-sm font-bold'>Good till Cancelled</div>
-                                            <div className='text-xs'>Order should remain open in the market till set date</div>
-                                            <div onClick={selectDuration} className='element-cover' data-value="Good till Cancelled"></div>
+                                            <div className=' mb-5 text-sm font-bold' onClick={selectDuration} data-value="Good till Date">Good till Date</div>
+                                            
+                                            <div className='text-xs' onClick={selectDuration} data-value="Good till Date">Order should remain open in the market till set date</div>
+                                            
+                                            <div onClick={selectDuration} className='element-cover' data-value="Good till Date"></div>
                                         </li>
                                     </ul>
                                 </div>
@@ -2418,11 +2428,11 @@ const Stock = () => {
                                         </li>
 
                                         <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                            <div className=' mb-3 text-sm font-bold' onClick={selectDuration} data-value="Good till Cancelled">Good till Cancelled</div>
+                                            <div className=' mb-3 text-sm font-bold' onClick={selectDuration} data-value="Good till Date">Good till Date</div>
                                             
-                                            <div className='text-xs' onClick={selectDuration} data-value="Good till Cancelled">Order should remain open in the market till set date</div>
+                                            <div className='text-xs' onClick={selectDuration} data-value="Good till Date">Order should remain open in the market till set date</div>
                                             
-                                            <div onClick={selectDuration} className='element-cover' data-value="Good till Cancelled"></div>
+                                            <div onClick={selectDuration} className='element-cover' data-value="Good till Date"></div>
                                         </li>
                                     </ul>
                                 </div>
@@ -2479,11 +2489,11 @@ const Stock = () => {
                                                 </li>
 
                                                 <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                                    <div className=' mb-3 text-sm font-bold' onClick={selectDuration} data-value="Good till Cancelled">Good till Cancelled</div>
+                                                    <div className=' mb-3 text-sm font-bold' onClick={selectDuration} data-value="Good till Date">Good till Date</div>
                                                     
-                                                    <div className='text-xs' onClick={selectDuration} data-value="Good till Cancelled">Order should remain open in the market till set date</div>
+                                                    <div className='text-xs' onClick={selectDuration} data-value="Good till Date">Order should remain open in the market till set date</div>
                                                     
-                                                    <div onClick={selectDuration} className='element-cover' data-value="Good till Cancelled"></div>
+                                                    <div onClick={selectDuration} className='element-cover' data-value="Good till Date"></div>
                                                 </li>
                                             </ul>
                                         </div>
@@ -2536,11 +2546,11 @@ const Stock = () => {
                                         </li>
 
                                         <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                            <div className=' mb-3 text-sm font-bold' onClick={selectDuration} data-value="Good till Cancelled">Good till Cancelled</div>
+                                            <div className=' mb-3 text-sm font-bold' onClick={selectDuration} data-value="Good till Date">Good till Date</div>
                                             
-                                            <div className='text-xs' onClick={selectDuration} data-value="Good till Cancelled">Order should remain open in the market till set date</div>
+                                            <div className='text-xs' onClick={selectDuration} data-value="Good till Date">Order should remain open in the market till set date</div>
                                             
-                                            <div onClick={selectDuration} className='element-cover' data-value="Good till Cancelled"></div>
+                                            <div onClick={selectDuration} className='element-cover' data-value="Good till Date"></div>
                                         </li>
                                     </ul>
                                 </div>
