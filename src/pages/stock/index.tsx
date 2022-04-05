@@ -2584,7 +2584,7 @@ const Stock = () => {
             {/* End */}
 
             {/* Order Summary Modal */}
-            <div className={showOrderSummaryModal ? 'generic-modal' : 'generic-modal'}>
+            <div className={showOrderSummaryModal ? 'generic-modal' : 'hidden'}>
                 <div className='generic-modal-dialog'>
                     <div className="buy-stocks-modal rounded-lg">
 
