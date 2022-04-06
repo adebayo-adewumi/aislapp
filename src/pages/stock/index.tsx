@@ -973,21 +973,34 @@ const Stock = () => {
 
 
     function addStockToWatchlist() {
-        console.log('...testing')
+        console.log('first testing');
+
         let watchlist = JSON.parse(localStorage.getItem("aislUserWatchlist") as string);
+
+        console.log('2 testing')
 
         const requestData = {
             "stockSymbols": [stockSymbol],
             "watchlistId": watchlist.data.watchlistId
         }
 
+        console.log('3 testing')
+
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
+
+        console.log('4 testing')
         
         localStorage.setItem('genericCypher', genericCypher);
 
+        console.log('5testing')
+
         setShowSpinner(true);
 
+        console.log('6testing')
+
         if (localStorage.getItem('genericCypher')) {
+
+            console.log('7 testing')
 
             getAxios(axios).post(stockTradingServiceBaseUrlUrl + '/watchlist/add-stock',
                 {
@@ -1000,6 +1013,8 @@ const Stock = () => {
                 })
                 .catch(function (error) {
                 });
+            
+                console.log('8 testing')
         }
     }
 
