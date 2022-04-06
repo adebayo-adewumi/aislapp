@@ -990,8 +990,6 @@ const Stock = () => {
 
 
     function addStockToWatchlist() {
-        
-        console.log(watchlistId)
 
         const requestData = {
             "stockSymbols": [stockSymbol],
@@ -1765,12 +1763,7 @@ const Stock = () => {
 
                         <div className="flex space-x-5">
 
-                            <button onClick={addStockToWatchlist} type="button" className="w-full bg-green-900 rounded-lg text-white p-4 font-bold text-lg border-0 focus:shadow-outline cursor-pointer">
-                                <span className={showSpinner ? "hidden" : ""}>Add</span>
-                                <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="30" />
-                            </button>
-
-                            <button onClick={addStockToWatchlist} type="button" className="w-full bg-green-900 rounded-lg text-white p-4 font-bold text-lg border-0 focus:shadow-outline cursor-pointer"><span className={showSpinner ? "hidden" : ""}>Cancel</span>
+                            <button onClick={addStockToWatchlist} type="button" className="w-full bg-green-900 rounded-lg text-white p-4 font-bold text-lg border-0 focus:shadow-outline cursor-pointer"><span className={showSpinner ? "hidden" : ""}>Add</span>
                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="30" />
                             </button>
                         </div>
