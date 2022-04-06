@@ -1747,9 +1747,8 @@ const Stock = () => {
                         </div>
 
                         <div className="flex space-x-5">
-                            <button type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer" onClick={closeModal}>Cancel</button>
 
-                            <button onClick={addStockToWatchlist} type="button" className="py-4 w-full font-bold bg-green-900 text-white rounded-lg border-0 cursor-pointer">
+                            <button onClick={addStockToWatchlist} type="button" className="w-full bg-green-900 rounded-lg text-white p-4 font-bold text-lg border-0 focus:shadow-outline cursor-pointer">
                                 <span className={showSpinner ? "hidden" : ""}>Add</span>
                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="30" />
                             </button>
