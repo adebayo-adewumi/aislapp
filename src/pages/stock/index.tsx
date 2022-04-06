@@ -980,7 +980,7 @@ const Stock = () => {
         console.log('2 testing')
 
         console.log(stockSymbol)
-        console.log(watchlist.data.watchlistId)
+        console.log(watchlist)
 
         const requestData = {
             "stockSymbols": [stockSymbol],
