@@ -295,7 +295,7 @@ const Forgot = () => {
 
                         {/* VERIFY OTP Section */}
                         <div className={showVerifyOTPCard ? 'relative':'hidden'}>
-                            <div className="mx-auto reset-password-link-confirmation-container mt-32">
+                            <div className="mx-auto reset-password-link-confirmation-container top-32">
 
                                 {/* otp Error */}
                                 <div className={otpHasError ? "error-alert mb-3":"hidden"}>
@@ -331,7 +331,7 @@ const Forgot = () => {
 
                         {/* RESET PASSWORD Section */}
                         <div className={showResetPasswordCard ? 'relative':'hidden'}>
-                            <div className= "mx-auto reset-password-link-confirmation-container mt-32">
+                            <div className= "mx-auto reset-password-link-confirmation-container top-32">
 
                                 {/* reset Error */}
                                 <div className={resetHasError ? "error-alert mb-3":"hidden"}>
