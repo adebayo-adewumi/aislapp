@@ -973,6 +973,7 @@ const Stock = () => {
 
 
     function addStockToWatchlist() {
+        console.log('...testing')
         let watchlist = JSON.parse(localStorage.getItem("aislUserWatchlist") as string);
 
         const requestData = {
@@ -980,9 +981,8 @@ const Stock = () => {
             "watchlistId": watchlist.data.watchlistId
         }
 
-        ;
-
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
+        
         localStorage.setItem('genericCypher', genericCypher);
 
         setShowSpinner(true);
