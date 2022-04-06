@@ -979,6 +979,9 @@ const Stock = () => {
 
         console.log('2 testing')
 
+        console.log(stockSymbol)
+        console.log(watchlist.data.watchlistId)
+
         const requestData = {
             "stockSymbols": [stockSymbol],
             "watchlistId": watchlist.data.watchlistId
