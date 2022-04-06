@@ -96,7 +96,7 @@ const ForgotPin = () => {
                                     {/* End */}
 
                                     <div className="mb-8">
-                                        <div className="mb-3 text-sm">Email</div>
+                                        <div className="mb-3 text-sm font-bold">Email</div>
                                         
                                         <input value={email} onChange={e => setEmail(e.target.value)} placeholder="Enter your email address" className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500"/>
                                         
