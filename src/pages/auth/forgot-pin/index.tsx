@@ -154,13 +154,13 @@ const ForgotPin = () => {
         }
 
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
-        localStorage.setItem('genericCypher', genericCypher);
+        
 
         setShowSpinner(true);
 
-        getAxios(axios).post(authOnboardingServiceBaseUrl+'/customer/forgot-pin-with-token',
+        getAxios(axios).post(authOnboardingServiceBaseUrl+'/customer/create-pin',
         {
-            "text": localStorage.getItem('genericCypher')
+            "text": genericCypher
         })
         .then(function (response) {  
             setShowSpinner(false);
