@@ -134,7 +134,7 @@ const Stock = () => {
     const [portfolioIdArray, setPortfolioIdArray] = useState<string[]>([]);
     const [portfolioStockUnitArray, setPortfolioStockUnitArray] = useState<string[]>([]);
 
-    const [priceAlert, setPriceAlert] = useState('');
+    const [priceAlert, setPriceAlert] = useState('0.00');
     const [priceCondition, setPriceCondition] = useState('');
 
     const [transactionPin, setTransactionPin] = useState('');
@@ -1093,7 +1093,7 @@ const Stock = () => {
     }   
 
     function delineatePriceAlert(event :any) {
-        let newValue = event.target.value.replace(/[^\d]/gi, '');
+        let newValue = event.target.value.replace(/[^\d.]/gi, '');
 
         setPriceAlert(newValue);
     }
@@ -1644,7 +1644,7 @@ const Stock = () => {
                                 <div className='mb-5 flex space-x-5'>
                                     <div className='w-full'>
                                         <div className='font-bold mb-3 text-sm'>Enter Price</div>
-                                        <input type="text" value={priceAlert} onChange={delineatePriceAlert} className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500" />
+                                        <input type="number" value={priceAlert} onChange={delineatePriceAlert} className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500" />
                                     </div>
                                 </div>
                                 
@@ -1664,7 +1664,7 @@ const Stock = () => {
                                     <div className='mb-3 font-bold text-sm'>Transaction Pin</div>
 
                                     <div>
-                                        <input type="password" className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500' value={transactionPin} onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
+                                        <input type="password" className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500' value={transactionPin} onChange={e => setTransactionPin(e.target.value)} maxLength={4} autoComplete="off"/>
                                     </div>
                                 </div>
 
