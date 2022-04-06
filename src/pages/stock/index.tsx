@@ -1752,6 +1752,10 @@ const Stock = () => {
                                 <span className={showSpinner ? "hidden" : ""}>Add</span>
                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="30" />
                             </button>
+
+                            <button onClick={addStockToWatchlist} type="button" className="w-full bg-green-900 rounded-lg text-white p-4 font-bold text-lg border-0 focus:shadow-outline cursor-pointer"><span className={showSpinner ? "hidden" : ""}>Cancel</span>
+                                <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="30" />
+                            </button>
                         </div>
                     </div>
                 </div>
