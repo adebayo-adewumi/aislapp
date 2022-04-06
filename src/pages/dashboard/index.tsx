@@ -22,7 +22,7 @@ import moment from 'moment';
 import ArrowDownIcon from '../../assets/images/arrow-down.svg';
 import AnchoriaIcon from '../../assets/images/anchoria-icon.svg';
 import AnchoriaSpinner from '../../assets/images/anchoria-spinner.svg';
-import {authOnboardingServiceBaseUrl, getNewsEndpoint, getPortfolioEndpoint, getTopGainersEndpoint, getTopLosersEndpoint, getTopMoverByValueEndpoint, portfolioServiceBaseUrlUrl, stockTradingServiceBaseUrlUrl, utilityServiceBaseUrlUrl } from '../../apiUrls';
+import {authOnboardingServiceBaseUrl, getNewsEndpoint, getPortfolioEndpoint, getTopGainersEndpoint, getTopLosersEndpoint, getTopMoverByValueEndpoint, portfolioServiceBaseUrlUrl, utilityServiceBaseUrlUrl } from '../../apiUrls';
 import { getAxios } from '../../network/httpClientWrapper';
 
 const Dashboard = () => {
@@ -277,16 +277,7 @@ const Dashboard = () => {
                 });
         }
 
-        function getWatchlist() {
-            let customer = HelperFunctions.getCustomerInfo();
-
-            getAxios(axios).get(stockTradingServiceBaseUrlUrl + '/watchlist?customerId=' + customer.id)
-            .then(function (response) {
-                localStorage.SetItem("aislUserWatchlist", JSON.stringify(response.data.data));
-            })
-            .catch(function (error) {
-            });
-        }    
+        
 
         function testData() {
 
@@ -304,7 +295,6 @@ const Dashboard = () => {
         getNews();
         getPortfolioList();
         getTopMovers();
-        getWatchlist();
         testData();        
 
     }, []);
