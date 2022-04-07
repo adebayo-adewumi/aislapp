@@ -39,6 +39,8 @@ const Stock = () => {
     const [showNews, setShowNews] = useState<boolean>(false);
 
     const [showOrderSummaryModal, setShowOrderSummaryModal] = useState<boolean>(false);
+    const [showSellOrderSummaryModal, setShowSellOrderSummaryModal] = useState<boolean>(false);
+
     const [showAddToWatchListModal, setShowAddToWatchListModal] = useState<boolean>(false);
     const [showModalBG, setShowModalBG] = useState<boolean>(false);
     const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false);
@@ -81,6 +83,8 @@ const Stock = () => {
     const [offersList, setOffersList] = useState('');
 
     const [buyStockError, setBuyStockError] = useState('');
+    const [sellStockError, setSellStockError] = useState('');
+
     const [priceAlertError, setPriceAlertError] = useState('');
     const [priceEstimateError, setPriceEstimateError] = useState('');
     const [showPageLoader, setShowPageLoader] = useState<boolean>(true);
@@ -652,9 +656,7 @@ const Stock = () => {
             "smsPin": "1234",
             "timeInForce": tradeActionArr[durationIndex],
             "tradeAction": '0'
-        }
-
-        ;
+        };
 
         setShowSpinner(true);
 
@@ -662,7 +664,7 @@ const Stock = () => {
         localStorage.setItem('genericCypher', genericCypher);
 
 
-        getAxios(axios).post(stockTradingServiceBaseUrlUrl + '/stock/order/estimate',
+        getAxios(axios).post(stockTradingServiceBaseUrlUrl + '/stock/sell-order/estimate',
             {
                 "text": localStorage.getItem('genericCypher')
             })
@@ -755,12 +757,99 @@ const Stock = () => {
         
     }
 
+
+    function sellStock() {
+        let customer = HelperFunctions.getCustomerInfo();
+
+        let durationArr = ["End of day", "Fill or Kill", "Immediate or Cancel", "Good till Date"];
+        let tradeActionArr = ["0", "4", "3", "1"];
+        let durationIndex = durationArr.indexOf(duration);
+
+        let orderTypeArr = ["Market", "Limit", "Stop Loss", "Stop Limit"];
+        let orderTypeValue = ["49", "50", "51", "52"];
+        let orderTypeIndex = orderTypeArr.indexOf(orderType);
+
+        let requestData = {
+            "clientUniqueRef": customer.clientUniqueRef,
+            "currency": "NGN",
+            "custAid": customer.customerAid,
+            "orderType": orderTypeValue[orderTypeIndex],
+            "units": portfolioIdToAddStock,
+            "dateLimit": moment(Date.now()).format('YYYY-MM-DD'),
+            "effectiveDate": moment(Date.now()).format('YYYY-MM-DD'),
+            "priceLimit": priceToleranceAndLimit,
+            "smsPin": "1234",
+            "timeInForce": tradeActionArr[durationIndex],
+            "tradeAction": '1',
+            "stocksToSell": [
+                {
+                    "portfolioId": portfolioIdToAddStock,
+                    "stockCode": params.get('symbol'),
+                    "stockName": params.get('name'),
+                    "stockQty": totalUnitToSell
+                }
+            ]
+        }
+
+        setShowSpinner(true);
+
+        let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
+
+        let pinCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), transactionPin);
+        
+
+        let headers = {
+            'Authorization': 'Bearer ' + localStorage.getItem('aislUserToken'),
+            'x-firebase-token': '12222',
+            'x-transaction-pin': JSON.stringify({ text : pinCypher})
+        }
+
+        getAxios(axios).post(stockTradingServiceBaseUrlUrl + '/stock/' + params.get("tradeAction"),
+            {
+                "text": genericCypher
+        },{headers})
+        .then(function (response) {
+            setShowSpinner(false);
+
+            if (response.data.statusCode !== 200) {
+                setSellStockError(response.data.message);
+
+                setTimeout(() => {
+                    setSellStockError('');
+                }, 5000);
+            }
+            else {
+                setApiResponseSuccessMsg("Order placed successfully.")
+                setShowSuccessModal(true);
+                setShowAddToWatchListModal(false);
+                setShowTradeStockModal(false);
+                setShowOrderSummaryModal(false);
+                setShowSellOrderSummaryModal(false);
+            }
+        })
+        .catch(function (error) {
+            setShowSpinner(false);
+            setSellStockError(error.response.data.message);
+        });
+
+        
+    }
+
     function displayStockOrderSummaryModal() {
         setShowOrderSummaryModal(true);
         setShowModalBG(true);
         setShowTradeStockModal(false);
         setShowAddToWatchListModal(false);
         setShowSetPriceAlertModal(false);
+    }
+
+    function displaySellStockOrderSummaryModal() {
+        setShowOrderSummaryModal(false);
+        setShowModalBG(true);
+        setShowTradeStockModal(false);
+        setShowAddToWatchListModal(false);
+        setShowSetPriceAlertModal(false);
+        setShowSellOrderSummaryModal(false);
     }
 
     function displaySummary() {
@@ -930,18 +1019,21 @@ const Stock = () => {
             setFillOrKillDuration(false);
             setImmediateOrCancelDuration(false);
             setGoodTillCancelledDuration(false);
+            setShowGoodTillDateCalendar(false);
         }
         else if (elem.getAttribute("data-value") === 'Fill or Kill') {
             setEndOfDayDuration(false);
             setFillOrKillDuration(true);
             setImmediateOrCancelDuration(false);
             setGoodTillCancelledDuration(false);
+            setShowGoodTillDateCalendar(false);
         }
         else if (elem.getAttribute("data-value") === 'Immediate or Cancel') {
             setEndOfDayDuration(false);
             setFillOrKillDuration(false);
             setImmediateOrCancelDuration(true);
             setGoodTillCancelledDuration(false);
+            setShowGoodTillDateCalendar(false);
         }
         else {
             setEndOfDayDuration(false);
@@ -1957,7 +2049,7 @@ const Stock = () => {
                                 </div>
 
                                 <div className={showGoodTillDateCalendar ? '':'hidden'}>
-                                    <div className="mb-3">Enter Date</div>
+                                    <div className="mb-3 font-bold">Enter Date</div>
 
                                     <div className='relative flex justify-between items-center border rounded-lg'>
                                         <div className='w-full'>
@@ -2160,7 +2252,7 @@ const Stock = () => {
                                         <li className='order-type-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1' style={{borderBottom:'1px solid rgba(243, 244, 246, 1)'}}>
                                             <div className=' mb-3 text-sm font-bold' data-value="Limit" onClick={selectOrderType}>Limit</div>
                                             
-                                            <div className='text-xs' onClick={selectOrderType} data-value="Limit">- Place order based on preferred maximum amount to receive share.</div>
+                                            <div className='text-xs' onClick={selectOrderType} data-value="Limit">Place order based on preferred maximum amount to receive share.</div>
 
                                             <div onClick={selectOrderType} className='element-cover' data-value="Limit"></div>
                                         </li>
@@ -2182,21 +2274,23 @@ const Stock = () => {
                             </div>
 
                             {/* Limit - Order Type */}
-                            <div className={limitOrderType ? 'relative flex justify-between space-x-5 mb-3' : 'hidden'}>
-                                <div className='w-1/2'>
-                                    <div className="mb-3 text-sm font-bold">Maximum Limit</div>
+                            <div className={limitOrderType ? 'relative  mb-3' : 'hidden'}>
+                                <div className='flex justify-between space-x-5 mb-5'>
+                                    <div className='w-1/2'>
+                                        <div className="mb-3 text-sm font-bold">Maximum Limit</div>
 
-                                    <div>
-                                        <input onChange={delineatePriceToleranceAndLimit} type='text' className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500" placeholder='Maximum price per share' value={priceToleranceAndLimit} />
+                                        <div>
+                                            <input onChange={delineatePriceToleranceAndLimit} type='text' className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500" placeholder='Maximum price per share' value={priceToleranceAndLimit} />
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div className='w-1/2 relative cursor-pointer' onClick={displayLimitDuration}>
-                                    <div className="mb-3 text-sm font-bold">Duration</div>
+                                    <div className='w-1/2 relative cursor-pointer' onClick={displayLimitDuration}>
+                                        <div className="mb-3 text-sm font-bold">Duration</div>
 
-                                    <div className='flex justify-between font-bold items-center border p-3 rounded-lg'>
-                                        <div>{duration}</div>
-                                        <div><img src={ChevronDownIcon} alt='' /></div>
+                                        <div className='flex justify-between font-bold items-center border p-3 rounded-lg'>
+                                            <div>{duration}</div>
+                                            <div><img src={ChevronDownIcon} alt='' /></div>
+                                        </div>                                        
                                     </div>
                                 </div>
 
@@ -2235,8 +2329,25 @@ const Stock = () => {
                                             <div onClick={selectDuration} className='element-cover' data-value="Good till Date"></div>
                                         </li>
                                     </ul>
+
+
                                 </div>
-                                {/*End */}
+                                {/*End */}                                
+
+                                <div className={showGoodTillDateCalendar ? '':'hidden'}>
+                                    <div className="mb-3 font-bold">Enter Date</div>
+
+                                    <div className='relative flex justify-between items-center border rounded-lg'>
+                                        <div className='w-full'>
+                                            <input type="text" className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 font-bold focus:bg-white focus:ring-indigo-500" placeholder="Enter end date for your order" value={showDate} readOnly />
+                                        </div>
+                                        <div className='p-3 cursor-pointer' onClick={e => displayCalendar()}>
+                                            <img src={CalendarIcon} alt="" width="20" />
+                                        </div>
+
+                                        <Calendar onChange={changeDate} value={dateState} className={showCalendar ? "absolute z-10" : "hidden"} />
+                                    </div>                                            
+                                </div>
 
                             </div>
                             {/* End */}
@@ -2434,7 +2545,7 @@ const Stock = () => {
                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="30" />
                             </button>
 
-                            <button onClick={displayStockOrderSummaryModal} className={estimatedCost !== 0 ? 'w-full bg-green-900 rounded-lg text-white p-4 font-bold text-lg border-0 focus:shadow-outline cursor-pointer' : 'hidden'}>
+                            <button onClick={displaySellStockOrderSummaryModal} className={estimatedCost !== 0 ? 'w-full bg-green-900 rounded-lg text-white p-4 font-bold text-lg border-0 focus:shadow-outline cursor-pointer' : 'hidden'}>
                                 <span className={showSpinner ? "hidden" : ""}>Continue</span>
                                 <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="30" />
                             </button>
@@ -2608,6 +2719,167 @@ const Stock = () => {
                                 <div className="flex">
 
                                     <div className="text-sm">{buyStockError}</div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* End */}
+
+                    </div>
+                </div>
+            </div>
+            {/* End */}
+
+            {/* Sell Order Summary Modal */}
+            <div className={showSellOrderSummaryModal ? 'generic-modal' : 'hidden'}>
+                <div className='generic-modal-dialog'>
+                    <div className="buy-stocks-modal rounded-lg">
+
+                        {/* Buy Stock Error */}
+                        <div className={buyStockError === '' ? "hidden" : "error-alert mb-3"}>
+                            <div className="flex justify-between space-x-1 p-3">
+                                <div className="flex">
+
+                                    <div className="text-sm">{buyStockError}</div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* End */}
+
+                        <div className="mb-3 flex justify-between">
+                            <div>
+                                <div className="text-2xl text-green-900 mb-3">Order Summary</div>
+                                <div className='text-green-900'>Preview your investment</div>
+                            </div>
+
+                            <div onClick={closeModal} className='cursor-pointer'>
+                                <img src={CloseIcon} alt="" className="cursor-pointer" />
+                            </div>
+                        </div>
+
+                        <div className='mb-3'>
+                            <div className='mb-3'>
+                                <img src={AtlasIcon} alt="" className="align-middle border rounded-lg" />
+                                <span className="font-bold mx-3 text-xl">{params.get('symbol')}</span> |
+                                <span className=" mx-3">{params.get('name')}</span>
+                            </div>
+                        </div>
+
+                        
+                        <div className='mb-3' >
+                            <div className='mb-3 font-bold'>Current Price /Per Share</div>
+                            <div className=' text-3xl font-bold text-green-900'>₦ {stockInfo === '' ? '' : JSON.parse(stockInfo).price}</div>
+                        </div>
+                        
+
+                        <div className={params.get("tradeAction") === 'buy' ? 'mb-5' : 'hidden'} >
+                            <div className='mb-3'>Add this stocks to a portfolio <span className='text-yellow-700'>(Optional)</span></div>
+
+                            <div>
+                                <select className='block w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white bg-white focus:ring-indigo-500' onChange={getPortfolioIdToAddStock}>
+                                    <option value="qazsw">Select portfolio</option>
+                                    {portfolioList}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div className='mb-5'>
+                            <div className='mb-3'>Transaction Pin</div>
+
+                            <div>
+                                <input type="password" className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500' value={transactionPin} onChange={e => setTransactionPin(e.target.value)} maxLength={4}/>
+                            </div>
+                        </div>
+
+                        <div className='py-3 mb-5'>
+                            <div className='flex justify-between text-lg'>
+                                <div>Order Type</div>
+                                <div className='font-bold'>{orderType}</div>
+                            </div>
+                        </div>
+
+                        <div className='py-3 mb-5'>
+                            <div className='flex justify-between text-lg'>
+                                <div>Number of Shares</div>
+                                <div className='font-bold'>{stockUnit}</div>
+                            </div>
+                        </div>
+
+                        <div className={orderType !== 'Market' ? 'py-3 mb-5' : 'hidden'}>
+                            <div className='flex justify-between text-lg'>
+                                <div>Maximum Limit</div>
+                                <div className='font-bold'>₦ {priceToleranceAndLimit}</div>
+                            </div>
+                        </div>
+
+                        <div className={orderType !== 'Market' ? 'border' : 'hidden'}></div>
+
+                        <div className={orderType !== 'Market' ? 'py-3 mb-5' : 'hidden'}>
+                            <div className='flex justify-between text-lg'>
+                                <div>Price Tolerance</div>
+                                <div className='font-bold'>₦ {priceToleranceAndLimit}</div>
+                            </div>
+                        </div>
+
+                        <div className={orderType !== 'Market' ? 'border' : 'hidden'}></div>
+
+                        <div className={orderType !== 'Market' ? 'py-3 mb-6' : 'hidden'}>
+                            <div className='flex justify-between text-lg'>
+                                <div>Date</div>
+                                <div className='font-bold'>₦ {priceToleranceAndLimit}</div>
+                            </div>
+                        </div>
+
+                        <div className={orderType !== 'Market' ? 'border' : 'hidden'}></div>
+
+                        <div className={orderType !== 'Market' ? 'py-3 mb-5' : 'hidden'}>
+                            <div className='flex justify-between text-lg'>
+                                <div>Duration</div>
+                                <div className='font-bold'>{duration}</div>
+                            </div>
+                        </div>
+
+                        <div className={orderType !== 'Market' ? 'border' : 'hidden'}></div>
+
+                        
+                        <div className='py-3 mb-5' >
+                            <div className='flex justify-between text-lg'>
+                                <div>Cost</div>
+                                <div className='font-bold'>₦ {(stockInfo === '' ? '' : JSON.parse(stockInfo).price) * parseInt(stockUnit)}</div>
+                            </div>
+                        </div>
+                        
+
+                        
+                        <div className='py-3 mb-5' >
+                            <div className='flex justify-between text-lg'>
+                                <div>Fees</div>
+                                <div className='font-bold'>₦ {HelperFunctions.formatCurrencyWithDecimal(estimatedCost - (parseFloat(stockInfo === ''?'':JSON.parse(stockInfo).price) * parseInt(stockUnit))).replace('-','')}</div>
+                            </div>
+                        </div>
+
+                        <div className='py-3 mb-5'>
+                            <div className='font-bold flex justify-between text-lg'>
+                                <div>Total Cost</div>
+                                <div>₦ {HelperFunctions.formatCurrencyWithDecimal(estimatedCost)}</div>
+                            </div>
+                        </div>
+
+
+                        <div className='flex space-x-5 mb-5'>
+                            <button type="button" className="py-4 px-10  font-bold bg-gray-200 rounded-lg border-0 cursor-pointer" onClick={closeModal}>Cancel</button>
+
+                            <button onClick={sellStock} className='w-full bg-green-900 rounded-lg text-white p-4 font-bold text-lg border-0 focus:shadow-outline cursor-pointer'>
+                                <span className={showSpinner ? "hidden" : ""}>Confirm Order</span>
+                                <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="30" />
+                            </button>
+                        </div>
+
+                        {/* Buy Stock Error */}
+                        <div className={sellStockError === '' ? "hidden" : "error-alert mb-3"}>
+                            <div className="flex justify-between space-x-1 p-3">
+                                <div className="flex">
+
+                                    <div className="text-sm">{sellStockError}</div>
                                 </div>
                             </div>
                         </div>
