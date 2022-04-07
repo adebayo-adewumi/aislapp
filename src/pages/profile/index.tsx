@@ -1238,16 +1238,16 @@ const Profile = () => {
 
                                                 <select onChange={e => setIdType(e.target.value)} className="block  w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white bg-white border focus:ring-indigo-500" style={{width: '32rem'}}>
                                                     <option value={item.hasOwnProperty("idDetails") ? item.idDetails.idType : ""} className={item.hasOwnProperty("idDetails") ? "" : "hidden"}>
-                                                        {item.hasOwnProperty("idDetails") ? item.idDetails.idType : ""}
+                                                        {item.hasOwnProperty("idDetails") ? item.idDetails.idType.replace("_"," ") : ""}
                                                     </option>
 
                                                     <option value=''>...</option>
                                                     
-                                                    <option value="DRIVERS_LICENCE" className={item.hasOwnProperty("idDetails") ? (item.idDetails.idType === 'Drivers License' ? 'hidden':'') :''}>Drivers Licence</option>
+                                                    <option value="DRIVERS_LICENCE" className={item.hasOwnProperty("idDetails") ? (item.idDetails.idType === 'DRIVERS_LICENCE' ? 'hidden':'') :''}>DRIVERS LICENCE</option>
 
                                                     <option value="NIN" className={item.hasOwnProperty("idDetails") ? (item.idDetails.idType === 'NIN' ? 'hidden':'') : ''}>NIN</option>
 
-                                                    <option value="VOTER_ID" className={item.hasOwnProperty("idDetails") ? (item.idDetails.idType === 'Voters Card' ? 'hidden':'') : ''}>Voters Card</option>
+                                                    <option value="VOTER_ID" className={item.hasOwnProperty("idDetails") ? (item.idDetails.idType === 'VOTER_ID' ? 'hidden':'') : ''}>Voter ID</option>
                                                 </select>
 
                                                 <div className="pointer-events-none absolute inset-y-0 right-0 hidden items-center px-2 text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" className="fill-current h-4 w-4"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path></svg></div>
