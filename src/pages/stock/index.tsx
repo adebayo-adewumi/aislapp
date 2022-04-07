@@ -141,6 +141,8 @@ const Stock = () => {
 
     const [watchlistId, setWatchlistId] = useState('');
 
+    const [showGoodTillDateCalendar, setShowGoodTillDateCalendar] = useState<boolean>(false);
+
 
     let options = {
         chart: {
@@ -946,6 +948,7 @@ const Stock = () => {
             setFillOrKillDuration(false);
             setImmediateOrCancelDuration(false);
             setGoodTillCancelledDuration(true);
+            setShowGoodTillDateCalendar(true);
         }
     }
 
@@ -975,8 +978,11 @@ const Stock = () => {
 
     const changeDate = (e: any) => {
         setDateState(e);
+
         setShowDate(moment(e).format("DD - MM - YYYY"));
         setShowCalendar(false);
+
+        console.log(dateState);
     }
 
     function displayCalendar() {
@@ -1890,79 +1896,17 @@ const Stock = () => {
                             </div>
 
                             {/* Limit - Order Type */}
-                            <div className={limitOrderType ? 'relative flex justify-between space-x-5 mb-5' : 'hidden'}>
-                                <div className='w-1/2'>
-                                    <div className="mb-3">Maximum Limit</div>
-
-                                    <div>
-                                        <input onChange={delineatePriceToleranceAndLimit} type='text' className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500' placeholder='Maximum price per share' value={priceToleranceAndLimit} />
-                                    </div>
-                                </div>
-
-                                <div className='w-1/2 relative cursor-pointer' onClick={displayLimitDuration}>
-                                    <div className="mb-3">Duration</div>
-
-                                    <div className='flex justify-between font-bold items-center border p-3 rounded-lg'>
-                                        <div>{duration}</div>
-                                        <div><img src={ChevronDownIcon} alt='' /></div>
-                                    </div>
-                                </div>
-
-                                {/*Duration Dropdown */}
-                                <div className={showLimitDurationDropdown ? 'bg-white shadow -top-48 p-3 absolute border right-0 rounded-lg w-1/2' : 'hidden'}>
-                                    <div className=' text-lg text-green-900 mb-3'>Duration</div>
-
-                                    <ul className='list-none m-0 p-0'>
-                                        <li className='duration-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'  style={{borderBottom: '1px solid rgba(243, 244, 246, 1)'}}>
-                                            <div className=' mb-3 font-bold' onClick={selectDuration} data-value="End of day">End of day</div>
-
-                                            <div className='text-xs' onClick={selectDuration} data-value="End of day">Order should be executed before end of  day, else, cancelled</div>
-
-                                            <div onClick={selectDuration} className='element-cover' data-value="End of day"></div>
-                                        </li>
-
-                                        <li className='duration-list hidden relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1' style={{borderBottom: '1px solid rgba(243, 244, 246, 1)'}}>
-                                            <div className=' mb-3 font-bold' onClick={selectDuration} data-value="Fill or Kill">Fill or Kill</div>
-
-                                            <div className='text-xs' onClick={selectDuration} data-value="Fill or Kill">Order should be filled immediately, else, cancelled</div>
-                                            
-                                            <div onClick={selectDuration} className='element-cover' data-value="Fill or Kill"></div>
-                                        </li>
-
-                                        <li className='duration-list hidden relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1' style={{borderBottom: '1px solid rgba(243, 244, 246, 1)'}}>
-                                            <div className=' mb-3 font-bold' onClick={selectDuration}  data-value="Immediate or Cancel">Immediate or Cancel</div>
-                                            
-                                            <div className='text-xs' onClick={selectDuration} data-value="Immediate or Cancel">If number of units can not be filled immediately then cancel order</div>
-                                            
-                                            <div onClick={selectDuration} className='element-cover' data-value="Immediate or Cancel"></div>
-                                        </li>
-
-                                        <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                            <div className=' mb-3 font-bold' onClick={selectDuration} data-value="Good till Date">Good till Date</div>
-
-                                            <div className='text-xs' onClick={selectDuration} data-value="Good till Date">Order should remain open in the market till set date</div>
-                                            
-                                            <div onClick={selectDuration} className='element-cover' data-value="Good till Date"></div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                {/*End */}
-
-                            </div>
-                            {/* End */}
-
-                            {/* Stop Loss - Order Type */}
-                            <div className='relative'>
-                                <div className={stopLossOrderType ? 'flex justify-between space-x-5 mb-3' : 'hidden'}>
+                            <div className={limitOrderType ? 'relative mb-5' : 'hidden'}>
+                                <div className='flex justify-between space-x-5 mb-5'>
                                     <div className='w-1/2'>
-                                        <div className="mb-3">Price Tolerance</div>
+                                        <div className="mb-3">Maximum Limit</div>
 
                                         <div>
-                                            <input type='text' onChange={delineatePriceToleranceAndLimit} className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500' value={priceToleranceAndLimit} />
+                                            <input onChange={delineatePriceToleranceAndLimit} type='text' className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500' placeholder='Maximum price per share' value={priceToleranceAndLimit} />
                                         </div>
                                     </div>
 
-                                    <div className='w-1/2 relative cursor-pointer' onClick={displayStopLossDuration}>
+                                    <div className='w-1/2 relative cursor-pointer' onClick={displayLimitDuration}>
                                         <div className="mb-3">Duration</div>
 
                                         <div className='flex justify-between font-bold items-center border p-3 rounded-lg'>
@@ -1971,165 +1915,72 @@ const Stock = () => {
                                         </div>
                                     </div>
 
+                                    {/*Duration Dropdown */}
+                                    <div className={showLimitDurationDropdown ? 'bg-white shadow -top-48 p-3 absolute border right-0 rounded-lg w-1/2' : 'hidden'}>
+                                        <div className=' text-lg text-green-900 mb-3'>Duration</div>
+
+                                        <ul className='list-none m-0 p-0'>
+                                            <li className='duration-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'  style={{borderBottom: '1px solid rgba(243, 244, 246, 1)'}}>
+                                                <div className=' mb-3 font-bold' onClick={selectDuration} data-value="End of day">End of day</div>
+
+                                                <div className='text-xs' onClick={selectDuration} data-value="End of day">Order should be executed before end of  day, else, cancelled</div>
+
+                                                <div onClick={selectDuration} className='element-cover' data-value="End of day"></div>
+                                            </li>
+
+                                            <li className='duration-list hidden relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1' style={{borderBottom: '1px solid rgba(243, 244, 246, 1)'}}>
+                                                <div className=' mb-3 font-bold' onClick={selectDuration} data-value="Fill or Kill">Fill or Kill</div>
+
+                                                <div className='text-xs' onClick={selectDuration} data-value="Fill or Kill">Order should be filled immediately, else, cancelled</div>
+                                                
+                                                <div onClick={selectDuration} className='element-cover' data-value="Fill or Kill"></div>
+                                            </li>
+
+                                            <li className='duration-list hidden relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1' style={{borderBottom: '1px solid rgba(243, 244, 246, 1)'}}>
+                                                <div className=' mb-3 font-bold' onClick={selectDuration}  data-value="Immediate or Cancel">Immediate or Cancel</div>
+                                                
+                                                <div className='text-xs' onClick={selectDuration} data-value="Immediate or Cancel">If number of units can not be filled immediately then cancel order</div>
+                                                
+                                                <div onClick={selectDuration} className='element-cover' data-value="Immediate or Cancel"></div>
+                                            </li>
+
+                                            <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
+                                                <div className=' mb-3 font-bold' onClick={selectDuration} data-value="Good till Date">Good till Date</div>
+
+                                                <div className='text-xs' onClick={selectDuration} data-value="Good till Date">Order should remain open in the market till set date</div>
+                                                
+                                                <div onClick={selectDuration} className='element-cover' data-value="Good till Date"></div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    {/*End */}
                                 </div>
 
-                                <div className={showStopLossDurationDropdown ? 'bg-white shadow -top-96 p-3 absolute border right-0 rounded-lg w-1/2' : 'hidden'}>
-                                    <div className=' text-lg text-green-900 mb-3'>Duration</div>
+                                <div className={showGoodTillDateCalendar ? '':'hidden'}>
+                                    <div className="mb-3">Enter Date</div>
 
-                                    <ul className='list-none m-0 p-0'>
-                                        <li className='duration-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'  style={{borderBottom: '1px solid rgba(243, 244, 246, 1)'}}>
-                                            <div className=' mb-3 font-bold' onClick={selectDuration} data-value="End of day">End of day</div>
+                                    <div className='relative flex justify-between items-center border rounded-lg'>
+                                        <div className='w-full'>
+                                            <input type="text" className="bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 font-bold focus:bg-white focus:ring-indigo-500" placeholder="Enter end date for your order" value={showDate} readOnly />
+                                        </div>
+                                        <div className='p-3 cursor-pointer' onClick={e => displayCalendar()}>
+                                            <img src={CalendarIcon} alt="" width="20" />
+                                        </div>
 
-                                            <div className='text-xs' onClick={selectDuration} data-value="End of day">Order should be executed before end of  day, else, cancelled</div>
-
-                                            <div onClick={selectDuration} className='element-cover' data-value="End of day"></div>
-                                        </li>
-
-                                        <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1' style={{borderBottom: '1px solid rgba(243, 244, 246, 1)'}}>
-                                            <div className=' mb-3 font-bold' onClick={selectDuration} data-value="Fill or Kill">Fill or Kill</div>
-
-                                            <div className='text-xs' onClick={selectDuration} data-value="Fill or Kill">Order should be filled immediately, else, cancelled</div>
-                                            
-                                            <div onClick={selectDuration} className='element-cover' data-value="Fill or Kill"></div>
-                                        </li>
-
-                                        <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1' style={{borderBottom: '1px solid rgba(243, 244, 246, 1)'}}>
-                                            <div className=' mb-3 font-bold' onClick={selectDuration}  data-value="Immediate or Cancel">Immediate or Cancel</div>
-                                            
-                                            <div className='text-xs' onClick={selectDuration} data-value="Immediate or Cancel">If number of units can not be filled immediately then cancel order</div>
-                                            
-                                            <div onClick={selectDuration} className='element-cover' data-value="Immediate or Cancel"></div>
-                                        </li>
-
-                                        <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                            <div className=' mb-3 font-bold' onClick={selectDuration} data-value="Good till Date">Good till Date</div>
-
-                                            <div className='text-xs' onClick={selectDuration} data-value="Good till Date">Order should remain open in the market till set date</div>
-                                            
-                                            <div onClick={selectDuration} className='element-cover' data-value="Good till Date"></div>
-                                        </li>
-                                    </ul>
+                                        <Calendar onChange={changeDate} value={dateState} className={showCalendar ? "absolute z-10" : "hidden"} />
+                                    </div>                                            
                                 </div>
+
                             </div>
                             {/* End */}
 
-                            {/* Stop Limit - Order Type */}
-                            <div className='relative'>
-                                <div className={stopLimitOrderType ? '' : 'hidden'}>
-                                    <div className='flex justify-between space-x-5 mb-3'>
-                                        <div className='w-1/2'>
-                                            <div className="mb-3">Price Tolerance and Limit</div>
-
-                                            <div>
-                                                <input onChange={delineatePriceToleranceAndLimit} value={priceToleranceAndLimit} type='text' className='bg-white text w-full focus:outline-none px-3 py-3 rounded text-gray-900 border focus:bg-white focus:ring-indigo-500' />
-                                            </div>
-                                        </div>
-
-                                        <div className='w-1/2 relative cursor-pointer' onClick={displayStopLimitDuration}>
-                                            <div className="mb-3">Duration</div>
-
-                                            <div className='flex justify-between font-bold items-center border p-3 rounded-lg'>
-                                                <div>{duration}</div>
-                                                <div><img src={ChevronDownIcon} alt='' /></div>
-                                            </div>
-                                        </div>
-
-                                        <div className={showStopLimitDurationDropdown ? 'bg-white shadow -top-96 p-3 absolute border right-0 rounded-lg w-1/2' : 'hidden'}>
-                                            <div className=' text-lg text-green-900 mb-3'>Duration</div>
-
-                                            <ul className='list-none m-0 p-0'>
-                                                <li className='duration-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative'  style={{borderBottom: '1px solid rgba(243, 244, 246, 1)'}}>
-                                                    <div className=' mb-3 font-bold' onClick={selectDuration} data-value="End of day">End of day</div>
-
-                                                    <div className='text-xs' onClick={selectDuration} data-value="End of day">Order should be executed before end of  day, else, cancelled</div>
-
-                                                    <div onClick={selectDuration} className='element-cover' data-value="End of day"></div>
-                                                </li>
-
-                                                <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1' style={{borderBottom: '1px solid rgba(243, 244, 246, 1)'}}>
-                                                    <div className=' mb-3 font-bold' onClick={selectDuration} data-value="Fill or Kill">Fill or Kill</div>
-
-                                                    <div className='text-xs' onClick={selectDuration} data-value="Fill or Kill">Order should be filled immediately, else, cancelled</div>
-                                                    
-                                                    <div onClick={selectDuration} className='element-cover' data-value="Fill or Kill"></div>
-                                                </li>
-
-                                                <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1' style={{borderBottom: '1px solid rgba(243, 244, 246, 1)'}}>
-                                                    <div className=' mb-3 font-bold' onClick={selectDuration}  data-value="Immediate or Cancel">Immediate or Cancel</div>
-                                                    
-                                                    <div className='text-xs' onClick={selectDuration} data-value="Immediate or Cancel">If number of units can not be filled immediately then cancel order</div>
-                                                    
-                                                    <div onClick={selectDuration} className='element-cover' data-value="Immediate or Cancel"></div>
-                                                </li>
-
-                                                <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                                    <div className=' mb-3 font-bold' onClick={selectDuration} data-value="Good till Date">Good till Date</div>
-
-                                                    <div className='text-xs' onClick={selectDuration} data-value="Good till Date">Order should remain open in the market till set date</div>
-                                                    
-                                                    <div onClick={selectDuration} className='element-cover' data-value="Good till Date"></div>
-                                                </li>
-                                            </ul>
-                                        </div>
-
-                                    </div>
-
-                                    <div>
-                                        <div>
-                                            <div className="mb-3">Enter Date</div>
-                                            <div className='relative flex justify-between items-center border rounded-lg'>
-                                                <div className='w-full'>
-                                                    <input type="text" className="font-bold outline-white border-0 p-3 input text-sm" placeholder="Enter end date for your order" defaultValue={showDate} />
-                                                </div>
-                                                <div className='p-3 cursor-pointer' onClick={e => displayCalendar()}>
-                                                    <img src={CalendarIcon} alt="" width="20" />
-                                                </div>
-
-                                                <Calendar onChange={changeDate} value={dateState} className={showCalendar ? "absolute z-10" : "hidden"} />
-                                            </div>
-
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className={showStopLossDurationDropdown ? 'bg-white shadow -top-96 p-3 absolute border right-0 rounded-lg w-1/2 hidden' : 'hidden'}>
-                                    <div className=' text-lg text-green-900 mb-3'>Duration</div>
-
-                                    <ul className='list-none m-0 p-0'>
-                                        <li className='duration-list cursor-pointer py-2 bg-gray-100 hover:bg-gray-100 rounded-lg pl-2 my-1 relative' style={{borderBottom:'1px solid rgba(243, 244, 246, 1)'}}>
-                                            <div className=' mb-5 text-sm font-bold'>End of day</div>
-                                            <div className='text-xs'>Order should be executed before end of  day, else, cancelled</div>
-                                            <div onClick={selectDuration} className='element-cover' data-value="End of day"></div>
-                                        </li>
-
-                                        <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 relative rounded-lg pl-2 my-1' style={{borderBottom:'1px solid rgba(243, 244, 246, 1)'}}>
-                                            <div className=' mb-5 text-sm font-bold'>Fill or Kill</div>
-                                            <div className='text-xs'>Order should be filled immediately, else, cancelled</div>
-                                            <div onClick={selectDuration} className='element-cover' data-value="Fill or Kill"></div>
-                                        </li>
-
-                                        <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1' style={{borderBottom:'1px solid rgba(243, 244, 246, 1)'}}>
-                                            <div className=' mb-5 text-sm font-bold'>Immediate or Cancel</div>
-                                            <div className='text-xs'>Order can be partly filled immediately, units not filled immediately should be cancelled</div>
-                                            <div onClick={selectDuration} className='element-cover' data-value="Immediate or Cancel"></div>
-                                        </li>
-
-                                        <li className='duration-list relative cursor-pointer py-2 hover:bg-gray-100 rounded-lg pl-2 my-1'>
-                                            <div className=' mb-5 text-sm font-bold'>Good till Date</div>
-                                            <div className='text-xs'>Order should remain open in the market till set date</div>
-                                            <div onClick={selectDuration} className='element-cover' data-value="Good till Date"></div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            {/* End */}
+                            
 
                         </div>
 
                         <div className='mb-8'>
                             <div className='mb-3'>Estimated cost</div>
-                            <div className=' font-bold text-green-900 text-3xl'>{HelperFunctions.formatCurrencyWithDecimal(estimatedCost)}</div>
+                            <div className=' font-bold text-green-900 text-2xl'>{HelperFunctions.formatCurrencyWithDecimal(estimatedCost)}</div>
                         </div>
 
                         <div>
