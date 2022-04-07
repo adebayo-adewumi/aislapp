@@ -1243,11 +1243,11 @@ const Profile = () => {
 
                                                     <option value=''>...</option>
                                                     
-                                                    <option value="Drivers License" className={item.hasOwnProperty("idDetails") ? (item.idDetails.idType === 'Drivers License' ? 'hidden':'') :''}>Drivers Licence</option>
+                                                    <option value="DRIVERS_LICENCE" className={item.hasOwnProperty("idDetails") ? (item.idDetails.idType === 'Drivers License' ? 'hidden':'') :''}>Drivers Licence</option>
 
                                                     <option value="NIN" className={item.hasOwnProperty("idDetails") ? (item.idDetails.idType === 'NIN' ? 'hidden':'') : ''}>NIN</option>
 
-                                                    <option value="Voters Card" className={item.hasOwnProperty("idDetails") ? (item.idDetails.idType === 'Voters Card' ? 'hidden':'') : ''}>Voters Card</option>
+                                                    <option value="VOTER_ID" className={item.hasOwnProperty("idDetails") ? (item.idDetails.idType === 'Voters Card' ? 'hidden':'') : ''}>Voters Card</option>
                                                 </select>
 
                                                 <div className="pointer-events-none absolute inset-y-0 right-0 hidden items-center px-2 text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" className="fill-current h-4 w-4"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path></svg></div>
