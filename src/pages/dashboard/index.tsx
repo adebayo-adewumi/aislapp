@@ -679,7 +679,7 @@ const Dashboard = () => {
                         {/* End */}
 
                         {/* Page Loader Section */}
-                        <div className={showPageLoader ? "page-loader-backdrop opacity-90" : "hidden"}>
+                        <div className={showPageLoader ? "page-loader-backdrop opacity-90" : "page-loader-backdrop opacity-90"}>
                             <div className='relative'>
                                 <div className='ml-96 w-1/3 text-center relative'>
                                     <img src={AnchoriaSpinner} alt="" />

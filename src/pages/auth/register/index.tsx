@@ -353,28 +353,34 @@ const Register = () => {
         setShowSpinner(true);
 
         let genericCypher = encryptData(Buffer.from(generalEncKey).toString('base64'), JSON.stringify(requestData));
-        localStorage.setItem('genericCypher', genericCypher);
-
 
         //REGISTER USER
-        if (localStorage.getItem('genericCypher')) {
+        if (genericCypher) {
             setShowSpinner(true);
             getAxios(axios).post(authOnboardingServiceBaseUrl.concat('/customer/add?workflowReferenceValue=') + localStorage.getItem('aislUserWorkflowReference'),
             {
-                "text": localStorage.getItem('genericCypher')
+                "text": genericCypher
             })
             .then(function (response:any) {
                 setShowSpinner(false);
-                //setShowPasswordValidated(false)
                 confirmSuccess();
 
                 if(response.data.statusCode !== 200){
                     setErrorMsg(response.data.message);
+
+                    setTimeout(()=>{
+                        setErrorMsg('');
+                    }, 3000);
+
                 }
             })
             .catch(function (error:any) {
                 setErrorMsg(error.response.data.message);
                 setShowSpinner(false);
+
+                setTimeout(()=>{
+                    setErrorMsg('');
+                }, 3000);
             });
         }
     }
@@ -1188,7 +1194,7 @@ const Register = () => {
                                                             </svg>
                                                         </div>
 
-                                                        <div className={hasNumericCharacter ? "font-bold" : ""}>One or more numeric character</div>
+                                                        <div className={hasNumericCharacter ? "font-bold text-green-400" : ""}>One or more numeric character</div>
                                                     </div>
                                                 </div>
 
@@ -1426,13 +1432,13 @@ const Register = () => {
                             <div className={showValidateUserIdModal ? "generic-modal":"hidden"}>
                                 <div className='generic-modal-dialog'>
                                     <div className="top-losers-modal">
-                                        <div className="mb-10 flex justify-between hidden">
+                                        <div className="mb-5 flex justify-between hidden">
                                             <div className="font-bold text-xl text-green-900">Validate User ID</div>                                        
                                         </div>
 
                                         <div className=''>
                                             {/* Validate User Id Error */}
-                                            <div className={isUserIdValid === 'false' ? "error-alert mb-20":"hidden"}>
+                                            <div className={isUserIdValid === 'false' ? "error-alert mb-3":"hidden"}>
                                                 <div className="flex justify-between space-x-1 p-3">
                                                     <div className="flex">
                                                         <div className="text-sm">Invalid User ID</div>
@@ -1484,8 +1490,7 @@ const Register = () => {
 
                                             <div>
                                                 <button className='bg-gray-300 border-0 cursor-pointer font-bold text-black px-5 py-2 rounded-lg mr-5' onClick={closeModal}>
-                                                    <span className={showSpinner ? "hidden" : ""}>Close</span>
-                                                    <img src={SpinnerIcon} alt="spinner icon" className={showSpinner ? "" : "hidden"} width="15" />
+                                                    Close
                                                 </button>
 
                                                 <button className={hasUserId === ''? 'bg-green-900 border-0 cursor-pointer text-white font-bold px-5 py-2 rounded-lg opacity-50':'bg-green-900 border-0 cursor-pointer text-white font-bold px-5 py-2 rounded-lg'} disabled={hasUserId === ''} onClick={validateUserId}>
